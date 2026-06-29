@@ -7,7 +7,13 @@
   "engines": {
     "node": ">=22"
   },
+  "devDependencies": {
+    "@commitlint/cli": "^21.1.0",
+    "@commitlint/config-conventional": "^21.1.0",
+    "lefthook": "^2.1.9"
+  },
   "scripts": {
+    "prepare": "lefthook install",
     "docs:dev": "pnpm --filter @govbb/docs dev",
     "docs:build": "pnpm --filter @govbb/docs build"
   }
