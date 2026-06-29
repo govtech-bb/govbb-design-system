@@ -13,6 +13,8 @@
     "lefthook": "^2.1.9"
   },
   "scripts": {
-    "prepare": "lefthook install"
+    "prepare": "lefthook install",
+    "docs:dev": "pnpm --filter @govbb/docs dev",
+    "docs:build": "pnpm --filter @govbb/docs build"
   }
 }
