@@ -1,0 +1,20 @@
+{
+  "name": "@govbb/docs",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "Documentation site for the GovBB Design System (design-system.gov.bb).",
+  "scripts": {
+    "dev": "storybook dev -p 6006",
+    "build": "storybook build"
+  },
+  "devDependencies": {
+    "@storybook/addon-a11y": "^10.4.6",
+    "@storybook/addon-docs": "^10.4.6",
+    "@storybook/web-components-vite": "^10.4.6",
+    "lit": "^3.3.3",
+    "storybook": "^10.4.6",
+    "typescript": "^5.7.0",
+    "vite": "^8.1.0"
+  }
+}
