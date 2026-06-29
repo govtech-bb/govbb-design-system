@@ -10,9 +10,12 @@
   "devDependencies": {
     "@commitlint/cli": "^21.1.0",
     "@commitlint/config-conventional": "^21.1.0",
+    "git-cliff": "^2.13.1",
     "lefthook": "^2.1.9"
   },
   "scripts": {
-    "prepare": "lefthook install"
+    "prepare": "lefthook install",
+    "changelog": "git-cliff --output CHANGELOG.md",
+    "changelog:unreleased": "git-cliff --unreleased --tag unreleased --output CHANGELOG.md"
   }
 }
