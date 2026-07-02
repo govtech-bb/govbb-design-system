@@ -150,17 +150,6 @@ main {
   color: var(--govbb-color-teal);
   font-weight: 600;
 }
-.govbb-search {
-  font: inherit;
-  font-size: 0.875rem;
-  color: var(--govbb-color-text-muted);
-  background: var(--govbb-color-white);
-  border: 1px solid var(--govbb-color-border);
-  border-radius: var(--govbb-radius);
-  padding: var(--govbb-space-2) var(--govbb-space-3);
-  cursor: pointer;
-  white-space: nowrap;
-}
 
 /* ── Footer ───────────────────────────────────────────────────── */
 .govbb-footer {
