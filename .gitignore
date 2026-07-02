@@ -1,7 +1,5 @@
 node_modules/
 dist/
-.turbo/
 coverage/
-storybook-static/
 *.log
 .DS_Store

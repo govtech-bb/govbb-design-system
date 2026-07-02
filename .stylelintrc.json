@@ -1,0 +1,18 @@
+{
+  "extends": "stylelint-config-standard",
+  "rules": {
+    "custom-property-empty-line-before": null,
+    "selector-class-pattern": [
+      "^govbb(-[a-z0-9]+)+(__[a-z0-9]+(-[a-z0-9]+)*)?(--[a-z0-9]+(-[a-z0-9]+)*)?$",
+      {
+        "message": "Class names must be govbb-prefixed BEM (govbb-block__element--modifier)"
+      }
+    ],
+    "custom-property-pattern": [
+      "^govbb(-[a-z0-9]+)+$",
+      {
+        "message": "Custom properties must be govbb-prefixed kebab-case (--govbb-*)"
+      }
+    ]
+  }
+}
