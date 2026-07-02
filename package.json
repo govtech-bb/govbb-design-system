@@ -18,11 +18,14 @@
     "site:build": "pnpm --filter @govbb/site build",
     "lint": "oxlint && stylelint \"src/**/*.css\"",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "changelog": "git-cliff --output CHANGELOG.md",
+    "changelog:unreleased": "git-cliff --unreleased --tag unreleased --output CHANGELOG.md"
   },
   "devDependencies": {
     "@commitlint/cli": "^21.1.0",
     "@commitlint/config-conventional": "^21.1.0",
+    "git-cliff": "^2.13.1",
     "lefthook": "^2.1.9",
     "lightningcss-cli": "^1.30.2",
     "oxlint": "^1.71.0",
