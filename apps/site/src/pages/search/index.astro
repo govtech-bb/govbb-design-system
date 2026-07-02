@@ -1,19 +1,116 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import SearchBar from '../../components/SearchBar.astro';
 ---
 <BaseLayout title="Search" description="Search the GovBB Design System.">
-  <section class="govbb-container govbb-page-section">
-    <div class="govbb-prose">
-      <div class="govbb-page-header">
-        <h1 class="govbb-page-title">Search</h1>
-        <p class="govbb-page-subtitle">Search across the design system.</p>
-      </div>
-      <p>
-        Site search is not built yet. Meanwhile, browse the
-        <a href="/components/">components</a>, the
-        <a href="/documentation/">documentation</a>, or the
-        <a href="/changelog/">changelog</a>.
+  {/* The search page itself shouldn't appear in its own results. */}
+  <section class="govbb-container govbb-page-section" data-pagefind-ignore>
+    <div class="govbb-page-header">
+      <h1 class="govbb-page-title">Search</h1>
+      <p class="govbb-page-subtitle">Find components, guidance and standards.</p>
+    </div>
+
+    {/* Static build: the query lives in the URL and is read client-side. */}
+    <SearchBar placeholder="Search the design system" />
+
+    <div class="govbb-search-results">
+      <p id="search-status" class="govbb-search-status" role="status" aria-live="polite">
+        Enter a term above to search.
       </p>
+      <ul id="search-results" class="govbb-search-list"></ul>
+
+      <div id="search-browse" class="govbb-prose" style="margin-top: var(--govbb-space-5);">
+        <p>Or browse the sections:</p>
+        <ul>
+          <li><a href="/components/">Components</a></li>
+          <li><a href="/documentation/">Documentation</a></li>
+          <li><a href="/changelog/">Changelog</a></li>
+        </ul>
+      </div>
     </div>
   </section>
 </BaseLayout>
+
+<style>
+  .govbb-search-results {
+    margin-top: var(--govbb-space-5);
+    max-width: 44rem;
+  }
+  .govbb-search-status {
+    color: var(--govbb-color-text-muted);
+  }
+  .govbb-search-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .govbb-search-list li {
+    padding-bottom: var(--govbb-space-4);
+    margin-bottom: var(--govbb-space-4);
+    border-bottom: 1px solid var(--govbb-color-border);
+  }
+  .govbb-result__title {
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
+  .govbb-result__excerpt {
+    margin: var(--govbb-space-1) 0 0;
+    color: var(--govbb-color-text-muted);
+  }
+  .govbb-result__excerpt :global(mark) {
+    background: var(--govbb-card-yellow, #fce8a6);
+    color: inherit;
+  }
+</style>
+
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const query = (params.get('q') ?? '').trim();
+
+  const input = document.getElementById('search') as HTMLInputElement | null;
+  const status = document.getElementById('search-status');
+  const list = document.getElementById('search-results');
+  const browse = document.getElementById('search-browse');
+
+  // Load Pagefind's runtime bundle (generated into /pagefind at build time)
+  // without letting Vite try to resolve or preload it during the site build.
+  const importPagefind = new Function(
+    'p',
+    'return import(p)',
+  ) as (p: string) => Promise<any>;
+
+  if (query && input && status && list) {
+    input.value = query;
+    if (browse) browse.hidden = true;
+    status.textContent = `Searching for “${query}”…`;
+
+    (async () => {
+      try {
+        const pagefind = await importPagefind('/pagefind/pagefind.js');
+        await pagefind.init?.();
+        const search = await pagefind.search(query);
+        const results = await Promise.all(
+          search.results.slice(0, 20).map((r: any) => r.data()),
+        );
+
+        if (results.length === 0) {
+          status.textContent = `No results found for “${query}”.`;
+          return;
+        }
+        status.textContent = `${results.length} result${results.length === 1 ? '' : 's'} for “${query}”.`;
+
+        list.innerHTML = results
+          .map(
+            (d: any) => `
+            <li>
+              <a class="govbb-result__title" href="${d.url}">${d.meta?.title ?? d.url}</a>
+              <p class="govbb-result__excerpt">${d.excerpt}</p>
+            </li>`,
+          )
+          .join('');
+      } catch (e) {
+        status.textContent = 'Search error: ' + ((e as Error)?.message ?? e);
+      }
+    })();
+  }
+</script>

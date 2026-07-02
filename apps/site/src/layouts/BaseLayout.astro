@@ -25,11 +25,15 @@ const fullTitle = `${title} — GovBB Design System`;
   </head>
   <body>
     <a class="govbb-skip-link" href="#main-content">Skip to main content</a>
-    <GovBanner />
-    <Header section={section} />
-    <main id="main-content">
+    <div data-pagefind-ignore>
+      <GovBanner />
+      <Header section={section} />
+    </div>
+    <main id="main-content" data-pagefind-body>
       <slot />
     </main>
-    <Footer />
+    <div data-pagefind-ignore>
+      <Footer />
+    </div>
   </body>
 </html>

@@ -1,0 +1,117 @@
+---
+/*
+ * SearchBar — matches the alpha.gov.bb "Find a service" search field
+ * (Figma: GOV.BB Pattern Library, node 6008:2920).
+ *
+ * A white input with a 2px black border joined to a teal "Search" submit
+ * button, outer corners rounded 4px, max-width 600px. Submits as a GET so the
+ * results page can read `?q=`. Real result indexing is tracked separately.
+ */
+interface Props {
+  /** Where the form submits. */
+  action?: string;
+  /** Accessible label for the input. */
+  label?: string;
+  placeholder?: string;
+  buttonText?: string;
+  /** Prefill (e.g. echo the current query on a results page). */
+  value?: string;
+  id?: string;
+  /** Smaller variant for the header. */
+  compact?: boolean;
+}
+const {
+  action = '/search/',
+  label = 'Search',
+  placeholder = '',
+  buttonText = 'Search',
+  value = '',
+  id = 'search',
+  compact = false,
+} = Astro.props;
+---
+<form
+  class:list={['govbb-searchbar', { 'govbb-searchbar--compact': compact }]}
+  role="search"
+  action={action}
+  method="get"
+>
+  <label class="govbb-visually-hidden" for={id}>{label}</label>
+  <input
+    class="govbb-searchbar__input"
+    id={id}
+    type="search"
+    name="q"
+    value={value}
+    placeholder={placeholder}
+    autocomplete="off"
+  />
+  <button class="govbb-searchbar__button" type="submit">{buttonText}</button>
+</form>
+
+<style>
+  .govbb-searchbar {
+    display: flex;
+    align-items: stretch;
+    width: 100%;
+    max-width: 600px;
+  }
+  .govbb-searchbar__input {
+    flex: 1 0 0;
+    min-width: 0;
+    height: 62px;
+    padding: 0 var(--govbb-space-3);
+    font-family: var(--govbb-font-base);
+    font-size: 1.25rem; /* 20px */
+    color: var(--govbb-color-text);
+    background: var(--govbb-color-white);
+    border: 2px solid #000;
+    border-right: 0;
+    border-radius: var(--govbb-radius) 0 0 var(--govbb-radius);
+  }
+  .govbb-searchbar__input::placeholder {
+    color: var(--govbb-color-text-muted);
+  }
+  .govbb-searchbar__button {
+    flex: none;
+    padding: var(--govbb-space-2) var(--govbb-space-4);
+    font-family: var(--govbb-font-base);
+    font-size: 1.25rem; /* 20px */
+    line-height: 1.5;
+    color: var(--govbb-color-white);
+    background: var(--govbb-color-teal);
+    border: 2px solid var(--govbb-color-teal);
+    border-radius: 0 var(--govbb-radius) var(--govbb-radius) 0;
+    cursor: pointer;
+  }
+  .govbb-searchbar__button:hover {
+    background: var(--govbb-color-teal-dark);
+    border-color: var(--govbb-color-teal-dark);
+  }
+
+  /* Compact variant — header. Sized to content and pushed right rather than
+     filling the row (which would wrap it onto its own line). */
+  .govbb-searchbar--compact {
+    width: auto;
+    max-width: none;
+    margin-left: auto;
+  }
+  .govbb-searchbar--compact .govbb-searchbar__input {
+    flex: 0 1 auto;
+    width: 15rem;
+    max-width: 40vw;
+    height: 44px;
+    font-size: 1rem;
+    padding: 0 var(--govbb-space-2);
+  }
+  .govbb-searchbar--compact .govbb-searchbar__button {
+    font-size: 1rem;
+    padding: var(--govbb-space-1) var(--govbb-space-3);
+  }
+  .govbb-searchbar__input:focus-visible,
+  .govbb-searchbar__button:focus-visible {
+    outline: 3px solid var(--govbb-color-focus);
+    outline-offset: 2px;
+    position: relative;
+  }
+</style>

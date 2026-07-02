@@ -3,7 +3,8 @@
 #
 # pnpm 11.9 gates dependency build scripts behind an explicit allowlist:
 # esbuild (Vite / Astro), lefthook (git hooks), lightningcss-cli (native
-# binary), and sharp (Astro image optimization) all need theirs to run.
+# binary), sharp (Astro image optimization) and pagefind (search index binary)
+# all need theirs to run.
 packages:
   - apps/*
 
@@ -12,3 +13,4 @@ allowBuilds:
   lefthook: true
   lightningcss-cli: true
   sharp: true
+  pagefind: true

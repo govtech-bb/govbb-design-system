@@ -1,6 +1,7 @@
 ---
 import type { Section } from '../types';
 import { primaryNav } from '../data/nav';
+import SearchBar from './SearchBar.astro';
 
 interface Props {
   /** Top-level section key for highlighting the active nav item. */
@@ -26,6 +27,6 @@ const { section } = Astro.props;
         </ul>
       </nav>
     </div>
-    <a class="govbb-search" href="/search/">Search</a>
+    <SearchBar compact id="header-search" label="Search the design system" />
   </div>
 </header>
