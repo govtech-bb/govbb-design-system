@@ -1,29 +1,31 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import ColorCard from '../components/ColorCard.astro';
-import { getSortedChangelog, formatChangelogDate } from '../data/changelog';
+import CardGrid from '../components/CardGrid.astro';
+import ChangelogEntry from '../components/ChangelogEntry.astro';
+import type { CardData } from '../components/CardGrid.astro';
+import { getSortedChangelog } from '../data/changelog';
 
 const updates = (await getSortedChangelog()).slice(0, 2);
 
-const cards = [
+const cards: CardData[] = [
   {
     title: 'Components',
     href: '/components/',
-    modifier: 'pink' as const,
+    modifier: 'pink',
     desc: 'Reusable, accessible parts of the user interface, with live examples and code.',
     link: 'Browse components',
   },
   {
     title: 'Documentation',
     href: '/documentation/',
-    modifier: 'lavender' as const,
+    modifier: 'lavender',
     desc: 'Standards and guidelines for how and when to use the design system.',
     link: 'Browse documentation',
   },
   {
     title: 'AI skills',
     href: '/ai-skills/',
-    modifier: 'teal' as const,
+    modifier: 'teal',
     desc: 'Guidance for designers working with AI tools. Coming soon.',
     link: 'View AI skills',
   },
@@ -47,22 +49,7 @@ const cards = [
   <section class="govbb-band govbb-band--pink">
     <div class="govbb-container">
       <h2 class="govbb-section-title">Explore the design system</h2>
-      <ul class="govbb-cardgrid">
-        {
-          cards.map((card) => (
-            <li>
-              <ColorCard
-                title={card.title}
-                href={card.href}
-                modifier={card.modifier}
-                desc={card.desc}
-                link={card.link}
-                heading="h3"
-              />
-            </li>
-          ))
-        }
-      </ul>
+      <CardGrid cards={cards} heading="h3" />
     </div>
   </section>
 
@@ -74,17 +61,12 @@ const cards = [
           <p>No updates yet.</p>
         ) : (
           updates.map((post) => (
-            <div class="govbb-update">
-              <p class="govbb-update__date">
-                <time datetime={post.data.date.toISOString()}>
-                  {formatChangelogDate(post.data.date)}
-                </time>
-              </p>
-              <a class="govbb-update__title" href={`/changelog/${post.id}/`}>
-                {post.data.title}
-              </a>
-              {post.data.summary && <p class="govbb-update__desc">{post.data.summary}</p>}
-            </div>
+            <ChangelogEntry
+              date={post.data.date}
+              title={post.data.title}
+              href={`/changelog/${post.id}/`}
+              summary={post.data.summary}
+            />
           ))
         )
       }

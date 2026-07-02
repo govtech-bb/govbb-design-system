@@ -1,26 +1,27 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import ColorCard from '../../components/ColorCard.astro';
+import CardGrid from '../../components/CardGrid.astro';
+import type { CardData } from '../../components/CardGrid.astro';
 
-const cards = [
+const cards: CardData[] = [
   {
     title: 'Using the design system',
     href: '/documentation/using-the-design-system/',
-    modifier: 'pink' as const,
+    modifier: 'pink',
     desc: 'How to adopt the design system in a new or existing service.',
     link: 'Read the guide',
   },
   {
     title: 'Standards',
     href: '/documentation/using-the-design-system/#standards',
-    modifier: 'lavender' as const,
+    modifier: 'lavender',
     desc: 'What official Government of Barbados services must do.',
     link: 'View standards',
   },
   {
     title: 'Guidelines',
     href: '/documentation/using-the-design-system/#guidelines',
-    modifier: 'teal' as const,
+    modifier: 'teal',
     desc: 'How and when to use the parts of the design system.',
     link: 'View guidelines',
   },
@@ -40,20 +41,6 @@ const cards = [
       </p>
     </div>
 
-    <ul class="govbb-cardgrid">
-      {
-        cards.map((card) => (
-          <li>
-            <ColorCard
-              title={card.title}
-              href={card.href}
-              modifier={card.modifier}
-              desc={card.desc}
-              link={card.link}
-            />
-          </li>
-        ))
-      }
-    </ul>
+    <CardGrid cards={cards} />
   </section>
 </BaseLayout>

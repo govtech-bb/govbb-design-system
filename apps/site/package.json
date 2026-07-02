@@ -5,10 +5,10 @@
   "type": "module",
   "description": "Documentation site for the GovBB Design System (design-system.gov.bb).",
   "scripts": {
-    "dev": "astro dev",
-    "build": "astro build",
-    "preview": "astro preview",
-    "check": "astro check"
+    "dev": "cross-env ASTRO_TELEMETRY_DISABLED=1 astro dev",
+    "build": "cross-env ASTRO_TELEMETRY_DISABLED=1 astro build",
+    "preview": "cross-env ASTRO_TELEMETRY_DISABLED=1 astro preview",
+    "check": "cross-env ASTRO_TELEMETRY_DISABLED=1 astro check"
   },
   "dependencies": {
     "@astrojs/mdx": "^7.0.0",
@@ -18,6 +18,7 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.9",
+    "cross-env": "^10.1.0",
     "typescript": "^5.7.0"
   }
 }
