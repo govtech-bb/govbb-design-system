@@ -1,0 +1,56 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const cards = [
+  {
+    title: 'Using the design system',
+    href: '/documentation/using-the-design-system/',
+    modifier: 'pink',
+    desc: 'How to adopt the design system in a new or existing service.',
+    link: 'Read the guide',
+  },
+  {
+    title: 'Standards',
+    href: '/documentation/using-the-design-system/#standards',
+    modifier: 'lavender',
+    desc: 'What official Government of Barbados services must do.',
+    link: 'View standards',
+  },
+  {
+    title: 'Guidelines',
+    href: '/documentation/using-the-design-system/#guidelines',
+    modifier: 'teal',
+    desc: 'How and when to use the parts of the design system.',
+    link: 'View guidelines',
+  },
+];
+---
+<BaseLayout
+  title="Documentation"
+  section="documentation"
+  description="Standards and guidelines for how and when to use the design system."
+>
+  <section class="govbb-container" style="padding-block: var(--govbb-space-6) var(--govbb-space-8);">
+    <div class="govbb-page-header">
+      <h1 class="govbb-page-title">Documentation</h1>
+      <p class="govbb-page-subtitle">
+        The standards and guidelines that govern official Government of Barbados
+        services — how and when to use the design system.
+      </p>
+    </div>
+
+    <ul class="govbb-cardgrid">
+      {
+        cards.map((card) => (
+          <li>
+            <a class={`govbb-colorcard govbb-colorcard--${card.modifier}`} href={card.href}>
+              <h2 class="govbb-colorcard__title">{card.title}</h2>
+              <p class="govbb-colorcard__desc">{card.desc}</p>
+              <span class="govbb-colorcard__link">{card.link}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+</BaseLayout>

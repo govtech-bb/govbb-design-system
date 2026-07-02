@@ -1,0 +1,50 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const posts = (await getCollection('changelog')).sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime(),
+);
+const dateFormat = new Intl.DateTimeFormat('en-GB', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+});
+---
+<BaseLayout
+  title="Changelog"
+  section="changelog"
+  description="Important design decisions, and why and when we made them."
+>
+  <section class="govbb-container" style="padding-block: var(--govbb-space-6) var(--govbb-space-8);">
+    <div class="govbb-page-header">
+      <h1 class="govbb-page-title">Changelog</h1>
+      <p class="govbb-page-subtitle">
+        A record of important design decisions — what we decided, why, and when.
+        Recording them means we don't have to relitigate them later.
+      </p>
+    </div>
+
+    {
+      posts.length === 0 ? (
+        <p>No entries yet.</p>
+      ) : (
+        <div style="max-width: 44rem;">
+          {posts.map((post) => (
+            <div class="govbb-update" style="margin-bottom: var(--govbb-space-5);">
+              <p class="govbb-update__date">
+                <time datetime={post.data.date.toISOString()}>
+                  {dateFormat.format(post.data.date)}
+                </time>
+              </p>
+              <a class="govbb-update__title" href={`/changelog/${post.id}/`}>
+                {post.data.title}
+              </a>
+              {post.data.summary && <p class="govbb-update__desc">{post.data.summary}</p>}
+            </div>
+          ))}
+        </div>
+      )
+    }
+  </section>
+</BaseLayout>

@@ -1,0 +1,68 @@
+/*
+ * PLACEHOLDER GovBB token baseline — TEMPORARY.
+ *
+ * Values transcribed from the "New New Alpha" Figma design so the scaffold
+ * matches it visually. These are NOT the official published tokens — the real
+ * tokens ship in `@govbb/styles` and get wired in under the follow-up issue
+ * (#124) once #20 lands. Do not build on these values.
+ */
+:root {
+  /* Brand */
+  --govbb-color-teal: #0e5f64; /* primary: buttons, links, active states */
+  --govbb-color-teal-dark: #0a4a4e; /* hover */
+  --govbb-color-navy: #001851; /* footer */
+
+  /* Ink & surfaces */
+  --govbb-color-text: #0b0c0c;
+  --govbb-color-text-muted: #595959;
+  --govbb-color-placeholder: #99a8cc;
+  --govbb-color-white: #ffffff;
+  --govbb-color-bg: #ffffff;
+  --govbb-color-surface: #e5e9f2; /* gov bar, email box, active sidebar */
+  --govbb-color-band: #fff4fb; /* "Get started" band */
+  --govbb-color-border: #d8dce5;
+
+  /* Interaction */
+  --govbb-color-link: var(--govbb-color-teal);
+  --govbb-color-link-hover: var(--govbb-color-teal-dark);
+  --govbb-color-focus: #ffdd00; /* focus ring */
+
+  /* Decorative card fills (Get started / foundations grid) */
+  --govbb-card-pink: #ffd4f0;
+  --govbb-card-lavender: #ddc0e9;
+  --govbb-card-teal: #ace6e9;
+  --govbb-card-mint: #b8e6c8;
+  --govbb-card-yellow: #fce8a6;
+  --govbb-card-salmon: #f8c0be;
+
+  /* Typography — Figtree (bundled temporarily via @fontsource; the real face
+     ships with @govbb/styles). */
+  --govbb-font-base: 'Figtree Variable', 'Figtree', system-ui, -apple-system,
+    'Segoe UI', roboto, helvetica, arial, sans-serif;
+  --govbb-font-size-base: 1.125rem; /* 18px */
+  --govbb-line-height-base: 1.5;
+
+  /* Type scale (px from Figma) */
+  --govbb-font-size-hero: 5rem; /* 80px */
+  --govbb-font-size-page-title: 3rem; /* 48px */
+  --govbb-font-size-section: 2.5rem; /* 40px */
+  --govbb-font-size-col-title: 2rem; /* 32px */
+  --govbb-font-size-card-title: 1.75rem; /* 28px */
+
+  /* Spacing scale */
+  --govbb-space-1: 0.25rem;
+  --govbb-space-2: 0.5rem;
+  --govbb-space-3: 1rem;
+  --govbb-space-4: 1.5rem;
+  --govbb-space-5: 2rem;
+  --govbb-space-6: 3rem;
+  --govbb-space-8: 4rem;
+
+  /* Layout */
+  --govbb-max-width: 1512px;
+  --govbb-gutter: clamp(1.5rem, 8.4vw, 8rem); /* ≈128px at design width */
+  --govbb-radius: 4px;
+  --govbb-radius-lg: 8px;
+  --govbb-sidebar-width: 280px;
+  --govbb-rail-width: 200px;
+}

@@ -1,0 +1,26 @@
+---
+import coatOfArms from '../assets/coat-of-arms.png';
+const year = 2026;
+---
+<footer class="govbb-footer">
+  <div class="govbb-container govbb-footer__inner">
+    <nav aria-label="Footer">
+      <ul class="govbb-footer__links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/cookies/">Cookie Policy</a></li>
+        <li><a href="/terms/">Terms &amp; Conditions</a></li>
+        <li><a href="/sitemap/">Sitemap</a></li>
+      </ul>
+    </nav>
+    <div class="govbb-footer__gov">
+      <img
+        class="govbb-footer__crest"
+        src={coatOfArms.src}
+        width={coatOfArms.width}
+        height={coatOfArms.height}
+        alt="Coat of arms of Barbados"
+      />
+      <p class="govbb-footer__copyright">© {year} Government of Barbados</p>
+    </div>
+  </div>
+</footer>

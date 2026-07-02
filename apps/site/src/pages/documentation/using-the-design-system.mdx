@@ -1,0 +1,50 @@
+---
+title: Using the design system
+---
+
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import { documentationSidebar } from '../../data/nav';
+
+export const onThisPage = [
+  { label: 'Standards', href: '#standards' },
+  { label: 'Guidelines', href: '#guidelines' },
+  { label: 'How this is written', href: '#how-this-is-written' },
+];
+
+<ArticleLayout
+  title="Using the design system"
+  section="documentation"
+  description="How to adopt the design system and the standards every service follows."
+  pageTitle="Using the design system"
+  pageSubtitle="How to adopt the design system and the standards every service follows."
+  sidebarGroups={documentationSidebar}
+  sidebarLabel="Documentation"
+  onThisPage={onThisPage}
+>
+<div class="govbb-prose">
+
+This is an example guidelines page. It shows how standards and guidance are written and
+laid out. Real content will be added as the design system grows.
+
+## Standards
+
+Every official Government of Barbados service should:
+
+- use the components and patterns in this design system rather than building its own
+- meet [WCAG 2.2 AA](https://www.w3.org/TR/WCAG22/) accessibility requirements
+- use the GovBB design tokens for colour, typography and spacing
+
+## Guidelines
+
+Guidelines explain *how* and *when* to use each part of the system. Where a component has
+a choice of variants or states, its page describes when each one is appropriate — see the
+[Button](/components/button/) page for an example.
+
+## How this is written
+
+Guidance is written in plain language, in the second person, and describes concrete
+situations rather than abstract rules. If the same question keeps coming up, we treat that
+as a sign the guidance is unclear and fix it — [see why we don't use FAQs](/changelog/no-faqs/).
+
+</div>
+</ArticleLayout>

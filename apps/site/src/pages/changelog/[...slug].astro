@@ -1,0 +1,36 @@
+---
+import { getCollection, render } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export const getStaticPaths = (async () => {
+  const posts = await getCollection('changelog');
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}) satisfies GetStaticPaths;
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+const dateFormat = new Intl.DateTimeFormat('en-GB', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+});
+---
+<BaseLayout title={post.data.title} section="changelog" description={post.data.summary}>
+  <section class="govbb-container" style="padding-block: var(--govbb-space-6) var(--govbb-space-8);">
+    <article class="govbb-prose">
+      <div class="govbb-page-header">
+        <h1 class="govbb-page-title">{post.data.title}</h1>
+        <p class="govbb-page-subtitle">
+          <time datetime={post.data.date.toISOString()}>{dateFormat.format(post.data.date)}</time>
+          {post.data.author && <span> · {post.data.author}</span>}
+        </p>
+      </div>
+      <Content />
+      <p><a href="/changelog/">← Back to changelog</a></p>
+    </article>
+  </section>
+</BaseLayout>

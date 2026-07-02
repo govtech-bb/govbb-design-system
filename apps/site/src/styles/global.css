@@ -1,0 +1,507 @@
+@import './placeholder-tokens.css';
+/* Placeholder Button styles, also used for the homepage CTAs and form buttons.
+   Injected separately into the Example preview iframe. Both go away with #124. */
+@import './components/button.css';
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--govbb-font-base);
+  font-size: var(--govbb-font-size-base);
+  line-height: var(--govbb-line-height-base);
+  color: var(--govbb-color-text);
+  background: var(--govbb-color-bg);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: var(--govbb-color-link);
+}
+a:hover {
+  color: var(--govbb-color-link-hover);
+}
+a:focus-visible,
+button:focus-visible,
+input:focus-visible {
+  outline: 3px solid var(--govbb-color-focus);
+  outline-offset: 2px;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+.govbb-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.govbb-skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  padding: var(--govbb-space-2) var(--govbb-space-3);
+  background: var(--govbb-color-text);
+  color: var(--govbb-color-white);
+  z-index: 100;
+}
+.govbb-skip-link:focus {
+  left: 0;
+}
+
+/* ── Layout container ─────────────────────────────────────────── */
+.govbb-container {
+  width: 100%;
+  max-width: var(--govbb-max-width);
+  margin-inline: auto;
+  padding-inline: var(--govbb-gutter);
+}
+
+main {
+  flex: 1 0 auto;
+}
+
+/* ── Official government banner ───────────────────────────────── */
+.govbb-gov-banner {
+  background: var(--govbb-color-surface);
+}
+.govbb-gov-banner__inner {
+  display: flex;
+  align-items: center;
+  gap: var(--govbb-space-2);
+  padding-block: var(--govbb-space-2);
+  font-size: 1rem;
+}
+.govbb-gov-banner__crest {
+  width: 1.4rem;
+  height: 1.5rem;
+  flex: none;
+}
+
+/* ── Header / navbar ──────────────────────────────────────────── */
+.govbb-header {
+  background: var(--govbb-color-white);
+}
+.govbb-header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--govbb-space-5);
+  padding-block: var(--govbb-space-3);
+  flex-wrap: wrap;
+}
+.govbb-header__left {
+  display: flex;
+  align-items: center;
+  gap: var(--govbb-space-5);
+  flex-wrap: wrap;
+}
+.govbb-brand {
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: var(--govbb-color-text);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.govbb-nav ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--govbb-space-4);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.govbb-nav a {
+  color: var(--govbb-color-text);
+  text-decoration: none;
+  font-size: 1rem;
+}
+.govbb-nav a:hover {
+  color: var(--govbb-color-teal);
+  text-decoration: underline;
+}
+.govbb-nav a[aria-current='page'] {
+  color: var(--govbb-color-teal);
+  font-weight: 600;
+}
+.govbb-search {
+  font: inherit;
+  font-size: 0.875rem;
+  color: var(--govbb-color-text-muted);
+  background: var(--govbb-color-white);
+  border: 1px solid var(--govbb-color-border);
+  border-radius: var(--govbb-radius);
+  padding: var(--govbb-space-2) var(--govbb-space-3);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+/* ── Footer ───────────────────────────────────────────────────── */
+.govbb-footer {
+  flex-shrink: 0;
+  background: var(--govbb-color-navy);
+  color: var(--govbb-color-white);
+  padding-block: var(--govbb-space-6);
+}
+.govbb-footer__inner {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--govbb-space-6);
+  align-items: flex-start;
+  justify-content: space-between;
+}
+.govbb-footer__links {
+  display: flex;
+  flex-direction: column;
+  gap: var(--govbb-space-2);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.govbb-footer__links a {
+  color: var(--govbb-color-white);
+  text-decoration: underline;
+  font-size: 1.25rem;
+}
+.govbb-footer__gov {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--govbb-space-3);
+  text-align: right;
+}
+.govbb-footer__crest {
+  width: 104px;
+  height: auto;
+}
+.govbb-footer__copyright {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+/* ── Buttons (CTAs reuse the component classes in button.css) ──── */
+
+/* ── Prose / content typography ───────────────────────────────── */
+.govbb-prose {
+  max-width: 44rem;
+}
+.govbb-prose > :first-child {
+  margin-top: 0;
+}
+.govbb-prose h2 {
+  font-size: 1.75rem;
+  line-height: 1.25;
+  margin-block: var(--govbb-space-6) var(--govbb-space-3);
+}
+.govbb-prose h3 {
+  font-size: 1.3rem;
+  margin-block: var(--govbb-space-5) var(--govbb-space-2);
+}
+.govbb-prose p,
+.govbb-prose li {
+  color: var(--govbb-color-text);
+}
+.govbb-prose p {
+  margin-block: var(--govbb-space-3);
+}
+
+/* ── Page header (article title + subtitle) ───────────────────── */
+.govbb-page-header {
+  margin-bottom: var(--govbb-space-6);
+}
+.govbb-page-title {
+  font-size: var(--govbb-font-size-page-title);
+  font-weight: 700;
+  line-height: 1.1;
+  margin: 0;
+}
+.govbb-page-subtitle {
+  font-size: 1.25rem;
+  color: var(--govbb-color-text-muted);
+  margin: var(--govbb-space-3) 0 0;
+}
+
+/* ── Hero (home) ──────────────────────────────────────────────── */
+.govbb-hero {
+  padding-block: var(--govbb-space-8) var(--govbb-space-8);
+}
+.govbb-hero__title {
+  font-size: clamp(3rem, 8vw, var(--govbb-font-size-hero));
+  font-weight: 700;
+  line-height: 1;
+  margin: 0;
+}
+.govbb-hero__subtitle {
+  font-size: clamp(1.5rem, 4vw, var(--govbb-font-size-col-title));
+  color: var(--govbb-color-text-muted);
+  margin: var(--govbb-space-4) 0 0;
+  max-width: 40ch;
+}
+.govbb-hero__cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--govbb-space-3);
+  margin-top: var(--govbb-space-5);
+}
+
+/* ── Full-width bands ─────────────────────────────────────────── */
+.govbb-band {
+  padding-block: var(--govbb-space-8);
+}
+.govbb-band--pink {
+  background: var(--govbb-color-band);
+}
+.govbb-section-title {
+  font-size: var(--govbb-font-size-section);
+  font-weight: 700;
+  line-height: 1.25;
+  margin: 0 0 var(--govbb-space-4);
+}
+
+/* ── Colored cards (get started / foundations) ────────────────── */
+.govbb-cardgrid {
+  display: grid;
+  gap: var(--govbb-space-4);
+  grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.govbb-colorcard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--govbb-space-3);
+  min-height: 15rem;
+  padding: var(--govbb-space-5);
+  text-decoration: none;
+  color: var(--govbb-color-text);
+}
+.govbb-colorcard__title {
+  font-size: var(--govbb-font-size-card-title);
+  font-weight: 700;
+  line-height: 1.25;
+  margin: 0;
+}
+.govbb-colorcard__desc {
+  color: var(--govbb-color-text-muted);
+  margin: 0;
+  flex: 1;
+}
+.govbb-colorcard__link {
+  color: var(--govbb-color-teal);
+  font-weight: 600;
+}
+.govbb-colorcard:hover .govbb-colorcard__link {
+  text-decoration: underline;
+}
+.govbb-colorcard--pink {
+  background: var(--govbb-card-pink);
+}
+.govbb-colorcard--lavender {
+  background: var(--govbb-card-lavender);
+}
+.govbb-colorcard--teal {
+  background: var(--govbb-card-teal);
+}
+.govbb-colorcard--mint {
+  background: var(--govbb-card-mint);
+}
+.govbb-colorcard--yellow {
+  background: var(--govbb-card-yellow);
+}
+.govbb-colorcard--salmon {
+  background: var(--govbb-card-salmon);
+}
+
+/* ── "What's new" + Community section ─────────────────────────── */
+.govbb-twocol {
+  display: grid;
+  gap: var(--govbb-space-6);
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  padding-block: var(--govbb-space-8);
+}
+.govbb-update {
+  display: flex;
+  flex-direction: column;
+  gap: var(--govbb-space-1);
+  margin-bottom: var(--govbb-space-4);
+}
+.govbb-update__date {
+  color: var(--govbb-color-text-muted);
+  font-size: 0.875rem;
+  margin: 0;
+}
+.govbb-update__title {
+  color: var(--govbb-color-teal);
+  font-weight: 600;
+  font-size: 1.125rem;
+  margin: 0;
+  text-decoration: none;
+}
+.govbb-update__title:hover {
+  text-decoration: underline;
+}
+.govbb-update__desc {
+  color: var(--govbb-color-text-muted);
+  margin: 0;
+}
+.govbb-signup {
+  background: var(--govbb-color-surface);
+  border-radius: var(--govbb-radius-lg);
+  padding: var(--govbb-space-4);
+  margin-top: var(--govbb-space-4);
+}
+.govbb-signup__title {
+  font-weight: 600;
+  font-size: 1.125rem;
+  margin: 0 0 var(--govbb-space-3);
+}
+.govbb-signup__form {
+  display: flex;
+  gap: var(--govbb-space-2);
+  flex-wrap: wrap;
+}
+.govbb-signup__input {
+  flex: 1 1 12rem;
+  font: inherit;
+  font-size: 0.875rem;
+  padding: var(--govbb-space-2) var(--govbb-space-3);
+  border: 1px solid var(--govbb-color-border);
+  border-radius: var(--govbb-radius);
+  background: var(--govbb-color-white);
+}
+.govbb-signup__input::placeholder {
+  color: var(--govbb-color-placeholder);
+}
+
+.govbb-linklist {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--govbb-space-2);
+}
+
+/* ── Article layout (sidebar | content | on-this-page) ────────── */
+.govbb-article {
+  display: grid;
+  grid-template-columns: var(--govbb-sidebar-width) minmax(0, 1fr);
+  gap: var(--govbb-space-6);
+  padding-block: var(--govbb-space-6) var(--govbb-space-8);
+  align-items: start;
+}
+.govbb-article__main {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--govbb-rail-width);
+  gap: var(--govbb-space-6);
+  align-items: start;
+}
+@media (max-width: 1100px) {
+  .govbb-article__main {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .govbb-onthispage {
+    display: none;
+  }
+}
+@media (max-width: 800px) {
+  .govbb-article {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* ── Sidebar nav ──────────────────────────────────────────────── */
+.govbb-sidebar {
+  position: sticky;
+  top: var(--govbb-space-4);
+}
+.govbb-sidebar__section + .govbb-sidebar__section {
+  margin-top: var(--govbb-space-4);
+}
+.govbb-sidebar__heading {
+  font-weight: 700;
+  font-size: 1rem;
+  margin: 0 0 var(--govbb-space-2);
+}
+.govbb-sidebar__links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.govbb-sidebar__links a {
+  display: block;
+  padding: var(--govbb-space-2) var(--govbb-space-3);
+  color: var(--govbb-color-text);
+  text-decoration: none;
+  border-radius: var(--govbb-radius);
+}
+.govbb-sidebar__links a:hover {
+  background: var(--govbb-color-surface);
+}
+.govbb-sidebar__links a[aria-current='page'] {
+  background: var(--govbb-color-surface);
+  color: var(--govbb-color-teal);
+  font-weight: 600;
+}
+
+/* ── On this page rail ────────────────────────────────────────── */
+.govbb-onthispage {
+  position: sticky;
+  top: var(--govbb-space-4);
+  font-size: 0.9rem;
+}
+.govbb-onthispage__title {
+  font-weight: 700;
+  font-size: 1rem;
+  margin: 0 0 var(--govbb-space-2);
+}
+.govbb-onthispage ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--govbb-space-1);
+}
+.govbb-onthispage a {
+  color: var(--govbb-color-teal);
+  text-decoration: none;
+}
+.govbb-onthispage a:hover {
+  text-decoration: underline;
+}
+.govbb-onthispage ul ul {
+  padding-left: var(--govbb-space-3);
+  margin-top: var(--govbb-space-1);
+}
+
+/* ── Empty state (AI skills) ──────────────────────────────────── */
+.govbb-empty {
+  padding: var(--govbb-space-8);
+  border: 2px dashed var(--govbb-color-border);
+  border-radius: var(--govbb-radius-lg);
+  text-align: center;
+  color: var(--govbb-color-text-muted);
+  background: var(--govbb-color-surface);
+}

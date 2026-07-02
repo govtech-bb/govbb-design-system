@@ -14,7 +14,7 @@
   },
   "scripts": {
     "prepare": "lefthook install",
-    "docs:dev": "pnpm --filter @govbb/docs dev",
-    "docs:build": "pnpm --filter @govbb/docs build"
+    "site:dev": "pnpm --filter @govbb/site dev",
+    "site:build": "pnpm --filter @govbb/site build"
   }
 }

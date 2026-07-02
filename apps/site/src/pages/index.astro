@@ -1,0 +1,123 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const updates = (await getCollection('changelog'))
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+  .slice(0, 2);
+const dateFormat = new Intl.DateTimeFormat('en-GB', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+});
+
+const cards = [
+  {
+    title: 'Components',
+    href: '/components/',
+    modifier: 'pink',
+    desc: 'Reusable, accessible parts of the user interface, with live examples and code.',
+    link: 'Browse components',
+  },
+  {
+    title: 'Documentation',
+    href: '/documentation/',
+    modifier: 'lavender',
+    desc: 'Standards and guidelines for how and when to use the design system.',
+    link: 'Browse documentation',
+  },
+  {
+    title: 'AI skills',
+    href: '/ai-skills/',
+    modifier: 'teal',
+    desc: 'Guidance for designers working with AI tools. Coming soon.',
+    link: 'View AI skills',
+  },
+];
+---
+<BaseLayout
+  title="Home"
+  description="The design system for official Government of Barbados services."
+>
+  <section class="govbb-container govbb-hero">
+    <h1 class="govbb-hero__title">design-system.gov.bb</h1>
+    <p class="govbb-hero__subtitle">
+      The design system for official digital services of the Government of Barbados.
+    </p>
+    <div class="govbb-hero__cta">
+      <a class="govbb-btn" href="/documentation/">Get started</a>
+      <a class="govbb-btn--tertiary" href="/components/">Browse components</a>
+    </div>
+  </section>
+
+  <section class="govbb-band govbb-band--pink">
+    <div class="govbb-container">
+      <h2 class="govbb-section-title">Explore the design system</h2>
+      <ul class="govbb-cardgrid">
+        {
+          cards.map((card) => (
+            <li>
+              <a class={`govbb-colorcard govbb-colorcard--${card.modifier}`} href={card.href}>
+                <h3 class="govbb-colorcard__title">{card.title}</h3>
+                <p class="govbb-colorcard__desc">{card.desc}</p>
+                <span class="govbb-colorcard__link">{card.link}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="govbb-container govbb-twocol">
+    <div>
+      <h2 class="govbb-section-title">What's new</h2>
+      {
+        updates.length === 0 ? (
+          <p>No updates yet.</p>
+        ) : (
+          updates.map((post) => (
+            <div class="govbb-update">
+              <p class="govbb-update__date">
+                <time datetime={post.data.date.toISOString()}>
+                  {dateFormat.format(post.data.date)}
+                </time>
+              </p>
+              <a class="govbb-update__title" href={`/changelog/${post.id}/`}>
+                {post.data.title}
+              </a>
+              {post.data.summary && <p class="govbb-update__desc">{post.data.summary}</p>}
+            </div>
+          ))
+        )
+      }
+      <p><a href="/changelog/">View all updates</a></p>
+    </div>
+
+    <div>
+      <h2 class="govbb-section-title">Community</h2>
+      <p>
+        The design system is for everyone. We welcome contributions from all government
+        agencies. Learn how you can help us improve and evolve our design standards.
+      </p>
+      <ul class="govbb-linklist">
+        <li><a href="/documentation/">Propose a new component or pattern</a></li>
+        <li><a href="/changelog/">Read recent design decisions</a></li>
+      </ul>
+      <div class="govbb-signup">
+        <p class="govbb-signup__title">Get updates to your inbox</p>
+        <form class="govbb-signup__form" action="#" method="post">
+          <label class="govbb-visually-hidden" for="signup-email">Email address</label>
+          <input
+            class="govbb-signup__input"
+            id="signup-email"
+            type="email"
+            name="email"
+            placeholder="Enter your email address"
+          />
+          <button class="govbb-btn" type="submit">Subscribe</button>
+        </form>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

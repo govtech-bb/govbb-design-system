@@ -1,0 +1,202 @@
+---
+import { Code } from 'astro:components';
+import tokens from '../styles/placeholder-tokens.css?raw';
+
+/*
+ * Example — a live component preview with a Preview / Code tab switch.
+ *
+ * "Preview" renders the example markup inside an <iframe> (srcdoc) so its CSS is
+ * isolated from the page chrome. "Code" shows the source — currently HTML and
+ * CSS only. The tab structure is generic so a framework switcher (Web Component
+ * / React) can be added later by extending the Code panel — no page rewrites.
+ */
+interface Props {
+  /** Example markup, rendered live and shown in the HTML block. */
+  html: string;
+  /** Component CSS: injected into the preview and shown in the CSS block. */
+  css?: string;
+  /** Accessible label for the example. */
+  title?: string;
+}
+const { html, css = '', title } = Astro.props;
+
+const previewStyles = `
+  html { color-scheme: light; }
+  body {
+    margin: 0;
+    padding: 32px;
+    min-height: 220px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--govbb-font-base, system-ui, sans-serif);
+    background: #fff;
+  }
+`;
+const srcdoc = `<!doctype html><html lang="en"><head><meta charset="utf-8"><style>${tokens}\n${css}\n${previewStyles}</style></head><body>${html}</body></html>`;
+
+const codeBlocks = [
+  { label: 'HTML', lang: 'html' as const, code: html },
+  ...(css ? [{ label: 'CSS', lang: 'css' as const, code: css }] : []),
+];
+---
+<figure class="govbb-example" data-example>
+  {title && <figcaption class="govbb-example__caption">{title}</figcaption>}
+
+  <div class="govbb-example__tabs" role="tablist" aria-label="Example view">
+    <button class="govbb-example__tab" role="tab" type="button" aria-selected="true" data-view="preview">
+      Preview
+    </button>
+    <button class="govbb-example__tab" role="tab" type="button" aria-selected="false" data-view="code">
+      Code
+    </button>
+  </div>
+
+  <div class="govbb-example__panel govbb-example__panel--preview" data-view-panel="preview">
+    <iframe
+      title={title ? `Preview: ${title}` : 'Component preview'}
+      srcdoc={srcdoc}
+      loading="lazy"
+      data-example-frame
+    ></iframe>
+  </div>
+
+  <div class="govbb-example__panel govbb-example__panel--code" data-view-panel="code" hidden>
+    {
+      codeBlocks.map((block) => (
+        <div class="govbb-example__code">
+          <div class="govbb-example__code-bar">
+            <span class="govbb-example__code-label">{block.label}</span>
+            <button class="govbb-example__copy" type="button" data-copy={block.code}>
+              Copy
+            </button>
+          </div>
+          <Code code={block.code} lang={block.lang} theme="github-light" />
+        </div>
+      ))
+    }
+  </div>
+</figure>
+
+<style>
+  .govbb-example {
+    margin: var(--govbb-space-5) 0;
+  }
+  .govbb-example__caption {
+    font-weight: 600;
+    margin-bottom: var(--govbb-space-2);
+  }
+  .govbb-example__tabs {
+    display: flex;
+    gap: var(--govbb-space-2);
+    border-bottom: 1px solid var(--govbb-color-border);
+  }
+  .govbb-example__tab {
+    padding: var(--govbb-space-2) var(--govbb-space-4);
+    font: inherit;
+    font-size: 1rem;
+    background: transparent;
+    border: 0;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -1px;
+    cursor: pointer;
+    color: var(--govbb-color-text-muted);
+  }
+  .govbb-example__tab[aria-selected='true'] {
+    color: var(--govbb-color-teal);
+    border-bottom-color: var(--govbb-color-teal);
+    font-weight: 600;
+  }
+  .govbb-example__panel--preview {
+    border: 1px solid var(--govbb-color-border);
+    border-top: 0;
+    border-radius: 0 0 var(--govbb-radius-lg) var(--govbb-radius-lg);
+    overflow: hidden;
+    margin-top: var(--govbb-space-4);
+  }
+  .govbb-example__panel--preview iframe {
+    display: block;
+    width: 100%;
+    border: 0;
+    min-height: 15rem;
+  }
+  .govbb-example__code {
+    border: 1px solid var(--govbb-color-border);
+    border-radius: var(--govbb-radius);
+    overflow: hidden;
+    margin-top: var(--govbb-space-3);
+  }
+  .govbb-example__code-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--govbb-space-2) var(--govbb-space-3);
+    background: var(--govbb-color-surface);
+    border-bottom: 1px solid var(--govbb-color-border);
+  }
+  .govbb-example__code-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+  }
+  .govbb-example__copy {
+    padding: var(--govbb-space-1) var(--govbb-space-3);
+    font: inherit;
+    font-size: 0.85rem;
+    background: var(--govbb-color-white);
+    border: 1px solid var(--govbb-color-border);
+    border-radius: var(--govbb-radius);
+    cursor: pointer;
+  }
+  .govbb-example__code :global(pre) {
+    margin: 0;
+    padding: var(--govbb-space-3);
+    max-height: 24rem;
+    overflow: auto;
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-example]').forEach((example) => {
+    const tabs = example.querySelectorAll<HTMLButtonElement>('.govbb-example__tab');
+    const panels = example.querySelectorAll<HTMLElement>('[data-view-panel]');
+    const frame = example.querySelector<HTMLIFrameElement>('[data-example-frame]');
+
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        const view = tab.dataset.view;
+        tabs.forEach((t) => t.setAttribute('aria-selected', String(t === tab)));
+        panels.forEach((p) => {
+          p.hidden = p.dataset.viewPanel !== view;
+        });
+        if (view === 'preview') resize();
+      });
+    });
+
+    example.querySelectorAll<HTMLButtonElement>('[data-copy]').forEach((btn) => {
+      btn.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(btn.dataset.copy ?? '');
+          const original = btn.textContent;
+          btn.textContent = 'Copied';
+          window.setTimeout(() => {
+            btn.textContent = original;
+          }, 1500);
+        } catch {
+          btn.textContent = 'Press Ctrl+C';
+        }
+      });
+    });
+
+    const resize = () => {
+      const doc = frame?.contentDocument;
+      if (doc?.body) {
+        frame!.style.height = `${doc.documentElement.scrollHeight}px`;
+      }
+    };
+    frame?.addEventListener('load', resize);
+    window.addEventListener('resize', resize);
+  });
+</script>
