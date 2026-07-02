@@ -88,7 +88,8 @@ main {
 
 /* ── Official government banner ───────────────────────────────── */
 .govbb-gov-banner {
-  background: var(--govbb-color-surface);
+  background: var(--govbb-color-navy);
+  color: var(--govbb-color-white);
 }
 .govbb-gov-banner__inner {
   display: flex;
