@@ -26,5 +26,5 @@ needs it, in plain language, at the point they need it.
 ## Why record this
 
 Recording decisions like this — with the reasoning and the date — means we do not have to
-relitigate them later, and new contributors can understand *why* the system is the way it
+relitigate them later, and new contributors can understand _why_ the system is the way it
 is.

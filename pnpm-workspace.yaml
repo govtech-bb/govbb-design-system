@@ -1,13 +1,14 @@
+# Workspace: the root package is the CSS design system; apps/* hosts the
+# documentation site (@govbb/site).
+#
+# pnpm 11.9 gates dependency build scripts behind an explicit allowlist:
+# esbuild (Vite / Astro), lefthook (git hooks), lightningcss-cli (native
+# binary), and sharp (Astro image optimization) all need theirs to run.
 packages:
-  - packages/*
   - apps/*
 
-# pnpm 11.9 gates dependency build scripts behind an explicit allowlist.
-# esbuild (Vite/Astro build), sharp (Astro image optimization) and lefthook
-# (git hooks) all need theirs to run. NB: this pnpm version honours
-# `allowBuilds`, not the older `onlyBuiltDependencies` list — see #15 to
-# reconcile this repo-wide.
 allowBuilds:
   esbuild: true
   lefthook: true
+  lightningcss-cli: true
   sharp: true

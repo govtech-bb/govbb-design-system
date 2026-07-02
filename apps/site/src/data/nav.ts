@@ -3,8 +3,14 @@ import type { SidebarGroup } from '../components/Sidebar.astro';
 // Left-sidebar navigation for the Components section. Grouped the way GOV.UK
 // groups its component index; extend as real components land.
 export const componentsSidebar: SidebarGroup[] = [
-  { heading: 'Components', links: [{ label: 'Overview', href: '/components/' }] },
-  { heading: 'Actions', links: [{ label: 'Button', href: '/components/button/' }] },
+  {
+    heading: 'Components',
+    links: [{ label: 'Overview', href: '/components/' }],
+  },
+  {
+    heading: 'Actions',
+    links: [{ label: 'Button', href: '/components/button/' }],
+  },
 ];
 
 // Left-sidebar navigation for the Documentation section.

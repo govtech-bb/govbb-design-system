@@ -1,50 +1,93 @@
 # GovBB Design System
 
-The design system for official Government of Barbados websites — components,
-design tokens, and the documentation site published at **design-system.gov.bb**.
+The design system for official Government of Barbados websites — design tokens
+and CSS components compiled to a single stylesheet, plus the documentation
+site published at **design-system.gov.bb**.
 
-This is a [pnpm](https://pnpm.io) monorepo:
+The design system itself is **CSS-first**: vanilla CSS (no Sass, no Tailwind),
+bundled and minified with [Lightning CSS](https://lightningcss.dev). A
+framework layer (Lit / Stencil) may be added later — see
+[Moving to Lit / Stencil later](#moving-to-lit--stencil-later).
 
-- `apps/*` — applications, including the documentation site (`apps/site`).
-- `packages/*` — publishable packages (component library, tokens — coming soon).
+## Layout
+
+- `src/tokens.css` — design tokens as `:root` CSS custom properties (source of
+  truth). Placeholder values today; will be generated from the Figma variables
+  once published (#4).
+- `src/components/*.css` — one file per component: plain classes
+  (`.govbb-button`, …) themed by the token custom properties, with fallbacks
+  so they render without the tokens.
+- `src/index.css` — entry point; `@import`s tokens + components.
+- `index.html` — the playground (Vite dev server, hot-reload).
+- `apps/site` — the documentation site (bespoke Astro static site).
 
 ## Prerequisites
 
 - **Node** — see [`.nvmrc`](.nvmrc) (`nvm use` to match).
-- **pnpm** — pinned via the `packageManager` field; run `corepack enable` to use it.
+- **pnpm** — pinned via the `packageManager` field; run `corepack enable`.
 
 ```sh
 corepack enable
 pnpm install
 ```
 
+## Scripts
+
+```sh
+pnpm dev          # playground at http://localhost:5173
+pnpm build        # bundle + minify → dist/govbb.css
+pnpm site:dev     # documentation site at http://localhost:4321
+pnpm site:build   # static site → apps/site/dist/
+pnpm lint         # oxlint + stylelint
+pnpm format       # prettier --write .
+```
+
+Browser support comes from the `browserslist` field in `package.json`;
+Lightning CSS downlevels modern syntax to match.
+
+## Using the compiled CSS
+
+Components ship as plain CSS classes — no framework. Apply them to HTML:
+
+```html
+<link rel="stylesheet" href="govbb.css" />
+<button class="govbb-button">Primary</button>
+```
+
+The stylesheet ships **unlayered** so it isn't silently overridden by consumer
+resets. To scope it under a cascade layer, import it into one yourself:
+
+```css
+@import url('govbb.css') layer(govbb);
+```
+
+### Moving to Lit / Stencil later
+
+The visual design lives entirely in `src/*.css` — framework-agnostic. A future
+web-component layer wraps the same markup and adopts the compiled sheet into
+its shadow root (or applies it in light DOM), so nothing here is thrown away.
+When that lands, split into publishable packages (`@govbb/tokens`,
+`@govbb/css`, `@govbb/components`).
+
 ## Documentation site
 
 The docs site lives in [`apps/site`](apps/site) and is a bespoke
 [Astro](https://astro.build) static site, modelled on the structure of the
-[GOV.UK Design System](https://design-system.service.gov.uk/) with GovBB branding.
-It has three sections — **Components**, **Documentation**, and **AI skills** — plus
-a **Changelog** of important design decisions.
+[GOV.UK Design System](https://design-system.service.gov.uk/) with GovBB
+branding. It has three sections — **Components**, **Documentation**, and
+**AI skills** — plus a **Changelog** of important design decisions.
 
-### Run locally
+## Contributing
 
-```sh
-pnpm site:dev      # from the repo root
-# or: pnpm --filter @govbb/site dev
-```
+### Design system
 
-Opens the site at http://localhost:4321.
+- **Components** — add a CSS file under `src/components/`, `@import` it from
+  `src/index.css`, and demo it in `index.html`. Class names and custom
+  properties must be `govbb-`-prefixed (Stylelint enforces this).
+- **Tokens** — edit `src/tokens.css`. These are a **placeholder baseline**
+  today and will be replaced with the official GovBB tokens (#4).
 
-### Build
-
-```sh
-pnpm site:build    # from the repo root
-# or: pnpm --filter @govbb/site build
-```
-
-Produces static output in `apps/site/dist/`.
-
-### Contributing to the docs
+### Documentation site
 
 - **Guidelines / standards prose** — add an `.astro` or `.mdx` page under
   `apps/site/src/pages/documentation/`, and link it from
@@ -55,22 +98,18 @@ Produces static output in `apps/site/dist/`.
   [`src/data/nav.ts`](apps/site/src/data/nav.ts). Author each example's markup
   under `apps/site/src/examples/<component>/` and render it with the shared
   [`Example`](apps/site/src/components/Example.astro) component — a **Preview /
-  Code** tab switch showing the live preview plus the HTML/CSS source with a copy
-  button. (A framework switcher for web-component / React source is planned but
-  not built yet — the code panel is HTML/CSS only for now.)
+  Code** tab switch showing the live preview plus the HTML/CSS source with a
+  copy button.
 - **Changelog** — add a Markdown file under `apps/site/src/content/changelog/`
-  with `title`, `date`, and optional `author` / `summary` frontmatter. The latest
-  entries also surface in the homepage "What's new" block.
-- **Styling** — the site is modelled on the "New New Alpha" Figma design. Pages
-  and components use **placeholder** GovBB tokens in
+  with `title`, `date`, and optional `author` / `summary` frontmatter. The
+  latest entries also surface in the homepage "What's new" block.
+- **Styling** — the site uses **placeholder** GovBB tokens in
   `apps/site/src/styles/placeholder-tokens.css`, the **Figtree** web font
   (bundled temporarily via `@fontsource-variable/figtree`), and a placeholder
-  coat of arms (`src/assets/coat-of-arms.png`) / crest. These are clearly-marked
-  stand-ins; the real tokens and font ship in `@govbb/styles` and get wired in
-  once #20 lands (follow-up #124).
+  coat of arms / crest. The real tokens get wired in from the root package
+  (follow-up #124).
 
-### CI & deployment
+## CI & deployment
 
-CI (the PR build check) and the production deploy for the docs site are set up as
-part of the development-tooling epic (#15), not here. Production DNS cutover for
-`design-system.gov.bb` is tracked under #4.
+CI (the PR build check) is tracked under the development-tooling epic (#15).
+Production DNS cutover for `design-system.gov.bb` is tracked under #4.

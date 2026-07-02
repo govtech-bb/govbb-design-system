@@ -34,8 +34,9 @@
 
   /* Typography — Figtree (bundled temporarily via @fontsource; the real face
      ships with @govbb/styles). */
-  --govbb-font-base: 'Figtree Variable', 'Figtree', system-ui, -apple-system,
-    'Segoe UI', roboto, helvetica, arial, sans-serif;
+  --govbb-font-base:
+    'Figtree Variable', 'Figtree', system-ui, -apple-system, 'Segoe UI', roboto,
+    helvetica, arial, sans-serif;
   --govbb-font-size-base: 1.125rem; /* 18px */
   --govbb-line-height-base: 1.5;
 

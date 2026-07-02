@@ -13,4 +13,5 @@ const dateFormat = new Intl.DateTimeFormat('en-GB', {
 });
 
 /** Format a changelog date consistently across the site (e.g. "1 July 2026"). */
-export const formatChangelogDate = (date: Date): string => dateFormat.format(date);
+export const formatChangelogDate = (date: Date): string =>
+  dateFormat.format(date);
