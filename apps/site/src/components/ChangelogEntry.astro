@@ -1,0 +1,18 @@
+---
+import { formatChangelogDate } from '../data/changelog';
+
+interface Props {
+  date: Date;
+  title: string;
+  href: string;
+  summary?: string;
+}
+const { date, title, href, summary } = Astro.props;
+---
+<div class="govbb-update">
+  <p class="govbb-update__date">
+    <time datetime={date.toISOString()}>{formatChangelogDate(date)}</time>
+  </p>
+  <a class="govbb-update__title" href={href}>{title}</a>
+  {summary && <p class="govbb-update__desc">{summary}</p>}
+</div>

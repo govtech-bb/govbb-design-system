@@ -1,0 +1,33 @@
+---
+import ColorCard from './ColorCard.astro';
+
+export interface CardData {
+  title: string;
+  href: string;
+  modifier: 'pink' | 'lavender' | 'teal';
+  desc: string;
+  link: string;
+}
+interface Props {
+  cards: CardData[];
+  /** Heading level for each card, so the grid fits the page outline. */
+  heading?: 'h2' | 'h3';
+}
+const { cards, heading = 'h2' } = Astro.props;
+---
+<ul class="govbb-cardgrid">
+  {
+    cards.map((card) => (
+      <li>
+        <ColorCard
+          title={card.title}
+          href={card.href}
+          modifier={card.modifier}
+          desc={card.desc}
+          link={card.link}
+          heading={heading}
+        />
+      </li>
+    ))
+  }
+</ul>

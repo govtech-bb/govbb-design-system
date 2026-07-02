@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { getSortedChangelog, formatChangelogDate } from '../../data/changelog';
+import ChangelogEntry from '../../components/ChangelogEntry.astro';
+import { getSortedChangelog } from '../../data/changelog';
 
 const posts = await getSortedChangelog();
 ---
@@ -24,17 +25,12 @@ const posts = await getSortedChangelog();
       ) : (
         <div class="govbb-changelog-list">
           {posts.map((post) => (
-            <div class="govbb-update">
-              <p class="govbb-update__date">
-                <time datetime={post.data.date.toISOString()}>
-                  {formatChangelogDate(post.data.date)}
-                </time>
-              </p>
-              <a class="govbb-update__title" href={`/changelog/${post.id}/`}>
-                {post.data.title}
-              </a>
-              {post.data.summary && <p class="govbb-update__desc">{post.data.summary}</p>}
-            </div>
+            <ChangelogEntry
+              date={post.data.date}
+              title={post.data.title}
+              href={`/changelog/${post.id}/`}
+              summary={post.data.summary}
+            />
           ))}
         </div>
       )
