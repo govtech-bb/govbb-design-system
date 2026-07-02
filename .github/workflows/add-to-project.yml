@@ -12,3 +12,39 @@ jobs:
         with:
           project-url: https://github.com/orgs/govtech-bb/projects/12
           github-token: ${{ secrets.ADD_TO_PROJECT_PAT }}
+
+  # Every issue in this repo rolls up to the design-system epic (#131) so the
+  # Alpha Platform board sees one line with progress. Issues created directly
+  # as a sub-issue of another parent (e.g. under #1/#2/#6/#15) keep it —
+  # GitHub allows one parent per issue, so we only adopt orphans.
+  add-to-epic:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      OWNER: ${{ github.repository_owner }}
+      REPO: ${{ github.event.repository.name }}
+      ISSUE_ID: ${{ github.event.issue.node_id }}
+      ISSUE_NUMBER: ${{ github.event.issue.number }}
+      EPIC_NUMBER: 131
+    steps:
+      - name: Add as sub-issue of the design-system epic
+        run: |
+          if [ "$ISSUE_NUMBER" = "$EPIC_NUMBER" ]; then exit 0; fi
+          parent=$(gh api graphql \
+            -f query='query($owner:String!,$repo:String!,$n:Int!){repository(owner:$owner,name:$repo){issue(number:$n){parent{number}}}}' \
+            -f owner="$OWNER" -f repo="$REPO" -F n="$ISSUE_NUMBER" \
+            -q '.data.repository.issue.parent.number')
+          if [ -n "$parent" ]; then
+            echo "issue #$ISSUE_NUMBER already has parent #$parent — skipping"
+            exit 0
+          fi
+          epic=$(gh api graphql \
+            -f query='query($owner:String!,$repo:String!,$n:Int!){repository(owner:$owner,name:$repo){issue(number:$n){id}}}' \
+            -f owner="$OWNER" -f repo="$REPO" -F n="$EPIC_NUMBER" \
+            -q '.data.repository.issue.id')
+          gh api graphql \
+            -f query='mutation($epic:ID!,$sub:ID!){addSubIssue(input:{issueId:$epic,subIssueId:$sub}){subIssue{number}}}' \
+            -f epic="$epic" -f sub="$ISSUE_ID" \
+            -q '"added #" + (.data.addSubIssue.subIssue.number|tostring) + " to epic"'
