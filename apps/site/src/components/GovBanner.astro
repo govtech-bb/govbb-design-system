@@ -1,9 +1,16 @@
 ---
-import Crest from './Crest.astro';
+import { Image } from 'astro:assets';
+import coatOfArms from '../assets/coat-of-arms.png';
 ---
 <div class="govbb-gov-banner">
   <div class="govbb-container govbb-gov-banner__inner">
-    <Crest class="govbb-gov-banner__crest" />
+    <Image
+      class="govbb-gov-banner__crest"
+      src={coatOfArms}
+      width={24}
+      densities={[1, 2]}
+      alt="Coat of arms of Barbados"
+    />
     <span>Official government website</span>
   </div>
 </div>
