@@ -18,8 +18,11 @@ That's it — `pnpm install` also installs the git hooks (via Lefthook), so comm
 ## Making a change
 
 1. Branch off `main` (e.g. `feat/button-size-prop`).
-2. Make your change.
-3. Commit using the format below.
+2. Make your change. Components are vanilla CSS under `src/components/` —
+   check it in the playground with `pnpm dev`.
+3. Commit using the format below. A `pre-commit` hook runs lint + format
+   checks; class names and custom properties must be `govbb-`-prefixed
+   (Stylelint enforces this).
 4. Open a PR into `main`.
 
 ## Commit messages
@@ -44,7 +47,7 @@ Examples:
 feat(button): add size prop
 fix(checkbox): correct focus ring offset
 docs: update contributing guide        # no scope — repo-wide change
-chore(deps): bump tailwind to 4.2
+chore(deps): bump lightningcss to 1.31
 ```
 
 ### Why the scope matters
@@ -71,9 +74,13 @@ Do **not** manually edit `CHANGELOG.md` — fix the commit message instead and r
 
 ## Tooling at a glance
 
-| Tool | Purpose |
-| --- | --- |
-| pnpm workspace | monorepo (`packages/*`, `apps/*`) |
-| Lefthook | runs git hooks; installed on `pnpm install` |
-| commitlint | enforces the commit format (`commit-msg` hook) |
-| git-cliff | generates `CHANGELOG.md` from commits |
+| Tool               | Purpose                                                            |
+| ------------------ | ------------------------------------------------------------------ |
+| pnpm               | single package (no workspace yet)                                  |
+| Vite               | playground dev server (`pnpm dev`)                                 |
+| Lightning CSS      | bundles/minifies `src/index.css` → `dist/govbb.css` (`pnpm build`) |
+| oxlint + Stylelint | linting; Stylelint enforces the `govbb-` prefix (`pnpm lint`)      |
+| Prettier           | formatting (`pnpm format`)                                         |
+| Lefthook           | runs git hooks; installed on `pnpm install`                        |
+| commitlint         | enforces the commit format (`commit-msg` hook)                     |
+| git-cliff          | generates `CHANGELOG.md` from commits                              |

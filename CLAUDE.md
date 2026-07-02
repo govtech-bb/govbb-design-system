@@ -4,7 +4,8 @@ Guidance for AI agents (Claude Code etc.) working in this repo. Humans: see [CON
 
 ## Project
 
-GovBB Design System — pnpm **workspace** monorepo (`packages/*`, `apps/*`). **Node 24**, **pnpm 11** via Corepack.
+GovBB Design System — **CSS-first single package** (vanilla CSS + custom
+properties; no Sass, no Tailwind). **Node 24**, **pnpm 11** via Corepack.
 
 ```bash
 corepack enable && pnpm install   # deps + git hooks
@@ -29,6 +30,17 @@ docs: update readme
 
 `CHANGELOG.md` is generated from commit messages by **git-cliff**. The commit subject becomes the changelog line, so write subjects as user-facing release notes. Regenerate with `pnpm changelog`. Do not edit `CHANGELOG.md` directly.
 
+## CSS conventions (enforced by Stylelint)
+
+- Class names: `govbb-`-prefixed BEM (`govbb-block__element--modifier`).
+- Custom properties: `--govbb-*` kebab-case.
+- Tokens live in `src/tokens.css`; one file per component under
+  `src/components/`, imported from `src/index.css`.
+- `pnpm dev` — Vite playground · `pnpm build` — Lightning CSS →
+  `dist/govbb.css` · `pnpm lint` — oxlint + Stylelint.
+
 ## Tooling
 
-pnpm workspace · Lefthook (git hooks) · commitlint (commit-msg) · git-cliff (changelog).
+pnpm (single package) · Vite (playground) · Lightning CSS (build) · oxlint +
+Stylelint (lint) · Prettier (format) · Lefthook (git hooks) · commitlint
+(commit-msg) · git-cliff (changelog).
