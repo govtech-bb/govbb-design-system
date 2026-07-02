@@ -16,7 +16,7 @@
     "build": "lightningcss --bundle --minify --browserslist src/index.css -o dist/govbb.css",
     "site:dev": "pnpm --filter @govbb/site dev",
     "site:build": "pnpm --filter @govbb/site build",
-    "lint": "oxlint && stylelint 'src/**/*.css'",
+    "lint": "oxlint && stylelint \"src/**/*.css\"",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },
