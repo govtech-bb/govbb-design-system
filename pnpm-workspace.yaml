@@ -1,9 +1,8 @@
-packages:
-  - packages/*
-  - apps/*
-
-onlyBuiltDependencies:
-  - lefthook
-
+# Not a workspace (single package) — this file only carries pnpm settings.
+# pnpm 11.9 gates dependency build scripts behind an explicit allowlist:
+# esbuild (Vite), lefthook (git hooks), and lightningcss-cli (native binary)
+# all need theirs to run.
 allowBuilds:
+  esbuild: true
   lefthook: true
+  lightningcss-cli: true

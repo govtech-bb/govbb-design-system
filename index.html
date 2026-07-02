@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GovBB CSS Playground</title>
+    <link rel="stylesheet" href="/src/index.css" />
+    <style>
+      body {
+        margin: 0;
+        padding: 2rem;
+        font-family: var(--govbb-font-sans, system-ui, sans-serif);
+        line-height: var(--govbb-line-height-base, 1.5);
+        color: var(--govbb-color-ink, #1a1a1a);
+      }
+      h1 {
+        font-size: 1.25rem;
+      }
+      section {
+        margin-block: 1.5rem;
+        display: flex;
+        gap: 0.75rem;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+      h2 {
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--govbb-color-muted, #5c5c5c);
+        width: 100%;
+        margin: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>GovBB CSS Playground</h1>
+    <p>
+      Edit anything under <code>src/</code> — changes hot-reload here. No
+      framework: just HTML + classes.
+    </p>
+
+    <section>
+      <h2>Button — primary</h2>
+      <button class="govbb-btn">Button</button>
+      <button class="govbb-btn" disabled>Disabled</button>
+      <a class="govbb-btn" href="#">Link button</a>
+    </section>
+
+    <section>
+      <h2>Button — secondary</h2>
+      <button class="govbb-btn govbb-btn--secondary">Button</button>
+      <button class="govbb-btn govbb-btn--secondary" disabled>Disabled</button>
+    </section>
+  </body>
+</html>
