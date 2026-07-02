@@ -1,0 +1,28 @@
+---
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import { componentsSidebar } from '../../data/nav';
+---
+<ArticleLayout
+  title="Components"
+  section="components"
+  description="Reusable, accessible parts of the user interface, with live examples and code."
+  pageTitle="Components"
+  pageSubtitle="Reusable parts of the user interface, with live examples and code."
+  sidebarGroups={componentsSidebar}
+  sidebarLabel="Components"
+>
+  <div class="govbb-prose">
+    <p>
+      Components are reusable parts of the user interface. Each component page shows a
+      live preview and the code you can copy.
+    </p>
+    <p>
+      More components are being migrated into the system. For now the code panel shows
+      HTML and CSS; web component and React versions will follow.
+    </p>
+    <h2>Available components</h2>
+    <ul>
+      <li><a href="/components/button/">Button</a> — help users carry out an action.</li>
+    </ul>
+  </div>
+</ArticleLayout>

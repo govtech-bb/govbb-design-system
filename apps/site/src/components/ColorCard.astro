@@ -1,0 +1,19 @@
+---
+interface Props {
+  title: string;
+  href: string;
+  /** Colored fill: matches a .govbb-colorcard--* modifier. */
+  modifier: 'pink' | 'lavender' | 'teal';
+  desc: string;
+  link: string;
+  /** Heading level, so the card fits the page's outline. Defaults to h2. */
+  heading?: 'h2' | 'h3';
+}
+const { title, href, modifier, desc, link, heading = 'h2' } = Astro.props;
+const Heading = heading;
+---
+<a class={`govbb-colorcard govbb-colorcard--${modifier}`} href={href}>
+  <Heading class="govbb-colorcard__title">{title}</Heading>
+  <p class="govbb-colorcard__desc">{desc}</p>
+  <span class="govbb-colorcard__link">{link}</span>
+</a>

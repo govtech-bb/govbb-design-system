@@ -1,0 +1,32 @@
+---
+export interface TocItem {
+  label: string;
+  href: string;
+  children?: TocItem[];
+}
+interface Props {
+  items: TocItem[];
+}
+const { items } = Astro.props;
+---
+<aside class="govbb-onthispage" aria-label="On this page">
+  <p class="govbb-onthispage__title">On this page</p>
+  <ul>
+    {
+      items.map((item) => (
+        <li>
+          <a href={item.href}>{item.label}</a>
+          {item.children && item.children.length > 0 && (
+            <ul>
+              {item.children.map((child) => (
+                <li>
+                  <a href={child.href}>{child.label}</a>
+                </li>
+              ))}
+            </ul>
+          )}
+        </li>
+      ))
+    }
+  </ul>
+</aside>

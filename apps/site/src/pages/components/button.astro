@@ -1,0 +1,68 @@
+---
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import Example from '../../components/Example.astro';
+import { componentsSidebar } from '../../data/nav';
+import buttonCss from '../../styles/components/button.css?raw';
+import variantsHtml from '../../examples/button/variants.html?raw';
+import disabledHtml from '../../examples/button/disabled.html?raw';
+
+const onThisPage = [
+  { label: 'Preview', href: '#preview' },
+  { label: 'When to use', href: '#when-to-use' },
+  { label: 'When not to use', href: '#when-not-to-use' },
+  { label: 'Variants', href: '#variants' },
+  { label: 'Disabled buttons', href: '#disabled-buttons' },
+];
+---
+<ArticleLayout
+  title="Button"
+  section="components"
+  description="Use buttons to help users carry out an action."
+  pageTitle="Button"
+  pageSubtitle="Buttons let users carry out an action."
+  sidebarGroups={componentsSidebar}
+  sidebarLabel="Components"
+  onThisPage={onThisPage}
+>
+  <div class="govbb-prose">
+    <h2 id="preview">Preview</h2>
+  </div>
+  <Example title="Button variants" html={variantsHtml.trim()} css={buttonCss.trim()} />
+
+  <div class="govbb-prose">
+    <p>
+      The Button component lets users initiate an action, such as submitting a form,
+      starting an application, or saving their information. The label on a button
+      describes the action it performs.
+    </p>
+
+    <h2 id="when-to-use">When to use this component</h2>
+    <p>
+      Use a button for the primary action on a page — the thing you most want the user
+      to do next, such as <em>Save and continue</em>. Write button text as a short,
+      specific verb phrase in sentence case.
+    </p>
+
+    <h2 id="when-not-to-use">When not to use this component</h2>
+    <p>
+      Do not use a button to navigate between pages — use a link instead. If a user is
+      moving to another page rather than triggering an action, a link sets the right
+      expectation.
+    </p>
+
+    <h2 id="variants">Variants</h2>
+    <p>
+      Use the <strong>secondary</strong> button for actions that sit alongside the
+      primary one but are less important. Use the <strong>tertiary</strong> button for
+      the least prominent actions.
+    </p>
+
+    <h2 id="disabled-buttons">Disabled buttons</h2>
+    <p>
+      Avoid disabling buttons wherever possible. A disabled button gives the user no
+      information about what they need to do to enable it. Prefer keeping the button
+      active and showing an error when the user tries to continue.
+    </p>
+  </div>
+  <Example title="Disabled button" html={disabledHtml.trim()} css={buttonCss.trim()} />
+</ArticleLayout>

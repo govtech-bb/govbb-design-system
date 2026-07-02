@@ -1,0 +1,31 @@
+---
+import type { Section } from '../types';
+import { primaryNav } from '../data/nav';
+
+interface Props {
+  /** Top-level section key for highlighting the active nav item. */
+  section?: Section;
+}
+const { section } = Astro.props;
+---
+<header class="govbb-header">
+  <div class="govbb-container govbb-header__inner">
+    <div class="govbb-header__left">
+      <a class="govbb-brand" href="/">GovBB Design System</a>
+      <nav class="govbb-nav" aria-label="Primary">
+        <ul>
+          {
+            primaryNav.map((link) => (
+              <li>
+                <a href={link.href} aria-current={section === link.key ? 'page' : undefined}>
+                  {link.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+    </div>
+    <a class="govbb-search" href="/search/">Search</a>
+  </div>
+</header>

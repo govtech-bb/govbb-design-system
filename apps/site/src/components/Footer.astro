@@ -1,0 +1,27 @@
+---
+import { Image } from 'astro:assets';
+import coatOfArms from '../assets/coat-of-arms.png';
+const year = new Date().getFullYear();
+---
+<footer class="govbb-footer">
+  <div class="govbb-container govbb-footer__inner">
+    <nav aria-label="Footer">
+      <ul class="govbb-footer__links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/cookies/">Cookie Policy</a></li>
+        <li><a href="/terms/">Terms &amp; Conditions</a></li>
+        <li><a href="/sitemap/">Sitemap</a></li>
+      </ul>
+    </nav>
+    <div class="govbb-footer__gov">
+      <Image
+        class="govbb-footer__crest"
+        src={coatOfArms}
+        width={104}
+        densities={[1, 2]}
+        alt="Coat of arms of Barbados"
+      />
+      <p class="govbb-footer__copyright">© {year} Government of Barbados</p>
+    </div>
+  </div>
+</footer>

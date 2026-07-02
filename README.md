@@ -1,9 +1,10 @@
 # GovBB Design System
 
 The design system for official Government of Barbados websites — design tokens
-and CSS components, compiled to a single stylesheet.
+and CSS components compiled to a single stylesheet, plus the documentation
+site published at **design-system.gov.bb**.
 
-This is a **CSS-first single package**: vanilla CSS (no Sass, no Tailwind),
+The design system itself is **CSS-first**: vanilla CSS (no Sass, no Tailwind),
 bundled and minified with [Lightning CSS](https://lightningcss.dev). A
 framework layer (Lit / Stencil) may be added later — see
 [Moving to Lit / Stencil later](#moving-to-lit--stencil-later).
@@ -14,10 +15,11 @@ framework layer (Lit / Stencil) may be added later — see
   truth). Placeholder values today; will be generated from the Figma variables
   once published (#4).
 - `src/components/*.css` — one file per component: plain classes
-  (`.govbb-btn`, …) themed by the token custom properties, with fallbacks so
-  they render without the tokens.
+  (`.govbb-button`, …) themed by the token custom properties, with fallbacks
+  so they render without the tokens.
 - `src/index.css` — entry point; `@import`s tokens + components.
 - `index.html` — the playground (Vite dev server, hot-reload).
+- `apps/site` — the documentation site (bespoke Astro static site).
 
 ## Prerequisites
 
@@ -34,7 +36,9 @@ pnpm install
 ```sh
 pnpm dev          # playground at http://localhost:5173
 pnpm build        # bundle + minify → dist/govbb.css
-pnpm lint         # oxlint
+pnpm site:dev     # documentation site at http://localhost:4321
+pnpm site:build   # static site → apps/site/dist/
+pnpm lint         # oxlint + stylelint
 pnpm format       # prettier --write .
 ```
 
@@ -47,8 +51,7 @@ Components ship as plain CSS classes — no framework. Apply them to HTML:
 
 ```html
 <link rel="stylesheet" href="govbb.css" />
-<button class="govbb-btn">Primary</button>
-<button class="govbb-btn govbb-btn--secondary">Secondary</button>
+<button class="govbb-button">Primary</button>
 ```
 
 The stylesheet ships **unlayered** so it isn't silently overridden by consumer
@@ -66,12 +69,45 @@ its shadow root (or applies it in light DOM), so nothing here is thrown away.
 When that lands, split into publishable packages (`@govbb/tokens`,
 `@govbb/css`, `@govbb/components`).
 
+## Documentation site
+
+The docs site lives in [`apps/site`](apps/site) and is a bespoke
+[Astro](https://astro.build) static site, modelled on the structure of the
+[GOV.UK Design System](https://design-system.service.gov.uk/) with GovBB
+branding. It has three sections — **Components**, **Documentation**, and
+**AI skills** — plus a **Changelog** of important design decisions.
+
 ## Contributing
 
+### Design system
+
 - **Components** — add a CSS file under `src/components/`, `@import` it from
-  `src/index.css`, and demo it in `index.html`.
+  `src/index.css`, and demo it in `index.html`. Class names and custom
+  properties must be `govbb-`-prefixed (Stylelint enforces this).
 - **Tokens** — edit `src/tokens.css`. These are a **placeholder baseline**
   today and will be replaced with the official GovBB tokens (#4).
+
+### Documentation site
+
+- **Guidelines / standards prose** — add an `.astro` or `.mdx` page under
+  `apps/site/src/pages/documentation/`, and link it from
+  `documentation/index.astro`.
+- **Component reference** — add a page under `apps/site/src/pages/components/`
+  using [`ArticleLayout`](apps/site/src/layouts/ArticleLayout.astro) (left
+  sidebar + "On this page" rail), and add it to the sidebar in
+  [`src/data/nav.ts`](apps/site/src/data/nav.ts). Author each example's markup
+  under `apps/site/src/examples/<component>/` and render it with the shared
+  [`Example`](apps/site/src/components/Example.astro) component — a **Preview /
+  Code** tab switch showing the live preview plus the HTML/CSS source with a
+  copy button.
+- **Changelog** — add a Markdown file under `apps/site/src/content/changelog/`
+  with `title`, `date`, and optional `author` / `summary` frontmatter. The
+  latest entries also surface in the homepage "What's new" block.
+- **Styling** — the site uses **placeholder** GovBB tokens in
+  `apps/site/src/styles/placeholder-tokens.css`, the **Figtree** web font
+  (bundled temporarily via `@fontsource-variable/figtree`), and a placeholder
+  coat of arms / crest. The real tokens get wired in from the root package
+  (follow-up #124).
 
 ## CI & deployment
 

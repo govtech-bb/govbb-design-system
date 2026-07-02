@@ -1,0 +1,52 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { primaryNav, componentsSidebar, documentationSidebar } from '../../data/nav';
+import { getSortedChangelog } from '../../data/changelog';
+import type { Section } from '../../types';
+
+const changelog = await getSortedChangelog();
+
+// Sub-links per section, derived from the same nav/content sources the rest of
+// the site uses, so the sitemap stays in step as pages are added.
+const childrenFor = (key: Section, href: string) => {
+  let links: { label: string; href: string }[] = [];
+  if (key === 'components') links = componentsSidebar.flatMap((g) => g.links);
+  else if (key === 'documentation') links = documentationSidebar.flatMap((g) => g.links);
+  else if (key === 'changelog')
+    links = changelog.map((p) => ({ label: p.data.title, href: `/changelog/${p.id}/` }));
+  return links.filter((l) => l.href !== href); // drop the section's own index link
+};
+
+const sections = primaryNav.map((item) => ({
+  ...item,
+  children: childrenFor(item.key, item.href),
+}));
+---
+<BaseLayout title="Sitemap" description="All pages in the GovBB Design System.">
+  <section class="govbb-container govbb-page-section">
+    <div class="govbb-prose">
+      <div class="govbb-page-header">
+        <h1 class="govbb-page-title">Sitemap</h1>
+      </div>
+      <ul>
+        <li><a href="/">Home</a></li>
+        {
+          sections.map((section) => (
+            <li>
+              <a href={section.href}>{section.label}</a>
+              {section.children.length > 0 && (
+                <ul>
+                  {section.children.map((child) => (
+                    <li>
+                      <a href={child.href}>{child.label}</a>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+</BaseLayout>

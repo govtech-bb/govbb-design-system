@@ -1,0 +1,41 @@
+# 1. The documentation site is a bespoke Astro app, not Storybook
+
+**Date:** 2026-07-02
+**Status:** Accepted — supersedes the Storybook decision from #113.
+
+## Context
+
+Issue #4 asked which framework should power the design system site at
+`design-system.gov.bb`. #113 answered **Storybook** (`@storybook/web-components-vite`)
+and shipped `apps/docs` as the single site, with prose in MDX.
+
+The site we actually want mimics [design-system.service.gov.uk](https://design-system.service.gov.uk/):
+distinct top-level sections with their own information architecture, component pages that
+show a live preview alongside switchable source code, long-form "how and when to use"
+guidance, and a changelog of design decisions. Storybook fights all of these — it gives
+one sidebar tree, one renderer per source block, and docs pages that never look like the
+target site.
+
+## Decision
+
+The public design-system site is a **bespoke Astro static site** at `apps/site`
+(`@govbb/site`), modelled structurally on GOV.UK with GovBB branding.
+
+- **Storybook is not part of the stack.** `apps/docs` is removed. There is no
+  component-workshop Storybook (this also retires the `apps/components` workshop that
+  plan #20 proposed — its `packages/styles` half survives, its Storybook half does not).
+- **Component documentation lives in the Astro site** as content pages, using the shared
+  [`Example`](../../apps/site/src/components/Example.astro) component: a Preview / Code tab
+  switch that renders the component live in an isolated iframe and shows its source. The
+  code panel is HTML/CSS today and is structured so a framework switcher (web component /
+  React) can be added later without rewriting pages.
+- **New components and guidance are added to `apps/site`**, not to any Storybook.
+
+## Consequences
+
+- Retiring Storybook removes its accessibility addon; the a11y-audit epic (#87–#109) needs
+  replacement tooling (axe in CI, or manual). Tracked separately.
+- The visual design and tokens are placeholders until the real tokens/font ship in
+  `@govbb/styles` (#20) and are wired in under follow-up #124.
+- Any future "should this go in Storybook?" question is already answered: no. If a
+  component workshop is ever wanted, it is a separate tool, not the documentation site.

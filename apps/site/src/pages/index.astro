@@ -1,0 +1,102 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CardGrid from '../components/CardGrid.astro';
+import ChangelogEntry from '../components/ChangelogEntry.astro';
+import type { CardData } from '../components/CardGrid.astro';
+import { getSortedChangelog } from '../data/changelog';
+
+const updates = (await getSortedChangelog()).slice(0, 2);
+
+const cards: CardData[] = [
+  {
+    title: 'Components',
+    href: '/components/',
+    modifier: 'pink',
+    desc: 'Reusable, accessible parts of the user interface, with live examples and code.',
+    link: 'Browse components',
+  },
+  {
+    title: 'Documentation',
+    href: '/documentation/',
+    modifier: 'lavender',
+    desc: 'Standards and guidelines for how and when to use the design system.',
+    link: 'Browse documentation',
+  },
+  {
+    title: 'AI skills',
+    href: '/ai-skills/',
+    modifier: 'teal',
+    desc: 'Guidance for designers working with AI tools. Coming soon.',
+    link: 'View AI skills',
+  },
+];
+---
+<BaseLayout
+  title="Home"
+  description="The design system for official Government of Barbados services."
+>
+  <section class="govbb-container govbb-hero">
+    <h1 class="govbb-hero__title">design-system.gov.bb</h1>
+    <p class="govbb-hero__subtitle">
+      The design system for official digital services of the Government of Barbados.
+    </p>
+    <div class="govbb-hero__cta">
+      <a class="govbb-btn" href="/documentation/">Get started</a>
+      <a class="govbb-btn--tertiary" href="/components/">Browse components</a>
+    </div>
+  </section>
+
+  <section class="govbb-band govbb-band--pink">
+    <div class="govbb-container">
+      <h2 class="govbb-section-title">Explore the design system</h2>
+      <CardGrid cards={cards} heading="h3" />
+    </div>
+  </section>
+
+  <section class="govbb-container govbb-twocol">
+    <div>
+      <h2 class="govbb-section-title">What's new</h2>
+      {
+        updates.length === 0 ? (
+          <p>No updates yet.</p>
+        ) : (
+          updates.map((post) => (
+            <ChangelogEntry
+              date={post.data.date}
+              title={post.data.title}
+              href={`/changelog/${post.id}/`}
+              summary={post.data.summary}
+            />
+          ))
+        )
+      }
+      <p><a href="/changelog/">View all updates</a></p>
+    </div>
+
+    <div>
+      <h2 class="govbb-section-title">Community</h2>
+      <p>
+        The design system is for everyone. We welcome contributions from all government
+        agencies. Learn how you can help us improve and evolve our design standards.
+      </p>
+      <ul class="govbb-linklist">
+        <li><a href="/documentation/">Propose a new component or pattern</a></li>
+        <li><a href="/changelog/">Read recent design decisions</a></li>
+      </ul>
+      <div class="govbb-signup">
+        <p class="govbb-signup__title">Get updates to your inbox</p>
+        <form class="govbb-signup__form" action="#" method="post">
+          <label class="govbb-visually-hidden" for="signup-email">Email address</label>
+          <input
+            class="govbb-signup__input"
+            id="signup-email"
+            type="email"
+            name="email"
+            placeholder="Enter your email address"
+          />
+          <button class="govbb-btn" type="submit">Subscribe</button>
+        </form>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
