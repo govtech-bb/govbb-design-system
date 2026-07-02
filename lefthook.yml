@@ -2,3 +2,10 @@ commit-msg:
   commands:
     commitlint:
       run: pnpm exec commitlint --edit {1}
+
+pre-commit:
+  commands:
+    lint:
+      run: pnpm lint
+    format:
+      run: pnpm format:check
