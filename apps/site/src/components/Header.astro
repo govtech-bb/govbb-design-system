@@ -1,7 +1,9 @@
 ---
+import type { Section } from '../types';
+
 interface Props {
   /** Top-level section key for highlighting the active nav item. */
-  section?: 'components' | 'documentation' | 'ai-skills' | 'changelog';
+  section?: Section;
 }
 const { section } = Astro.props;
 

@@ -4,11 +4,12 @@ import '../styles/global.css';
 import GovBanner from '../components/GovBanner.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import type { Section } from '../types';
 
 interface Props {
   title: string;
   description?: string;
-  section?: 'components' | 'documentation' | 'ai-skills' | 'changelog';
+  section?: Section;
 }
 const { title, description, section } = Astro.props;
 const fullTitle = `${title} — GovBB Design System`;

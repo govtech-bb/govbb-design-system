@@ -1,25 +1,26 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import ColorCard from '../../components/ColorCard.astro';
 
 const cards = [
   {
     title: 'Using the design system',
     href: '/documentation/using-the-design-system/',
-    modifier: 'pink',
+    modifier: 'pink' as const,
     desc: 'How to adopt the design system in a new or existing service.',
     link: 'Read the guide',
   },
   {
     title: 'Standards',
     href: '/documentation/using-the-design-system/#standards',
-    modifier: 'lavender',
+    modifier: 'lavender' as const,
     desc: 'What official Government of Barbados services must do.',
     link: 'View standards',
   },
   {
     title: 'Guidelines',
     href: '/documentation/using-the-design-system/#guidelines',
-    modifier: 'teal',
+    modifier: 'teal' as const,
     desc: 'How and when to use the parts of the design system.',
     link: 'View guidelines',
   },
@@ -30,7 +31,7 @@ const cards = [
   section="documentation"
   description="Standards and guidelines for how and when to use the design system."
 >
-  <section class="govbb-container" style="padding-block: var(--govbb-space-6) var(--govbb-space-8);">
+  <section class="govbb-container govbb-page-section">
     <div class="govbb-page-header">
       <h1 class="govbb-page-title">Documentation</h1>
       <p class="govbb-page-subtitle">
@@ -43,11 +44,13 @@ const cards = [
       {
         cards.map((card) => (
           <li>
-            <a class={`govbb-colorcard govbb-colorcard--${card.modifier}`} href={card.href}>
-              <h2 class="govbb-colorcard__title">{card.title}</h2>
-              <p class="govbb-colorcard__desc">{card.desc}</p>
-              <span class="govbb-colorcard__link">{card.link}</span>
-            </a>
+            <ColorCard
+              title={card.title}
+              href={card.href}
+              modifier={card.modifier}
+              desc={card.desc}
+              link={card.link}
+            />
           </li>
         ))
       }

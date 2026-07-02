@@ -1,35 +1,29 @@
 ---
-import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import ColorCard from '../components/ColorCard.astro';
+import { getSortedChangelog, formatChangelogDate } from '../data/changelog';
 
-const updates = (await getCollection('changelog'))
-  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
-  .slice(0, 2);
-const dateFormat = new Intl.DateTimeFormat('en-GB', {
-  day: 'numeric',
-  month: 'long',
-  year: 'numeric',
-});
+const updates = (await getSortedChangelog()).slice(0, 2);
 
 const cards = [
   {
     title: 'Components',
     href: '/components/',
-    modifier: 'pink',
+    modifier: 'pink' as const,
     desc: 'Reusable, accessible parts of the user interface, with live examples and code.',
     link: 'Browse components',
   },
   {
     title: 'Documentation',
     href: '/documentation/',
-    modifier: 'lavender',
+    modifier: 'lavender' as const,
     desc: 'Standards and guidelines for how and when to use the design system.',
     link: 'Browse documentation',
   },
   {
     title: 'AI skills',
     href: '/ai-skills/',
-    modifier: 'teal',
+    modifier: 'teal' as const,
     desc: 'Guidance for designers working with AI tools. Coming soon.',
     link: 'View AI skills',
   },
@@ -57,11 +51,14 @@ const cards = [
         {
           cards.map((card) => (
             <li>
-              <a class={`govbb-colorcard govbb-colorcard--${card.modifier}`} href={card.href}>
-                <h3 class="govbb-colorcard__title">{card.title}</h3>
-                <p class="govbb-colorcard__desc">{card.desc}</p>
-                <span class="govbb-colorcard__link">{card.link}</span>
-              </a>
+              <ColorCard
+                title={card.title}
+                href={card.href}
+                modifier={card.modifier}
+                desc={card.desc}
+                link={card.link}
+                heading="h3"
+              />
             </li>
           ))
         }
@@ -80,7 +77,7 @@ const cards = [
             <div class="govbb-update">
               <p class="govbb-update__date">
                 <time datetime={post.data.date.toISOString()}>
-                  {dateFormat.format(post.data.date)}
+                  {formatChangelogDate(post.data.date)}
                 </time>
               </p>
               <a class="govbb-update__title" href={`/changelog/${post.id}/`}>

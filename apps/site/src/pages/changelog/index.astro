@@ -1,22 +1,15 @@
 ---
-import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getSortedChangelog, formatChangelogDate } from '../../data/changelog';
 
-const posts = (await getCollection('changelog')).sort(
-  (a, b) => b.data.date.getTime() - a.data.date.getTime(),
-);
-const dateFormat = new Intl.DateTimeFormat('en-GB', {
-  day: 'numeric',
-  month: 'long',
-  year: 'numeric',
-});
+const posts = await getSortedChangelog();
 ---
 <BaseLayout
   title="Changelog"
   section="changelog"
   description="Important design decisions, and why and when we made them."
 >
-  <section class="govbb-container" style="padding-block: var(--govbb-space-6) var(--govbb-space-8);">
+  <section class="govbb-container govbb-page-section">
     <div class="govbb-page-header">
       <h1 class="govbb-page-title">Changelog</h1>
       <p class="govbb-page-subtitle">
@@ -29,12 +22,12 @@ const dateFormat = new Intl.DateTimeFormat('en-GB', {
       posts.length === 0 ? (
         <p>No entries yet.</p>
       ) : (
-        <div style="max-width: 44rem;">
+        <div class="govbb-changelog-list">
           {posts.map((post) => (
-            <div class="govbb-update" style="margin-bottom: var(--govbb-space-5);">
+            <div class="govbb-update">
               <p class="govbb-update__date">
                 <time datetime={post.data.date.toISOString()}>
-                  {dateFormat.format(post.data.date)}
+                  {formatChangelogDate(post.data.date)}
                 </time>
               </p>
               <a class="govbb-update__title" href={`/changelog/${post.id}/`}>
@@ -48,3 +41,12 @@ const dateFormat = new Intl.DateTimeFormat('en-GB', {
     }
   </section>
 </BaseLayout>
+
+<style>
+  .govbb-changelog-list {
+    max-width: 44rem;
+  }
+  .govbb-changelog-list .govbb-update {
+    margin-bottom: var(--govbb-space-5);
+  }
+</style>

@@ -81,6 +81,11 @@ main {
   flex: 1 0 auto;
 }
 
+/* Standard vertical padding for a simple (non-article) page section. */
+.govbb-page-section {
+  padding-block: var(--govbb-space-6) var(--govbb-space-8);
+}
+
 /* ── Official government banner ───────────────────────────────── */
 .govbb-gov-banner {
   background: var(--govbb-color-surface);
@@ -322,15 +327,6 @@ main {
 }
 .govbb-colorcard--teal {
   background: var(--govbb-card-teal);
-}
-.govbb-colorcard--mint {
-  background: var(--govbb-card-mint);
-}
-.govbb-colorcard--yellow {
-  background: var(--govbb-card-yellow);
-}
-.govbb-colorcard--salmon {
-  background: var(--govbb-card-salmon);
 }
 
 /* ── "What's new" + Community section ─────────────────────────── */

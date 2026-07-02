@@ -3,9 +3,11 @@ packages:
   - apps/*
 
 # pnpm 11.9 gates dependency build scripts behind an explicit allowlist.
-# esbuild (used by Vite/Astro for the site build) and lefthook (git hooks) both
-# need theirs to run. NB: this pnpm version honours `allowBuilds`, not the older
-# `onlyBuiltDependencies` list — see #15 to reconcile this repo-wide.
+# esbuild (Vite/Astro build), sharp (Astro image optimization) and lefthook
+# (git hooks) all need theirs to run. NB: this pnpm version honours
+# `allowBuilds`, not the older `onlyBuiltDependencies` list — see #15 to
+# reconcile this repo-wide.
 allowBuilds:
   esbuild: true
   lefthook: true
+  sharp: true

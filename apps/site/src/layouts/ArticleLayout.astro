@@ -4,11 +4,12 @@ import Sidebar from '../components/Sidebar.astro';
 import OnThisPage from '../components/OnThisPage.astro';
 import type { SidebarGroup } from '../components/Sidebar.astro';
 import type { TocItem } from '../components/OnThisPage.astro';
+import type { Section } from '../types';
 
 interface Props {
   title: string;
   description?: string;
-  section?: 'components' | 'documentation' | 'ai-skills' | 'changelog';
+  section?: Section;
   pageTitle: string;
   pageSubtitle?: string;
   sidebarGroups: SidebarGroup[];
