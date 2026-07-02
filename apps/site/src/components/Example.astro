@@ -3,17 +3,19 @@ import { Code } from 'astro:components';
 import tokens from '../styles/placeholder-tokens.css?raw';
 
 /*
- * Example — a live component preview with a Preview / Code tab switch.
+ * Example — a live component preview with the source shown beneath it.
  *
- * "Preview" renders the example markup inside an <iframe> (srcdoc) so its CSS is
- * isolated from the page chrome. "Code" shows the source — currently HTML and
- * CSS only. The tab structure is generic so a framework switcher (Web Component
- * / React) can be added later by extending the Code panel — no page rewrites.
+ * The preview is always visible: the example markup renders inside an <iframe>
+ * (srcdoc) so its CSS is isolated from the page chrome. Directly below, a
+ * language tab bar switches which source is shown — currently HTML and (when
+ * provided) CSS. The tab set is data-driven (see `codeBlocks`) so future
+ * languages (Web Component / React, per #124) can be added by extending the
+ * array — no layout rewrite needed.
  */
 interface Props {
-  /** Example markup, rendered live and shown in the HTML block. */
+  /** Example markup, rendered live and shown in the HTML source. */
   html: string;
-  /** Component CSS: injected into the preview and shown in the CSS block. */
+  /** Component CSS: injected into the preview and shown in the CSS source. */
   css?: string;
   /** Accessible label for the example. */
   title?: string;
@@ -40,6 +42,7 @@ const previewStyles = `
 `;
 const srcdoc = `<!doctype html><html lang="en"><head><meta charset="utf-8"><style>${tokens}\n${css}\n${previewStyles}</style></head><body>${html}</body></html>`;
 
+// Data-driven source list — only render tabs for sources that exist.
 const codeBlocks = [
   { label: 'HTML', lang: 'html' as const, code: html },
   ...(css ? [{ label: 'CSS', lang: 'css' as const, code: css }] : []),
@@ -48,41 +51,7 @@ const codeBlocks = [
 <figure class="govbb-example" data-example>
   {title && <figcaption class="govbb-example__caption">{title}</figcaption>}
 
-  <div class="govbb-example__tabs" role="tablist" aria-label={title ? `${title} view` : 'Example view'}>
-    <button
-      id={`${uid}-tab-preview`}
-      class="govbb-example__tab"
-      role="tab"
-      type="button"
-      aria-selected="true"
-      aria-controls={`${uid}-panel-preview`}
-      tabindex="0"
-      data-view="preview"
-    >
-      Preview
-    </button>
-    <button
-      id={`${uid}-tab-code`}
-      class="govbb-example__tab"
-      role="tab"
-      type="button"
-      aria-selected="false"
-      aria-controls={`${uid}-panel-code`}
-      tabindex="-1"
-      data-view="code"
-    >
-      Code
-    </button>
-  </div>
-
-  <div
-    id={`${uid}-panel-preview`}
-    class="govbb-example__panel govbb-example__panel--preview"
-    role="tabpanel"
-    aria-labelledby={`${uid}-tab-preview`}
-    tabindex="0"
-    data-view-panel="preview"
-  >
+  <div class="govbb-example__preview">
     <iframe
       title={title ? `Preview: ${title}` : 'Component preview'}
       srcdoc={srcdoc}
@@ -91,20 +60,42 @@ const codeBlocks = [
     ></iframe>
   </div>
 
-  <div
-    id={`${uid}-panel-code`}
-    class="govbb-example__panel govbb-example__panel--code"
-    role="tabpanel"
-    aria-labelledby={`${uid}-tab-code`}
-    tabindex="0"
-    data-view-panel="code"
-    hidden
-  >
+  <div class="govbb-example__code">
+    <div
+      class="govbb-example__tabs"
+      role="tablist"
+      aria-label={title ? `${title} source` : 'Example source'}
+    >
+      {
+        codeBlocks.map((block, i) => (
+          <button
+            id={`${uid}-tab-${block.lang}`}
+            class="govbb-example__tab"
+            role="tab"
+            type="button"
+            aria-selected={i === 0 ? 'true' : 'false'}
+            aria-controls={`${uid}-panel-${block.lang}`}
+            tabindex={i === 0 ? 0 : -1}
+            data-lang={block.lang}
+          >
+            {block.label}
+          </button>
+        ))
+      }
+    </div>
+
     {
-      codeBlocks.map((block) => (
-        <div class="govbb-example__code">
+      codeBlocks.map((block, i) => (
+        <div
+          id={`${uid}-panel-${block.lang}`}
+          class="govbb-example__panel"
+          role="tabpanel"
+          aria-labelledby={`${uid}-tab-${block.lang}`}
+          tabindex="0"
+          data-lang-panel={block.lang}
+          hidden={i !== 0}
+        >
           <div class="govbb-example__code-bar">
-            <span class="govbb-example__code-label">{block.label}</span>
             <button class="govbb-example__copy" type="button" data-copy={block.code}>
               Copy
             </button>
@@ -124,15 +115,34 @@ const codeBlocks = [
     font-weight: 600;
     margin-bottom: var(--govbb-space-2);
   }
+  .govbb-example__preview {
+    border: 1px solid var(--govbb-color-border);
+    border-radius: var(--govbb-radius-lg) var(--govbb-radius-lg) 0 0;
+    overflow: hidden;
+  }
+  .govbb-example__preview iframe {
+    display: block;
+    width: 100%;
+    border: 0;
+    min-height: 15rem;
+  }
+  .govbb-example__code {
+    border: 1px solid var(--govbb-color-border);
+    border-top: 0;
+    border-radius: 0 0 var(--govbb-radius-lg) var(--govbb-radius-lg);
+    overflow: hidden;
+  }
   .govbb-example__tabs {
     display: flex;
     gap: var(--govbb-space-2);
+    padding: 0 var(--govbb-space-3);
+    background: var(--govbb-color-surface);
     border-bottom: 1px solid var(--govbb-color-border);
   }
   .govbb-example__tab {
-    padding: var(--govbb-space-2) var(--govbb-space-4);
+    padding: var(--govbb-space-2) var(--govbb-space-3);
     font: inherit;
-    font-size: 1rem;
+    font-size: 0.9rem;
     background: transparent;
     border: 0;
     border-bottom: 3px solid transparent;
@@ -145,37 +155,13 @@ const codeBlocks = [
     border-bottom-color: var(--govbb-color-teal);
     font-weight: 600;
   }
-  .govbb-example__panel--preview {
-    border: 1px solid var(--govbb-color-border);
-    border-top: 0;
-    border-radius: 0 0 var(--govbb-radius-lg) var(--govbb-radius-lg);
-    overflow: hidden;
-    margin-top: var(--govbb-space-4);
-  }
-  .govbb-example__panel--preview iframe {
-    display: block;
-    width: 100%;
-    border: 0;
-    min-height: 15rem;
-  }
-  .govbb-example__code {
-    border: 1px solid var(--govbb-color-border);
-    border-radius: var(--govbb-radius);
-    overflow: hidden;
-    margin-top: var(--govbb-space-3);
-  }
   .govbb-example__code-bar {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-end;
     padding: var(--govbb-space-2) var(--govbb-space-3);
     background: var(--govbb-color-surface);
     border-bottom: 1px solid var(--govbb-color-border);
-  }
-  .govbb-example__code-label {
-    font-size: 0.85rem;
-    font-weight: 600;
-    letter-spacing: 0.03em;
   }
   .govbb-example__copy {
     padding: var(--govbb-space-1) var(--govbb-space-3);
@@ -209,21 +195,20 @@ const codeBlocks = [
     const tabs = Array.from(
       example.querySelectorAll<HTMLButtonElement>('.govbb-example__tab'),
     );
-    const panels = example.querySelectorAll<HTMLElement>('[data-view-panel]');
+    const panels = example.querySelectorAll<HTMLElement>('[data-lang-panel]');
     const frame = example.querySelector<HTMLIFrameElement>('[data-example-frame]');
 
     const activate = (tab: HTMLButtonElement, focusTab = true) => {
-      const view = tab.dataset.view;
+      const lang = tab.dataset.lang;
       tabs.forEach((t) => {
         const selected = t === tab;
         t.setAttribute('aria-selected', String(selected));
         t.tabIndex = selected ? 0 : -1;
       });
       panels.forEach((p) => {
-        p.hidden = p.dataset.viewPanel !== view;
+        p.hidden = p.dataset.langPanel !== lang;
       });
       if (focusTab) tab.focus();
-      if (view === 'preview' && frame) resizeFrame(frame);
     };
 
     tabs.forEach((tab, i) => {
