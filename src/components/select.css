@@ -1,0 +1,95 @@
+/* Select — .govbb-select inside a bordered .govbb-select-wrapper with a
+   decorative chevron cell. Markup: the <select class="govbb-select"> plus
+   <span class="govbb-select__chevron" aria-hidden="true"> (containing the
+   arrow svg) inside .govbb-select-wrapper. The select spans the full grid so
+   clicking the chevron still opens it; the chevron is pointer-inert. */
+
+.govbb-select-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 3.875rem;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  background: var(--govbb-color-surface);
+  border: var(--govbb-border-width-form) solid var(--govbb-color-ink);
+  border-radius: var(--govbb-radius);
+  transition:
+    box-shadow 0.2s,
+    border-color 0.2s;
+}
+
+.govbb-select-wrapper:hover {
+  box-shadow: var(--govbb-shadow-form-hover);
+}
+
+.govbb-select-wrapper:focus-within {
+  box-shadow: 0 0 0 4px var(--govbb-color-focus);
+}
+
+.govbb-select-wrapper:has([aria-invalid='true']) {
+  border-color: var(--govbb-color-error);
+}
+
+.govbb-select-wrapper:has(:disabled, [aria-invalid='true']) {
+  box-shadow: none;
+}
+
+/* Keep the keyboard focus ring even when the field is invalid: the
+   box-shadow:none above clears the :focus-within ring, so restore it for
+   :focus-visible (WCAG 2.4.7). */
+.govbb-select-wrapper:has(:focus-visible) {
+  box-shadow: 0 0 0 4px var(--govbb-color-focus);
+}
+
+.govbb-select-wrapper:has(:disabled) {
+  opacity: var(--govbb-opacity-disabled);
+  cursor: not-allowed;
+}
+
+.govbb-select {
+  grid-area: 1 / 1 / auto / -1;
+  width: 100%;
+  min-width: 0;
+  padding: var(--govbb-space-3);
+  padding-right: 3.875rem;
+  font: inherit;
+  font-size: var(--govbb-font-size-body);
+  line-height: var(--govbb-line-height-base);
+  color: var(--govbb-color-ink);
+  background: none;
+  border: 0;
+  border-radius: inherit;
+  outline: 0;
+  appearance: none;
+}
+
+/* Chevron cell — sits over the select's right padding, inert to clicks. */
+.govbb-select__chevron {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  grid-area: 1 / 2;
+  width: 100%;
+  height: 100%;
+  color: var(--govbb-color-ink);
+  background: color-mix(
+    in srgb,
+    var(--govbb-color-neutral) 50%,
+    var(--govbb-color-surface)
+  );
+  border-left: var(--govbb-border-width-form) solid var(--govbb-color-ink);
+  border-start-end-radius: inherit;
+  border-end-end-radius: inherit;
+  pointer-events: none;
+}
+
+.govbb-select-wrapper:has([aria-invalid='true']) .govbb-select__chevron {
+  border-left-color: var(--govbb-color-error);
+}
+
+.govbb-select__chevron > svg {
+  width: 0.75rem;
+  height: 0.5rem;
+  fill: currentcolor;
+  transform: rotate(180deg);
+}
