@@ -23,7 +23,9 @@
         align-items: center;
         flex-wrap: wrap;
       }
-      h2 {
+      /* Section labels only — scoped so it doesn't restyle component headings
+         such as the error-summary <h2> title. */
+      section > h2 {
         font-size: 0.8rem;
         text-transform: uppercase;
         letter-spacing: 0.05em;
@@ -44,13 +46,271 @@
       <h2>Button — primary</h2>
       <button class="govbb-btn">Button</button>
       <button class="govbb-btn" disabled>Disabled</button>
-      <a class="govbb-btn" href="#">Link button</a>
+      <a class="govbb-btn" href="#">Anchor as button</a>
     </section>
 
     <section>
-      <h2>Button — secondary</h2>
-      <button class="govbb-btn govbb-btn--secondary">Button</button>
+      <h2>Button — secondary &amp; tertiary</h2>
+      <button class="govbb-btn--secondary" type="button">Secondary</button>
+      <button class="govbb-btn--tertiary" type="button">Tertiary</button>
       <button class="govbb-btn govbb-btn--secondary" disabled>Disabled</button>
+    </section>
+
+    <section>
+      <h2>Button — link</h2>
+      <button class="govbb-btn--link" type="button">Link button</button>
+      <a class="govbb-btn--link" href="#">Link button (anchor)</a>
+      <button class="govbb-btn--link" type="button" disabled>Disabled</button>
+    </section>
+
+    <section>
+      <h2>Checkbox</h2>
+      <div class="govbb-checkbox-item">
+        <input class="govbb-checkbox" id="terms" type="checkbox" />
+        <label class="govbb-checkbox-item__label" for="terms"
+          >I agree to the terms of service</label
+        >
+      </div>
+      <div class="govbb-checkbox-item">
+        <input class="govbb-checkbox" id="sms" type="checkbox" disabled />
+        <label class="govbb-checkbox-item__label" for="sms"
+          >SMS (unavailable)</label
+        >
+      </div>
+    </section>
+
+    <section>
+      <h2>Radio</h2>
+      <fieldset class="govbb-fieldset">
+        <legend class="govbb-fieldset__legend">Where do you live?</legend>
+        <div class="govbb-radio-item">
+          <input class="govbb-radio" id="p1" type="radio" name="parish" />
+          <label class="govbb-radio-item__label" for="p1">Saint Michael</label>
+        </div>
+        <div class="govbb-radio-item">
+          <input class="govbb-radio" id="p2" type="radio" name="parish" />
+          <label class="govbb-radio-item__label" for="p2">Christ Church</label>
+        </div>
+      </fieldset>
+    </section>
+
+    <section>
+      <h2>Input</h2>
+      <div class="govbb-form-group">
+        <label class="govbb-label" for="full-name">Full name</label>
+        <p class="govbb-hint" id="fn-hint">As it appears on your ID</p>
+        <div class="govbb-input-wrapper">
+          <input
+            class="govbb-input"
+            id="full-name"
+            type="text"
+            aria-describedby="fn-hint"
+          />
+        </div>
+      </div>
+      <div class="govbb-form-group">
+        <label class="govbb-label" for="email">Email address</label>
+        <p class="govbb-error-message" id="em-err">
+          Enter a valid email address
+        </p>
+        <div class="govbb-input-wrapper">
+          <input
+            class="govbb-input"
+            id="email"
+            type="email"
+            aria-invalid="true"
+            aria-describedby="em-err"
+          />
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Select</h2>
+      <div class="govbb-form-group">
+        <label class="govbb-label" for="parish">Parish</label>
+        <p class="govbb-hint" id="parish-hint">Where you currently live</p>
+        <div class="govbb-select-wrapper">
+          <select
+            class="govbb-select"
+            id="parish"
+            aria-describedby="parish-hint"
+          >
+            <option value="" disabled selected>Select a parish</option>
+            <option value="christ-church">Christ Church</option>
+            <option value="st-james">Saint James</option>
+            <option value="st-michael">Saint Michael</option>
+            <option value="st-philip">Saint Philip</option>
+          </select>
+          <span class="govbb-select__chevron" aria-hidden="true">
+            <svg viewBox="0 0 12 8" xmlns="http://www.w3.org/2000/svg">
+              <path d="M0 8 6 0 12 8z" />
+            </svg>
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Date input</h2>
+      <div class="govbb-form-group">
+        <fieldset
+          class="govbb-fieldset"
+          role="group"
+          aria-describedby="dob-hint"
+        >
+          <legend class="govbb-fieldset__legend">Date of birth</legend>
+          <p class="govbb-hint" id="dob-hint">For example, 27 3 1990</p>
+          <div class="govbb-date-input">
+            <div class="govbb-date-input__part">
+              <label class="govbb-date-input__label" for="dob-day">Day</label>
+              <div class="govbb-date-input-wrapper">
+                <input
+                  class="govbb-date-input__field"
+                  id="dob-day"
+                  type="text"
+                  inputmode="numeric"
+                />
+              </div>
+            </div>
+            <div class="govbb-date-input__part">
+              <label class="govbb-date-input__label" for="dob-month"
+                >Month</label
+              >
+              <div class="govbb-date-input-wrapper">
+                <input
+                  class="govbb-date-input__field"
+                  id="dob-month"
+                  type="text"
+                  inputmode="numeric"
+                />
+              </div>
+            </div>
+            <div class="govbb-date-input__part">
+              <label class="govbb-date-input__label" for="dob-year">Year</label>
+              <div
+                class="govbb-date-input-wrapper govbb-date-input-wrapper--year"
+              >
+                <input
+                  class="govbb-date-input__field"
+                  id="dob-year"
+                  type="text"
+                  inputmode="numeric"
+                />
+              </div>
+            </div>
+          </div>
+        </fieldset>
+      </div>
+    </section>
+
+    <section>
+      <h2>Number input</h2>
+      <div class="govbb-form-group">
+        <label class="govbb-label" id="qty-label" for="qty">Quantity</label>
+        <p class="govbb-hint" id="qty-hint">Between 1 and 10</p>
+        <div
+          class="govbb-number-input-wrapper"
+          role="group"
+          aria-labelledby="qty-label"
+        >
+          <input
+            class="govbb-number-input"
+            id="qty"
+            type="number"
+            min="1"
+            max="10"
+            value="1"
+            aria-describedby="qty-hint"
+          />
+          <div class="govbb-number-input__steppers">
+            <button
+              class="govbb-number-input__step"
+              type="button"
+              tabindex="-1"
+              aria-label="Increment"
+              aria-controls="qty"
+            ></button>
+            <span class="govbb-number-input__divider" aria-hidden="true"></span>
+            <button
+              class="govbb-number-input__step govbb-number-input__step--down"
+              type="button"
+              tabindex="-1"
+              aria-label="Decrement"
+              aria-controls="qty"
+            ></button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>File upload</h2>
+      <div class="govbb-form-group">
+        <label class="govbb-label" id="poa-label" for="poa"
+          >Proof of address</label
+        >
+        <p class="govbb-hint" id="poa-hint">
+          This could be a recent utility bill or bank statement
+        </p>
+        <div class="govbb-file-upload">
+          <label class="govbb-file-upload__dropzone" for="poa">
+            <span class="govbb-file-upload__info">
+              <span class="govbb-file-upload__title">Upload a file</span>
+              <span class="govbb-file-upload__subtitle"
+                >Attach a .pdf, .docx, or .png file</span
+              >
+            </span>
+            <input
+              class="govbb-file-upload__input"
+              id="poa"
+              type="file"
+              aria-labelledby="poa-label"
+              aria-describedby="poa-hint"
+            />
+            <span class="govbb-file-upload__action">
+              <span class="govbb-file-upload__max-size"
+                >Maximum size: 25MB</span
+              >
+            </span>
+          </label>
+          <ul class="govbb-file-upload__list">
+            <li class="govbb-file-upload__item">
+              <span class="govbb-file-upload__name">proof-of-address.pdf</span>
+              <button class="govbb-btn--link" type="button">Remove</button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Error summary</h2>
+      <div class="govbb-error-summary" role="alert">
+        <h2 class="govbb-error-summary__title">There is a problem</h2>
+        <ul class="govbb-error-summary__list">
+          <li>
+            <a class="govbb-error-summary__link" href="#email"
+              >Enter a valid email address</a
+            >
+          </li>
+          <li>
+            <a class="govbb-error-summary__link" href="#parish"
+              >Select a parish</a
+            >
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <h2>Show / hide</h2>
+      <details class="govbb-show-hide">
+        <summary class="govbb-show-hide__summary">Help with this form</summary>
+        <div class="govbb-show-hide__content">
+          <p>If you cannot find your ID number, check the back of your card.</p>
+        </div>
+      </details>
     </section>
   </body>
 </html>

@@ -15,7 +15,7 @@ framework layer (Lit / Stencil) may be added later — see
   truth). Placeholder values today; will be generated from the Figma variables
   once published (#4).
 - `src/components/*.css` — one file per component: plain classes
-  (`.govbb-button`, …) themed by the token custom properties, with fallbacks
+  (`.govbb-btn`, …) themed by the token custom properties, with fallbacks
   so they render without the tokens.
 - `src/index.css` — entry point; `@import`s tokens + components.
 - `index.html` — the playground (Vite dev server, hot-reload).
@@ -51,7 +51,7 @@ Components ship as plain CSS classes — no framework. Apply them to HTML:
 
 ```html
 <link rel="stylesheet" href="govbb.css" />
-<button class="govbb-button">Primary</button>
+<button class="govbb-btn">Primary</button>
 ```
 
 The stylesheet ships **unlayered** so it isn't silently overridden by consumer
