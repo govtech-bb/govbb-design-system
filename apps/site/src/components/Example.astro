@@ -1,6 +1,8 @@
 ---
 import { Code } from 'astro:components';
-import tokens from '../styles/placeholder-tokens.css?raw';
+// Inject the real design-system stylesheet into the preview iframe so examples
+// render with the actual component styles (e.g. the real .govbb-btn button).
+import libraryCss from '@govtech-bb/styles?raw';
 
 /*
  * Example — a live component preview with the source shown beneath it.
@@ -40,7 +42,7 @@ const previewStyles = `
     background: #fff;
   }
 `;
-const srcdoc = `<!doctype html><html lang="en"><head><meta charset="utf-8"><style>${tokens}\n${css}\n${previewStyles}</style></head><body>${html}</body></html>`;
+const srcdoc = `<!doctype html><html lang="en"><head><meta charset="utf-8"><style>${libraryCss}\n${css}\n${previewStyles}</style></head><body>${html}</body></html>`;
 
 // Data-driven source list — only render tabs for sources that exist.
 const codeBlocks = [

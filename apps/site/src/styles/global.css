@@ -1,7 +1,6 @@
 @import './placeholder-tokens.css';
-/* Placeholder Button styles, also used for the homepage CTAs and form buttons.
-   Injected separately into the Example preview iframe. Both go away with #124. */
-@import './components/button.css';
+/* Button styles come from the real design-system package (@govtech-bb/styles),
+   imported in BaseLayout — no placeholder button CSS here. */
 
 *,
 *::before,
@@ -26,10 +25,13 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-a {
+/* Base link colour applies to unclassed (content) links only, so it doesn't
+   override component classes like .govbb-btn that carry their own colour from
+   the design-system package (whose rules sit in a lower @layer). */
+a:not([class]) {
   color: var(--govbb-color-link);
 }
-a:hover {
+a:not([class]):hover {
   color: var(--govbb-color-link-hover);
 }
 a:focus-visible,
