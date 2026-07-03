@@ -26,6 +26,10 @@ export const componentsSidebar: SidebarGroup[] = [
     links: [{ label: 'Button', href: '/components/button/' }],
   },
   {
+    heading: 'Form elements',
+    links: [{ label: 'Radio', href: '/components/radio/' }],
+  },
+  {
     heading: 'Content',
     links: [{ label: 'Show/Hide', href: '/components/show-hide/' }],
   },

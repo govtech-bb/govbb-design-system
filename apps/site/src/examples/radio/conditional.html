@@ -1,0 +1,51 @@
+<fieldset class="govbb-fieldset">
+  <legend class="govbb-fieldset__legend">Preferred contact method</legend>
+  <div class="govbb-radio-item">
+    <input
+      class="govbb-radio"
+      id="r-email"
+      type="radio"
+      name="contact2"
+      value="email"
+    />
+    <label class="govbb-radio-item__label" for="r-email">Email</label>
+  </div>
+  <div class="govbb-radio-item__conditional">
+    <div class="govbb-form-group">
+      <label class="govbb-label" for="r-email-addr">Email address</label>
+      <div class="govbb-input-wrapper">
+        <input class="govbb-input" id="r-email-addr" type="email" />
+      </div>
+    </div>
+  </div>
+  <div class="govbb-radio-item">
+    <input
+      class="govbb-radio"
+      id="r-phone"
+      type="radio"
+      name="contact2"
+      value="phone"
+      checked
+    />
+    <label class="govbb-radio-item__label" for="r-phone">Phone</label>
+  </div>
+  <div class="govbb-radio-item__conditional">
+    <div class="govbb-form-group">
+      <label class="govbb-label" for="r-phone-num">Phone number</label>
+      <div class="govbb-input-wrapper">
+        <input class="govbb-input" id="r-phone-num" type="tel" />
+      </div>
+    </div>
+  </div>
+  <div class="govbb-radio-item">
+    <input
+      class="govbb-radio"
+      id="r-post"
+      type="radio"
+      name="contact2"
+      value="post"
+      disabled
+    />
+    <label class="govbb-radio-item__label" for="r-post">Post (disabled)</label>
+  </div>
+</fieldset>
