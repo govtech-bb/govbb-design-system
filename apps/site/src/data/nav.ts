@@ -32,6 +32,7 @@ export const componentsSidebar: SidebarGroup[] = [
       { label: 'Date Input', href: '/components/date-input/' },
       { label: 'Input', href: '/components/input/' },
       { label: 'Label', href: '/components/label/' },
+      { label: 'Number Input', href: '/components/number-input/' },
       { label: 'Radio', href: '/components/radio/' },
       { label: 'Select', href: '/components/select/' },
     ],

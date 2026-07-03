@@ -1,0 +1,43 @@
+<div class="govbb-form-group">
+  <label class="govbb-label" id="quantity-error-label" for="quantity-error"
+    >Quantity</label
+  >
+  <p class="govbb-error-message" id="quantity-error-error" role="alert">
+    Enter a valid quantity
+  </p>
+  <div
+    class="govbb-number-input-wrapper"
+    role="group"
+    aria-labelledby="quantity-error-label"
+  >
+    <input
+      class="govbb-number-input"
+      id="quantity-error"
+      name="quantity-error"
+      type="number"
+      inputmode="numeric"
+      min="1"
+      max="10"
+      step="1"
+      aria-invalid="true"
+      aria-describedby="quantity-error-error"
+    />
+    <div class="govbb-number-input__steppers">
+      <button
+        class="govbb-number-input__step"
+        type="button"
+        tabindex="-1"
+        aria-label="Increment"
+        aria-controls="quantity-error"
+      ></button>
+      <span class="govbb-number-input__divider" aria-hidden="true"></span>
+      <button
+        class="govbb-number-input__step govbb-number-input__step--down"
+        type="button"
+        tabindex="-1"
+        aria-label="Decrement"
+        aria-controls="quantity-error"
+      ></button>
+    </div>
+  </div>
+</div>
