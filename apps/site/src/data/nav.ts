@@ -25,6 +25,10 @@ export const componentsSidebar: SidebarGroup[] = [
     heading: 'Actions',
     links: [{ label: 'Button', href: '/components/button/' }],
   },
+  {
+    heading: 'Form elements',
+    links: [{ label: 'Input', href: '/components/input/' }],
+  },
 ];
 
 // Left-sidebar navigation for the Documentation section.

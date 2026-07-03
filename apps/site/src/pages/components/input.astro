@@ -1,0 +1,100 @@
+---
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import Example from '../../components/Example.astro';
+import { componentsSidebar } from '../../data/nav';
+import withHintHtml from '../../examples/input/with-hint.html?raw';
+import withErrorHtml from '../../examples/input/with-error.html?raw';
+import disabledHtml from '../../examples/input/disabled.html?raw';
+
+const onThisPage = [
+  { label: 'Preview', href: '#preview' },
+  { label: 'When to use', href: '#when-to-use' },
+  { label: 'When not to use', href: '#when-not-to-use' },
+  { label: 'Labels and hint text', href: '#labels-and-hint-text' },
+  { label: 'Choosing the right type', href: '#choosing-the-right-type' },
+  { label: 'Errors', href: '#errors' },
+  { label: 'Disabled inputs', href: '#disabled-inputs' },
+];
+---
+<ArticleLayout
+  title="Input"
+  section="components"
+  description="Use the input component to let users enter a single line of free-form text."
+  pageTitle="Input"
+  pageSubtitle="Lets users enter a single line of short, free-form text."
+  sidebarGroups={componentsSidebar}
+  sidebarLabel="Components"
+  onThisPage={onThisPage}
+>
+  <div class="govbb-prose">
+    <h2 id="preview">Preview</h2>
+  </div>
+  <Example title="Input with hint text" html={withHintHtml.trim()} />
+
+  <div class="govbb-prose">
+    <p>
+      The Input component lets users enter a single line of short, free-form text, such
+      as a name, reference number, or email address. Every input is paired with a
+      visible label so it is clear what answer is expected.
+    </p>
+
+    <h2 id="when-to-use">When to use this component</h2>
+    <p>
+      Use an input for short, single-line answers where you cannot offer a fixed set of
+      choices, such as a name, address line, or reference number. Choose a specific
+      <code>type</code> — for example <code>email</code>, <code>tel</code>, or
+      <code>url</code> — so mobile keyboards and browser validation match the answer
+      you're asking for.
+    </p>
+
+    <h2 id="when-not-to-use">When not to use this component</h2>
+    <p>
+      Do not use an input when the answer spans more than a sentence — use a text area
+      instead. Do not use an input for numeric answers that need step controls, such as
+      a quantity; use a number input instead. And do not use an input when you can offer
+      users a fixed set of choices — a select, radio buttons, or checkboxes are easier
+      and less error-prone to answer.
+    </p>
+
+    <h2 id="labels-and-hint-text">Labels and hint text</h2>
+    <p>
+      Always pair an input with a visible <code>&lt;label&gt;</code> — never rely on
+      placeholder text as a label, because placeholder text disappears as soon as the
+      user starts typing and is easy to miss altogether. Use hint text (<code
+        >.govbb-hint</code
+      >) beneath the label to explain a format or give an example, such as "As it
+      appears on your ID", and link it to the input with <code>aria-describedby</code>.
+    </p>
+
+    <h2 id="choosing-the-right-type">Choosing the right type</h2>
+    <p>
+      Pick the <code>type</code> attribute that matches the expected answer —
+      <code>email</code>, <code>tel</code>, <code>url</code>, or <code>password</code> —
+      so mobile keyboards and built-in validation behave correctly. Avoid
+      <code>type="number"</code> on a plain input; use the dedicated number input
+      component instead when you need step controls.
+    </p>
+
+    <h2 id="errors">Errors</h2>
+    <p>
+      When an input fails validation, show an error message (<code
+        >.govbb-error-message</code
+      >) above the input with <code>role="alert"</code>, and mark the input itself with
+      <code>aria-invalid="true"</code> and <code>aria-describedby</code> pointing at the
+      error message id. Keep error messages specific and actionable, such as "Enter a
+      valid email address".
+    </p>
+  </div>
+  <Example title="Input with error" html={withErrorHtml.trim()} />
+
+  <div class="govbb-prose">
+    <h2 id="disabled-inputs">Disabled inputs</h2>
+    <p>
+      Avoid disabling inputs wherever possible. A disabled input gives the user no
+      information about what they need to do to enable it, and its content is skipped
+      by many screen readers. Prefer showing the value as read-only text, or explaining
+      why the field is unavailable.
+    </p>
+  </div>
+  <Example title="Disabled input" html={disabledHtml.trim()} />
+</ArticleLayout>
