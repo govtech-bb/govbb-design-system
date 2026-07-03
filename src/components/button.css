@@ -1,4 +1,141 @@
-.govbb-button {
-  display: inline-block;
-  position: relative;
+/* Button — .govbb-btn (primary) plus --secondary and --tertiary variants.
+   Each variant is a standalone class; works on <button> and <a>. */
+
+.govbb-btn,
+.govbb-btn--secondary,
+.govbb-btn--tertiary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--govbb-space-2);
+  padding: var(--govbb-space-3) var(--govbb-space-4);
+  font-family: var(--govbb-font-sans);
+  font-size: var(--govbb-font-size-body);
+  line-height: 1.7;
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+  border: 0;
+  border-radius: var(--govbb-radius);
+  outline: 4px solid transparent;
+  outline-offset: 2px;
+  transition:
+    background-color 0.2s,
+    box-shadow 0.2s;
+}
+
+:is(.govbb-btn, .govbb-btn--secondary, .govbb-btn--tertiary):disabled,
+:is(
+  .govbb-btn,
+  .govbb-btn--secondary,
+  .govbb-btn--tertiary
+)[aria-disabled='true'] {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Primary */
+.govbb-btn {
+  color: var(--govbb-color-surface);
+  background-color: var(--govbb-color-interactive);
+}
+
+.govbb-btn:hover:not(:disabled) {
+  background-color: var(--govbb-color-interactive-hover);
+  box-shadow: inset 0 0 0 4px rgb(222 245 246 / 10%);
+}
+
+.govbb-btn:active:not(:disabled),
+.govbb-btn:focus-visible:not(:disabled) {
+  background-color: var(--govbb-color-interactive-active);
+  outline-color: var(--govbb-color-focus);
+}
+
+.govbb-btn:active:not(:disabled) {
+  box-shadow: inset 0 0 0 3px rgb(0 0 0 / 20%);
+}
+
+/* Secondary */
+.govbb-btn--secondary {
+  color: var(--govbb-color-ink);
+  background-color: var(--govbb-color-neutral);
+}
+
+.govbb-btn--secondary:hover:not(:disabled) {
+  box-shadow: inset 0 0 0 4px rgb(0 0 0 / 5%);
+}
+
+.govbb-btn--secondary:active:not(:disabled),
+.govbb-btn--secondary:focus-visible:not(:disabled) {
+  background-color: #b9c0c6; /* neutral, darkened */
+  outline-color: var(--govbb-color-focus);
+}
+
+.govbb-btn--secondary:active:not(:disabled) {
+  box-shadow: inset 0 0 0 3px rgb(0 0 0 / 10%);
+}
+
+/* Tertiary — outlined */
+.govbb-btn--tertiary {
+  color: var(--govbb-color-tertiary);
+  background-color: transparent;
+  box-shadow: inset 0 0 0 1px var(--govbb-color-tertiary);
+}
+
+.govbb-btn--tertiary:hover:not(:disabled) {
+  background-color: #e9f9f3; /* tertiary, tint */
+}
+
+.govbb-btn--tertiary:active:not(:disabled),
+.govbb-btn--tertiary:focus-visible:not(:disabled) {
+  outline-color: var(--govbb-color-focus);
+}
+
+.govbb-btn--tertiary:active:not(:disabled) {
+  color: #a5e5ce; /* tertiary, light */
+  background-color: var(--govbb-color-tertiary);
+  box-shadow:
+    inset 0 0 0 1px var(--govbb-color-tertiary),
+    inset 0 0 0 3px rgb(0 0 0 / 10%);
+}
+
+/* Link (text) — underlined inline text, no background or padding. */
+.govbb-btn--link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--govbb-space-2);
+  padding: 0;
+  font-family: var(--govbb-font-sans);
+  font-size: var(--govbb-font-size-body);
+  line-height: var(--govbb-line-height-base);
+  color: var(--govbb-color-tertiary);
+  background: none;
+  border: 0;
+  border-radius: var(--govbb-radius);
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  outline: 4px solid transparent;
+  outline-offset: 2px;
+  transition: color 0.2s;
+}
+
+.govbb-btn--link:disabled,
+.govbb-btn--link[aria-disabled='true'] {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.govbb-btn--link:hover:not(:disabled) {
+  color: var(--govbb-color-brand-accent);
+}
+
+.govbb-btn--link:active:not(:disabled) {
+  color: #e8a833; /* gold, pressed */
+}
+
+.govbb-btn--link:focus-visible:not(:disabled) {
+  outline-color: var(--govbb-color-focus);
 }

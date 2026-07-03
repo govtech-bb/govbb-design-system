@@ -1,0 +1,65 @@
+/* Shared form scaffolding — label, hint, error message, and the
+   grouping/fieldset wrappers used across form controls (input, radio, …).
+   Note: root src ships no global reset, so text primitives zero their own
+   UA margins here (they render on <p>, <legend>, <h2>, … elements). */
+
+.govbb-form-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--govbb-space-2);
+  width: 100%;
+}
+
+.govbb-fieldset {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--govbb-space-2);
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.govbb-fieldset__legend {
+  margin: 0;
+  padding: 0;
+  font-size: var(--govbb-font-size-body);
+  line-height: var(--govbb-line-height-base);
+  font-weight: 700;
+  color: var(--govbb-color-ink);
+}
+
+.govbb-label {
+  display: block;
+  margin: 0;
+  font-size: var(--govbb-font-size-body);
+  line-height: var(--govbb-line-height-base);
+  font-weight: 700;
+  color: var(--govbb-color-ink);
+}
+
+.govbb-hint {
+  display: block;
+  margin: 0;
+  font-size: var(--govbb-font-size-body);
+  line-height: var(--govbb-line-height-base);
+  color: var(--govbb-color-muted);
+}
+
+.govbb-error-message {
+  display: block;
+  margin: 0;
+  font-size: var(--govbb-font-size-body);
+  line-height: var(--govbb-line-height-base);
+  color: var(--govbb-color-error);
+}
+
+/* Keep label, hint and error message tight together — Figma pairs them with
+   no gap (line-height carries the rhythm); only the field below gets the 8px. */
+.govbb-form-group > .govbb-label + .govbb-hint,
+.govbb-form-group > .govbb-label + .govbb-error-message,
+.govbb-form-group > .govbb-hint + .govbb-error-message {
+  margin-top: calc(var(--govbb-space-2) * -1);
+}

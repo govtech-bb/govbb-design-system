@@ -1,0 +1,72 @@
+/* Checkbox — custom-styled native <input type="checkbox">.
+   Markup: <input class="govbb-checkbox"> beside a
+   .govbb-checkbox-item__label, wrapped in .govbb-checkbox-item. */
+
+.govbb-checkbox {
+  appearance: none;
+  display: inline-grid;
+  place-content: center;
+  flex-shrink: 0;
+  width: 3rem;
+  height: 3rem;
+  margin: 0;
+  padding: 0;
+  background: var(--govbb-color-surface);
+  border: var(--govbb-border-width-form) solid var(--govbb-color-ink);
+  cursor: pointer;
+  outline: 0;
+  transition:
+    box-shadow 0.2s,
+    border-color 0.2s;
+}
+
+/* The check: a filled square revealed on :checked. */
+.govbb-checkbox::before {
+  content: '';
+  width: 19px;
+  height: 19px;
+  background: var(--govbb-color-interactive);
+  transform: scale(0);
+}
+
+.govbb-checkbox:checked::before {
+  transform: scale(1);
+}
+
+.govbb-checkbox:hover {
+  box-shadow: var(--govbb-shadow-form-hover);
+}
+
+.govbb-checkbox:focus-visible {
+  border-color: var(--govbb-color-interactive);
+  box-shadow: 0 0 0 4px var(--govbb-color-focus);
+}
+
+.govbb-checkbox[aria-invalid='true'] {
+  border-color: var(--govbb-color-error);
+}
+
+.govbb-checkbox:disabled {
+  opacity: var(--govbb-opacity-disabled);
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+/* Checkbox + label row. */
+.govbb-checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: var(--govbb-space-3);
+}
+
+.govbb-checkbox-item__label {
+  font-size: var(--govbb-font-size-body);
+  line-height: var(--govbb-line-height-base);
+  color: var(--govbb-color-ink);
+  cursor: pointer;
+}
+
+.govbb-checkbox:disabled + .govbb-checkbox-item__label {
+  opacity: var(--govbb-opacity-disabled);
+  cursor: not-allowed;
+}

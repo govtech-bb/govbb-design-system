@@ -1,0 +1,89 @@
+/* Radio — custom-styled native <input type="radio">.
+   Mirrors the checkbox with circular shapes, plus an optional
+   conditional reveal (.govbb-radio-item__conditional). */
+
+.govbb-radio {
+  appearance: none;
+  display: inline-grid;
+  place-content: center;
+  flex-shrink: 0;
+  width: 3rem;
+  height: 3rem;
+  margin: 0;
+  padding: 0;
+  background: var(--govbb-color-surface);
+  border: var(--govbb-border-width-form) solid var(--govbb-color-ink);
+  border-radius: 50%;
+  cursor: pointer;
+  outline: 0;
+  transition:
+    box-shadow 0.2s,
+    border-color 0.2s;
+}
+
+/* The dot: a filled circle revealed on :checked. */
+.govbb-radio::before {
+  content: '';
+  width: 19px;
+  height: 19px;
+  border-radius: 50%;
+  background: var(--govbb-color-interactive);
+  transform: scale(0);
+}
+
+.govbb-radio:checked::before {
+  transform: scale(1);
+}
+
+.govbb-radio:hover {
+  box-shadow: var(--govbb-shadow-form-hover);
+}
+
+.govbb-radio:focus-visible {
+  border-color: var(--govbb-color-interactive);
+  box-shadow: 0 0 0 4px var(--govbb-color-focus);
+}
+
+.govbb-radio[aria-invalid='true'] {
+  border-color: var(--govbb-color-error);
+}
+
+.govbb-radio:disabled {
+  opacity: var(--govbb-opacity-disabled);
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+/* Radio + label row. */
+.govbb-radio-item {
+  display: flex;
+  align-items: center;
+  gap: var(--govbb-space-3);
+}
+
+.govbb-radio-item__label {
+  font-size: var(--govbb-font-size-body);
+  line-height: var(--govbb-line-height-base);
+  color: var(--govbb-color-ink);
+  cursor: pointer;
+}
+
+.govbb-radio:disabled + .govbb-radio-item__label {
+  opacity: var(--govbb-opacity-disabled);
+  cursor: not-allowed;
+}
+
+/* Conditional reveal — shown only when the preceding radio is checked. */
+.govbb-radio-item__conditional {
+  display: none;
+  margin-top: var(--govbb-space-2);
+  margin-bottom: var(--govbb-space-3);
+  margin-left: 1.25rem;
+  padding-left: 2.5rem;
+  padding-bottom: var(--govbb-space-3);
+  border-left: 8px solid var(--govbb-color-neutral);
+}
+
+.govbb-radio-item:has(> .govbb-radio:checked) + .govbb-radio-item__conditional {
+  display: block;
+}
