@@ -29,9 +29,13 @@ export const componentsSidebar: SidebarGroup[] = [
     heading: 'Form elements',
     links: [
       { label: 'Checkbox', href: '/components/checkbox/' },
+      { label: 'Date Input', href: '/components/date-input/' },
       { label: 'File Upload', href: '/components/file-upload/' },
       { label: 'Input', href: '/components/input/' },
+      { label: 'Label', href: '/components/label/' },
+      { label: 'Number Input', href: '/components/number-input/' },
       { label: 'Radio', href: '/components/radio/' },
+      { label: 'Select', href: '/components/select/' },
     ],
   },
   {
