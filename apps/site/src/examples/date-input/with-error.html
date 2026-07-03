@@ -1,0 +1,54 @@
+<div class="govbb-form-group">
+  <fieldset
+    class="govbb-fieldset"
+    role="group"
+    aria-describedby="dob2-hint dob2-error"
+  >
+    <legend class="govbb-fieldset__legend">Date of birth</legend>
+    <p class="govbb-hint" id="dob2-hint">For example, 27 3 1990</p>
+    <p class="govbb-error-message" id="dob2-error" role="alert">
+      Enter a valid date
+    </p>
+    <div class="govbb-date-input">
+      <div class="govbb-date-input__part">
+        <label class="govbb-date-input__label" for="dob2-day">Day</label>
+        <div class="govbb-date-input-wrapper">
+          <input
+            class="govbb-date-input__field"
+            id="dob2-day"
+            name="dob2[day]"
+            type="text"
+            inputmode="numeric"
+            aria-invalid="true"
+          />
+        </div>
+      </div>
+      <div class="govbb-date-input__part">
+        <label class="govbb-date-input__label" for="dob2-month">Month</label>
+        <div class="govbb-date-input-wrapper">
+          <input
+            class="govbb-date-input__field"
+            id="dob2-month"
+            name="dob2[month]"
+            type="text"
+            inputmode="numeric"
+            aria-invalid="true"
+          />
+        </div>
+      </div>
+      <div class="govbb-date-input__part">
+        <label class="govbb-date-input__label" for="dob2-year">Year</label>
+        <div class="govbb-date-input-wrapper govbb-date-input-wrapper--year">
+          <input
+            class="govbb-date-input__field"
+            id="dob2-year"
+            name="dob2[year]"
+            type="text"
+            inputmode="numeric"
+            aria-invalid="true"
+          />
+        </div>
+      </div>
+    </div>
+  </fieldset>
+</div>
