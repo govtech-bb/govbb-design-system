@@ -25,6 +25,10 @@ export const componentsSidebar: SidebarGroup[] = [
     heading: 'Actions',
     links: [{ label: 'Button', href: '/components/button/' }],
   },
+  {
+    heading: 'Content',
+    links: [{ label: 'Show/Hide', href: '/components/show-hide/' }],
+  },
 ];
 
 // Left-sidebar navigation for the Documentation section.
