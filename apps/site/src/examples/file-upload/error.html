@@ -1,5 +1,10 @@
 <div class="govbb-form-group">
-  <label class="govbb-label" for="proof-of-address-err">Proof of address</label>
+  <label
+    class="govbb-label"
+    id="proof-of-address-err-label"
+    for="proof-of-address-err"
+    >Proof of address</label
+  >
   <p class="govbb-hint" id="proof-of-address-err-hint">
     This could be a recent utility bill or bank statement
   </p>
@@ -20,6 +25,7 @@
         name="proof-of-address"
         type="file"
         aria-invalid="true"
+        aria-labelledby="proof-of-address-err-label"
         aria-describedby="proof-of-address-err-hint proof-of-address-err-error"
       />
       <div class="govbb-file-upload__action">
