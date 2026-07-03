@@ -1,0 +1,89 @@
+---
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import Example from '../../components/Example.astro';
+import { componentsSidebar } from '../../data/nav';
+import withHintHtml from '../../examples/number-input/with-hint.html?raw';
+import withErrorHtml from '../../examples/number-input/with-error.html?raw';
+
+const onThisPage = [
+  { label: 'Preview', href: '#preview' },
+  { label: 'When to use', href: '#when-to-use' },
+  { label: 'When not to use', href: '#when-not-to-use' },
+  { label: 'Labels and hint text', href: '#labels-and-hint-text' },
+  { label: 'Setting limits', href: '#setting-limits' },
+  { label: 'Errors', href: '#errors' },
+];
+---
+<ArticleLayout
+  title="Number Input"
+  section="components"
+  description="Use the number input component to let users enter a small integer with visible increment and decrement controls."
+  pageTitle="Number Input"
+  pageSubtitle="Lets users enter a number, with buttons to step the value up or down."
+  sidebarGroups={componentsSidebar}
+  sidebarLabel="Components"
+  onThisPage={onThisPage}
+>
+  <div class="govbb-prose">
+    <h2 id="preview">Preview</h2>
+  </div>
+  <Example title="Number input with hint text" html={withHintHtml.trim()} />
+
+  <div class="govbb-prose">
+    <p>
+      The Number Input component lets users enter a small whole number, such as a
+      quantity or a number of people, using visible increment and decrement buttons
+      alongside the field. It is paired with a visible label, just like a regular
+      input.
+    </p>
+
+    <h2 id="when-to-use">When to use this component</h2>
+    <p>
+      Use a number input for small ranges where tapping the up or down button is
+      quicker and less error-prone than typing, such as a quantity, a number of
+      copies, or a number of people. Always set <code>min</code> and <code>max</code>
+      when the range is known, and wire the stepper buttons so they cannot push the
+      value outside it.
+    </p>
+
+    <h2 id="when-not-to-use">When not to use this component</h2>
+    <p>
+      Do not use a number input for long numbers such as an ID, phone number, or
+      year — use a plain input with <code>inputmode="numeric"</code> instead. Do
+      not use it for values that are not whole numbers unless you also set a
+      suitable <code>step</code>. And do not use it as a substitute for a select or
+      radio buttons when you are really offering a fixed, small set of choices.
+    </p>
+
+    <h2 id="labels-and-hint-text">Labels and hint text</h2>
+    <p>
+      Always pair a number input with a visible <code>&lt;label&gt;</code>. Use
+      hint text (<code>.govbb-hint</code>) beneath the label to explain the
+      expected range, such as "Between 1 and 10", and link it to the input with
+      <code>aria-describedby</code>.
+    </p>
+
+    <h2 id="setting-limits">Setting limits</h2>
+    <p>
+      Set <code>type="number"</code>, <code>inputmode="numeric"</code>, and the
+      <code>min</code>, <code>max</code>, and <code>step</code> attributes so both
+      the native control and assistive technology understand the valid range. The
+      stepper buttons sit inside <code>.govbb-number-input-wrapper</code> with
+      <code>role="group"</code>, and each button carries an
+      <code>aria-label</code> ("Increment" or "Decrement") together with
+      <code>aria-controls</code> pointing at the input, since the buttons show no
+      visible text of their own.
+    </p>
+
+    <h2 id="errors">Errors</h2>
+    <p>
+      When a number input fails validation, show an error message (<code
+        >.govbb-error-message</code
+      >) above the input with <code>role="alert"</code>, and mark the input itself
+      with <code>aria-invalid="true"</code> and <code>aria-describedby</code>
+      pointing at the error message id. Keep error messages specific and
+      actionable, such as "Enter a valid quantity".
+    </p>
+  </div>
+  <Example title="Number input with error" html={withErrorHtml.trim()} />
+</ArticleLayout>
