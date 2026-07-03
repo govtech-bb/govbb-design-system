@@ -1,0 +1,79 @@
+---
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import Example from '../../components/Example.astro';
+import { componentsSidebar } from '../../data/nav';
+import defaultHtml from '../../examples/file-upload/default.html?raw';
+import errorHtml from '../../examples/file-upload/error.html?raw';
+
+const onThisPage = [
+  { label: 'Preview', href: '#preview' },
+  { label: 'When to use', href: '#when-to-use' },
+  { label: 'When not to use', href: '#when-not-to-use' },
+  { label: 'Guidance', href: '#guidance' },
+  { label: 'Errors', href: '#errors' },
+];
+---
+<ArticleLayout
+  title="File Upload"
+  section="components"
+  description="Use the file upload component to let users attach a file, such as a supporting document."
+  pageTitle="File Upload"
+  pageSubtitle="Lets users attach a file, such as a supporting document."
+  sidebarGroups={componentsSidebar}
+  sidebarLabel="Components"
+  onThisPage={onThisPage}
+>
+  <div class="govbb-prose">
+    <h2 id="preview">Preview</h2>
+  </div>
+  <Example title="File upload with an uploaded file" html={defaultHtml.trim()} />
+
+  <div class="govbb-prose">
+    <p>
+      The File Upload component lets users attach a file, such as a supporting document
+      or a photo of an ID. The whole dropzone acts as the label, so clicking anywhere
+      inside it opens the file picker, and uploaded files stay visible in a list so
+      users can confirm what they attached.
+    </p>
+
+    <h2 id="when-to-use">When to use this component</h2>
+    <p>
+      Use file upload when you genuinely need a copy of a document that cannot be
+      verified another way, such as evidence of address or a scanned certificate.
+    </p>
+
+    <h2 id="when-not-to-use">When not to use this component</h2>
+    <p>
+      Do not ask users to upload a file when the information could instead be entered as
+      text, looked up from another government system, or confirmed by a simple
+      declaration. Every upload is extra work and a chance to fail — only ask for one
+      when it is strictly necessary.
+    </p>
+
+    <h2 id="guidance">Guidance</h2>
+    <p>
+      State the accepted file types and the maximum size up front, in the subtitle and
+      the <code>.govbb-file-upload__max-size</code> text — users should not have to guess
+      and fail. Keep uploaded files visible in the list (<code
+        >.govbb-file-upload__list</code
+      >) so users can confirm what they attached, and give each one a
+      <em>Remove</em> action so they can correct a mistake without starting over.
+    </p>
+    <p>
+      Pair the dropzone with a <code>.govbb-form-group</code>, a visible
+      <code>.govbb-label</code> naming what to upload, and a
+      <code>.govbb-hint</code> giving an example, such as
+      <em>"This could be a recent utility bill or bank statement"</em>.
+    </p>
+
+    <h2 id="errors">Errors</h2>
+    <p>
+      When an upload fails or a file is rejected, set <code>aria-invalid="true"</code>
+      on the input and show an error message (<code>.govbb-error-message</code>) with
+      <code>role="alert"</code>, linked to the input with
+      <code>aria-describedby</code>. Keep the message specific, such as
+      <em>"Select a file"</em> or <em>"The file must be smaller than 25MB"</em>.
+    </p>
+  </div>
+  <Example title="File upload with an error" html={errorHtml.trim()} />
+</ArticleLayout>
