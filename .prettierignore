@@ -2,4 +2,5 @@ dist
 pnpm-lock.yaml
 node_modules
 docs/summaries
+docs/plans
 
