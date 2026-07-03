@@ -5,14 +5,13 @@ import { Code } from 'astro:components';
 import libraryCss from '@govtech-bb/styles?raw';
 
 /*
- * Example — a live component preview with the source shown beneath it.
+ * Example — a live component preview with its source shown in a code panel.
  *
- * The preview is always visible: the example markup renders inside an <iframe>
- * (srcdoc) so its CSS is isolated from the page chrome. Directly below, a
- * language tab bar switches which source is shown — currently HTML and (when
- * provided) CSS. The tab set is data-driven (see `codeBlocks`) so future
- * languages (Web Component / React, per #124) can be added by extending the
- * array — no layout rewrite needed.
+ * Top-level tabs switch between two views: the rendered Preview (an <iframe>
+ * srcdoc so its CSS is isolated from the page chrome) and the Code view, a dark
+ * panel with a language bar. The language set is data-driven (see `codeBlocks`)
+ * so future languages (Web Component / React, per #124) can be added by
+ * extending the array — no layout rewrite needed.
  */
 interface Props {
   /** Example markup, rendered live and shown in the HTML source. */
@@ -32,7 +31,8 @@ const previewStyles = `
   body {
     margin: 0;
     padding: 32px;
-    min-height: 220px;
+    box-sizing: border-box;
+    min-height: 100vh;
     display: flex;
     flex-wrap: wrap;
     gap: 16px;
@@ -53,7 +53,36 @@ const codeBlocks = [
 <figure class="govbb-example" data-example>
   {title && <figcaption class="govbb-example__caption">{title}</figcaption>}
 
-  <div class="govbb-example__preview">
+  <div class="govbb-example__views" role="tablist" aria-label={title ? `${title} view` : 'Example view'}>
+    <button
+      id={`${uid}-view-preview`}
+      class="govbb-example__view-tab"
+      role="tab"
+      type="button"
+      aria-selected="true"
+      aria-controls={`${uid}-panel-preview`}
+      tabindex="0"
+      data-view="preview"
+    >Preview</button>
+    <button
+      id={`${uid}-view-code`}
+      class="govbb-example__view-tab"
+      role="tab"
+      type="button"
+      aria-selected="false"
+      aria-controls={`${uid}-panel-code`}
+      tabindex="-1"
+      data-view="code"
+    >Code</button>
+  </div>
+
+  <div
+    id={`${uid}-panel-preview`}
+    class="govbb-example__preview"
+    role="tabpanel"
+    aria-labelledby={`${uid}-view-preview`}
+    data-view-panel="preview"
+  >
     <iframe
       title={title ? `Preview: ${title}` : 'Component preview'}
       srcdoc={srcdoc}
@@ -62,47 +91,49 @@ const codeBlocks = [
     ></iframe>
   </div>
 
-  <div class="govbb-example__code">
-    <div
-      class="govbb-example__tabs"
-      role="tablist"
-      aria-label={title ? `${title} source` : 'Example source'}
-    >
-      {
-        codeBlocks.map((block, i) => (
-          <button
-            id={`${uid}-tab-${block.lang}`}
-            class="govbb-example__tab"
-            role="tab"
-            type="button"
-            aria-selected={i === 0 ? 'true' : 'false'}
-            aria-controls={`${uid}-panel-${block.lang}`}
-            tabindex={i === 0 ? 0 : -1}
-            data-lang={block.lang}
-          >
-            {block.label}
-          </button>
-        ))
-      }
+  <div
+    id={`${uid}-panel-code`}
+    class="govbb-example__code"
+    role="tabpanel"
+    aria-labelledby={`${uid}-view-code`}
+    data-view-panel="code"
+    hidden
+  >
+    <div class="govbb-example__bar">
+      <div class="govbb-example__langs" role="tablist" aria-label="Language">
+        {
+          codeBlocks.map((block, i) => (
+            <button
+              id={`${uid}-tab-${block.lang}`}
+              class="govbb-example__lang-tab"
+              role="tab"
+              type="button"
+              aria-selected={i === 0 ? 'true' : 'false'}
+              aria-controls={`${uid}-lang-${block.lang}`}
+              tabindex={i === 0 ? 0 : -1}
+              data-lang={block.lang}
+            >
+              {block.label}
+            </button>
+          ))
+        }
+      </div>
+      <button class="govbb-example__copy" type="button">Copy</button>
     </div>
 
     {
       codeBlocks.map((block, i) => (
         <div
-          id={`${uid}-panel-${block.lang}`}
-          class="govbb-example__panel"
+          id={`${uid}-lang-${block.lang}`}
+          class="govbb-example__lang-panel"
           role="tabpanel"
           aria-labelledby={`${uid}-tab-${block.lang}`}
           tabindex="0"
           data-lang-panel={block.lang}
+          data-code={block.code}
           hidden={i !== 0}
         >
-          <div class="govbb-example__code-bar">
-            <button class="govbb-example__copy" type="button" data-copy={block.code}>
-              Copy
-            </button>
-          </div>
-          <Code code={block.code} lang={block.lang} theme="github-light" />
+          <Code code={block.code} lang={block.lang} theme="dark-plus" />
         </div>
       ))
     }
@@ -111,111 +142,178 @@ const codeBlocks = [
 
 <style>
   .govbb-example {
+    /* Shared so both views are the same height (no jump when toggling) and
+       both tab rows are the same height (Preview/Code and HTML/React/Vue).
+       Both views are pinned to --h and scroll internally — content taller
+       than --h never changes the block's outer height. */
+    --govbb-example-row-h: 44px;
+    --govbb-example-h: 300px;
+    --govbb-example-ease: cubic-bezier(0.23, 1, 0.32, 1);
     margin: var(--govbb-space-5) 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--govbb-space-3);
   }
   .govbb-example__caption {
     font-weight: 600;
-    margin-bottom: var(--govbb-space-2);
+    margin-bottom: calc(var(--govbb-space-2) - var(--govbb-space-3));
   }
-  .govbb-example__preview {
-    border: 1px solid var(--govbb-color-border);
-    border-radius: var(--govbb-radius-lg) var(--govbb-radius-lg) 0 0;
-    overflow: hidden;
-  }
-  .govbb-example__preview iframe {
-    display: block;
-    width: 100%;
-    border: 0;
-    min-height: 15rem;
-  }
-  .govbb-example__code {
-    border: 1px solid var(--govbb-color-border);
-    border-top: 0;
-    border-radius: 0 0 var(--govbb-radius-lg) var(--govbb-radius-lg);
-    overflow: hidden;
-  }
-  .govbb-example__tabs {
+
+  /* Top-level Preview / Code tabs */
+  .govbb-example__views {
     display: flex;
-    gap: var(--govbb-space-2);
-    padding: 0 var(--govbb-space-3);
-    background: var(--govbb-color-surface);
     border-bottom: 1px solid var(--govbb-color-border);
   }
-  .govbb-example__tab {
-    padding: var(--govbb-space-2) var(--govbb-space-3);
+  .govbb-example__view-tab {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 120px;
+    height: var(--govbb-example-row-h);
+    padding: 0 var(--govbb-space-3);
     font: inherit;
-    font-size: 0.9rem;
+    font-size: 0.8125rem; /* 13px */
     background: transparent;
     border: 0;
-    border-bottom: 3px solid transparent;
+    border-bottom: 2px solid transparent;
     margin-bottom: -1px;
     cursor: pointer;
     color: var(--govbb-color-text-muted);
+    transition:
+      color 150ms var(--govbb-example-ease),
+      border-color 150ms var(--govbb-example-ease);
   }
-  .govbb-example__tab[aria-selected='true'] {
+  .govbb-example__view-tab:hover {
+    color: var(--govbb-color-text);
+  }
+  .govbb-example__view-tab[aria-selected='true'] {
     color: var(--govbb-color-teal);
     border-bottom-color: var(--govbb-color-teal);
     font-weight: 600;
   }
-  .govbb-example__code-bar {
+
+  /* Preview panel — white card */
+  .govbb-example__preview {
+    height: var(--govbb-example-h);
+    border: 1px solid var(--govbb-color-border);
+    border-radius: var(--govbb-radius-lg);
+    box-shadow: 0 2px 5px rgb(0 0 0 / 0.05);
+    overflow: hidden;
+    background: var(--govbb-color-white);
+  }
+  .govbb-example__preview iframe {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
+  /* Code view — dark panel */
+  .govbb-example__code {
+    border-radius: var(--govbb-radius-lg);
+    overflow: hidden;
+  }
+  .govbb-example__bar {
     display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    padding: var(--govbb-space-2) var(--govbb-space-3);
-    background: var(--govbb-color-surface);
-    border-bottom: 1px solid var(--govbb-color-border);
+    align-items: stretch;
+    height: var(--govbb-example-row-h);
+    background: #222428;
+  }
+  .govbb-example__langs {
+    display: flex;
+  }
+  .govbb-example__lang-tab,
+  .govbb-example__copy {
+    padding: 0 var(--govbb-space-3);
+    font: inherit;
+    font-size: 0.8125rem; /* 13px — matches Preview/Code tabs */
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    color: #8c949e;
+    transition:
+      color 150ms var(--govbb-example-ease),
+      background-color 150ms var(--govbb-example-ease),
+      transform 120ms var(--govbb-example-ease);
+  }
+  .govbb-example__lang-tab[aria-selected='true'] {
+    background: #2e3036;
+    color: #edf0f2;
+    font-weight: 500;
   }
   .govbb-example__copy {
-    padding: var(--govbb-space-1) var(--govbb-space-3);
-    font: inherit;
-    font-size: 0.85rem;
-    background: var(--govbb-color-white);
-    border: 1px solid var(--govbb-color-border);
-    border-radius: var(--govbb-radius);
-    cursor: pointer;
+    margin-left: auto;
+  }
+  .govbb-example__copy:hover,
+  .govbb-example__lang-tab:hover {
+    color: #edf0f2;
+  }
+  .govbb-example__copy:active {
+    transform: scale(0.97);
+  }
+
+  /* Keyboard focus — borders are stripped, so restore a visible ring.
+     GOV.UK compound ring (yellow bounded by dark) so it clears WCAG 2.4.11
+     on both the white view tabs and the dark code bar. */
+  .govbb-example__view-tab:focus-visible,
+  .govbb-example__lang-tab:focus-visible,
+  .govbb-example__copy:focus-visible {
+    outline: 3px solid transparent;
+    outline-offset: -3px;
+    box-shadow:
+      inset 0 0 0 2px var(--govbb-color-focus),
+      inset 0 0 0 4px #0b0c0c;
   }
   .govbb-example__code :global(pre) {
     margin: 0;
-    padding: var(--govbb-space-3);
-    max-height: 24rem;
+    padding: var(--govbb-space-3) var(--govbb-space-4);
+    /* Same total height as the preview view: --h − the language bar. */
+    height: calc(var(--govbb-example-h) - var(--govbb-example-row-h));
     overflow: auto;
+    font-size: 0.8125rem;
+    line-height: 1.6;
+  }
+  /* Line numbers — pure CSS counter over Shiki's per-line spans. */
+  .govbb-example__code :global(pre code) {
+    counter-reset: line;
+  }
+  .govbb-example__code :global(pre .line)::before {
+    counter-increment: line;
+    content: counter(line);
+    display: inline-block;
+    width: 1.5rem;
+    margin-right: var(--govbb-space-3);
+    text-align: right;
+    color: #6e7681;
+    user-select: none; /* keep line numbers out of drag-selected copies */
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .govbb-example__copy:active {
+      transform: none;
+    }
   }
 </style>
 
 <script>
   const examples = document.querySelectorAll<HTMLElement>('[data-example]');
-  const frames: HTMLIFrameElement[] = [];
 
-  const resizeFrame = (frame: HTMLIFrameElement) => {
-    const doc = frame.contentDocument;
-    if (doc?.body) {
-      frame.style.height = `${doc.documentElement.scrollHeight}px`;
-    }
-  };
-
-  examples.forEach((example) => {
-    const tabs = Array.from(
-      example.querySelectorAll<HTMLButtonElement>('.govbb-example__tab'),
-    );
-    const panels = example.querySelectorAll<HTMLElement>('[data-lang-panel]');
-    const frame = example.querySelector<HTMLIFrameElement>('[data-example-frame]');
-
+  // Wire one WAI-ARIA tablist: click + arrow/Home/End move and select.
+  const setupTabs = (
+    tabs: HTMLButtonElement[],
+    onActivate: (tab: HTMLButtonElement) => void,
+  ) => {
     const activate = (tab: HTMLButtonElement, focusTab = true) => {
-      const lang = tab.dataset.lang;
       tabs.forEach((t) => {
         const selected = t === tab;
         t.setAttribute('aria-selected', String(selected));
         t.tabIndex = selected ? 0 : -1;
       });
-      panels.forEach((p) => {
-        p.hidden = p.dataset.langPanel !== lang;
-      });
+      onActivate(tab);
       if (focusTab) tab.focus();
     };
-
     tabs.forEach((tab, i) => {
       tab.addEventListener('click', () => activate(tab, false));
-      // WAI-ARIA tabs keyboard pattern: arrow keys + Home/End move and select.
       tab.addEventListener('keydown', (e) => {
         let next = -1;
         if (e.key === 'ArrowRight') next = (i + 1) % tabs.length;
@@ -228,35 +326,44 @@ const codeBlocks = [
         }
       });
     });
+  };
 
-    example.querySelectorAll<HTMLButtonElement>('[data-copy]').forEach((btn) => {
-      btn.addEventListener('click', async () => {
-        try {
-          await navigator.clipboard.writeText(btn.dataset.copy ?? '');
-          const original = btn.textContent;
-          btn.textContent = 'Copied';
-          window.setTimeout(() => {
-            btn.textContent = original;
-          }, 1500);
-        } catch {
-          btn.textContent = 'Press Ctrl+C';
-        }
+  examples.forEach((example) => {
+    // Top-level Preview / Code toggle.
+    const viewTabs = Array.from(
+      example.querySelectorAll<HTMLButtonElement>('.govbb-example__view-tab'),
+    );
+    const viewPanels = example.querySelectorAll<HTMLElement>('[data-view-panel]');
+    setupTabs(viewTabs, (tab) => {
+      viewPanels.forEach((p) => {
+        p.hidden = p.dataset.viewPanel !== tab.dataset.view;
       });
     });
 
-    if (frame) {
-      frames.push(frame);
-      frame.addEventListener('load', () => resizeFrame(frame));
-      // The srcdoc iframe may already have loaded before this deferred module
-      // script ran, so size it now too rather than relying only on 'load'.
-      if (frame.contentDocument?.readyState === 'complete') resizeFrame(frame);
-    }
-  });
+    // Language switcher inside the code view.
+    const langTabs = Array.from(
+      example.querySelectorAll<HTMLButtonElement>('.govbb-example__lang-tab'),
+    );
+    const langPanels = example.querySelectorAll<HTMLElement>('[data-lang-panel]');
+    setupTabs(langTabs, (tab) => {
+      langPanels.forEach((p) => {
+        p.hidden = p.dataset.langPanel !== tab.dataset.lang;
+      });
+    });
 
-  // One shared resize handler for all previews, throttled to a frame.
-  let raf = 0;
-  window.addEventListener('resize', () => {
-    cancelAnimationFrame(raf);
-    raf = requestAnimationFrame(() => frames.forEach(resizeFrame));
+    // Single copy button copies whichever language panel is visible.
+    const copyBtn = example.querySelector<HTMLButtonElement>('.govbb-example__copy');
+    copyBtn?.addEventListener('click', async () => {
+      const active = example.querySelector<HTMLElement>(
+        '[data-lang-panel]:not([hidden])',
+      );
+      try {
+        await navigator.clipboard.writeText(active?.dataset.code ?? '');
+        copyBtn.textContent = 'Copied';
+        window.setTimeout(() => (copyBtn.textContent = 'Copy'), 1500);
+      } catch {
+        copyBtn.textContent = 'Press Ctrl+C';
+      }
+    });
   });
 </script>
