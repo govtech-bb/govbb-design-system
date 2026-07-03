@@ -1,9 +1,15 @@
 <div class="govbb-form-group">
-  <label class="govbb-label" for="quantity-error">Quantity</label>
+  <label class="govbb-label" id="quantity-error-label" for="quantity-error"
+    >Quantity</label
+  >
   <p class="govbb-error-message" id="quantity-error-error" role="alert">
     Enter a valid quantity
   </p>
-  <div class="govbb-number-input-wrapper" role="group">
+  <div
+    class="govbb-number-input-wrapper"
+    role="group"
+    aria-labelledby="quantity-error-label"
+  >
     <input
       class="govbb-number-input"
       id="quantity-error"

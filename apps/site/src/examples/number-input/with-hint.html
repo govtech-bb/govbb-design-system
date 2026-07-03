@@ -1,7 +1,11 @@
 <div class="govbb-form-group">
-  <label class="govbb-label" for="quantity">Quantity</label>
+  <label class="govbb-label" id="quantity-label" for="quantity">Quantity</label>
   <p class="govbb-hint" id="quantity-hint">Between 1 and 10</p>
-  <div class="govbb-number-input-wrapper" role="group">
+  <div
+    class="govbb-number-input-wrapper"
+    role="group"
+    aria-labelledby="quantity-label"
+  >
     <input
       class="govbb-number-input"
       id="quantity"

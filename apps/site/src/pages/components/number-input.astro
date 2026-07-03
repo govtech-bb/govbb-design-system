@@ -43,7 +43,9 @@ const onThisPage = [
       quicker and less error-prone than typing, such as a quantity, a number of
       copies, or a number of people. Always set <code>min</code> and <code>max</code>
       when the range is known, and wire the stepper buttons so they cannot push the
-      value outside it.
+      value outside it. The design system provides the styles only — you must add
+      your own JavaScript to make the stepper buttons change the value, so the
+      buttons in the preview above are not interactive.
     </p>
 
     <h2 id="when-not-to-use">When not to use this component</h2>
@@ -69,10 +71,12 @@ const onThisPage = [
       <code>min</code>, <code>max</code>, and <code>step</code> attributes so both
       the native control and assistive technology understand the valid range. The
       stepper buttons sit inside <code>.govbb-number-input-wrapper</code> with
-      <code>role="group"</code>, and each button carries an
+      <code>role="group"</code> named via <code>aria-labelledby</code> pointing at
+      the field's label, and each button carries an
       <code>aria-label</code> ("Increment" or "Decrement") together with
       <code>aria-controls</code> pointing at the input, since the buttons show no
-      visible text of their own.
+      visible text of their own. Remember that the stepper buttons do nothing
+      until you attach your own JavaScript to them.
     </p>
 
     <h2 id="errors">Errors</h2>
