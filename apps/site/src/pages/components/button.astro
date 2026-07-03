@@ -2,7 +2,6 @@
 import ArticleLayout from '../../layouts/ArticleLayout.astro';
 import Example from '../../components/Example.astro';
 import { componentsSidebar } from '../../data/nav';
-import buttonCss from '../../styles/components/button.css?raw';
 import variantsHtml from '../../examples/button/variants.html?raw';
 import disabledHtml from '../../examples/button/disabled.html?raw';
 
@@ -27,7 +26,7 @@ const onThisPage = [
   <div class="govbb-prose">
     <h2 id="preview">Preview</h2>
   </div>
-  <Example title="Button variants" html={variantsHtml.trim()} css={buttonCss.trim()} />
+  <Example title="Button variants" html={variantsHtml.trim()} />
 
   <div class="govbb-prose">
     <p>
@@ -64,5 +63,5 @@ const onThisPage = [
       active and showing an error when the user tries to continue.
     </p>
   </div>
-  <Example title="Disabled button" html={disabledHtml.trim()} css={buttonCss.trim()} />
+  <Example title="Disabled button" html={disabledHtml.trim()} />
 </ArticleLayout>
