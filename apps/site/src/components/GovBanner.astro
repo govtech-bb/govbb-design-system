@@ -1,14 +1,12 @@
 ---
-import { Image } from 'astro:assets';
-import coatOfArms from '../assets/coat-of-arms.png';
+// Official crest ships with the design-system package (@govtech-bb/styles).
+import crest from '@govtech-bb/styles/assets/images/govbb-creast.svg?url';
 ---
 <div class="govbb-gov-banner">
   <div class="govbb-container govbb-gov-banner__inner">
-    <Image
+    <img
       class="govbb-gov-banner__crest"
-      src={coatOfArms}
-      width={24}
-      densities={[1, 2]}
+      src={crest}
       alt="Coat of arms of Barbados"
     />
     <span>Official government website</span>

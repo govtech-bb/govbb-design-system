@@ -1,6 +1,6 @@
 ---
-import { Image } from 'astro:assets';
-import coatOfArms from '../assets/coat-of-arms.png';
+// Official crest ships with the design-system package (@govtech-bb/styles).
+import crest from '@govtech-bb/styles/assets/images/govbb-creast.svg?url';
 const year = new Date().getFullYear();
 ---
 <footer class="govbb-footer">
@@ -14,11 +14,9 @@ const year = new Date().getFullYear();
       </ul>
     </nav>
     <div class="govbb-footer__gov">
-      <Image
+      <img
         class="govbb-footer__crest"
-        src={coatOfArms}
-        width={104}
-        densities={[1, 2]}
+        src={crest}
         alt="Coat of arms of Barbados"
       />
       <p class="govbb-footer__copyright">© {year} Government of Barbados</p>

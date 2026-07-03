@@ -1,0 +1,69 @@
+/*
+ * GovBB site tokens.
+ *
+ * Colours and the base font are aliased to the real published tokens from
+ * `@govtech-bb/styles` (imported in BaseLayout), making that package the single
+ * source of truth for brand values. A few site values the package does not
+ * define yet are kept as literals and flagged below. Type scale, spacing and
+ * layout tokens are site-specific (the package ships no equivalents) and drive
+ * this site's GOV.UK-style layout.
+ */
+:root {
+  /* Brand — from @govtech-bb/styles */
+  --govbb-color-teal: var(
+    --color-teal-00
+  ); /* primary: buttons, links, active states */
+  --govbb-color-teal-dark: #0a4a4e; /* hover — package has no darker-teal token */
+  --govbb-color-navy: var(--color-blue-100); /* footer + gov banner */
+
+  /* Ink & surfaces — from @govtech-bb/styles */
+  --govbb-color-text: var(--color-text);
+  --govbb-color-text-muted: var(--color-text-muted);
+  --govbb-color-placeholder: var(--color-blue-40);
+  --govbb-color-white: var(--color-white-00);
+  --govbb-color-bg: var(--color-background);
+  --govbb-color-surface: var(
+    --color-blue-10
+  ); /* gov bar, email box, active sidebar */
+  --govbb-color-band: var(--color-pink-10); /* "Get started" band */
+  --govbb-color-border: var(--color-grey-00);
+
+  /* Interaction */
+  --govbb-color-link: var(--govbb-color-teal);
+  --govbb-color-link-hover: var(--govbb-color-teal-dark);
+  --govbb-color-focus: #ffdd00; /* GOV.UK focus yellow — package has no focus token */
+
+  /* Decorative card fills — no package equivalents (site-specific) */
+  --govbb-card-pink: #ffd4f0;
+  --govbb-card-lavender: #ddc0e9;
+  --govbb-card-teal: var(--color-teal-40);
+
+  /* Typography — real Figtree face ships with @govtech-bb/styles */
+  --govbb-font-base: var(--font-family-base);
+  --govbb-font-size-base: 1.125rem; /* 18px */
+  --govbb-line-height-base: 1.5;
+
+  /* Type scale (site layout — px from Figma) */
+  --govbb-font-size-hero: 5rem; /* 80px */
+  --govbb-font-size-page-title: 3rem; /* 48px */
+  --govbb-font-size-section: 2.5rem; /* 40px */
+  --govbb-font-size-col-title: 2rem; /* 32px */
+  --govbb-font-size-card-title: 1.75rem; /* 28px */
+
+  /* Spacing scale (site layout) */
+  --govbb-space-1: 0.25rem;
+  --govbb-space-2: 0.5rem;
+  --govbb-space-3: 1rem;
+  --govbb-space-4: 1.5rem;
+  --govbb-space-5: 2rem;
+  --govbb-space-6: 3rem;
+  --govbb-space-8: 4rem;
+
+  /* Layout (site layout) */
+  --govbb-max-width: 1512px;
+  --govbb-gutter: clamp(1.5rem, 8.4vw, 8rem); /* ≈128px at design width */
+  --govbb-radius: 4px;
+  --govbb-radius-lg: 8px;
+  --govbb-sidebar-width: 280px;
+  --govbb-rail-width: 200px;
+}
