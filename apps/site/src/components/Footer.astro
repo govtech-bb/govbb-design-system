@@ -1,6 +1,9 @@
 ---
-// Official crest ships with the design-system package (@govtech-bb/styles).
-import crest from '@govtech-bb/styles/assets/images/govbb-creast.svg?url';
+// Official crest, SVGO-optimised from the design-system package's
+// govbb-creast.svg (@govtech-bb/styles). width/height match its intrinsic
+// aspect ratio so the browser reserves space before it loads (no layout shift);
+// CSS sizes the rendered crest.
+import crest from '../assets/govbb-creast.svg?url';
 const year = new Date().getFullYear();
 ---
 <footer class="govbb-footer">
@@ -17,6 +20,8 @@ const year = new Date().getFullYear();
       <img
         class="govbb-footer__crest"
         src={crest}
+        width="887"
+        height="954"
         alt="Coat of arms of Barbados"
       />
       <p class="govbb-footer__copyright">© {year} Government of Barbados</p>
