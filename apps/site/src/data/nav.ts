@@ -30,6 +30,7 @@ export const componentsSidebar: SidebarGroup[] = [
     links: [
       { label: 'Checkbox', href: '/components/checkbox/' },
       { label: 'Input', href: '/components/input/' },
+      { label: 'Label', href: '/components/label/' },
       { label: 'Radio', href: '/components/radio/' },
     ],
   },

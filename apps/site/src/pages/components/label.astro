@@ -1,0 +1,81 @@
+---
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import Example from '../../components/Example.astro';
+import { componentsSidebar } from '../../data/nav';
+import withHintHtml from '../../examples/label/with-hint.html?raw';
+import basicHtml from '../../examples/label/basic.html?raw';
+
+const onThisPage = [
+  { label: 'Preview', href: '#preview' },
+  { label: 'When to use', href: '#when-to-use' },
+  { label: 'When not to use', href: '#when-not-to-use' },
+  { label: 'Writing label text', href: '#writing-label-text' },
+  { label: 'Pairing with hint text', href: '#pairing-with-hint-text' },
+  { label: 'Grouping controls', href: '#grouping-controls' },
+];
+---
+<ArticleLayout
+  title="Label"
+  section="components"
+  description="Use the label component to name the field a form control sits above."
+  pageTitle="Label"
+  pageSubtitle="Names the field it sits above. Every form control needs one."
+  sidebarGroups={componentsSidebar}
+  sidebarLabel="Components"
+  onThisPage={onThisPage}
+>
+  <div class="govbb-prose">
+    <h2 id="preview">Preview</h2>
+  </div>
+  <Example title="Label with hint text" html={withHintHtml.trim()} />
+
+  <div class="govbb-prose">
+    <p>
+      The Label component names the field it sits above, so users know what answer is
+      expected before they start typing. Every form control — input, select, text area,
+      checkbox, or radio — needs a visible label.
+    </p>
+
+    <h2 id="when-to-use">When to use this component</h2>
+    <p>
+      Use a label on every form control, without exception. Associate it with its
+      control using <code>for</code> and <code>id</code> so clicking the label
+      focuses the control, and so assistive technology announces the label whenever the
+      control receives focus.
+    </p>
+
+    <h2 id="when-not-to-use">When not to use this component</h2>
+    <p>
+      Do not use placeholder text in place of a label. Placeholder text disappears as
+      soon as the user starts typing, offers no persistent reminder of what is being
+      asked, and is easy to miss altogether — particularly for users of screen
+      magnification or those who are easily distracted.
+    </p>
+
+    <h2 id="writing-label-text">Writing label text</h2>
+    <p>
+      Write labels as short noun phrases, such as <em>"Email address"</em>, rather than
+      questions or instructions. Keep the label focused on naming the field — put any
+      extra detail, such as an expected format or example, in hint text instead.
+    </p>
+
+    <h2 id="pairing-with-hint-text">Pairing with hint text</h2>
+    <p>
+      Use hint text (<code>.govbb-hint</code>) beneath the label to explain a format or
+      give an example, such as <em>"As it appears on your ID"</em>. Link the hint to its
+      control with <code>aria-describedby</code> so it is announced alongside the
+      label.
+    </p>
+  </div>
+  <Example title="Label without hint text" html={basicHtml.trim()} />
+
+  <div class="govbb-prose">
+    <h2 id="grouping-controls">Grouping controls</h2>
+    <p>
+      Use only one label per control. To name a group of related controls, such as a
+      set of checkboxes or radio buttons, use a <code>&lt;fieldset&gt;</code> with a
+      <code>&lt;legend&gt;</code> instead of a label — this frames the question for
+      the whole group rather than a single field.
+    </p>
+  </div>
+</ArticleLayout>
