@@ -44,9 +44,6 @@ importers:
       '@astrojs/mdx':
         specifier: ^7.0.0
         version: 7.0.0(@astrojs/markdown-satteri@0.3.2)(astro@7.0.4(@astrojs/markdown-remark@7.2.0)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.1)(@types/node@26.0.1)(jiti@2.6.1)(yaml@2.9.0))
-      '@fontsource-variable/figtree':
-        specifier: ^5.2.10
-        version: 5.2.10
       '@govtech-bb/styles':
         specifier: 1.0.0-alpha.16
         version: 1.0.0-alpha.16
@@ -596,9 +593,6 @@ packages:
     engines: {node: '>=18'}
     cpu: [x64]
     os: [win32]
-
-  '@fontsource-variable/figtree@5.2.10':
-    resolution: {integrity: sha512-a5Gumbpy3mdd+Yg31g6Qb7CmjYbrfyutJa3bWfP5q8A4GclIOwX7mI+ZuSHsJnw/mHvW6r9oh1AHJcJTIxK4JA==}
 
   '@govtech-bb/styles@1.0.0-alpha.16':
     resolution: {integrity: sha512-Ny8tgqjGuL48Z0DWvpBZe+PP+K2xJI+JJybQUDiFWSzQgYc/P7ovJ4CVFvBGBj07mYMWJE9cD7UY96TaHl36PQ==}
@@ -3678,8 +3672,6 @@ snapshots:
 
   '@esbuild/win32-x64@0.28.1':
     optional: true
-
-  '@fontsource-variable/figtree@5.2.10': {}
 
   '@govtech-bb/styles@1.0.0-alpha.16': {}
 

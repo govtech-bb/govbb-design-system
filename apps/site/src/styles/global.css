@@ -1,4 +1,4 @@
-@import './placeholder-tokens.css';
+@import './tokens.css';
 /* Button styles come from the real design-system package (@govtech-bb/styles),
    imported in BaseLayout — no placeholder button CSS here. */
 
