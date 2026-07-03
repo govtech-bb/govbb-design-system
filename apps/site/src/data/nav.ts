@@ -26,6 +26,10 @@ export const componentsSidebar: SidebarGroup[] = [
     links: [{ label: 'Button', href: '/components/button/' }],
   },
   {
+    heading: 'Content',
+    links: [{ label: 'Show/Hide', href: '/components/show-hide/' }],
+  },
+  {
     heading: 'Feedback',
     links: [{ label: 'Error Summary', href: '/components/error-summary/' }],
   },
