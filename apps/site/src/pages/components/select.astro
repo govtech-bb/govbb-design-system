@@ -1,0 +1,93 @@
+---
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import Example from '../../components/Example.astro';
+import { componentsSidebar } from '../../data/nav';
+import withHintHtml from '../../examples/select/with-hint.html?raw';
+import withErrorHtml from '../../examples/select/with-error.html?raw';
+import disabledHtml from '../../examples/select/disabled.html?raw';
+
+const onThisPage = [
+  { label: 'Preview', href: '#preview' },
+  { label: 'When to use', href: '#when-to-use' },
+  { label: 'When not to use', href: '#when-not-to-use' },
+  { label: 'Guidance', href: '#guidance' },
+  { label: 'Errors', href: '#errors' },
+  { label: 'Disabled selects', href: '#disabled-selects' },
+];
+---
+<ArticleLayout
+  title="Select"
+  section="components"
+  description="Use the select component to let users choose one option from a long list."
+  pageTitle="Select"
+  pageSubtitle="Lets users choose one option from a long, familiar list."
+  sidebarGroups={componentsSidebar}
+  sidebarLabel="Components"
+  onThisPage={onThisPage}
+>
+  <div class="govbb-prose">
+    <h2 id="preview">Preview</h2>
+  </div>
+  <Example title="Select with hint text" html={withHintHtml.trim()} />
+
+  <div class="govbb-prose">
+    <p>
+      The Select component is a dropdown that lets users choose a single option from a
+      long list, such as a parish or a country. It is a last resort for long lists —
+      most questions are easier to answer with visible options.
+    </p>
+
+    <h2 id="when-to-use">When to use this component</h2>
+    <p>
+      Use a select when there are more than about five options and the list is one
+      users already know, such as a parish or a month. Selects work well when the
+      options are long and predictable enough that hiding them behind a dropdown does
+      not slow users down.
+    </p>
+
+    <h2 id="when-not-to-use">When not to use this component</h2>
+    <p>
+      Do not use a select for five or fewer options — radio buttons show every choice
+      at once and are easier to scan and select. Do not use a select for data users
+      would want to search for, such as a long list of countries, without also
+      offering a typeahead. And do not use a select when more than one answer is
+      allowed — use checkboxes instead.
+    </p>
+
+    <h2 id="guidance">Guidance</h2>
+    <p>
+      Start the list with a non-selectable placeholder option, such as <em
+        >"Select a parish"</em
+      >, so users make an active choice rather than submitting a default value by
+      accident.
+    </p>
+    <p>
+      Always pair a select with a visible <code>&lt;label&gt;</code>. Use hint text (<code
+        >.govbb-hint</code
+      >) beneath the label to explain what is being asked, and link it to the select
+      with <code>aria-describedby</code>.
+    </p>
+
+    <h2 id="errors">Errors</h2>
+    <p>
+      When a select fails validation, show an error message (<code
+        >.govbb-error-message</code
+      >) above the select with <code>role="alert"</code>, and mark the select itself
+      with <code>aria-invalid="true"</code> and <code>aria-describedby</code> pointing
+      at the error message id. Keep error messages specific and actionable, such as
+      "Select a parish".
+    </p>
+  </div>
+  <Example title="Select with error" html={withErrorHtml.trim()} />
+
+  <div class="govbb-prose">
+    <h2 id="disabled-selects">Disabled selects</h2>
+    <p>
+      Avoid disabling selects wherever possible. A disabled select gives the user no
+      information about what they need to do to enable it, and its content is skipped
+      by many screen readers. Prefer showing the value as read-only text, or explaining
+      why the field is unavailable.
+    </p>
+  </div>
+  <Example title="Disabled select" html={disabledHtml.trim()} />
+</ArticleLayout>
