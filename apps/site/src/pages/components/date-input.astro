@@ -1,0 +1,76 @@
+---
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import Example from '../../components/Example.astro';
+import { componentsSidebar } from '../../data/nav';
+import dateOfBirthHtml from '../../examples/date-input/date-of-birth.html?raw';
+import withErrorHtml from '../../examples/date-input/with-error.html?raw';
+
+const onThisPage = [
+  { label: 'Preview', href: '#preview' },
+  { label: 'When to use', href: '#when-to-use' },
+  { label: 'When not to use', href: '#when-not-to-use' },
+  { label: 'Labels and hint text', href: '#labels-and-hint-text' },
+  { label: 'Errors', href: '#errors' },
+];
+---
+<ArticleLayout
+  title="Date Input"
+  section="components"
+  description="Use the date input component to let users enter a memorable date."
+  pageTitle="Date Input"
+  pageSubtitle="Lets users enter a memorable date, such as a date of birth."
+  sidebarGroups={componentsSidebar}
+  sidebarLabel="Components"
+  onThisPage={onThisPage}
+>
+  <div class="govbb-prose">
+    <h2 id="preview">Preview</h2>
+  </div>
+  <Example title="Date of birth" html={dateOfBirthHtml.trim()} />
+
+  <div class="govbb-prose">
+    <p>
+      The Date Input component lets users enter a memorable date, such as a date of
+      birth or a document's expiry date, using three short text fields for day, month,
+      and year. A shared <code>&lt;fieldset&gt;</code> and <code>&lt;legend&gt;</code>
+      group the three fields under a single question.
+    </p>
+
+    <h2 id="when-to-use">When to use this component</h2>
+    <p>
+      Use a date input for dates the user already knows and can recall unassisted —
+      such as a date of birth, a passport expiry date, or an anniversary. Typing three
+      short numbers is faster and more reliable than operating a calendar widget for
+      dates like these.
+    </p>
+
+    <h2 id="when-not-to-use">When not to use this component</h2>
+    <p>
+      Do not use a date input when the user needs to look up a date rather than recall
+      it — for example, choosing the next available appointment slot or selecting a date
+      range. Use a date picker instead, so the user can browse a calendar and see which
+      dates are available.
+    </p>
+
+    <h2 id="labels-and-hint-text">Labels and hint text</h2>
+    <p>
+      Give the fieldset a clear <code>&lt;legend&gt;</code> that states the question,
+      such as "Date of birth", and label each field "Day", "Month", and "Year". Use hint
+      text (<code>.govbb-hint</code>) below the legend to show an example format, such
+      as "For example, 27 3 1990", and link it to the fieldset with
+      <code>aria-describedby</code>. Set <code>inputmode="numeric"</code> on each field
+      so mobile keyboards show digits, and do not require leading zeros — accept both
+      "3" and "03".
+    </p>
+
+    <h2 id="errors">Errors</h2>
+    <p>
+      Validate the whole date together on the server and report a single error message
+      (<code>.govbb-error-message</code>) above the fields with <code>role="alert"</code
+      >, rather than one error per field. Mark every field in the group with
+      <code>aria-invalid="true"</code> so screen reader users understand the whole date
+      is in question, not just one part of it.
+    </p>
+  </div>
+  <Example title="Date of birth with error" html={withErrorHtml.trim()} />
+</ArticleLayout>
