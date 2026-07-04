@@ -1,7 +1,10 @@
-/* Text input — a single <input class="govbb-input"> (or <textarea>). The border
-   and states live on the field itself; no wrapper (fields carry no adornments). */
+/* Text input + textarea — <input class="govbb-input"> or
+   <textarea class="govbb-textarea">. One recipe: the border and states live on
+   the field itself, no wrapper (fields carry no adornments); the textarea adds
+   only its sizing behaviour. */
 
-.govbb-input {
+.govbb-input,
+.govbb-textarea {
   box-sizing: border-box;
   width: 100%;
   padding: var(--govbb-space-s);
@@ -18,21 +21,31 @@
     border-color 0.2s;
 }
 
-.govbb-input:hover {
+/* Users may resize taller, never sideways out of the layout. */
+.govbb-textarea {
+  min-height: 6rem;
+  resize: vertical;
+}
+
+.govbb-input:hover,
+.govbb-textarea:hover {
   box-shadow: var(--govbb-shadow-form-hover);
 }
 
-.govbb-input:focus-visible {
+.govbb-input:focus-visible,
+.govbb-textarea:focus-visible {
   box-shadow: 0 0 0 4px var(--govbb-color-focus);
   outline: 2px solid transparent; /* shows the ring in forced-colors mode */
   outline-offset: 2px;
 }
 
-.govbb-input[aria-invalid='true'] {
+.govbb-input[aria-invalid='true'],
+.govbb-textarea[aria-invalid='true'] {
   border-color: var(--govbb-color-error);
 }
 
-.govbb-input:disabled {
+.govbb-input:disabled,
+.govbb-textarea:disabled {
   opacity: var(--govbb-opacity-disabled);
   cursor: not-allowed;
 }
