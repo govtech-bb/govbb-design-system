@@ -1,0 +1,48 @@
+/* Official banner — thin dark-blue bar above the header confirming this is a
+   genuine government service. Markup: <div class="govbb-official-banner">
+   wrapping <div class="govbb-width-container govbb-official-banner__inner">
+   with a __crest (the decorative __icon image, alt="") and a __text row
+   holding the message and an optional __link. */
+
+.govbb-official-banner {
+  color: var(--govbb-color-surface);
+  background: var(--govbb-color-brand);
+}
+
+.govbb-official-banner__inner {
+  display: flex;
+  align-items: center;
+  gap: var(--govbb-space-xs);
+  padding-block: var(--govbb-space-xs);
+  font-size: var(--govbb-font-size-base);
+}
+
+.govbb-official-banner__crest {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+}
+
+.govbb-official-banner__icon {
+  display: block;
+  flex-shrink: 0;
+  width: auto;
+  height: 24px;
+}
+
+.govbb-official-banner__text {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--govbb-space-s);
+}
+
+/* The link stays white on the dark band — override the base link colours. */
+.govbb-official-banner__link,
+.govbb-official-banner__link:hover {
+  color: inherit;
+}
+
+.govbb-official-banner__link:hover {
+  text-decoration: none;
+}
