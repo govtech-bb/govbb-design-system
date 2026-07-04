@@ -1,0 +1,31 @@
+---
+import { getCollection, render } from 'astro:content';
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import { getDocumentationSidebar } from '../../data/nav';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('docs');
+  return entries.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const { Content, headings } = await render(entry);
+
+const onThisPage = headings
+  .filter((h) => h.depth === 2)
+  .map((h) => ({ label: h.text, href: `#${h.slug}` }));
+---
+<ArticleLayout
+  title={entry.data.title}
+  section="documentation"
+  description={entry.data.description}
+  pageTitle={entry.data.title}
+  pageSubtitle={entry.data.lede}
+  sidebarGroups={await getDocumentationSidebar()}
+  sidebarLabel="Documentation"
+  onThisPage={onThisPage}
+>
+  <div class="govbb-prose govbb-prose--article">
+    <Content />
+  </div>
+</ArticleLayout>

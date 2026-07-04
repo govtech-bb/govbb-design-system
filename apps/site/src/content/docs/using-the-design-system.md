@@ -1,27 +1,8 @@
 ---
 title: Using the design system
+description: How to adopt the design system and the standards every service follows.
+lede: How to adopt the design system and the standards every service follows.
 ---
-
-import ArticleLayout from '../../layouts/ArticleLayout.astro';
-import { documentationSidebar } from '../../data/nav';
-
-export const onThisPage = [
-  { label: 'Standards', href: '#standards' },
-  { label: 'Guidelines', href: '#guidelines' },
-  { label: 'How this is written', href: '#how-this-is-written' },
-];
-
-<ArticleLayout
-  title="Using the design system"
-  section="documentation"
-  description="How to adopt the design system and the standards every service follows."
-  pageTitle="Using the design system"
-  pageSubtitle="How to adopt the design system and the standards every service follows."
-  sidebarGroups={documentationSidebar}
-  sidebarLabel="Documentation"
-  onThisPage={onThisPage}
->
-<div class="govbb-prose">
 
 This is an example guidelines page. It shows how standards and guidance are written and
 laid out. Real content will be added as the design system grows.
@@ -45,6 +26,3 @@ a choice of variants or states, its page describes when each one is appropriate 
 Guidance is written in plain language, in the second person, and describes concrete
 situations rather than abstract rules. If the same question keeps coming up, we treat that
 as a sign the guidance is unclear and fix it — [see why we don't use FAQs](/changelog/no-faqs/).
-
-</div>
-</ArticleLayout>

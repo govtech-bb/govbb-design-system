@@ -1,10 +1,16 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { primaryNav, componentsSidebar, documentationSidebar } from '../../data/nav';
+import {
+  primaryNav,
+  getComponentsSidebar,
+  getDocumentationSidebar,
+} from '../../data/nav';
 import { getSortedChangelog } from '../../data/changelog';
 import type { Section } from '../../types';
 
 const changelog = await getSortedChangelog();
+const componentsSidebar = await getComponentsSidebar();
+const documentationSidebar = await getDocumentationSidebar();
 
 // Sub-links per section, derived from the same nav/content sources the rest of
 // the site uses, so the sitemap stays in step as pages are added.
