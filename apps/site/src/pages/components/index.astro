@@ -1,6 +1,10 @@
 ---
+import { getCollection } from 'astro:content';
 import ArticleLayout from '../../layouts/ArticleLayout.astro';
-import { componentsSidebar } from '../../data/nav';
+import { getComponentsSidebar } from '../../data/nav';
+
+const entries = await getCollection('components');
+entries.sort((a, b) => a.data.title.localeCompare(b.data.title));
 ---
 <ArticleLayout
   title="Components"
@@ -8,7 +12,7 @@ import { componentsSidebar } from '../../data/nav';
   description="Reusable, accessible parts of the user interface, with live examples and code."
   pageTitle="Components"
   pageSubtitle="Reusable parts of the user interface, with live examples and code."
-  sidebarGroups={componentsSidebar}
+  sidebarGroups={await getComponentsSidebar()}
   sidebarLabel="Components"
 >
   <div class="govbb-prose">
@@ -22,45 +26,14 @@ import { componentsSidebar } from '../../data/nav';
     </p>
     <h2>Available components</h2>
     <ul>
-      <li><a href="/components/button/">Button</a> — help users carry out an action.</li>
-      <li>
-        <a href="/components/checkbox/">Checkbox</a> — let users select one or more options
-        from a list.
-      </li>
-      <li>
-        <a href="/components/date-input/">Date Input</a> — let users enter a memorable
-        date.
-      </li>
-      <li>
-        <a href="/components/error-summary/">Error Summary</a> — summarise form errors
-        at the top of the page.
-      </li>
-      <li>
-        <a href="/components/file-upload/">File Upload</a> — let users upload a
-        file.
-      </li>
-      <li>
-        <a href="/components/input/">Input</a> — let users enter a single line of text.
-      </li>
-      <li>
-        <a href="/components/label/">Label</a> — describe a form field so users know
-        what to enter.
-      </li>
-      <li>
-        <a href="/components/number-input/">Number Input</a> — let users enter a
-        number.
-      </li>
-      <li>
-        <a href="/components/radio/">Radio</a> — let users select a single option from
-        a list.
-      </li>
-      <li>
-        <a href="/components/select/">Select</a> — let users choose an option from
-        a long list.
-      </li>
-      <li>
-        <a href="/components/show-hide/">Show/Hide</a> — reveal secondary content on demand.
-      </li>
+      {
+        entries.map((entry) => (
+          <li>
+            <a href={`/components/${entry.id}/`}>{entry.data.title}</a> —{' '}
+            {entry.data.lede}
+          </li>
+        ))
+      }
     </ul>
   </div>
 </ArticleLayout>

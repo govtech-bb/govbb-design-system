@@ -1,3 +1,4 @@
+import { getCollection } from 'astro:content';
 import type { SidebarGroup } from '../components/Sidebar.astro';
 import type { Section } from '../types';
 
@@ -14,50 +15,49 @@ export const primaryNav: PrimaryNavItem[] = [
   { key: 'changelog', label: 'Changelog', href: '/changelog/' },
 ];
 
-// Left-sidebar navigation for the Components section; extend as real
-// components land.
-export const componentsSidebar: SidebarGroup[] = [
-  {
-    heading: 'Components',
-    links: [{ label: 'Overview', href: '/components/' }],
-  },
-  {
-    heading: 'Actions',
-    links: [{ label: 'Button', href: '/components/button/' }],
-  },
-  {
-    heading: 'Form elements',
-    links: [
-      { label: 'Checkbox', href: '/components/checkbox/' },
-      { label: 'Date Input', href: '/components/date-input/' },
-      { label: 'File Upload', href: '/components/file-upload/' },
-      { label: 'Input', href: '/components/input/' },
-      { label: 'Label', href: '/components/label/' },
-      { label: 'Number Input', href: '/components/number-input/' },
-      { label: 'Radio', href: '/components/radio/' },
-      { label: 'Select', href: '/components/select/' },
-    ],
-  },
-  {
-    heading: 'Content',
-    links: [{ label: 'Show/Hide', href: '/components/show-hide/' }],
-  },
-  {
-    heading: 'Feedback',
-    links: [{ label: 'Error Summary', href: '/components/error-summary/' }],
-  },
-];
+// Display order of the component groups (the values of the `group` frontmatter
+// field in src/content/components/).
+const GROUP_ORDER = [
+  'Actions',
+  'Form elements',
+  'Content',
+  'Feedback',
+] as const;
 
-// Left-sidebar navigation for the Documentation section.
-export const documentationSidebar: SidebarGroup[] = [
-  {
-    heading: 'Documentation',
-    links: [
-      { label: 'Overview', href: '/documentation/' },
-      {
-        label: 'Using the design system',
-        href: '/documentation/using-the-design-system/',
-      },
-    ],
-  },
-];
+// Left-sidebar navigation for the Components section, derived from the
+// components content collection — add an MDX file and it appears here.
+export async function getComponentsSidebar(): Promise<SidebarGroup[]> {
+  const entries = await getCollection('components');
+  entries.sort((a, b) => a.data.title.localeCompare(b.data.title));
+  return [
+    {
+      heading: 'Components',
+      links: [{ label: 'Overview', href: '/components/' }],
+    },
+    ...GROUP_ORDER.flatMap((heading) => {
+      const links = entries
+        .filter((e) => e.data.group === heading)
+        .map((e) => ({ label: e.data.title, href: `/components/${e.id}/` }));
+      return links.length > 0 ? [{ heading, links }] : [];
+    }),
+  ];
+}
+
+// Left-sidebar navigation for the Documentation section, derived from the
+// docs content collection.
+export async function getDocumentationSidebar(): Promise<SidebarGroup[]> {
+  const entries = await getCollection('docs');
+  entries.sort((a, b) => a.data.title.localeCompare(b.data.title));
+  return [
+    {
+      heading: 'Documentation',
+      links: [
+        { label: 'Overview', href: '/documentation/' },
+        ...entries.map((e) => ({
+          label: e.data.title,
+          href: `/documentation/${e.id}/`,
+        })),
+      ],
+    },
+  ];
+}

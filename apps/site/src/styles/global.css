@@ -221,6 +221,14 @@ main {
 .govbb-prose p {
   margin-block: var(--govbb-space-3);
 }
+/* Article body (rendered markdown): keep the reading measure on text but let
+   embedded example previews use the full column width. */
+.govbb-prose--article {
+  max-width: none;
+}
+.govbb-prose--article > :not(.govbb-example) {
+  max-width: 44rem;
+}
 
 /* ── Page header (article title + subtitle) ───────────────────── */
 .govbb-page-header {

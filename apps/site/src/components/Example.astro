@@ -16,12 +16,15 @@ import libraryCss from '@govtech-bb/styles?raw';
 interface Props {
   /** Example markup, rendered live and shown in the HTML source. */
   html: string;
+  /** React source for the same example, shown in a React tab (not rendered —
+      the preview is always the HTML, which the React wrappers emit). */
+  react?: string;
   /** Component CSS: injected into the preview and shown in the CSS source. */
   css?: string;
   /** Accessible label for the example. */
   title?: string;
 }
-const { html, css = '', title } = Astro.props;
+const { html, react, css = '', title } = Astro.props;
 
 // Unique id so the tab/tabpanel ARIA relationships are scoped per instance.
 const uid = 'ex-' + Math.random().toString(36).slice(2, 9);
@@ -47,6 +50,7 @@ const srcdoc = `<!doctype html><html lang="en"><head><meta charset="utf-8"><styl
 // Data-driven source list — only render tabs for sources that exist.
 const codeBlocks = [
   { label: 'HTML', lang: 'html' as const, code: html },
+  ...(react ? [{ label: 'React', lang: 'tsx' as const, code: react }] : []),
   ...(css ? [{ label: 'CSS', lang: 'css' as const, code: css }] : []),
 ];
 ---

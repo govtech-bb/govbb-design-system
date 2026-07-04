@@ -1,6 +1,5 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
-import mdx from '@astrojs/mdx';
 import pagefind from 'astro-pagefind';
 
 // Bespoke, static documentation site for design-system.gov.bb.
@@ -9,5 +8,5 @@ import pagefind from 'astro-pagefind';
 // /pagefind/) and powers the /search/ results.
 export default defineConfig({
   site: 'https://design-system.gov.bb',
-  integrations: [mdx(), pagefind()],
+  integrations: [pagefind()],
 });
