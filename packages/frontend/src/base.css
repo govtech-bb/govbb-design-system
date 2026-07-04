@@ -1,0 +1,49 @@
+/* Base element defaults so bare server-rendered HTML looks right before any
+   component classes are applied. Selectors use :where() (zero specificity) so
+   components and consumers override without a fight; layer order (see
+   index.css) keeps these below the components layer regardless. */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:where(body) {
+  margin: 0;
+  font-family: var(--govbb-font-sans);
+  font-size: var(--govbb-font-size-body);
+  line-height: var(--govbb-line-height-base);
+  color: var(--govbb-color-ink);
+  background: var(--govbb-color-surface);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Weight, rhythm and line-height only — the size ramp is intentionally left to
+   the browser defaults (scaled off the 20px base) until the type scale
+   is confirmed. */
+:where(h1, h2, h3, h4, h5, h6) {
+  margin-block: 0 var(--govbb-space-s);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+:where(p) {
+  margin-block: 0 var(--govbb-space-s);
+}
+
+:where(a) {
+  color: var(--govbb-color-interactive);
+  text-underline-offset: 2px;
+}
+
+:where(a:hover) {
+  color: var(--govbb-color-interactive-active);
+}
+
+/* Default keyboard focus ring for anything without its own (links, summaries,
+   etc.). Components with bespoke rings override via the components layer. */
+:where(:focus-visible) {
+  outline: 4px solid var(--govbb-color-focus);
+  outline-offset: 2px;
+}

@@ -8,7 +8,7 @@
   display: grid;
   grid-template-columns: 1fr 2.9375rem;
   align-items: center;
-  width: 11.1875rem;
+  width: 11rem; /* 176px */
   background: var(--govbb-color-surface);
   border: var(--govbb-border-width-form) solid var(--govbb-color-ink);
   border-radius: var(--govbb-radius);
@@ -38,6 +38,8 @@
    :focus-visible (WCAG 2.4.7). */
 .govbb-number-input-wrapper:has(:focus-visible) {
   box-shadow: 0 0 0 4px var(--govbb-color-focus);
+  outline: 2px solid transparent; /* shows the ring in forced-colors mode */
+  outline-offset: 2px;
 }
 
 .govbb-number-input-wrapper:has(:disabled) {
@@ -49,7 +51,7 @@
   grid-area: 1 / 1 / auto / -1;
   width: 100%;
   min-width: 0;
-  padding: var(--govbb-space-3);
+  padding: var(--govbb-space-s);
   padding-right: 2.9375rem;
   font: inherit;
   font-size: var(--govbb-font-size-body);

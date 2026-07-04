@@ -1,0 +1,65 @@
+/* Date input — day / month / year text fields in a row. Each field carries its
+   own border and states (no wrapper — the fields have no adornments). Markup:
+   .govbb-date-input holds one .govbb-date-input__part per field (a
+   .govbb-date-input__label above a .govbb-date-input__field input); the year
+   field is widened with .govbb-date-input__field--year. */
+
+.govbb-date-input {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: var(--govbb-space-s);
+}
+
+.govbb-date-input__part {
+  display: flex;
+  flex-direction: column;
+  gap: var(--govbb-space-xs);
+}
+
+.govbb-date-input__label {
+  font-size: var(--govbb-font-size-body);
+  line-height: var(--govbb-line-height-base);
+  font-weight: 700;
+  color: var(--govbb-color-ink);
+}
+
+.govbb-date-input__field {
+  box-sizing: border-box;
+  width: 5rem; /* 80px — day / month */
+  padding: var(--govbb-space-s);
+  font: inherit;
+  font-size: var(--govbb-font-size-body);
+  line-height: var(--govbb-line-height-base);
+  color: var(--govbb-color-ink);
+  background: var(--govbb-color-surface);
+  border: var(--govbb-border-width-form) solid var(--govbb-color-ink);
+  border-radius: var(--govbb-radius);
+  outline: 0;
+  transition:
+    box-shadow 0.2s,
+    border-color 0.2s;
+}
+
+.govbb-date-input__field--year {
+  width: 10rem; /* 160px */
+}
+
+.govbb-date-input__field:hover {
+  box-shadow: var(--govbb-shadow-form-hover);
+}
+
+.govbb-date-input__field:focus-visible {
+  box-shadow: 0 0 0 4px var(--govbb-color-focus);
+  outline: 2px solid transparent; /* shows the ring in forced-colors mode */
+  outline-offset: 2px;
+}
+
+.govbb-date-input__field[aria-invalid='true'] {
+  border-color: var(--govbb-color-error);
+}
+
+.govbb-date-input__field:disabled {
+  opacity: var(--govbb-opacity-disabled);
+  cursor: not-allowed;
+}

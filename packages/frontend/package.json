@@ -1,0 +1,35 @@
+{
+  "name": "@govtech-bb/frontend",
+  "version": "0.0.0",
+  "description": "GovBB Design System — CSS, tokens and progressive-enhancement JS. Framework-agnostic.",
+  "type": "module",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "import": "./index.js"
+    },
+    "./css": "./dist/govbb.css"
+  },
+  "files": [
+    "dist",
+    "src",
+    "index.js",
+    "index.d.ts"
+  ],
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "browserslist": [
+    "defaults"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "lightningcss --bundle --minify --custom-media --browserslist src/index.css -o dist/govbb.css"
+  },
+  "devDependencies": {
+    "lightningcss-cli": "^1.30.2",
+    "vite": "^8.1.0"
+  }
+}

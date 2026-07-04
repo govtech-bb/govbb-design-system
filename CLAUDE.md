@@ -4,12 +4,35 @@ Guidance for AI agents (Claude Code etc.) working in this repo. Humans: see [CON
 
 ## Project
 
-GovBB Design System — **CSS-first single package** (vanilla CSS + custom
-properties; no Sass, no Tailwind). **Node 24**, **pnpm 11** via Corepack.
+GovBB Design System — **CSS-first, framework-agnostic** (vanilla CSS + custom
+properties; no Sass, no Tailwind, no StyleX). **Node 24**, **pnpm 11** via
+Corepack.
 
 ```bash
 corepack enable && pnpm install   # deps + git hooks
 ```
+
+## Architecture — pnpm workspace, two packages
+
+Following the GOV.UK Frontend model: CSS + progressive-enhancement JS ship in
+**one** package; the React wrapper is separate only for its `react` peer dep.
+
+- **`packages/frontend`** (`@govtech-bb/frontend`) — tokens + component CSS
+  (`build` → `dist/govbb.css`, exported as `./css`) **and** the plain-ESM PE
+  runtime (`initAll()` scans `data-govbb-module` and upgrades behavioural
+  components; the JS is the main export, no build). Consumed directly by
+  PHP/server-rendered apps and by React. CSS-only consumers just import `./css`
+  and never pull the JS.
+- **`packages/react`** (`@govtech-bb/react`) — thin wrappers that emit the
+  stable `govbb-*` classes; behaviour reused from `frontend`. **Never** a second
+  source of truth for styling. Wrappers use **cva** (`class-variance-authority`)
+  to map props → BEM classes and derive prop types — see `button.tsx` as the
+  reference pattern. cva lists variant _names_; the CSS owns what they look like.
+- **`apps/site`** (`@govbb/site`) — Astro docs site.
+
+Deliberately **not** using Lit/Stencil (Shadow DOM fights global tokens + PHP
+consumers) or StyleX (React-only, kills the stable-class API). One framework
+(React) → hand-written cva wrappers beat a WC-compiler's codegen.
 
 ## Commit rules (enforced — do not bypass)
 
@@ -34,13 +57,16 @@ docs: update readme
 
 - Class names: `govbb-`-prefixed BEM (`govbb-block__element--modifier`).
 - Custom properties: `--govbb-*` kebab-case.
-- Tokens live in `src/tokens.css`; one file per component under
-  `src/components/`, imported from `src/index.css`.
-- `pnpm dev` — Vite playground · `pnpm build` — Lightning CSS →
-  `dist/govbb.css` · `pnpm lint` — oxlint + Stylelint.
+- Tokens live in `packages/frontend/src/tokens.css` (primitive tier mirrors the
+  Figma variable ramp, then a small semantic tier we add); one file per
+  component under `packages/frontend/src/components/`, imported from
+  `packages/frontend/src/index.css`.
+- `pnpm dev` — Vite playground (frontend) · `pnpm build` — recursive
+  (`pnpm -r build`; frontend CSS → `dist/govbb.css`) · `pnpm lint` — oxlint +
+  Stylelint (source only, `packages/*/src/**/*.css`).
 
 ## Tooling
 
-pnpm (single package) · Vite (playground) · Lightning CSS (build) · oxlint +
-Stylelint (lint) · Prettier (format) · Lefthook (git hooks) · commitlint
-(commit-msg) · git-cliff (changelog).
+pnpm workspace · Vite (frontend playground) · Lightning CSS (CSS build) ·
+cva (React variant wrappers) · oxlint + Stylelint (lint) · Prettier (format) ·
+Lefthook (git hooks) · commitlint (commit-msg) · git-cliff (changelog).

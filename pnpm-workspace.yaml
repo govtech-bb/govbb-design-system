@@ -6,6 +6,7 @@
 # binary), sharp (Astro image optimization) and pagefind (search index binary)
 # all need theirs to run.
 packages:
+  - packages/*
   - apps/*
 
 allowBuilds:

@@ -40,6 +40,8 @@
 .govbb-checkbox:focus-visible {
   border-color: var(--govbb-color-interactive);
   box-shadow: 0 0 0 4px var(--govbb-color-focus);
+  outline: 2px solid transparent; /* shows the ring in forced-colors mode */
+  outline-offset: 2px;
 }
 
 .govbb-checkbox[aria-invalid='true'] {
@@ -56,7 +58,7 @@
 .govbb-checkbox-item {
   display: flex;
   align-items: center;
-  gap: var(--govbb-space-3);
+  gap: 1.25rem; /* 20px — box↔label */
 }
 
 .govbb-checkbox-item__label {

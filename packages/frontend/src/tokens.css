@@ -1,0 +1,87 @@
+/*
+ * The colour ramp, then semantic aliases built on it. Components reference the
+ * semantic names; the ramp is the source they resolve to.
+ */
+:root {
+  /* ---- Primitives ---- */
+  --govbb-white-00: #fff;
+  --govbb-black-00: #000;
+  --govbb-grey-00: #e0e4e9;
+  --govbb-mid-grey-00: #595959;
+
+  --govbb-teal-00: #0e5f64;
+  --govbb-teal-10: #eaf9f9;
+  --govbb-teal-40: #ace6e9;
+  --govbb-teal-100: #30c0c8;
+
+  --govbb-green-00: #00654a;
+  --govbb-green-10: #e9f9f3;
+  --govbb-green-40: #a5e5ce;
+  --govbb-green-100: #1fbf84;
+
+  --govbb-blue-00: #00164a;
+  --govbb-blue-10: #e5e9f2;
+  --govbb-blue-40: #99a8cc;
+  --govbb-blue-100: #00267f;
+
+  --govbb-red-00: #a42c2c;
+  --govbb-red-10: #fff0f0;
+  --govbb-red-40: #ffc4c4;
+  --govbb-red-100: #ff6b6b;
+
+  --govbb-yellow-00: #e8a833;
+  --govbb-yellow-10: #fff9e9;
+  --govbb-yellow-40: #ffe9a8;
+  --govbb-yellow-100: #ffc726;
+
+  --govbb-pink-00: #ad1157;
+  --govbb-pink-10: #fff4fb;
+  --govbb-pink-40: #ffd4f0;
+  --govbb-pink-100: #ff94d9;
+
+  --govbb-purple-00: #4a235a;
+  --govbb-purple-40: #ddc0e9;
+  --govbb-purple-100: #a962c7;
+
+  /* ---- Brand & surfaces ---- */
+  --govbb-color-brand: var(--govbb-blue-100); /* ultramarine */
+  --govbb-color-brand-accent: var(--govbb-yellow-100); /* gold */
+  --govbb-color-ink: var(--govbb-black-00);
+  --govbb-color-surface: var(--govbb-white-00);
+  --govbb-color-muted: var(--govbb-mid-grey-00);
+  --govbb-color-border: #d4d4d4;
+
+  /* ---- Interactive & form controls ---- */
+  --govbb-color-interactive: var(
+    --govbb-teal-00
+  ); /* primary action, checked fill */
+  --govbb-color-interactive-hover: #1a777d;
+  --govbb-color-interactive-active: #0a4549;
+  --govbb-color-focus: var(--govbb-teal-100); /* focus ring */
+  --govbb-color-focus-danger: var(--govbb-red-100);
+  --govbb-color-error: var(--govbb-red-00); /* invalid state */
+  --govbb-color-neutral: var(--govbb-grey-00); /* secondary fill, dividers */
+  --govbb-color-highlight: var(--govbb-blue-10); /* selected surfaces */
+  --govbb-color-tertiary: var(--govbb-green-00); /* tertiary action */
+
+  --govbb-border-width-form: 2px;
+  --govbb-opacity-disabled: 0.4;
+  --govbb-shadow-form-hover: inset 4px 4px 0 0 rgb(0 0 0 / 10%);
+
+  /* ---- Type ---- */
+  --govbb-font-sans:
+    system-ui, -apple-system, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial',
+    sans-serif;
+  --govbb-font-size-base: 1rem;
+  --govbb-font-size-body: 1.25rem; /* 20px */
+  --govbb-line-height-base: 1.5;
+
+  /* ---- Spacing. s, xm, m are confirmed; xxs/xs are placeholders. ---- */
+  --govbb-space-xxs: 0.25rem; /* 4px */
+  --govbb-space-xs: 0.5rem; /* 8px */
+  --govbb-space-s: 1rem; /* 16px */
+  --govbb-space-xm: 1.5rem; /* 24px */
+  --govbb-space-m: 2rem; /* 32px */
+
+  --govbb-radius: 4px;
+}

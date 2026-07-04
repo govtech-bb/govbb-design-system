@@ -1,0 +1,14 @@
+/* Page width container — centres content and widens the gutters on tablet+.
+   Wrap page content in <div class="govbb-width-container">. */
+
+.govbb-width-container {
+  max-inline-size: 960px;
+  margin-inline: auto;
+  padding-inline: var(--govbb-space-s);
+}
+
+@media (--tablet) {
+  .govbb-width-container {
+    padding-inline: var(--govbb-space-m);
+  }
+}
