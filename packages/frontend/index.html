@@ -209,29 +209,27 @@
           <p class="govbb-hint" id="dob-hint">For example, 27 3 1990</p>
           <div class="govbb-date-input">
             <div class="govbb-date-input__part">
-              <label class="govbb-date-input__label" for="dob-day">Day</label>
+              <label class="govbb-label" for="dob-day">Day</label>
               <input
-                class="govbb-date-input__field"
+                class="govbb-input govbb-date-input__field"
                 id="dob-day"
                 type="text"
                 inputmode="numeric"
               />
             </div>
             <div class="govbb-date-input__part">
-              <label class="govbb-date-input__label" for="dob-month"
-                >Month</label
-              >
+              <label class="govbb-label" for="dob-month">Month</label>
               <input
-                class="govbb-date-input__field"
+                class="govbb-input govbb-date-input__field"
                 id="dob-month"
                 type="text"
                 inputmode="numeric"
               />
             </div>
             <div class="govbb-date-input__part">
-              <label class="govbb-date-input__label" for="dob-year">Year</label>
+              <label class="govbb-label" for="dob-year">Year</label>
               <input
-                class="govbb-date-input__field govbb-date-input__field--year"
+                class="govbb-input govbb-date-input__field govbb-date-input__field--year"
                 id="dob-year"
                 type="text"
                 inputmode="numeric"
@@ -357,6 +355,170 @@
           <p>If you cannot find your ID number, check the back of your card.</p>
         </div>
       </details>
+    </section>
+
+    <section>
+      <h2>Textarea</h2>
+      <div class="govbb-form-group" style="max-width: 30rem">
+        <label class="govbb-label" for="message">Message</label>
+        <p class="govbb-hint" id="message-hint">Up to 500 characters</p>
+        <textarea
+          class="govbb-textarea"
+          id="message"
+          rows="5"
+          aria-describedby="message-hint"
+        ></textarea>
+      </div>
+    </section>
+
+    <section>
+      <h2>Search — default / borderless</h2>
+      <form class="govbb-search" action="/search" style="max-width: 30rem">
+        <label class="govbb-visually-hidden" for="search-q">Search</label>
+        <input
+          class="govbb-search__input"
+          id="search-q"
+          name="q"
+          type="search"
+          placeholder="Search gov.bb"
+        />
+        <button class="govbb-search__button" type="submit">Search</button>
+      </form>
+      <form
+        class="govbb-search govbb-search--borderless"
+        action="/search"
+        style="max-width: 30rem"
+      >
+        <label class="govbb-visually-hidden" for="search-hdr">Search</label>
+        <input
+          class="govbb-search__input"
+          id="search-hdr"
+          name="q"
+          type="search"
+        />
+        <button class="govbb-search__button" type="submit">Search</button>
+      </form>
+    </section>
+
+    <section>
+      <h2>Breadcrumbs — full / collapsed on mobile</h2>
+      <nav class="govbb-breadcrumbs" aria-label="Breadcrumb">
+        <ol class="govbb-breadcrumbs__list">
+          <li class="govbb-breadcrumbs__item">
+            <a class="govbb-breadcrumbs__link" href="/">Home</a>
+          </li>
+          <li class="govbb-breadcrumbs__item">
+            <a class="govbb-breadcrumbs__link" href="/services">Services</a>
+          </li>
+          <li class="govbb-breadcrumbs__item">
+            <a class="govbb-breadcrumbs__link" href="/services/passports"
+              >Passports</a
+            >
+          </li>
+        </ol>
+      </nav>
+      <nav
+        class="govbb-breadcrumbs govbb-breadcrumbs--collapse-on-mobile"
+        aria-label="Breadcrumb"
+      >
+        <ol class="govbb-breadcrumbs__list">
+          <li class="govbb-breadcrumbs__item">
+            <a class="govbb-breadcrumbs__link" href="/">Home</a>
+          </li>
+          <li class="govbb-breadcrumbs__item">
+            <a class="govbb-breadcrumbs__link" href="/a">Section</a>
+          </li>
+          <li class="govbb-breadcrumbs__item">
+            <a class="govbb-breadcrumbs__link" href="/a/b">Subsection</a>
+          </li>
+          <li class="govbb-breadcrumbs__item">
+            <a class="govbb-breadcrumbs__link" href="/a/b/c">Topic</a>
+          </li>
+        </ol>
+      </nav>
+    </section>
+
+    <section>
+      <h2>Status banner — alpha / beta / migrated / service</h2>
+      <div class="govbb-status-banner govbb-status-banner--alpha">
+        <p>
+          This page is in <a href="#">Alpha</a>. Your feedback will help us
+          improve it.
+        </p>
+      </div>
+      <div class="govbb-status-banner govbb-status-banner--beta">
+        <p>
+          This page is in <a href="#">Beta</a>. Your feedback will help us
+          improve it.
+        </p>
+      </div>
+      <div
+        class="govbb-status-banner govbb-status-banner--migrated govbb-status-banner--rounded"
+      >
+        <p>
+          This page has moved from an older site. <a href="#">Learn more</a>
+        </p>
+      </div>
+      <div class="govbb-status-banner govbb-status-banner--service">
+        <p>This service is currently disrupted. <a href="#">Check status</a></p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Official banner + header</h2>
+      <div style="width: 100%">
+        <div class="govbb-official-banner">
+          <div class="govbb-width-container govbb-official-banner__inner">
+            <div class="govbb-official-banner__crest">
+              <img
+                class="govbb-official-banner__icon"
+                src="/assets/images/govbb-creast.svg"
+                alt=""
+              />
+            </div>
+            <div class="govbb-official-banner__text">
+              <span>Official government website</span>
+              <a class="govbb-official-banner__link" href="#">Learn more</a>
+            </div>
+          </div>
+        </div>
+        <header class="govbb-header">
+          <div class="govbb-width-container govbb-header__inner">
+            <a href="/">
+              <img
+                class="govbb-header__logo"
+                src="/assets/images/govbb-logo.svg"
+                alt="gov.bb"
+              />
+            </a>
+          </div>
+        </header>
+      </div>
+    </section>
+
+    <section>
+      <h2>Footer</h2>
+      <footer class="govbb-footer" style="width: 100%">
+        <div class="govbb-width-container govbb-footer__inner">
+          <nav class="govbb-footer__nav" aria-label="Footer navigation">
+            <a class="govbb-footer__link" href="/">Home</a>
+            <a class="govbb-footer__link" href="/cookies">Cookie policy</a>
+            <a class="govbb-footer__link" href="/terms"
+              >Terms &amp; conditions</a
+            >
+            <a class="govbb-footer__link" href="/sitemap">Sitemap</a>
+          </nav>
+          <hr class="govbb-footer__divider" aria-hidden="true" />
+          <div class="govbb-footer__end">
+            <img
+              class="govbb-footer__coat"
+              src="/assets/images/govbb-creast.svg"
+              alt=""
+            />
+            <p class="govbb-footer__copy">© 2026 Government of Barbados</p>
+          </div>
+        </div>
+      </footer>
     </section>
   </body>
 </html>
