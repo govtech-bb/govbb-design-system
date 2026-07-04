@@ -1,0 +1,54 @@
+/* Breadcrumbs — trail of links showing where a page sits in the hierarchy,
+   without the current page itself. Markup: <nav class="govbb-breadcrumbs"
+   aria-label="Breadcrumb"> holding an <ol class="govbb-breadcrumbs__list"> of
+   __item <li>s, each wrapping an __link <a>. Separators are drawn with a
+   rotated border — no characters to leak into screen readers.
+   --collapse-on-mobile keeps only the first and last item on small screens. */
+
+.govbb-breadcrumbs {
+  display: flex;
+  align-items: center;
+  font-size: var(--govbb-font-size-body);
+  line-height: var(--govbb-line-height-base);
+}
+
+.govbb-breadcrumbs__list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  row-gap: var(--govbb-space-xxs);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.govbb-breadcrumbs__item {
+  display: flex;
+  align-items: center;
+}
+
+/* Chevron separator before every item except the first. */
+.govbb-breadcrumbs__item + .govbb-breadcrumbs__item::before {
+  content: '';
+  display: inline-block;
+  flex-shrink: 0;
+  width: 0.4375em;
+  height: 0.4375em;
+  margin: 0 0.5em;
+  border-top: 1px solid var(--govbb-color-muted);
+  border-right: 1px solid var(--govbb-color-muted);
+  transform: rotate(45deg);
+}
+
+/* Link colour and underline come from the base link styles; long URLs used as
+   labels must not blow the trail open. */
+.govbb-breadcrumbs__link {
+  word-break: break-all;
+}
+
+@media (--mobile) {
+  .govbb-breadcrumbs--collapse-on-mobile
+    .govbb-breadcrumbs__item:not(:first-child, :last-child) {
+    display: none;
+  }
+}
