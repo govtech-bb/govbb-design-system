@@ -18,6 +18,8 @@
 @import url('./components/form.css') layer(components);
 @import url('./components/header.css') layer(components);
 @import url('./components/input.css') layer(components);
+@import url('./components/link.css') layer(components);
+@import url('./components/list.css') layer(components);
 @import url('./components/number-input.css') layer(components);
 @import url('./components/official-banner.css') layer(components);
 @import url('./components/search.css') layer(components);
