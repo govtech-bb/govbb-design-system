@@ -70,8 +70,22 @@
   --govbb-font-sans:
     'Figtree', system-ui, -apple-system, 'Segoe UI', 'Roboto', 'Helvetica',
     'Arial', sans-serif;
-  --govbb-font-size-base: 1rem;
+
+  /* Size ramp — mirrors the Figma type scale (see the .govbb-text-* utility
+     classes). Everything except display/h1/h2/h3 uses the base line-height. */
+  --govbb-font-size-display: 5rem;
+  --govbb-font-size-h1: 3.5rem;
+  --govbb-font-size-h2: 2.5rem;
+  --govbb-font-size-h3: 1.5rem;
+  --govbb-font-size-h4: 1.25rem;
+  --govbb-font-size-body-lg: 2rem;
   --govbb-font-size-body: 1.25rem; /* 20px */
+  --govbb-font-size-caption: 1rem;
+  --govbb-font-size-caption-sm: 0.75rem;
+  --govbb-line-height-display: 1;
+  --govbb-line-height-h1: 1.15;
+  --govbb-line-height-h2: 1.25;
+  --govbb-line-height-h3: 1.25;
   --govbb-line-height-base: 1.5;
 
   /* ---- Spacing. s, xm, m are confirmed; xxs/xs are placeholders. ---- */

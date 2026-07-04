@@ -14,7 +14,7 @@
   align-items: center;
   gap: var(--govbb-space-xs);
   padding-block: var(--govbb-space-xs);
-  font-size: var(--govbb-font-size-base);
+  font-size: var(--govbb-font-size-caption);
 }
 
 .govbb-official-banner__crest {

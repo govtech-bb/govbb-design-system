@@ -57,7 +57,7 @@
 }
 
 .govbb-file-upload__subtitle {
-  font-size: var(--govbb-font-size-base);
+  font-size: var(--govbb-font-size-caption);
   line-height: var(--govbb-line-height-base);
 }
 
@@ -70,7 +70,7 @@
 }
 
 .govbb-file-upload__max-size {
-  font-size: var(--govbb-font-size-base);
+  font-size: var(--govbb-font-size-caption);
   line-height: var(--govbb-line-height-base);
   color: var(--govbb-color-muted);
 }
