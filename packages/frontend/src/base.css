@@ -47,3 +47,13 @@
   outline: 4px solid var(--govbb-color-focus);
   outline-offset: 2px;
 }
+
+/* Collapse every transition (state fades, the show/hide triangle rotation)
+   for users who ask for reduced motion. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0s;
+  }
+}

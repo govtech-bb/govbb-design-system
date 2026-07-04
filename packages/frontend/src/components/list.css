@@ -1,0 +1,24 @@
+/* List — plain by default (no markers, no indent) for lists of links or rows;
+   --bullet and --number opt back into markers with a hanging indent. */
+
+.govbb-list {
+  margin: 0;
+  padding: 0;
+  font-size: var(--govbb-font-size-body);
+  line-height: var(--govbb-line-height-base);
+  list-style-type: none;
+}
+
+.govbb-list > li {
+  margin-bottom: var(--govbb-space-xxs);
+}
+
+.govbb-list--bullet {
+  padding-inline-start: var(--govbb-space-m);
+  list-style-type: disc;
+}
+
+.govbb-list--number {
+  padding-inline-start: var(--govbb-space-m);
+  list-style-type: decimal;
+}

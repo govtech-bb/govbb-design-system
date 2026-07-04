@@ -1,8 +1,10 @@
-/* Date input — day / month / year text fields in a row. Each field carries its
-   own border and states (no wrapper — the fields have no adornments). Markup:
-   .govbb-date-input holds one .govbb-date-input__part per field (a
-   .govbb-date-input__label above a .govbb-date-input__field input); the year
-   field is widened with .govbb-date-input__field--year. */
+/* Date input — day / month / year text fields in a row. Each field is a
+   standard .govbb-input and each label a standard .govbb-label (so borders,
+   states and typography can never drift from the text input); this file owns
+   only the row layout and the field widths. Markup: .govbb-date-input holds
+   one .govbb-date-input__part per field — a .govbb-label above an
+   <input class="govbb-input govbb-date-input__field">; the year field is
+   widened with .govbb-date-input__field--year. */
 
 .govbb-date-input {
   display: flex;
@@ -17,49 +19,12 @@
   gap: var(--govbb-space-xs);
 }
 
-.govbb-date-input__label {
-  font-size: var(--govbb-font-size-body);
-  line-height: var(--govbb-line-height-base);
-  font-weight: 700;
-  color: var(--govbb-color-ink);
-}
-
-.govbb-date-input__field {
-  box-sizing: border-box;
+/* Descendant selector outranks .govbb-input's width: 100% regardless of
+   import order. */
+.govbb-date-input .govbb-date-input__field {
   width: 5rem; /* 80px — day / month */
-  padding: var(--govbb-space-s);
-  font: inherit;
-  font-size: var(--govbb-font-size-body);
-  line-height: var(--govbb-line-height-base);
-  color: var(--govbb-color-ink);
-  background: var(--govbb-color-surface);
-  border: var(--govbb-border-width-form) solid var(--govbb-color-ink);
-  border-radius: var(--govbb-radius);
-  outline: 0;
-  transition:
-    box-shadow 0.2s,
-    border-color 0.2s;
 }
 
-.govbb-date-input__field--year {
+.govbb-date-input .govbb-date-input__field--year {
   width: 10rem; /* 160px */
-}
-
-.govbb-date-input__field:hover {
-  box-shadow: var(--govbb-shadow-form-hover);
-}
-
-.govbb-date-input__field:focus-visible {
-  box-shadow: 0 0 0 4px var(--govbb-color-focus);
-  outline: 2px solid transparent; /* shows the ring in forced-colors mode */
-  outline-offset: 2px;
-}
-
-.govbb-date-input__field[aria-invalid='true'] {
-  border-color: var(--govbb-color-error);
-}
-
-.govbb-date-input__field:disabled {
-  opacity: var(--govbb-opacity-disabled);
-  cursor: not-allowed;
 }

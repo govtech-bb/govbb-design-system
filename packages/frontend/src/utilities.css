@@ -1,6 +1,63 @@
 /* Utility helpers. Deliberately minimal — add a class when a real need shows
    up, not speculatively (this is where design systems bloat). */
 
+/* Type scale — opt-in text classes mirroring the Figma ramp (tokens.css).
+   As utilities they win over component typography, which is the point:
+   applying one to a component element is an explicit override. */
+.govbb-text-display {
+  font-size: var(--govbb-font-size-display);
+  line-height: var(--govbb-line-height-display);
+  font-weight: 700;
+}
+
+.govbb-text-h1 {
+  font-size: var(--govbb-font-size-h1);
+  line-height: var(--govbb-line-height-h1);
+  font-weight: 700;
+}
+
+.govbb-text-h2 {
+  font-size: var(--govbb-font-size-h2);
+  line-height: var(--govbb-line-height-h2);
+  font-weight: 700;
+}
+
+.govbb-text-h3 {
+  font-size: var(--govbb-font-size-h3);
+  line-height: var(--govbb-line-height-h3);
+  font-weight: 700;
+}
+
+.govbb-text-h4 {
+  font-size: var(--govbb-font-size-h4);
+  line-height: var(--govbb-line-height-base);
+  font-weight: 700;
+}
+
+.govbb-text-body-lg {
+  font-size: var(--govbb-font-size-body-lg);
+  line-height: var(--govbb-line-height-base);
+  font-weight: 400;
+}
+
+.govbb-text-body {
+  font-size: var(--govbb-font-size-body);
+  line-height: var(--govbb-line-height-base);
+  font-weight: 400;
+}
+
+.govbb-text-caption {
+  font-size: var(--govbb-font-size-caption);
+  line-height: var(--govbb-line-height-base);
+  font-weight: 400;
+}
+
+.govbb-text-caption-sm {
+  font-size: var(--govbb-font-size-caption-sm);
+  line-height: var(--govbb-line-height-base);
+  font-weight: 400;
+}
+
 /* Hidden from sight, still read by screen readers and focusable. */
 .govbb-visually-hidden {
   position: absolute;

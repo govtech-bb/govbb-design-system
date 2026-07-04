@@ -1,0 +1,71 @@
+/* Search — a search input and submit button joined into one unit. Markup:
+   <form class="govbb-search"> holding a visually-hidden label (use the
+   .govbb-visually-hidden utility), the __input and the __button.
+   --borderless drops the input border for use inside coloured containers,
+   such as the header. */
+
+.govbb-search {
+  display: flex;
+  width: 100%;
+}
+
+.govbb-search__input {
+  flex: 1;
+  min-width: 0;
+  height: 3.875rem; /* 62px — matches the button */
+  padding: 0 var(--govbb-space-s);
+  font: inherit;
+  font-size: var(--govbb-font-size-body);
+  line-height: var(--govbb-line-height-base);
+  color: var(--govbb-color-ink);
+  background: var(--govbb-color-surface);
+  border: var(--govbb-border-width-form) solid var(--govbb-color-ink);
+  border-right: 0;
+  border-start-start-radius: var(--govbb-radius);
+  border-end-start-radius: var(--govbb-radius);
+  outline: 0;
+  transition: box-shadow 0.2s;
+}
+
+.govbb-search__input:hover {
+  box-shadow: var(--govbb-shadow-form-hover);
+}
+
+/* Keyboard focus ring: shared rule in focus.css. Here only lift the focused
+   input above the adjoining button so the ring isn't cut. */
+.govbb-search__input:focus-visible {
+  position: relative;
+  z-index: 1;
+}
+
+.govbb-search--borderless .govbb-search__input {
+  border: 0;
+}
+
+.govbb-search__button {
+  height: 3.875rem;
+  padding: 0 var(--govbb-space-xm);
+  font: inherit;
+  font-size: var(--govbb-font-size-body);
+  line-height: var(--govbb-line-height-base);
+  color: var(--govbb-color-surface);
+  background: var(--govbb-color-interactive);
+  border: 0;
+  border-start-end-radius: var(--govbb-radius);
+  border-end-end-radius: var(--govbb-radius);
+  outline: 0;
+  cursor: pointer;
+  transition:
+    background-color 0.2s,
+    box-shadow 0.2s;
+}
+
+.govbb-search__button:hover {
+  background: color-mix(in oklab, var(--govbb-color-interactive), white 15%);
+  box-shadow: inset 0 0 0 4px rgb(255 255 255 / 10%);
+}
+
+.govbb-search__button:active {
+  background: color-mix(in oklab, var(--govbb-color-interactive), black 18%);
+  box-shadow: inset 0 0 0 3px rgb(0 0 0 / 20%);
+}

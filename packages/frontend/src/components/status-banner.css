@@ -1,0 +1,41 @@
+/* Status banner — coloured strip stating where a page sits in its lifecycle.
+   One per page, just below the header. Markup:
+   <div class="govbb-status-banner govbb-status-banner--alpha"> (or --beta /
+   --migrated / --service) containing one or two <p>s. Add --rounded for a
+   softer corner when nested inside content. */
+
+.govbb-status-banner {
+  width: 100%;
+  padding: var(--govbb-space-s);
+  font-size: var(--govbb-font-size-body);
+  line-height: var(--govbb-line-height-base);
+  color: var(--govbb-color-ink);
+}
+
+.govbb-status-banner > p {
+  margin: 0;
+}
+
+.govbb-status-banner > p + p {
+  margin-top: var(--govbb-space-xs);
+}
+
+.govbb-status-banner--rounded {
+  border-radius: var(--govbb-radius);
+}
+
+.govbb-status-banner--alpha {
+  background: var(--govbb-color-highlight);
+}
+
+.govbb-status-banner--beta {
+  background: var(--govbb-yellow-40);
+}
+
+.govbb-status-banner--migrated {
+  background: var(--govbb-pink-10);
+}
+
+.govbb-status-banner--service {
+  background: var(--govbb-red-10);
+}

@@ -1,7 +1,15 @@
-/* Radio — custom-styled native <input type="radio">.
-   Mirrors the checkbox with circular shapes, plus an optional
-   conditional reveal (.govbb-radio-item__conditional). */
+/*
+ * Checkbox + radio — custom-styled native inputs. The two controls are the
+ * same 3rem bordered box with the same states, so they share one recipe; the
+ * radio differs only in shape (round box, round dot) and its optional
+ * conditional reveal.
+ *
+ * Markup: <input class="govbb-checkbox"> (or .govbb-radio) beside a
+ * .govbb-checkbox-item__label (or .govbb-radio-item__label), wrapped in
+ * .govbb-checkbox-item (or .govbb-radio-item).
+ */
 
+.govbb-checkbox,
 .govbb-radio {
   appearance: none;
   display: inline-grid;
@@ -13,7 +21,6 @@
   padding: 0;
   background: var(--govbb-color-surface);
   border: var(--govbb-border-width-form) solid var(--govbb-color-ink);
-  border-radius: 50%;
   cursor: pointer;
   outline: 0;
   transition:
@@ -21,48 +28,60 @@
     border-color 0.2s;
 }
 
-/* The dot: a filled circle revealed on :checked. */
+/* The mark — a filled square (check) or circle (dot) revealed on :checked. */
+.govbb-checkbox::before,
 .govbb-radio::before {
   content: '';
   width: 19px;
   height: 19px;
-  border-radius: 50%;
   background: var(--govbb-color-interactive);
   transform: scale(0);
 }
 
+/* Round shapes for the radio. */
+.govbb-radio,
+.govbb-radio::before {
+  border-radius: 50%;
+}
+
+.govbb-checkbox:checked::before,
 .govbb-radio:checked::before {
   transform: scale(1);
 }
 
+.govbb-checkbox:hover,
 .govbb-radio:hover {
   box-shadow: var(--govbb-shadow-form-hover);
 }
 
+/* Keyboard focus ring: shared rule in focus.css; only the border recolour is
+   ours. */
+.govbb-checkbox:focus-visible,
 .govbb-radio:focus-visible {
   border-color: var(--govbb-color-interactive);
-  box-shadow: 0 0 0 4px var(--govbb-color-focus);
-  outline: 2px solid transparent; /* shows the ring in forced-colors mode */
-  outline-offset: 2px;
 }
 
+.govbb-checkbox[aria-invalid='true'],
 .govbb-radio[aria-invalid='true'] {
   border-color: var(--govbb-color-error);
 }
 
+.govbb-checkbox:disabled,
 .govbb-radio:disabled {
   opacity: var(--govbb-opacity-disabled);
   box-shadow: none;
   cursor: not-allowed;
 }
 
-/* Radio + label row. */
+/* Control + label row. */
+.govbb-checkbox-item,
 .govbb-radio-item {
   display: flex;
   align-items: center;
   gap: 1.25rem; /* 20px — control↔label */
 }
 
+.govbb-checkbox-item__label,
 .govbb-radio-item__label {
   font-size: var(--govbb-font-size-body);
   line-height: var(--govbb-line-height-base);
@@ -70,6 +89,7 @@
   cursor: pointer;
 }
 
+.govbb-checkbox:disabled + .govbb-checkbox-item__label,
 .govbb-radio:disabled + .govbb-radio-item__label {
   opacity: var(--govbb-opacity-disabled);
   cursor: not-allowed;

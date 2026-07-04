@@ -1,0 +1,32 @@
+/* Header — the gold site header holding the gov.bb logo (the link home) and,
+   optionally, a search or sign-out control. Renders on every page, directly
+   below the official banner. Markup: <header class="govbb-header"> wrapping
+   <div class="govbb-width-container govbb-header__inner">. */
+
+.govbb-header {
+  color: var(--govbb-color-ink);
+  background: var(--govbb-color-brand-accent);
+}
+
+.govbb-header__inner {
+  display: flex;
+  align-items: center;
+  gap: var(--govbb-space-s);
+  padding-block: var(--govbb-space-s);
+}
+
+.govbb-header__logo {
+  display: block;
+  width: auto;
+  height: 1.6875rem; /* 27px */
+}
+
+@media (--tablet) {
+  .govbb-header__inner {
+    padding-block: var(--govbb-space-xm);
+  }
+
+  .govbb-header__logo {
+    height: 2.1875rem; /* 35px */
+  }
+}

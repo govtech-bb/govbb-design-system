@@ -10,9 +10,11 @@
       "types": "./index.d.ts",
       "import": "./index.js"
     },
-    "./css": "./dist/govbb.css"
+    "./css": "./dist/govbb.css",
+    "./assets/*": "./assets/*"
   },
   "files": [
+    "assets",
     "dist",
     "src",
     "index.js",

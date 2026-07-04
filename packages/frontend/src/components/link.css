@@ -1,0 +1,36 @@
+/* Link — opt-in styled text link. Bare content links get the quiet base
+   styles (base.css); use .govbb-link where a link needs the full treatment
+   with highlight states. Focus/active show as a gold background instead of an
+   outline, matching the error-summary and show/hide links. */
+
+.govbb-link {
+  color: var(--govbb-color-interactive);
+  cursor: pointer;
+  outline: none;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.govbb-link:hover {
+  color: var(--govbb-color-ink);
+  background-color: var(--govbb-teal-10);
+  text-decoration: none;
+}
+
+.govbb-link:active,
+.govbb-link:focus-visible {
+  color: var(--govbb-color-ink);
+  background-color: var(--govbb-color-brand-accent);
+  text-decoration: none;
+}
+
+/* Underline only on interaction — for links inside already-underlined or
+   dense contexts. */
+.govbb-link--no-underline:not(:hover, :active) {
+  text-decoration: none;
+}
+
+/* Keep visited links in the surrounding text colour. */
+.govbb-link--no-visited:visited {
+  color: inherit;
+}
