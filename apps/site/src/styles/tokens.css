@@ -6,7 +6,7 @@
  * source of truth for brand values. A few site values the package does not
  * define yet are kept as literals and flagged below. Type scale, spacing and
  * layout tokens are site-specific (the package ships no equivalents) and drive
- * this site's GOV.UK-style layout.
+ * this site's layout.
  */
 :root {
   /* Brand — from @govtech-bb/styles */
@@ -31,7 +31,7 @@
   /* Interaction */
   --govbb-color-link: var(--govbb-color-teal);
   --govbb-color-link-hover: var(--govbb-color-teal-dark);
-  --govbb-color-focus: #ffdd00; /* GOV.UK focus yellow — package has no focus token */
+  --govbb-color-focus: #ffdd00; /* focus yellow — package has no focus token */
 
   /* Decorative card fills — no package equivalents (site-specific) */
   --govbb-card-pink: #ffd4f0;
@@ -43,7 +43,7 @@
   --govbb-font-size-base: 1.125rem; /* 18px */
   --govbb-line-height-base: 1.5;
 
-  /* Type scale (site layout — px from Figma) */
+  /* Type scale (site layout — px) */
   --govbb-font-size-hero: 5rem; /* 80px */
   --govbb-font-size-page-title: 3rem; /* 48px */
   --govbb-font-size-section: 2.5rem; /* 40px */

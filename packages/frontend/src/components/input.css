@@ -1,0 +1,38 @@
+/* Text input — a single <input class="govbb-input"> (or <textarea>). The border
+   and states live on the field itself; no wrapper (fields carry no adornments). */
+
+.govbb-input {
+  box-sizing: border-box;
+  width: 100%;
+  padding: var(--govbb-space-s);
+  font: inherit;
+  font-size: var(--govbb-font-size-body);
+  line-height: var(--govbb-line-height-base);
+  color: var(--govbb-color-ink);
+  background: var(--govbb-color-surface);
+  border: var(--govbb-border-width-form) solid var(--govbb-color-ink);
+  border-radius: var(--govbb-radius);
+  outline: 0;
+  transition:
+    box-shadow 0.2s,
+    border-color 0.2s;
+}
+
+.govbb-input:hover {
+  box-shadow: var(--govbb-shadow-form-hover);
+}
+
+.govbb-input:focus-visible {
+  box-shadow: 0 0 0 4px var(--govbb-color-focus);
+  outline: 2px solid transparent; /* shows the ring in forced-colors mode */
+  outline-offset: 2px;
+}
+
+.govbb-input[aria-invalid='true'] {
+  border-color: var(--govbb-color-error);
+}
+
+.govbb-input:disabled {
+  opacity: var(--govbb-opacity-disabled);
+  cursor: not-allowed;
+}

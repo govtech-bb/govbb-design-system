@@ -14,8 +14,8 @@ export const primaryNav: PrimaryNavItem[] = [
   { key: 'changelog', label: 'Changelog', href: '/changelog/' },
 ];
 
-// Left-sidebar navigation for the Components section. Grouped the way GOV.UK
-// groups its component index; extend as real components land.
+// Left-sidebar navigation for the Components section; extend as real
+// components land.
 export const componentsSidebar: SidebarGroup[] = [
   {
     heading: 'Components',

@@ -1,0 +1,186 @@
+/*
+ * Button: primary, plus secondary / tertiary / text variants and the negative
+ * (danger) and inverse (dark-background) modifiers.
+ *
+ * Colours come from the semantic tokens. Hover/active are color-mixed off the
+ * base colour, so recolouring a variant carries its states with it.
+ */
+
+.govbb-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--govbb-space-xs);
+  padding: var(--govbb-space-s) var(--govbb-space-xm);
+  font-family: inherit;
+  font-size: var(--govbb-font-size-body);
+  line-height: var(--govbb-line-height-base);
+  color: var(--govbb-color-surface);
+  background: var(--govbb-color-interactive);
+  border: 0;
+  border-radius: var(--govbb-radius);
+  cursor: pointer;
+  text-decoration: none; /* survives being rendered as an <a> */
+  transition:
+    background-color 150ms ease,
+    box-shadow 150ms ease,
+    color 150ms ease;
+
+  &:is(:disabled, [aria-disabled='true']) {
+    opacity: var(--govbb-opacity-disabled);
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  /* inset shadow = inner border, no layout shift, follows the radius */
+  &:hover {
+    background: color-mix(in oklab, var(--govbb-color-interactive), white 15%);
+    box-shadow: inset 0 0 0 4px rgb(255 255 255 / 10%);
+  }
+
+  &:active {
+    background: color-mix(in oklab, var(--govbb-color-interactive), black 18%);
+    box-shadow: inset 0 0 0 3px rgb(0 0 0 / 20%);
+  }
+
+  /* outline (not box-shadow) to avoid edge artifacts; offset leaves a gap */
+  &:focus-visible {
+    outline: 4px solid var(--govbb-color-focus);
+    outline-offset: 2px;
+  }
+}
+
+/* Secondary */
+.govbb-button--secondary {
+  color: var(--govbb-color-ink);
+  background: var(--govbb-color-neutral);
+
+  /* already light, so hover only adds the overlay */
+  &:hover {
+    background: var(--govbb-color-neutral);
+    box-shadow: inset 0 0 0 4px rgb(0 0 0 / 5%);
+  }
+
+  &:active {
+    background: color-mix(in oklab, var(--govbb-color-neutral), black 18%);
+    box-shadow: inset 0 0 0 3px rgb(0 0 0 / 10%);
+  }
+}
+
+/* Tertiary — outline via inset shadow, so its height matches the filled ones */
+.govbb-button--tertiary {
+  color: var(--govbb-color-tertiary);
+  background: transparent;
+  box-shadow: inset 0 0 0 2px var(--govbb-color-tertiary);
+
+  &:hover {
+    background: var(--govbb-green-10);
+    box-shadow: inset 0 0 0 2px var(--govbb-color-tertiary);
+  }
+
+  &:active {
+    color: var(--govbb-green-40);
+    background: var(--govbb-color-tertiary);
+    box-shadow:
+      inset 0 0 0 2px var(--govbb-color-tertiary),
+      inset 0 0 0 3px rgb(0 0 0 / 10%);
+  }
+
+  /* ring meets the outline, no gap */
+  &:focus-visible {
+    outline-offset: 0;
+  }
+}
+
+/* Text — a link, not a box */
+.govbb-button--text {
+  padding: var(--govbb-space-xxs);
+  color: var(--govbb-color-tertiary);
+  background: transparent;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  border-radius: 0; /* keep the focus ring square */
+
+  &:hover {
+    color: var(--govbb-color-brand-accent);
+    background: transparent;
+    box-shadow: none;
+  }
+
+  &:active {
+    color: var(--govbb-yellow-00);
+    background: transparent;
+    box-shadow: none;
+  }
+}
+
+/* Negative (danger) — only primary and text use it */
+.govbb-button--negative {
+  color: var(--govbb-color-surface);
+  background: var(--govbb-color-error);
+
+  &:hover {
+    background: color-mix(in oklab, var(--govbb-color-error), white 15%);
+    box-shadow: inset 0 0 0 4px rgb(255 255 255 / 10%);
+  }
+
+  &:active {
+    background: color-mix(in oklab, var(--govbb-color-error), black 18%);
+    box-shadow: inset 0 0 0 3px rgb(0 0 0 / 20%);
+  }
+
+  &:focus-visible {
+    outline-color: var(--govbb-color-focus-danger);
+  }
+
+  &.govbb-button--text {
+    color: var(--govbb-color-error);
+    background: transparent;
+
+    &:hover {
+      color: var(--govbb-red-100);
+      background: transparent;
+      box-shadow: none;
+    }
+
+    &:active {
+      color: var(--govbb-color-error);
+      background: transparent;
+      box-shadow: none;
+    }
+  }
+}
+
+/* Inverse — for dark backgrounds */
+.govbb-button--inverse {
+  color: var(--govbb-color-brand);
+  background: var(--govbb-color-surface);
+
+  &:hover {
+    background: var(--govbb-color-surface);
+    box-shadow: inset 0 0 0 4px rgb(0 0 0 / 5%);
+  }
+
+  &:active {
+    background: color-mix(in oklab, var(--govbb-color-surface), black 10%);
+    box-shadow: inset 0 0 0 3px rgb(0 0 0 / 10%);
+  }
+
+  &.govbb-button--tertiary {
+    color: var(--govbb-color-surface);
+    background: transparent;
+    box-shadow: inset 0 0 0 2px var(--govbb-color-surface);
+
+    &:hover,
+    &:active {
+      color: var(--govbb-color-surface);
+      background: rgb(255 255 255 / 10%);
+      box-shadow: inset 0 0 0 2px var(--govbb-color-surface);
+    }
+  }
+
+  &.govbb-button--text {
+    color: var(--govbb-color-surface);
+    background: transparent;
+  }
+}

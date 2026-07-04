@@ -33,6 +33,15 @@
         width: 100%;
         margin: 0;
       }
+      /* dark background to check the inverse variant */
+      section.dark {
+        background: var(--govbb-color-interactive);
+        padding: 1rem;
+        border-radius: 4px;
+      }
+      section.dark > h2 {
+        color: rgb(255 255 255 / 0.7);
+      }
     </style>
   </head>
   <body>
@@ -44,23 +53,54 @@
 
     <section>
       <h2>Button — primary</h2>
-      <button class="govbb-btn">Button</button>
-      <button class="govbb-btn" disabled>Disabled</button>
-      <a class="govbb-btn" href="#">Anchor as button</a>
+      <button class="govbb-button">Button</button>
+      <button class="govbb-button" disabled>Disabled</button>
+      <a class="govbb-button" href="#">Anchor as button</a>
     </section>
 
     <section>
-      <h2>Button — secondary &amp; tertiary</h2>
-      <button class="govbb-btn--secondary" type="button">Secondary</button>
-      <button class="govbb-btn--tertiary" type="button">Tertiary</button>
-      <button class="govbb-btn govbb-btn--secondary" disabled>Disabled</button>
+      <h2>Button — secondary / tertiary / text</h2>
+      <button class="govbb-button govbb-button--secondary" type="button">
+        Secondary
+      </button>
+      <button class="govbb-button govbb-button--tertiary" type="button">
+        Tertiary
+      </button>
+      <button class="govbb-button govbb-button--text" type="button">
+        Text
+      </button>
     </section>
 
     <section>
-      <h2>Button — link</h2>
-      <button class="govbb-btn--link" type="button">Link button</button>
-      <a class="govbb-btn--link" href="#">Link button (anchor)</a>
-      <button class="govbb-btn--link" type="button" disabled>Disabled</button>
+      <h2>Button — negative</h2>
+      <button class="govbb-button govbb-button--negative" type="button">
+        Delete
+      </button>
+      <button
+        class="govbb-button govbb-button--text govbb-button--negative"
+        type="button"
+      >
+        Delete
+      </button>
+    </section>
+
+    <section class="dark">
+      <h2>Button — inverse</h2>
+      <button class="govbb-button govbb-button--inverse" type="button">
+        Button
+      </button>
+      <button
+        class="govbb-button govbb-button--tertiary govbb-button--inverse"
+        type="button"
+      >
+        Button
+      </button>
+      <button
+        class="govbb-button govbb-button--text govbb-button--inverse"
+        type="button"
+      >
+        Button
+      </button>
     </section>
 
     <section>
@@ -99,55 +139,61 @@
       <div class="govbb-form-group">
         <label class="govbb-label" for="full-name">Full name</label>
         <p class="govbb-hint" id="fn-hint">As it appears on your ID</p>
-        <div class="govbb-input-wrapper">
-          <input
-            class="govbb-input"
-            id="full-name"
-            type="text"
-            aria-describedby="fn-hint"
-          />
-        </div>
+        <input
+          class="govbb-input"
+          id="full-name"
+          type="text"
+          aria-describedby="fn-hint"
+        />
       </div>
       <div class="govbb-form-group">
         <label class="govbb-label" for="email">Email address</label>
         <p class="govbb-error-message" id="em-err">
           Enter a valid email address
         </p>
-        <div class="govbb-input-wrapper">
-          <input
-            class="govbb-input"
-            id="email"
-            type="email"
-            aria-invalid="true"
-            aria-describedby="em-err"
-          />
-        </div>
+        <input
+          class="govbb-input"
+          id="email"
+          type="email"
+          aria-invalid="true"
+          aria-describedby="em-err"
+        />
       </div>
     </section>
 
     <section>
-      <h2>Select</h2>
-      <div class="govbb-form-group">
+      <h2>Select — default / error / disabled</h2>
+      <div class="govbb-form-group" style="max-width: 22.5rem">
         <label class="govbb-label" for="parish">Parish</label>
         <p class="govbb-hint" id="parish-hint">Where you currently live</p>
-        <div class="govbb-select-wrapper">
-          <select
-            class="govbb-select"
-            id="parish"
-            aria-describedby="parish-hint"
-          >
-            <option value="" disabled selected>Select a parish</option>
-            <option value="christ-church">Christ Church</option>
-            <option value="st-james">Saint James</option>
-            <option value="st-michael">Saint Michael</option>
-            <option value="st-philip">Saint Philip</option>
-          </select>
-          <span class="govbb-select__chevron" aria-hidden="true">
-            <svg viewBox="0 0 12 8" xmlns="http://www.w3.org/2000/svg">
-              <path d="M0 8 6 0 12 8z" />
-            </svg>
-          </span>
-        </div>
+        <select class="govbb-select" id="parish" aria-describedby="parish-hint">
+          <option value="" disabled selected>Select a parish</option>
+          <option value="christ-church">Christ Church</option>
+          <option value="st-james">Saint James</option>
+          <option value="st-michael">Saint Michael</option>
+          <option value="st-philip">Saint Philip</option>
+        </select>
+      </div>
+
+      <div class="govbb-form-group" style="max-width: 22.5rem">
+        <label class="govbb-label" for="parish-err">Parish</label>
+        <p class="govbb-error-message" id="parish-err-msg">Select a parish</p>
+        <select
+          class="govbb-select"
+          id="parish-err"
+          aria-invalid="true"
+          aria-describedby="parish-err-msg"
+        >
+          <option value="" disabled selected>Select a parish</option>
+          <option value="christ-church">Christ Church</option>
+        </select>
+      </div>
+
+      <div class="govbb-form-group" style="max-width: 22.5rem">
+        <label class="govbb-label" for="parish-dis">Parish</label>
+        <select class="govbb-select" id="parish-dis" disabled>
+          <option value="" disabled selected>Select a parish</option>
+        </select>
       </div>
     </section>
 
@@ -164,40 +210,32 @@
           <div class="govbb-date-input">
             <div class="govbb-date-input__part">
               <label class="govbb-date-input__label" for="dob-day">Day</label>
-              <div class="govbb-date-input-wrapper">
-                <input
-                  class="govbb-date-input__field"
-                  id="dob-day"
-                  type="text"
-                  inputmode="numeric"
-                />
-              </div>
+              <input
+                class="govbb-date-input__field"
+                id="dob-day"
+                type="text"
+                inputmode="numeric"
+              />
             </div>
             <div class="govbb-date-input__part">
               <label class="govbb-date-input__label" for="dob-month"
                 >Month</label
               >
-              <div class="govbb-date-input-wrapper">
-                <input
-                  class="govbb-date-input__field"
-                  id="dob-month"
-                  type="text"
-                  inputmode="numeric"
-                />
-              </div>
+              <input
+                class="govbb-date-input__field"
+                id="dob-month"
+                type="text"
+                inputmode="numeric"
+              />
             </div>
             <div class="govbb-date-input__part">
               <label class="govbb-date-input__label" for="dob-year">Year</label>
-              <div
-                class="govbb-date-input-wrapper govbb-date-input-wrapper--year"
-              >
-                <input
-                  class="govbb-date-input__field"
-                  id="dob-year"
-                  type="text"
-                  inputmode="numeric"
-                />
-              </div>
+              <input
+                class="govbb-date-input__field govbb-date-input__field--year"
+                id="dob-year"
+                type="text"
+                inputmode="numeric"
+              />
             </div>
           </div>
         </fieldset>
@@ -262,13 +300,16 @@
               >
             </span>
             <input
-              class="govbb-file-upload__input"
+              class="govbb-file-upload__input govbb-visually-hidden"
               id="poa"
               type="file"
               aria-labelledby="poa-label"
               aria-describedby="poa-hint"
             />
             <span class="govbb-file-upload__action">
+              <span class="govbb-button govbb-button--tertiary"
+                >Choose file</span
+              >
               <span class="govbb-file-upload__max-size"
                 >Maximum size: 25MB</span
               >
@@ -277,7 +318,12 @@
           <ul class="govbb-file-upload__list">
             <li class="govbb-file-upload__item">
               <span class="govbb-file-upload__name">proof-of-address.pdf</span>
-              <button class="govbb-btn--link" type="button">Remove</button>
+              <button
+                class="govbb-button govbb-button--text govbb-button--negative"
+                type="button"
+              >
+                Remove
+              </button>
             </li>
           </ul>
         </div>

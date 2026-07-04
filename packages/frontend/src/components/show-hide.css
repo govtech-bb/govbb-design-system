@@ -4,13 +4,13 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: var(--govbb-space-2);
+  gap: var(--govbb-space-xs);
 }
 
 .govbb-show-hide__summary {
   display: inline-flex;
   align-items: center;
-  gap: var(--govbb-space-2);
+  gap: var(--govbb-space-xs);
   color: var(--govbb-color-interactive);
   font-size: var(--govbb-font-size-body);
   line-height: var(--govbb-line-height-base);
@@ -48,7 +48,7 @@
 
 .govbb-show-hide__summary:hover,
 .govbb-show-hide__summary:focus-visible {
-  color: #083a3d; /* interactive, darkened */
+  color: var(--govbb-color-interactive-active);
 }
 
 .govbb-show-hide__summary:active,
@@ -59,7 +59,7 @@
 .govbb-show-hide__content {
   display: flex;
   flex-direction: column;
-  gap: var(--govbb-space-3);
-  padding-left: var(--govbb-space-4);
+  gap: var(--govbb-space-s);
+  padding-left: var(--govbb-space-xm);
   border-left: 4px solid var(--govbb-color-neutral);
 }

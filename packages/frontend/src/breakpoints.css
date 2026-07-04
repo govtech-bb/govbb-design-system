@@ -1,0 +1,9 @@
+/* Named breakpoints (design widths: mobile 375, tablet 800, desktop 1440).
+   @custom-media is inlined by Lightning CSS at build, so components reference
+   names instead of magic numbers:
+     @media (--tablet) { ... }        800px and up
+     @media (--until-tablet) { ... }  below 800px
+   Mobile (375) is the floor — no query needed until something proves it does. */
+@custom-media --tablet (width >= 50rem);
+@custom-media --desktop (width >= 90rem);
+@custom-media --mobile (width < 50rem);

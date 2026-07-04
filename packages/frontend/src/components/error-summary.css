@@ -2,8 +2,8 @@
    to each field that needs fixing. */
 
 .govbb-error-summary {
-  margin-bottom: var(--govbb-space-5);
-  padding: var(--govbb-space-4) var(--govbb-space-5);
+  margin-bottom: var(--govbb-space-m);
+  padding: var(--govbb-space-xm) var(--govbb-space-m);
   border: 4px solid var(--govbb-color-error);
 }
 
@@ -40,7 +40,7 @@
 }
 
 .govbb-error-summary__link:hover {
-  background-color: #fff0f0; /* error, tint */
+  background-color: var(--govbb-red-10); /* error, tint */
 }
 
 .govbb-error-summary__link:active,

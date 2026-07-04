@@ -1,0 +1,21 @@
+/* Cascade layers set the override order once, here — later layers win, so a
+   consumer's own unlayered CSS beats everything below without specificity wars.
+   breakpoints (@custom-media) is layer-agnostic and imported first. */
+@layer tokens, base, components, utilities;
+
+@import url('./breakpoints.css');
+@import url('./tokens.css') layer(tokens);
+@import url('./base.css') layer(base);
+@import url('./layout.css') layer(components);
+@import url('./components/button.css') layer(components);
+@import url('./components/checkbox.css') layer(components);
+@import url('./components/date-input.css') layer(components);
+@import url('./components/error-summary.css') layer(components);
+@import url('./components/file-upload.css') layer(components);
+@import url('./components/form.css') layer(components);
+@import url('./components/input.css') layer(components);
+@import url('./components/number-input.css') layer(components);
+@import url('./components/radio.css') layer(components);
+@import url('./components/select.css') layer(components);
+@import url('./components/show-hide.css') layer(components);
+@import url('./utilities.css') layer(utilities);

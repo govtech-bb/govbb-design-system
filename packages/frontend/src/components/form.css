@@ -7,7 +7,7 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: var(--govbb-space-2);
+  gap: var(--govbb-space-xs);
   width: 100%;
 }
 
@@ -15,7 +15,7 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: var(--govbb-space-2);
+  gap: var(--govbb-space-xs);
   min-width: 0;
   margin: 0;
   padding: 0;
@@ -56,10 +56,10 @@
   color: var(--govbb-color-error);
 }
 
-/* Keep label, hint and error message tight together — Figma pairs them with
-   no gap (line-height carries the rhythm); only the field below gets the 8px. */
+/* Keep label, hint and error message tight together — no gap between them
+   (line-height carries the rhythm); only the field below gets the 8px. */
 .govbb-form-group > .govbb-label + .govbb-hint,
 .govbb-form-group > .govbb-label + .govbb-error-message,
 .govbb-form-group > .govbb-hint + .govbb-error-message {
-  margin-top: calc(var(--govbb-space-2) * -1);
+  margin-top: calc(var(--govbb-space-xs) * -1);
 }
