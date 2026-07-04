@@ -26,4 +26,8 @@
 @import url('./components/select.css') layer(components);
 @import url('./components/show-hide.css') layer(components);
 @import url('./components/status-banner.css') layer(components);
+
+/* Shared focus ring last within the components layer, so it wins specificity
+   ties against the components' own :hover shadows. */
+@import url('./focus.css') layer(components);
 @import url('./utilities.css') layer(utilities);

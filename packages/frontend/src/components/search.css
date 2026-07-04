@@ -31,13 +31,11 @@
   box-shadow: var(--govbb-shadow-form-hover);
 }
 
-/* Lift the focused input above the adjoining button so the ring isn't cut. */
+/* Keyboard focus ring: shared rule in focus.css. Here only lift the focused
+   input above the adjoining button so the ring isn't cut. */
 .govbb-search__input:focus-visible {
   position: relative;
   z-index: 1;
-  box-shadow: 0 0 0 4px var(--govbb-color-focus);
-  outline: 2px solid transparent; /* shows the ring in forced-colors mode */
-  outline-offset: 2px;
 }
 
 .govbb-search--borderless .govbb-search__input {
@@ -70,10 +68,4 @@
 .govbb-search__button:active {
   background: color-mix(in oklab, var(--govbb-color-interactive), black 18%);
   box-shadow: inset 0 0 0 3px rgb(0 0 0 / 20%);
-}
-
-.govbb-search__button:focus-visible {
-  box-shadow: 0 0 0 4px var(--govbb-color-focus);
-  outline: 2px solid transparent; /* shows the ring in forced-colors mode */
-  outline-offset: 2px;
 }

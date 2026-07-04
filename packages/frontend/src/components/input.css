@@ -32,12 +32,7 @@
   box-shadow: var(--govbb-shadow-form-hover);
 }
 
-.govbb-input:focus-visible,
-.govbb-textarea:focus-visible {
-  box-shadow: 0 0 0 4px var(--govbb-color-focus);
-  outline: 2px solid transparent; /* shows the ring in forced-colors mode */
-  outline-offset: 2px;
-}
+/* Keyboard focus ring: shared rule in focus.css. */
 
 .govbb-input[aria-invalid='true'],
 .govbb-textarea[aria-invalid='true'] {

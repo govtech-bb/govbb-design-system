@@ -54,12 +54,11 @@
   box-shadow: var(--govbb-shadow-form-hover);
 }
 
+/* Keyboard focus ring: shared rule in focus.css; only the border recolour is
+   ours. */
 .govbb-checkbox:focus-visible,
 .govbb-radio:focus-visible {
   border-color: var(--govbb-color-interactive);
-  box-shadow: 0 0 0 4px var(--govbb-color-focus);
-  outline: 2px solid transparent; /* shows the ring in forced-colors mode */
-  outline-offset: 2px;
 }
 
 .govbb-checkbox[aria-invalid='true'],

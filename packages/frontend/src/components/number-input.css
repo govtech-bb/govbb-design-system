@@ -33,14 +33,9 @@
   box-shadow: none;
 }
 
-/* Keep the keyboard focus ring even when the field is invalid: the
-   box-shadow:none above clears the :focus-within ring, so restore it for
-   :focus-visible (WCAG 2.4.7). */
-.govbb-number-input-wrapper:has(:focus-visible) {
-  box-shadow: 0 0 0 4px var(--govbb-color-focus);
-  outline: 2px solid transparent; /* shows the ring in forced-colors mode */
-  outline-offset: 2px;
-}
+/* Keyboard focus ring: shared rule in focus.css. Because focus.css is
+   imported after this file, it also restores the ring that the
+   box-shadow:none above clears for invalid fields (WCAG 2.4.7). */
 
 .govbb-number-input-wrapper:has(:disabled) {
   opacity: var(--govbb-opacity-disabled);

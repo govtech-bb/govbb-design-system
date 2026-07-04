@@ -1,0 +1,26 @@
+/* Shared keyboard focus ring for the form controls: a box-shadow ring (it
+   follows the corner radius) plus a transparent outline so a ring still
+   renders in forced-colors mode (WCAG 2.4.7). One rule instead of a copy in
+   every component file.
+
+   Imported after all component files (see index.css) on purpose: the ring
+   ties with the components' :hover shadows on specificity, so source order
+   is what lets the ring win on a hovered, focused field. Component files add
+   only their extras (border recolour, z-index lift). */
+
+:is(
+  .govbb-input,
+  .govbb-textarea,
+  .govbb-checkbox,
+  .govbb-radio,
+  .govbb-select,
+  .govbb-search__input,
+  .govbb-search__button
+):focus-visible,
+:is(.govbb-number-input-wrapper, .govbb-file-upload__dropzone):has(
+  :focus-visible
+) {
+  box-shadow: 0 0 0 4px var(--govbb-color-focus);
+  outline: 2px solid transparent; /* shows the ring in forced-colors mode */
+  outline-offset: 2px;
+}

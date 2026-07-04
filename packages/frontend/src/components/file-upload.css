@@ -32,13 +32,9 @@
   cursor: not-allowed;
 }
 
-/* Show the focus ring on the dropzone when the hidden input has keyboard
-   focus — the upstream package lacks this (WCAG 2.4.7); fixed here. */
-.govbb-file-upload__dropzone:has(.govbb-file-upload__input:focus-visible) {
-  box-shadow: 0 0 0 4px var(--govbb-color-focus);
-  outline: 2px solid transparent; /* shows the ring in forced-colors mode */
-  outline-offset: 2px;
-}
+/* The dropzone shows the keyboard focus ring when the hidden input has
+   focus — the upstream package lacks this (WCAG 2.4.7); shared rule in
+   focus.css. */
 
 .govbb-file-upload__info {
   display: flex;
