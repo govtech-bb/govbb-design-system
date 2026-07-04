@@ -1,12 +1,23 @@
 /* Select — a single styled <select class="govbb-select">, no wrapper. The grey
-   chevron cell, its divider and the arrow are painted as background layers; the
-   artwork lives in one custom property so hover can layer a field-only shadow
-   on top of it without repeating it. */
+   chevron cell, its divider and the arrow are painted as three background
+   layers, declared once; hover is the same inset shadow as the other fields.
+   (The shadow spans the chevron cell too — accepted trade-off for not
+   re-declaring the layer stack per state.) */
 
 .govbb-select {
   --govbb-select-cell: 3.875rem; /* chevron cell width (62px) */
   --govbb-select-divider: var(--govbb-color-ink); /* recoloured when invalid */
-  --govbb-select-chevron:
+
+  width: 100%;
+  padding: var(--govbb-space-s);
+  padding-inline-end: calc(var(--govbb-select-cell) + var(--govbb-space-s));
+  font: inherit;
+  font-size: var(--govbb-font-size-body);
+  line-height: var(--govbb-line-height-base);
+  color: var(--govbb-color-ink);
+  appearance: none;
+  background-color: var(--govbb-color-surface);
+  background-image:
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M0 0 6 8 12 0z'/%3E%3C/svg%3E"),
     linear-gradient(var(--govbb-select-divider), var(--govbb-select-divider)),
     linear-gradient(
@@ -21,21 +32,11 @@
         var(--govbb-color-surface)
       )
     );
-
-  width: 100%;
-  padding: var(--govbb-space-s);
-  padding-inline-end: calc(var(--govbb-select-cell) + var(--govbb-space-s));
-  font: inherit;
-  font-size: var(--govbb-font-size-body);
-  line-height: var(--govbb-line-height-base);
-  color: var(--govbb-color-ink);
-  background-color: var(--govbb-color-surface);
-  background-repeat: no-repeat;
-  background-image: var(--govbb-select-chevron);
   background-position:
     right calc((var(--govbb-select-cell) - 12px) / 2) center,
     right var(--govbb-select-cell) center,
     right center;
+  background-repeat: no-repeat;
   background-size:
     12px 8px,
     var(--govbb-border-width-form) 100%,
@@ -43,36 +44,16 @@
   border: var(--govbb-border-width-form) solid var(--govbb-color-ink);
   border-radius: var(--govbb-radius);
   outline: 0;
-  appearance: none;
-  transition: border-color 0.2s;
+  transition:
+    box-shadow 0.2s,
+    border-color 0.2s;
 }
 
-/* Hover — the same top/left inset shadow as other fields, painted as background
-   bands confined to the field width so it stops at the chevron cell. */
 .govbb-select:hover {
-  background-image:
-    linear-gradient(rgb(0 0 0 / 10%), rgb(0 0 0 / 10%)),
-    linear-gradient(rgb(0 0 0 / 10%), rgb(0 0 0 / 10%)),
-    var(--govbb-select-chevron);
-  background-position:
-    left top,
-    left top,
-    right calc((var(--govbb-select-cell) - 12px) / 2) center,
-    right var(--govbb-select-cell) center,
-    right center;
-  background-size:
-    calc(100% - var(--govbb-select-cell)) 4px,
-    4px 100%,
-    12px 8px,
-    var(--govbb-border-width-form) 100%,
-    var(--govbb-select-cell) 100%;
+  box-shadow: var(--govbb-shadow-form-hover);
 }
 
-.govbb-select:focus-visible {
-  box-shadow: 0 0 0 4px var(--govbb-color-focus);
-  outline: 2px solid transparent; /* shows the ring in forced-colors mode */
-  outline-offset: 2px;
-}
+/* Keyboard focus ring: shared rule in focus.css. */
 
 .govbb-select[aria-invalid='true'] {
   --govbb-select-divider: var(--govbb-color-error);
