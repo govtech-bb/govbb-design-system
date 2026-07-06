@@ -15,33 +15,35 @@ group: Form elements
   <p class="govbb-hint" id="proof-of-address-hint">
     This could be a recent utility bill or bank statement
   </p>
-  <div class="govbb-file-upload">
+  <div class="govbb-file-upload" data-govbb-module="file-upload">
     <label class="govbb-file-upload__dropzone" for="proof-of-address">
-      <div class="govbb-file-upload__info">
+      <span class="govbb-file-upload__info">
         <span class="govbb-file-upload__title">Upload a file</span>
         <span class="govbb-file-upload__subtitle"
           >Attach a .pdf, .docx, or .png file</span
         >
-      </div>
+      </span>
       <input
-        class="govbb-file-upload__input"
+        class="govbb-file-upload__input govbb-visually-hidden"
         id="proof-of-address"
         name="proof-of-address"
         type="file"
         aria-labelledby="proof-of-address-label"
         aria-describedby="proof-of-address-hint"
       />
-      <div class="govbb-file-upload__action">
-        <span class="govbb-btn--tertiary" aria-hidden="true">Choose file</span>
+      <span class="govbb-file-upload__action">
+        <span class="govbb-button govbb-button--tertiary" aria-hidden="true"
+          >Choose file</span
+        >
         <span class="govbb-file-upload__max-size">Maximum size: 25MB</span>
-      </div>
+      </span>
     </label>
     <ul class="govbb-file-upload__list">
       <li class="govbb-file-upload__item">
         <span class="govbb-file-upload__name">proof-of-address.pdf</span>
         <button
           type="button"
-          class="govbb-btn--destructive-link"
+          class="govbb-button govbb-button--text govbb-button--negative"
           aria-label="Remove proof-of-address.pdf"
         >
           Remove
@@ -102,16 +104,16 @@ _"Select a file"_ or _"The file must be smaller than 25MB"_.
   <p class="govbb-error-message" id="proof-of-address-err-error" role="alert">
     Select a file
   </p>
-  <div class="govbb-file-upload">
+  <div class="govbb-file-upload" data-govbb-module="file-upload">
     <label class="govbb-file-upload__dropzone" for="proof-of-address-err">
-      <div class="govbb-file-upload__info">
+      <span class="govbb-file-upload__info">
         <span class="govbb-file-upload__title">Upload a file</span>
         <span class="govbb-file-upload__subtitle"
           >Attach a .pdf, .docx, or .png file</span
         >
-      </div>
+      </span>
       <input
-        class="govbb-file-upload__input"
+        class="govbb-file-upload__input govbb-visually-hidden"
         id="proof-of-address-err"
         name="proof-of-address"
         type="file"
@@ -119,10 +121,12 @@ _"Select a file"_ or _"The file must be smaller than 25MB"_.
         aria-labelledby="proof-of-address-err-label"
         aria-describedby="proof-of-address-err-hint proof-of-address-err-error"
       />
-      <div class="govbb-file-upload__action">
-        <span class="govbb-btn--tertiary" aria-hidden="true">Choose file</span>
+      <span class="govbb-file-upload__action">
+        <span class="govbb-button govbb-button--tertiary" aria-hidden="true"
+          >Choose file</span
+        >
         <span class="govbb-file-upload__max-size">Maximum size: 25MB</span>
-      </div>
+      </span>
     </label>
   </div>
 </div>

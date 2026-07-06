@@ -15,6 +15,7 @@ group: Form elements
     class="govbb-number-input-wrapper"
     role="group"
     aria-labelledby="quantity-label"
+    data-govbb-module="number-input"
   >
     <input
       class="govbb-number-input"
@@ -109,6 +110,7 @@ quantity".
     class="govbb-number-input-wrapper"
     role="group"
     aria-labelledby="quantity-error-label"
+    data-govbb-module="number-input"
   >
     <input
       class="govbb-number-input"
