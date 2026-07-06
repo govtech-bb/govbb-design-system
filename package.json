@@ -17,6 +17,7 @@
     "site:dev": "pnpm --filter @govbb/site dev",
     "site:build": "pnpm --filter @govbb/site build",
     "lint": "oxlint && stylelint \"packages/*/src/**/*.css\"",
+    "test": "pnpm -r test",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "changelog": "git-cliff --output CHANGELOG.md",
