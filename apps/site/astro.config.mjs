@@ -9,4 +9,5 @@ import pagefind from 'astro-pagefind';
 export default defineConfig({
   site: 'https://design-system.gov.bb',
   integrations: [pagefind()],
+  redirects: { '/documentation/layout': '/styles/layout' },
 });

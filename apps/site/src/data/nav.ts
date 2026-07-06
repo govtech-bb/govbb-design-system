@@ -9,6 +9,7 @@ export interface PrimaryNavItem {
   href: string;
 }
 export const primaryNav: PrimaryNavItem[] = [
+  { key: 'styles', label: 'Styles', href: '/styles/' },
   { key: 'components', label: 'Components', href: '/components/' },
   { key: 'documentation', label: 'Documentation', href: '/documentation/' },
   { key: 'ai-skills', label: 'AI skills', href: '/ai-skills/' },
@@ -40,6 +41,25 @@ export async function getComponentsSidebar(): Promise<SidebarGroup[]> {
         .map((e) => ({ label: e.data.title, href: `/components/${e.id}/` }));
       return links.length > 0 ? [{ heading, links }] : [];
     }),
+  ];
+}
+
+// Left-sidebar navigation for the Styles section, derived from the styles
+// content collection.
+export async function getStylesSidebar(): Promise<SidebarGroup[]> {
+  const entries = await getCollection('styles');
+  entries.sort((a, b) => a.data.title.localeCompare(b.data.title));
+  return [
+    {
+      heading: 'Styles',
+      links: [
+        { label: 'Overview', href: '/styles/' },
+        ...entries.map((e) => ({
+          label: e.data.title,
+          href: `/styles/${e.id}/`,
+        })),
+      ],
+    },
   ];
 }
 
