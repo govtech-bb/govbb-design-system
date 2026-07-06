@@ -1,19 +1,23 @@
 ---
-// Official crest, SVGO-optimised from the design-system package's
-// govbb-creast.svg (@govtech-bb/frontend). width/height match its intrinsic
-// aspect ratio so the browser reserves space before it loads (no layout shift);
-// CSS sizes the rendered crest.
+// The design-system official-banner component; only the crest asset is local
+// (SVGO-optimised copy of the package's govbb-creast.svg). width/height match
+// its intrinsic aspect ratio so the browser reserves space before it loads.
 import crest from '../assets/govbb-creast.svg?url';
 ---
-<div class="govbb-gov-banner">
-  <div class="govbb-container govbb-gov-banner__inner">
-    <img
-      class="govbb-gov-banner__crest"
-      src={crest}
-      width="887"
-      height="954"
-      alt="Coat of arms of Barbados"
-    />
-    <span>Official government website</span>
+
+<div class="govbb-official-banner">
+  <div class="govbb-width-container govbb-official-banner__inner">
+    <div class="govbb-official-banner__crest">
+      <img
+        class="govbb-official-banner__icon"
+        src={crest}
+        width="887"
+        height="954"
+        alt="Coat of arms of Barbados"
+      />
+    </div>
+    <div class="govbb-official-banner__text">
+      <span>Official government website</span>
+    </div>
   </div>
 </div>

@@ -60,8 +60,6 @@
   --govbb-space-8: 4rem;
 
   /* Layout (site layout) */
-  --govbb-max-width: 1512px;
-  --govbb-gutter: clamp(1.5rem, 8.4vw, 8rem); /* ≈128px at design width */
   --govbb-radius: 4px;
   --govbb-radius-lg: 8px;
   --govbb-sidebar-width: 280px;

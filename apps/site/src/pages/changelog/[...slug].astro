@@ -16,7 +16,7 @@ const { post } = Astro.props;
 const { Content } = await render(post);
 ---
 <BaseLayout title={post.data.title} section="changelog" description={post.data.summary}>
-  <section class="govbb-container govbb-page-section">
+  <section class="govbb-width-container govbb-page-section">
     <article class="govbb-prose">
       <div class="govbb-page-header">
         <h1 class="govbb-page-title">{post.data.title}</h1>
