@@ -21,7 +21,8 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "changelog": "git-cliff --output CHANGELOG.md",
-    "changelog:unreleased": "git-cliff --unreleased --tag unreleased --output CHANGELOG.md"
+    "changelog:unreleased": "git-cliff --unreleased --tag unreleased --output CHANGELOG.md",
+    "figma:sync": "node ci/figma/sync-tokens-to-figma.mjs"
   },
   "devDependencies": {
     "@commitlint/cli": "^21.1.0",
