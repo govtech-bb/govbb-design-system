@@ -25,6 +25,48 @@ jobs:
       - run: pnpm test
       - run: pnpm build
 
+  # compares playground screenshots against committed -linux baselines.
+  # skips until those exist — seed/refresh them with the
+  # update-visual-baselines workflow (they are platform-specific, so they
+  # must be generated on the CI image, not a laptop).
+  visual-regression:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # pushes diff images to a visual-report/pr-N branch
+      pull-requests: write # upserts the report comment
+    steps:
+      - uses: actions/checkout@v4
+      - id: baselines
+        run: |
+          if ls ci/visual-regression/screenshots/*-linux.png >/dev/null 2>&1; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          fi
+      - if: steps.baselines.outputs.present == 'true'
+        run: corepack enable
+      - if: steps.baselines.outputs.present == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - if: steps.baselines.outputs.present == 'true'
+        run: pnpm install --frozen-lockfile
+      - if: steps.baselines.outputs.present == 'true'
+        run: pnpm exec playwright install chromium --with-deps
+      - if: steps.baselines.outputs.present == 'true'
+        run: pnpm test:visual
+      - if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-regression-diffs
+          path: ci/visual-regression/test-results
+      - name: Post diff report on the PR
+        if: failure() && github.event_name == 'pull_request'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR: ${{ github.event.pull_request.number }}
+          REPO: ${{ github.repository }}
+        run: node ci/reporters/vr-report.mjs
+
   # the react peer range is >=18; the main job runs 19, this one proves 18
   react-18:
     runs-on: ubuntu-latest

@@ -21,11 +21,13 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "changelog": "git-cliff --output CHANGELOG.md",
-    "changelog:unreleased": "git-cliff --unreleased --tag unreleased --output CHANGELOG.md"
+    "changelog:unreleased": "git-cliff --unreleased --tag unreleased --output CHANGELOG.md",
+    "test:visual": "playwright test -c ci/visual-regression/playwright.config.ts"
   },
   "devDependencies": {
     "@commitlint/cli": "^21.1.0",
     "@commitlint/config-conventional": "^21.1.0",
+    "@playwright/test": "^1.61.1",
     "git-cliff": "^2.13.1",
     "lefthook": "^2.1.9",
     "oxlint": "^1.71.0",
