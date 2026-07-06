@@ -48,6 +48,20 @@ group: Form elements
 </div>
 ```
 
+```tsx
+import { DateInput, FormGroup } from '@govtech-bb/react';
+
+<FormGroup>
+  <DateInput
+    legend="Date of birth"
+    hint="For example, 27 3 1990"
+    dayProps={{ name: 'dob[day]' }}
+    monthProps={{ name: 'dob[month]' }}
+    yearProps={{ name: 'dob[year]' }}
+  />
+</FormGroup>;
+```
+
 The Date Input component lets users enter a memorable date, such as a date of
 birth or a document's expiry date, using three short text fields for day, month,
 and year. A shared `<fieldset>` and `<legend>` group the three fields under a
@@ -133,4 +147,16 @@ of it.
     </div>
   </fieldset>
 </div>
+```
+
+```tsx
+import { DateInput, FormGroup } from '@govtech-bb/react';
+
+<FormGroup>
+  <DateInput
+    legend="Date of birth"
+    hint="For example, 27 3 1990"
+    error="Enter a valid date"
+  />
+</FormGroup>;
 ```

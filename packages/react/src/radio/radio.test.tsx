@@ -40,3 +40,17 @@ it('has no axe violations', async () => {
   );
   await expectNoAxeViolations(container);
 });
+
+it('wires a per-option hint via aria-describedby', () => {
+  render(
+    <Radio
+      name="contact"
+      label="Email"
+      hint="We'll only use this for updates."
+    />,
+  );
+  const radio = screen.getByRole('radio', { name: 'Email' });
+  const hint = screen.getByText("We'll only use this for updates.");
+  expect(hint.className).toBe('govbb-hint');
+  expect(radio.getAttribute('aria-describedby')).toBe(hint.id);
+});

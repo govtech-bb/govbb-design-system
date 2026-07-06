@@ -21,6 +21,16 @@ group: Form elements
 </div>
 ```
 
+```tsx
+import { FormGroup, Hint, Input, Label } from '@govtech-bb/react';
+
+<FormGroup>
+  <Label htmlFor="full-name">Full name</Label>
+  <Hint id="full-name-hint">As it appears on your ID</Hint>
+  <Input id="full-name" name="full-name" aria-describedby="full-name-hint" />
+</FormGroup>;
+```
+
 The Input component lets users enter a single line of short, free-form text, such
 as a name, reference number, or email address. Every input is paired with a
 visible label so it is clear what answer is expected.
@@ -80,6 +90,24 @@ address".
 </div>
 ```
 
+```tsx
+import { ErrorMessage, FormGroup, Input, Label } from '@govtech-bb/react';
+
+<FormGroup>
+  <Label htmlFor="email">Email address</Label>
+  <ErrorMessage id="email-error" role="alert">
+    Enter a valid email address
+  </ErrorMessage>
+  <Input
+    id="email"
+    name="email"
+    type="email"
+    aria-invalid
+    aria-describedby="email-error"
+  />
+</FormGroup>;
+```
+
 ## Disabled inputs
 
 Avoid disabling inputs wherever possible. A disabled input gives the user no
@@ -99,4 +127,18 @@ why the field is unavailable.
     disabled
   />
 </div>
+```
+
+```tsx
+import { FormGroup, Input, Label } from '@govtech-bb/react';
+
+<FormGroup>
+  <Label htmlFor="disabled-input">Disabled input</Label>
+  <Input
+    id="disabled-input"
+    name="disabled-input"
+    defaultValue="Read only"
+    disabled
+  />
+</FormGroup>;
 ```

@@ -33,6 +33,36 @@ group: Form elements
 </div>
 ```
 
+```tsx
+import { FormGroup, Hint, Label, Select } from '@govtech-bb/react';
+
+<FormGroup>
+  <Label htmlFor="parish">Parish</Label>
+  <Hint id="parish-hint">Where you currently live</Hint>
+  <Select
+    id="parish"
+    name="parish"
+    defaultValue=""
+    aria-describedby="parish-hint"
+  >
+    <option value="" disabled>
+      Select a parish
+    </option>
+    <option value="christ-church">Christ Church</option>
+    <option value="st-andrew">Saint Andrew</option>
+    <option value="st-george">Saint George</option>
+    <option value="st-james">Saint James</option>
+    <option value="st-john">Saint John</option>
+    <option value="st-joseph">Saint Joseph</option>
+    <option value="st-lucy">Saint Lucy</option>
+    <option value="st-michael">Saint Michael</option>
+    <option value="st-peter">Saint Peter</option>
+    <option value="st-philip">Saint Philip</option>
+    <option value="st-thomas">Saint Thomas</option>
+  </Select>
+</FormGroup>;
+```
+
 The Select component is a dropdown that lets users choose a single option from a
 long list, such as a parish or a country. It is a last resort for long lists —
 most questions are easier to answer with visible options.
@@ -90,6 +120,31 @@ Keep error messages specific and actionable, such as "Select a parish".
 </div>
 ```
 
+```tsx
+import { ErrorMessage, FormGroup, Label, Select } from '@govtech-bb/react';
+
+<FormGroup>
+  <Label htmlFor="parish-error">Parish</Label>
+  <ErrorMessage id="parish-error-error" role="alert">
+    Select a parish
+  </ErrorMessage>
+  <Select
+    id="parish-error"
+    name="parish"
+    defaultValue=""
+    aria-invalid
+    aria-describedby="parish-error-error"
+  >
+    <option value="" disabled>
+      Select a parish
+    </option>
+    <option value="christ-church">Christ Church</option>
+    <option value="st-michael">Saint Michael</option>
+    <option value="st-james">Saint James</option>
+  </Select>
+</FormGroup>;
+```
+
 ## Disabled selects
 
 Avoid disabling selects wherever possible. A disabled select gives the user no
@@ -105,4 +160,18 @@ why the field is unavailable.
     <option value="christ-church">Christ Church</option>
   </select>
 </div>
+```
+
+```tsx
+import { FormGroup, Label, Select } from '@govtech-bb/react';
+
+<FormGroup>
+  <Label htmlFor="parish-disabled">Parish</Label>
+  <Select id="parish-disabled" name="parish" defaultValue="" disabled>
+    <option value="" disabled>
+      Select a parish
+    </option>
+    <option value="christ-church">Christ Church</option>
+  </Select>
+</FormGroup>;
 ```

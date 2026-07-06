@@ -17,15 +17,21 @@ type FieldProps = ComponentPropsWithRef<'input'>;
 export interface DateInputProps {
   legend: ReactNode;
   hint?: ReactNode;
+  /** Validation error shown between the hint and the fields. */
+  error?: ReactNode;
   dayProps?: FieldProps;
   monthProps?: FieldProps;
   yearProps?: FieldProps;
 }
 
 export const DateInput = forwardRef<HTMLFieldSetElement, DateInputProps>(
-  function DateInput({ legend, hint, dayProps, monthProps, yearProps }, ref) {
+  function DateInput(
+    { legend, hint, error, dayProps, monthProps, yearProps },
+    ref,
+  ) {
     const id = useId();
     const hintId = hint != null ? `${id}-hint` : undefined;
+    const errorId = error != null ? `${id}-error` : undefined;
     const parts = [
       { label: 'Day', partId: `${id}-day`, props: dayProps },
       { label: 'Month', partId: `${id}-month`, props: monthProps },
@@ -36,12 +42,19 @@ export const DateInput = forwardRef<HTMLFieldSetElement, DateInputProps>(
         ref={ref}
         className="govbb-fieldset"
         role="group"
-        aria-describedby={hintId}
+        aria-describedby={
+          [hintId, errorId].filter(Boolean).join(' ') || undefined
+        }
       >
         <legend className="govbb-fieldset__legend">{legend}</legend>
         {hint != null && (
           <p className="govbb-hint" id={hintId}>
             {hint}
+          </p>
+        )}
+        {error != null && (
+          <p className="govbb-error-message" id={errorId} role="alert">
+            {error}
           </p>
         )}
         <div className="govbb-date-input">

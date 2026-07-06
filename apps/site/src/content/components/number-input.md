@@ -50,6 +50,27 @@ group: Form elements
 </div>
 ```
 
+```tsx
+import { FormGroup, Hint, Label, NumberInput } from '@govtech-bb/react';
+
+<FormGroup>
+  <Label id="quantity-label" htmlFor="quantity">
+    Quantity
+  </Label>
+  <Hint id="quantity-hint">Between 1 and 10</Hint>
+  <NumberInput
+    id="quantity"
+    name="quantity"
+    labelId="quantity-label"
+    min={1}
+    max={10}
+    step={1}
+    defaultValue={1}
+    aria-describedby="quantity-hint"
+  />
+</FormGroup>;
+```
+
 The Number Input component lets users enter a small whole number, such as a
 quantity or a number of people, using visible increment and decrement buttons
 alongside the field. It is paired with a visible label, just like a regular
@@ -143,4 +164,27 @@ quantity".
     </div>
   </div>
 </div>
+```
+
+```tsx
+import { ErrorMessage, FormGroup, Label, NumberInput } from '@govtech-bb/react';
+
+<FormGroup>
+  <Label id="quantity-label" htmlFor="quantity">
+    Quantity
+  </Label>
+  <ErrorMessage id="quantity-error" role="alert">
+    Enter a valid quantity
+  </ErrorMessage>
+  <NumberInput
+    id="quantity"
+    name="quantity"
+    labelId="quantity-label"
+    min={1}
+    max={10}
+    step={1}
+    aria-invalid
+    aria-describedby="quantity-error"
+  />
+</FormGroup>;
 ```
