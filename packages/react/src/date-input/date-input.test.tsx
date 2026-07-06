@@ -30,3 +30,17 @@ it('has no axe violations', async () => {
   );
   await expectNoAxeViolations(container);
 });
+
+it('renders an error message wired into the group description', () => {
+  render(
+    <DateInput
+      legend="Date of birth"
+      hint="For example, 27 3 1990"
+      error="Enter a valid date"
+    />,
+  );
+  const group = screen.getByRole('group', { name: 'Date of birth' });
+  const error = screen.getByText('Enter a valid date');
+  expect(error.className).toBe('govbb-error-message');
+  expect(group.getAttribute('aria-describedby')).toContain(error.id);
+});
