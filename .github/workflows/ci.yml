@@ -38,7 +38,7 @@ jobs:
       - uses: actions/checkout@v4
       - id: baselines
         run: |
-          if ls packages/frontend/visual/*-snapshots/*-linux.png >/dev/null 2>&1; then
+          if ls ci/visual-regression/screenshots/*-linux.png >/dev/null 2>&1; then
             echo "present=true" >> "$GITHUB_OUTPUT"
           fi
       - if: steps.baselines.outputs.present == 'true'
@@ -51,21 +51,21 @@ jobs:
       - if: steps.baselines.outputs.present == 'true'
         run: pnpm install --frozen-lockfile
       - if: steps.baselines.outputs.present == 'true'
-        run: pnpm --filter @govtech-bb/frontend exec playwright install chromium --with-deps
+        run: pnpm exec playwright install chromium --with-deps
       - if: steps.baselines.outputs.present == 'true'
-        run: pnpm --filter @govtech-bb/frontend test:visual
+        run: pnpm test:visual
       - if: failure()
         uses: actions/upload-artifact@v4
         with:
           name: visual-regression-diffs
-          path: packages/frontend/test-results
+          path: ci/visual-regression/test-results
       - name: Post diff report on the PR
         if: failure() && github.event_name == 'pull_request'
         env:
           GH_TOKEN: ${{ github.token }}
           PR: ${{ github.event.pull_request.number }}
           REPO: ${{ github.repository }}
-        run: node .github/scripts/vr-report.mjs
+        run: node ci/reporters/vr-report.mjs
 
   # the react peer range is >=18; the main job runs 19, this one proves 18
   react-18:

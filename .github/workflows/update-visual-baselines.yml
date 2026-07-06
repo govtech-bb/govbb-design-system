@@ -22,15 +22,15 @@ jobs:
           node-version: 24
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: pnpm --filter @govtech-bb/frontend exec playwright install chromium --with-deps
-      - run: pnpm --filter @govtech-bb/frontend test:visual --update-snapshots
+      - run: pnpm exec playwright install chromium --with-deps
+      - run: pnpm test:visual --update-snapshots
       - name: Commit baselines
         env:
           LEFTHOOK: '0'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add packages/frontend/visual
+          git add ci/visual-regression/screenshots
           git diff --cached --quiet && { echo "baselines unchanged"; exit 0; }
           git commit -m "test: update visual regression baselines"
           git push

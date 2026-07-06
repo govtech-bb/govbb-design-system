@@ -31,11 +31,9 @@
     "dev": "vite",
     "build": "lightningcss --bundle --minify --custom-media --browserslist src/index.css -o dist/govbb.css",
     "test": "vitest run",
-    "prepublishOnly": "pnpm build",
-    "test:visual": "playwright test"
+    "prepublishOnly": "pnpm build"
   },
   "devDependencies": {
-    "@playwright/test": "^1.61.1",
     "jsdom": "^29.1.1",
     "lightningcss": "^1.32.0",
     "lightningcss-cli": "^1.30.2",

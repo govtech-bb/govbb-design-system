@@ -13,7 +13,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
 const { GH_TOKEN, PR, REPO } = process.env;
-const RESULTS = 'packages/frontend/test-results';
+const RESULTS = 'ci/visual-regression/test-results';
 const BRANCH = `visual-report/pr-${PR}`;
 const MARKER = '<!-- vr-report -->';
 
