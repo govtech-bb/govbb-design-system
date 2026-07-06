@@ -1,3 +1,4 @@
+import { expectNoAxeViolations } from '../testing/axe';
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { Breadcrumbs } from './breadcrumbs';
@@ -20,4 +21,16 @@ describe('Breadcrumbs', () => {
       screen.getByRole('link', { name: 'Home' }).getAttribute('href'),
     ).toBe('/');
   });
+});
+
+it('has no axe violations', async () => {
+  const { container } = render(
+    <Breadcrumbs
+      items={[
+        { href: '/', label: 'Home' },
+        { href: '/services', label: 'Services' },
+      ]}
+    />,
+  );
+  await expectNoAxeViolations(container);
 });

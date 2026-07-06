@@ -1,3 +1,4 @@
+import { expectNoAxeViolations } from '../testing/axe';
 import { render, screen } from '@testing-library/react';
 import { createRef } from 'react';
 import { describe, expect, it } from 'vitest';
@@ -22,4 +23,11 @@ describe('Button', () => {
     render(<Button ref={ref}>Go</Button>);
     expect(ref.current).toBe(screen.getByRole('button', { name: 'Go' }));
   });
+});
+
+it('has no axe violations', async () => {
+  const { container } = render(
+    <Button variant="secondary">Save and continue</Button>,
+  );
+  await expectNoAxeViolations(container);
 });

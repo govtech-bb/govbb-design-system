@@ -1,3 +1,4 @@
+import { expectNoAxeViolations } from '../testing/axe';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { createRef } from 'react';
 import { describe, expect, it, vi } from 'vitest';
@@ -22,4 +23,15 @@ describe('FileUpload', () => {
     render(<FileUpload ref={ref} aria-label="Upload" />);
     expect(ref.current?.type).toBe('file');
   });
+});
+
+it('has no axe violations', async () => {
+  const { container } = render(
+    <FileUpload
+      subtitle="Attach a .pdf file"
+      maxSize="Maximum size: 25MB"
+      files={[{ name: 'proof.pdf', onRemove: () => {} }]}
+    />,
+  );
+  await expectNoAxeViolations(container);
 });

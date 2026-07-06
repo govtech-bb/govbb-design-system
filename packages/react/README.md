@@ -18,9 +18,8 @@ import the stylesheet once at your app root:
 import '@govtech-bb/frontend/css';
 ```
 
-> **Note:** the package currently exports raw TypeScript (`src/index.ts`).
-> Next.js consumers need `transpilePackages: ['@govtech-bb/react']`; Vite
-> apps work out of the box.
+The package ships compiled ESM + type declarations (`dist/`), so it works in
+any bundler without extra config. Source stays in the tarball for source maps.
 
 ## Usage
 

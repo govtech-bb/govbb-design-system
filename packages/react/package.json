@@ -5,13 +5,15 @@
   "type": "module",
   "exports": {
     ".": {
-      "types": "./src/index.ts",
-      "import": "./src/index.ts"
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
     }
   },
   "files": [
+    "dist",
     "src",
-    "!src/**/*.test.tsx"
+    "!src/**/*.test.tsx",
+    "!src/testing"
   ],
   "sideEffects": false,
   "peerDependencies": {
@@ -25,13 +27,16 @@
     "@testing-library/react": "^16.3.2",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.2.3",
+    "axe-core": "^4.12.1",
     "jsdom": "^29.1.1",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
+    "tsup": "^8.5.1",
     "typescript": "^5.7.0",
     "vitest": "^4.1.9"
   },
   "scripts": {
+    "build": "tsup",
     "typecheck": "tsc --noEmit",
     "test": "vitest run"
   }

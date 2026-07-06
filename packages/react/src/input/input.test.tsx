@@ -1,3 +1,5 @@
+import { Label } from '../form/form';
+import { expectNoAxeViolations } from '../testing/axe';
 import { render, screen } from '@testing-library/react';
 import { createRef } from 'react';
 import { describe, expect, it } from 'vitest';
@@ -20,4 +22,16 @@ describe('Textarea', () => {
     expect(ref.current).toBe(screen.getByRole('textbox', { name: 'Message' }));
     expect(ref.current!.className).toBe('govbb-textarea');
   });
+});
+
+it('has no axe violations', async () => {
+  const { container } = render(
+    <>
+      <Label htmlFor="in">Email</Label>
+      <Input id="in" type="email" />
+      <Label htmlFor="ta">Message</Label>
+      <Textarea id="ta" rows={5} />
+    </>,
+  );
+  await expectNoAxeViolations(container);
 });

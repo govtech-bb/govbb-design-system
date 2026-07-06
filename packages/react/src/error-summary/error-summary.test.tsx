@@ -1,3 +1,4 @@
+import { expectNoAxeViolations } from '../testing/axe';
 import { render, screen } from '@testing-library/react';
 import { createRef } from 'react';
 import { describe, expect, it } from 'vitest';
@@ -21,4 +22,11 @@ describe('ErrorSummary', () => {
     ref.current!.focus();
     expect(document.activeElement).toBe(alert);
   });
+});
+
+it('has no axe violations', async () => {
+  const { container } = render(
+    <ErrorSummary errors={[{ href: '#email', label: 'Enter your email' }]} />,
+  );
+  await expectNoAxeViolations(container);
 });
