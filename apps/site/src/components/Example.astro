@@ -184,7 +184,9 @@ const codeBlocks = [
     border-bottom: 2px solid transparent;
     margin-bottom: -1px;
     cursor: pointer;
-    color: var(--govbb-blue-40);
+    /* The comp uses blue-40 (#99a8cc) here, but that's 2.4:1 on white — fails
+       WCAG AA. Nearest passing muted token instead (7:1). */
+    color: var(--govbb-color-text-muted);
     transition:
       color 150ms var(--govbb-example-ease),
       border-color 150ms var(--govbb-example-ease);
@@ -296,7 +298,7 @@ const codeBlocks = [
     width: 1.5rem;
     margin-right: var(--govbb-space-3);
     text-align: right;
-    color: #6e7681;
+    color: #8b949e; /* 5.6:1 on the #1e1e1e editor — #6e7681 failed AA */
     user-select: none; /* keep line numbers out of drag-selected copies */
   }
 
