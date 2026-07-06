@@ -1,12 +1,14 @@
 /* Page scaffolding: width container, main wrapper, and the column grid.
    No component styling here — only how page-level regions occupy space. */
 
-/* Page width container. The design sets no max width — content is fluid with
-   gutters that grow with the viewport: 16px at the mobile frame (375) up to
-   128px at the desktop frame (1512), interpolated linearly by the clamp
-   (9.85vw − 1.31rem passes through both anchor points). Wrap page content in
-   <div class="govbb-width-container">. */
+/* Page width container. Fluid up to the 1512px desktop frame, centred beyond.
+   Gutters grow with the viewport: 16px at the mobile frame (375) up to 128px
+   at the desktop frame, interpolated linearly by the clamp (9.85vw − 1.31rem
+   passes through both anchor points). At the cap that leaves the comp's
+   1256px of content (border-box, so the max includes the gutters). Wrap page
+   content in <div class="govbb-width-container">. */
 .govbb-width-container {
+  max-inline-size: 1512px;
   margin-inline: auto;
   padding-inline: clamp(
     var(--govbb-space-s),
