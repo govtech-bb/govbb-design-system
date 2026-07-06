@@ -1,0 +1,38 @@
+/* Summary list — key/value pairs, one row per pair, as in the Figma
+   check-your-answers block: bold key in a fixed column, plain value beside it,
+   16px gaps, no dividers. Built on a <dl>. Mobile-first: rows stack the key
+   above the value; from tablet up they lay out as two grid columns. */
+
+.govbb-summary-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--govbb-space-s);
+  margin: 0;
+  font-size: var(--govbb-font-size-body);
+  line-height: var(--govbb-line-height-base);
+}
+
+.govbb-summary-list__row {
+  display: flex;
+  flex-direction: column;
+  gap: var(--govbb-space-xxs);
+}
+
+.govbb-summary-list__key {
+  font-weight: 700;
+}
+
+/* <dd> carries a default indent — remove it. */
+.govbb-summary-list__value {
+  margin: 0;
+}
+
+@media (--tablet) {
+  /* Fixed key column width from the Figma check-answers block. */
+  .govbb-summary-list__row {
+    display: grid;
+    grid-template-columns: 242px 1fr;
+    gap: var(--govbb-space-s);
+    align-items: start;
+  }
+}
