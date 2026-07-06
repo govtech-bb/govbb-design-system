@@ -1,9 +1,11 @@
 import { expect, test, type Page } from '@playwright/test';
+import { playgroundCases, renderIsolated } from './harness';
 
 /*
  * Interaction-state baselines: hover shadows and the shared keyboard focus
- * ring are most of this design system's behavioural CSS, and the static
- * playground shots never exercise them. CDP's CSS.forcePseudoState pins
+ * ring are most of this design system's behavioural CSS, and static shots
+ * never exercise them. Each component is rendered in isolation (markup lifted
+ * from its playground section), then CDP's CSS.forcePseudoState pins
  * :hover / :focus-visible deterministically — no real pointer or keyboard
  * events, so nothing races the screenshot.
  */
@@ -73,16 +75,23 @@ async function forcePseudoState(page: Page, selector: string, state: string) {
 
 for (const { name, selector, state } of STATES) {
   test(`state: ${name}`, async ({ page }) => {
-    await page.goto('/');
-    await page.evaluate(() => document.fonts.ready);
-    const release = await forcePseudoState(page, selector, state);
-    // Shoot the enclosing section, not the element: hover shadows and focus
-    // rings paint outside the element's own bounding box.
-    const section = page
+    const cases = await playgroundCases(page);
+    // Isolate the first playground section that contains the target element.
+    const source = await page
       .locator(selector)
       .first()
-      .locator('xpath=ancestor::section');
-    await expect(section).toHaveScreenshot(`${name}.png`);
+      .locator('xpath=ancestor::section')
+      .locator('h2')
+      .innerText();
+    const slug = source
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+    const found = cases.find((c) => c.slug === slug);
+    if (!found) throw new Error(`no playground section found for ${selector}`);
+    await renderIsolated(page, found.html, found.dark);
+    const release = await forcePseudoState(page, selector, state);
+    await expect(page).toHaveScreenshot(`${name}.png`, { fullPage: true });
     await release();
   });
 }

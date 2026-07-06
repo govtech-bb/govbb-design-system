@@ -1,28 +1,22 @@
 import { expect, test } from '@playwright/test';
+import { playgroundCases, renderIsolated } from './harness';
 
 /*
- * One baseline screenshot per playground section, named after its <h2>. The
- * section list is discovered at runtime, but the count is pinned so a section
- * added without a baseline (or a heading rename orphaning one) fails loudly
- * instead of silently shrinking coverage.
+ * One baseline per playground section, but rendered in isolation: the
+ * section's markup is lifted out and screenshotted alone on a centered blank
+ * page, so a baseline only changes when its own component changes. The
+ * playground stays the single source of truth for the markup, and the pinned
+ * count fails loudly when a section is added without a baseline (or a heading
+ * rename orphans one).
  */
 const EXPECTED_SECTIONS = 22;
 
-const slug = (text: string) =>
-  text
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '');
+test('every playground section renders in isolation', async ({ page }) => {
+  const cases = await playgroundCases(page);
+  expect(cases.length).toBe(EXPECTED_SECTIONS);
 
-test('playground renders every section', async ({ page }) => {
-  await page.goto('/');
-  await page.evaluate(() => document.fonts.ready);
-
-  const sections = page.locator('body > section');
-  expect(await sections.count()).toBe(EXPECTED_SECTIONS);
-
-  for (const section of await sections.all()) {
-    const heading = await section.locator('h2').first().innerText();
-    await expect(section).toHaveScreenshot(`${slug(heading)}.png`);
+  for (const { slug, html, dark } of cases) {
+    await renderIsolated(page, html, dark);
+    await expect(page).toHaveScreenshot(`${slug}.png`, { fullPage: true });
   }
 });
