@@ -17,6 +17,8 @@ test('every playground section renders in isolation', async ({ page }) => {
 
   for (const { slug, html, dark } of cases) {
     await renderIsolated(page, html, dark);
-    await expect(page).toHaveScreenshot(`${slug}.png`, { fullPage: true });
+    // soft: collect every changed section in one run instead of stopping at
+    // the first diff and masking the rest.
+    await expect.soft(page).toHaveScreenshot(`${slug}.png`, { fullPage: true });
   }
 });

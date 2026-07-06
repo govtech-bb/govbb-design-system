@@ -27,7 +27,9 @@ export async function renderIsolated(page: Page, html: string, dark = false) {
     font-family: var(--govbb-font-sans, system-ui, sans-serif);
     background: ${dark ? 'var(--govbb-color-interactive)' : '#fff'};
   }
-</style></head><body>${html}</body></html>`,
+</style></head><body>${html}
+<script type="module">import { initAll } from '/index.js'; initAll();</script>
+</body></html>`,
     { waitUntil: 'networkidle' },
   );
   await page.evaluate(() => document.fonts.ready);
