@@ -1,6 +1,19 @@
 /* Page scaffolding: width container, main wrapper, and the column grid.
    No component styling here — only how page-level regions occupy space. */
 
+/* Full-height page — put on <body>. Content flows top-down and the footer is
+   pushed to the viewport bottom when the page is short. */
+.govbb-page {
+  min-block-size: 100vh;
+  min-block-size: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+.govbb-page > .govbb-footer {
+  margin-block-start: auto;
+}
+
 /* Page width container. Fluid up to the 1512px desktop frame, centred beyond.
    Gutters grow with the viewport: 16px at the mobile frame (375) up to 128px
    at the desktop frame, interpolated linearly by the clamp (9.85vw − 1.31rem

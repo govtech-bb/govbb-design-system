@@ -10,6 +10,9 @@ no React wrappers, so use the classes directly in any framework.
 
 ## Page scaffold
 
+Put `govbb-page` on the `<body>`: it makes the page fill the viewport and
+pins the footer to the bottom when content is short.
+
 Every page wraps its content in the width container. Content is fluid up to
 the 1512px desktop frame and centred beyond it, with side gutters that grow
 with the viewport from 16px on mobile to 128px at desktop (1256px of content
