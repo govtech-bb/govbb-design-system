@@ -10,8 +10,10 @@
     }
   },
   "files": [
-    "src"
+    "src",
+    "!src/**/*.test.tsx"
   ],
+  "sideEffects": false,
   "peerDependencies": {
     "react": ">=18"
   },
@@ -20,10 +22,17 @@
     "class-variance-authority": "^0.7.1"
   },
   "devDependencies": {
+    "@testing-library/react": "^16.3.2",
     "@types/react": "^19.0.0",
-    "typescript": "^5.7.0"
+    "@types/react-dom": "^19.2.3",
+    "jsdom": "^29.1.1",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "typescript": "^5.7.0",
+    "vitest": "^4.1.9"
   },
   "scripts": {
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
   }
 }

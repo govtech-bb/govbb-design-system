@@ -1,0 +1,30 @@
+import { render, screen, fireEvent } from '@testing-library/react';
+import { describe, expect, it } from 'vitest';
+import { Radio } from './radio';
+
+describe('Radio', () => {
+  it('groups by name', () => {
+    render(
+      <>
+        <Radio name="parish" label="Saint Michael" />
+        <Radio name="parish" label="Christ Church" />
+      </>,
+    );
+    const radios = screen.getAllByRole('radio') as HTMLInputElement[];
+    expect(radios).toHaveLength(2);
+    fireEvent.click(radios[0]);
+    expect(radios[0].checked).toBe(true);
+    fireEvent.click(radios[1]);
+    expect(radios[0].checked).toBe(false);
+  });
+
+  it('renders the conditional as a sibling of the item', () => {
+    const { container } = render(
+      <Radio name="p" label="Other" conditional={<p>Which one?</p>} />,
+    );
+    const item = container.querySelector('.govbb-radio-item');
+    expect(item?.nextElementSibling?.className).toBe(
+      'govbb-radio-item__conditional',
+    );
+  });
+});
