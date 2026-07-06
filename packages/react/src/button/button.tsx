@@ -1,5 +1,5 @@
 import { cva, type VariantProps } from 'class-variance-authority';
-import type { ButtonHTMLAttributes } from 'react';
+import { forwardRef, type ButtonHTMLAttributes } from 'react';
 
 /*
  * cva maps props to the govbb-button classes; the CSS owns how they look. This
@@ -27,19 +27,18 @@ export interface ButtonProps
     ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof button> {}
 
-export function Button({
-  variant,
-  negative,
-  inverse,
-  type = 'button',
-  className,
-  ...props
-}: ButtonProps) {
-  return (
-    <button
-      type={type}
-      className={button({ variant, negative, inverse, className })}
-      {...props}
-    />
-  );
-}
+export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
+  function Button(
+    { variant, negative, inverse, type = 'button', className, ...props },
+    ref,
+  ) {
+    return (
+      <button
+        ref={ref}
+        type={type}
+        className={button({ variant, negative, inverse, className })}
+        {...props}
+      />
+    );
+  },
+);
