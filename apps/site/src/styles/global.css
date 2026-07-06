@@ -19,9 +19,8 @@ body {
   line-height: var(--govbb-line-height-base);
   color: var(--govbb-color-text);
   background: var(--govbb-color-bg);
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
+  /* page shell (flex column, full height, pinned footer) comes from the
+     design-system's .govbb-page, set on <body> in BaseLayout */
   -webkit-font-smoothing: antialiased;
 }
 
@@ -41,22 +40,14 @@ input:focus-visible {
   outline-offset: 2px;
 }
 
-img {
+/* Content images only — component images (e.g. the banner crest) are sized
+   by the design-system package. */
+img:not([class]) {
   max-width: 100%;
   height: auto;
 }
 
-.govbb-visually-hidden {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
-}
+/* .govbb-visually-hidden comes from the design-system package. */
 
 .govbb-skip-link {
   position: absolute;
@@ -71,46 +62,22 @@ img {
   left: 0;
 }
 
-/* ── Layout container ─────────────────────────────────────────── */
-.govbb-container {
-  width: 100%;
-  max-width: var(--govbb-max-width);
-  margin-inline: auto;
-  padding-inline: var(--govbb-gutter);
-}
-
-main {
-  flex: 1 0 auto;
-}
+/* Layout container: .govbb-width-container comes from the design-system
+   package (fluid gutters, 1512px cap). */
 
 /* Standard vertical padding for a simple (non-article) page section. */
 .govbb-page-section {
   padding-block: var(--govbb-space-6) var(--govbb-space-8);
 }
 
-/* ── Official government banner ───────────────────────────────── */
-.govbb-gov-banner {
-  background: var(--govbb-color-panel);
-  color: var(--govbb-color-text);
-}
-.govbb-gov-banner__inner {
-  display: flex;
-  align-items: center;
-  gap: var(--govbb-space-2);
-  padding-block: var(--govbb-space-2);
-  font-size: 1rem;
-}
-.govbb-gov-banner__crest {
-  width: auto;
-  height: 1.5rem;
-  flex: none;
-}
+/* The official banner and footer come from the design-system package. */
 
-/* ── Header / navbar ──────────────────────────────────────────── */
-.govbb-header {
+/* ── Site header (docs-site chrome: brand + nav + search; distinct from the
+   design-system's gold govbb-header component) ─────────────────── */
+.site-header {
   background: var(--govbb-color-white);
 }
-.govbb-header__inner {
+.site-header__inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -118,20 +85,20 @@ main {
   padding-block: var(--govbb-space-3);
   flex-wrap: wrap;
 }
-.govbb-header__left {
+.site-header__left {
   display: flex;
   align-items: center;
   gap: var(--govbb-space-5);
   flex-wrap: wrap;
 }
-.govbb-brand {
+.site-brand {
   font-weight: 700;
   font-size: 1.25rem;
   color: var(--govbb-color-text);
   text-decoration: none;
   white-space: nowrap;
 }
-.govbb-nav ul {
+.site-nav ul {
   display: flex;
   flex-wrap: wrap;
   gap: var(--govbb-space-4);
@@ -139,61 +106,18 @@ main {
   margin: 0;
   padding: 0;
 }
-.govbb-nav a {
+.site-nav a {
   color: var(--govbb-color-text);
   text-decoration: none;
   font-size: 1rem;
 }
-.govbb-nav a:hover {
+.site-nav a:hover {
   color: var(--govbb-color-teal);
   text-decoration: underline;
 }
-.govbb-nav a[aria-current='page'] {
+.site-nav a[aria-current='page'] {
   color: var(--govbb-color-teal);
   font-weight: 600;
-}
-
-/* ── Footer ───────────────────────────────────────────────────── */
-.govbb-footer {
-  flex-shrink: 0;
-  background: var(--govbb-color-navy);
-  color: var(--govbb-color-white);
-  padding-block: var(--govbb-space-6);
-}
-.govbb-footer__inner {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--govbb-space-6);
-  align-items: flex-start;
-  justify-content: space-between;
-}
-.govbb-footer__links {
-  display: flex;
-  flex-direction: column;
-  gap: var(--govbb-space-2);
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-.govbb-footer__links a {
-  color: var(--govbb-color-white);
-  text-decoration: underline;
-  font-size: 1.25rem;
-}
-.govbb-footer__gov {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: var(--govbb-space-3);
-  text-align: right;
-}
-.govbb-footer__crest {
-  width: 104px;
-  height: auto;
-}
-.govbb-footer__copyright {
-  margin: 0;
-  font-size: 1.25rem;
 }
 
 /* ── Buttons (CTAs reuse the component classes in button.css) ──── */
@@ -220,6 +144,44 @@ main {
 }
 .govbb-prose p {
   margin-block: var(--govbb-space-3);
+}
+.govbb-prose ul,
+.govbb-prose ol {
+  margin-block: var(--govbb-space-3);
+  padding-inline-start: var(--govbb-space-4);
+}
+/* Inline code (Shiki-highlighted blocks carry their own styling). */
+.govbb-prose :not(pre) > code {
+  font-size: 0.9em;
+  background: var(--govbb-blue-10);
+  border-radius: 4px;
+  padding: 0.1em 0.35em;
+}
+.govbb-prose pre {
+  border-radius: 8px;
+  padding: var(--govbb-space-3) var(--govbb-space-4);
+  overflow-x: auto;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  margin-block: var(--govbb-space-3) var(--govbb-space-4);
+}
+.govbb-prose table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-block: var(--govbb-space-3) var(--govbb-space-4);
+  font-size: 1rem;
+}
+.govbb-prose th,
+.govbb-prose td {
+  text-align: left;
+  vertical-align: top;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--govbb-color-border);
+}
+.govbb-prose th {
+  background: #f8f9fa;
+  font-weight: 600;
+  border-bottom-color: var(--govbb-mid-grey-00);
 }
 /* Article body (rendered markdown): keep the reading measure on text but let
    embedded example previews use the full column width. */

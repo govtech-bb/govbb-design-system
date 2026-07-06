@@ -38,4 +38,15 @@ const docs = defineCollection({
   }),
 });
 
-export const collections = { changelog, components, docs };
+// Foundations: layout, colour, typography, spacing — the visual language
+// underneath the components.
+const styles = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/styles' }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    lede: z.string(),
+  }),
+});
+
+export const collections = { changelog, components, docs, styles };

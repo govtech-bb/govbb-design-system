@@ -1,30 +1,28 @@
 ---
-// Official crest, SVGO-optimised from the design-system package's
-// govbb-creast.svg (@govtech-bb/frontend). width/height match its intrinsic
-// aspect ratio so the browser reserves space before it loads (no layout shift);
-// CSS sizes the rendered crest.
+// The design-system footer component; only the crest asset is local
+// (SVGO-optimised copy of the package's govbb-creast.svg).
 import crest from '../assets/govbb-creast.svg?url';
 const year = new Date().getFullYear();
 ---
-<footer class="govbb-footer">
-  <div class="govbb-container govbb-footer__inner">
-    <nav aria-label="Footer">
-      <ul class="govbb-footer__links">
-        <li><a href="/">Home</a></li>
-        <li><a href="/cookies/">Cookie Policy</a></li>
-        <li><a href="/terms/">Terms &amp; Conditions</a></li>
-        <li><a href="/sitemap/">Sitemap</a></li>
-      </ul>
+
+<footer class="govbb-footer" data-pagefind-ignore>
+  <div class="govbb-width-container govbb-footer__inner">
+    <nav class="govbb-footer__nav" aria-label="Footer navigation">
+      <a class="govbb-footer__link" href="/">Home</a>
+      <a class="govbb-footer__link" href="/cookies/">Cookie Policy</a>
+      <a class="govbb-footer__link" href="/terms/">Terms &amp; Conditions</a>
+      <a class="govbb-footer__link" href="/sitemap/">Sitemap</a>
     </nav>
-    <div class="govbb-footer__gov">
+    <hr class="govbb-footer__divider" aria-hidden="true" />
+    <div class="govbb-footer__end">
       <img
-        class="govbb-footer__crest"
+        class="govbb-footer__coat"
         src={crest}
         width="887"
         height="954"
-        alt="Coat of arms of Barbados"
+        alt=""
       />
-      <p class="govbb-footer__copyright">© {year} Government of Barbados</p>
+      <p class="govbb-footer__copy">© {year} Government of Barbados</p>
     </div>
   </div>
 </footer>

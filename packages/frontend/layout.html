@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GovBB Layout Demo</title>
+    <link rel="stylesheet" href="/src/index.css" />
+    <style>
+      body {
+        margin: 0;
+        font-family: var(--govbb-font-sans, system-ui, sans-serif);
+        line-height: var(--govbb-line-height-base, 1.5);
+        color: var(--govbb-color-ink, #1a1a1a);
+      }
+      /* Tint the demo regions so the gutters and columns are visible. */
+      .demo-block {
+        background: var(--govbb-color-highlight);
+        padding: var(--govbb-space-s);
+        margin-bottom: var(--govbb-space-s);
+      }
+      .demo-readout {
+        position: fixed;
+        right: 8px;
+        bottom: 8px;
+        background: #0b0c0c;
+        color: #fff;
+        font-size: 13px;
+        padding: 6px 10px;
+        border-radius: 4px;
+        font-variant-numeric: tabular-nums;
+        z-index: 9;
+      }
+    </style>
+  </head>
+  <body class="govbb-page">
+    <div class="govbb-official-banner">
+      <div class="govbb-width-container govbb-official-banner__inner">
+        <div class="govbb-official-banner__crest">
+          <img
+            class="govbb-official-banner__icon"
+            src="/assets/images/govbb-creast.svg"
+            alt=""
+          />
+        </div>
+        <div class="govbb-official-banner__text">
+          <span>Official government website</span>
+          <a class="govbb-official-banner__link" href="#">Learn more</a>
+        </div>
+      </div>
+    </div>
+    <header class="govbb-header">
+      <div class="govbb-width-container govbb-header__inner">
+        <a href="/">
+          <img
+            class="govbb-header__logo"
+            src="/assets/images/govbb-logo.svg"
+            alt="gov.bb"
+          />
+        </a>
+      </div>
+    </header>
+
+    <div class="govbb-width-container">
+      <main class="govbb-main-wrapper" id="main-content">
+        <div class="govbb-grid-row">
+          <div class="govbb-grid-column-two-thirds">
+            <h1 class="govbb-text-h1">Renew your passport</h1>
+            <p class="govbb-text-body">
+              Resize the window: the page gutters grow smoothly from 16px on a
+              phone to 128px at the 1512px desktop frame, then hold. The badge
+              in the corner shows the live value.
+            </p>
+            <div class="demo-block">two-thirds column</div>
+            <div class="govbb-grid-row">
+              <div class="govbb-grid-column-one-half">
+                <div class="demo-block">nested half</div>
+              </div>
+              <div class="govbb-grid-column-one-half">
+                <div class="demo-block">nested half</div>
+              </div>
+            </div>
+            <button class="govbb-button" type="button">
+              Start application
+            </button>
+          </div>
+          <div class="govbb-grid-column-one-third">
+            <div class="demo-block">
+              one-third sidebar — related links live here
+            </div>
+          </div>
+        </div>
+
+        <div class="govbb-grid-row">
+          <div class="govbb-grid-column-one-quarter">
+            <div class="demo-block">quarter</div>
+          </div>
+          <div class="govbb-grid-column-one-quarter">
+            <div class="demo-block">quarter</div>
+          </div>
+          <div class="govbb-grid-column-one-quarter-from-desktop">
+            <div class="demo-block">quarter from desktop</div>
+          </div>
+          <div class="govbb-grid-column-one-quarter-from-desktop">
+            <div class="demo-block">quarter from desktop</div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <footer class="govbb-footer">
+      <div class="govbb-width-container govbb-footer__inner">
+        <nav class="govbb-footer__nav" aria-label="Footer navigation">
+          <a class="govbb-footer__link" href="/">Home</a>
+          <a class="govbb-footer__link" href="#">Cookie policy</a>
+        </nav>
+        <hr class="govbb-footer__divider" aria-hidden="true" />
+        <div class="govbb-footer__end">
+          <img
+            class="govbb-footer__coat"
+            src="/assets/images/govbb-creast.svg"
+            alt=""
+          />
+          <p class="govbb-footer__copy">© 2026 Government of Barbados</p>
+        </div>
+      </div>
+    </footer>
+
+    <div class="demo-readout" aria-hidden="true"></div>
+    <script type="module">
+      const readout = document.querySelector('.demo-readout');
+      const container = document.querySelector('.govbb-width-container');
+      const update = () => {
+        const gutter = parseFloat(
+          getComputedStyle(container).paddingInlineStart,
+        );
+        readout.textContent = `${innerWidth}px viewport · ${gutter.toFixed(1)}px gutter`;
+      };
+      new ResizeObserver(update).observe(document.body);
+      update();
+    </script>
+  </body>
+</html>

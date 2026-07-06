@@ -1,14 +1,117 @@
-/* Page width container — centres content and widens the gutters on tablet+.
-   Wrap page content in <div class="govbb-width-container">. */
+/* Page scaffolding: width container, main wrapper, and the column grid.
+   No component styling here — only how page-level regions occupy space. */
 
+/* Full-height page — put on <body>. Content flows top-down and the footer is
+   pushed to the viewport bottom when the page is short. */
+.govbb-page {
+  min-block-size: 100vh;
+  min-block-size: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+.govbb-page > .govbb-footer {
+  margin-block-start: auto;
+}
+
+/* Page width container. Fluid up to the 1512px desktop frame, centred beyond.
+   Gutters grow with the viewport: 16px at the mobile frame (375) up to 128px
+   at the desktop frame, interpolated linearly by the clamp (9.85vw − 1.31rem
+   passes through both anchor points). At the cap that leaves the comp's
+   1256px of content (border-box, so the max includes the gutters). Wrap page
+   content in <div class="govbb-width-container">. */
 .govbb-width-container {
-  max-inline-size: 960px;
+  max-inline-size: 1512px;
   margin-inline: auto;
-  padding-inline: var(--govbb-space-s);
+  padding-inline: clamp(
+    var(--govbb-space-s),
+    9.85vw - 1.31rem,
+    var(--govbb-space-xl)
+  );
+}
+
+/* Vertical breathing room for the <main> landmark. */
+.govbb-main-wrapper {
+  display: block;
+  padding-block: var(--govbb-space-xm);
+}
+
+/*
+ * Column grid — a real CSS grid, not GOV.UK's legacy floats. 12 tracks with
+ * a gutter; the fraction classes span tracks on tablet+ and stack full-width
+ * below. Columns carry no vertical gap: content margins own that rhythm.
+ *
+ *   <div class="govbb-grid-row">
+ *     <div class="govbb-grid-column-two-thirds">…</div>
+ *     <div class="govbb-grid-column-one-third">…</div>
+ *   </div>
+ */
+.govbb-grid-row {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--govbb-space-m);
+}
+
+/* The -from-desktop variants hold full width through tablet and only take
+   their fraction on desktop — for sidebars too cramped at tablet widths. */
+.govbb-grid-column-full,
+.govbb-grid-column-three-quarters,
+.govbb-grid-column-two-thirds,
+.govbb-grid-column-one-half,
+.govbb-grid-column-one-third,
+.govbb-grid-column-one-quarter,
+.govbb-grid-column-three-quarters-from-desktop,
+.govbb-grid-column-two-thirds-from-desktop,
+.govbb-grid-column-one-half-from-desktop,
+.govbb-grid-column-one-third-from-desktop,
+.govbb-grid-column-one-quarter-from-desktop {
+  grid-column: span 12;
 }
 
 @media (--tablet) {
-  .govbb-width-container {
-    padding-inline: var(--govbb-space-m);
+  .govbb-main-wrapper {
+    padding-block: var(--govbb-space-m);
+  }
+
+  .govbb-grid-column-three-quarters {
+    grid-column: span 9;
+  }
+
+  .govbb-grid-column-two-thirds {
+    grid-column: span 8;
+  }
+
+  .govbb-grid-column-one-half {
+    grid-column: span 6;
+  }
+
+  .govbb-grid-column-one-third {
+    grid-column: span 4;
+  }
+
+  .govbb-grid-column-one-quarter {
+    grid-column: span 3;
+  }
+}
+
+@media (--desktop) {
+  .govbb-grid-column-three-quarters-from-desktop {
+    grid-column: span 9;
+  }
+
+  .govbb-grid-column-two-thirds-from-desktop {
+    grid-column: span 8;
+  }
+
+  .govbb-grid-column-one-half-from-desktop {
+    grid-column: span 6;
+  }
+
+  .govbb-grid-column-one-third-from-desktop {
+    grid-column: span 4;
+  }
+
+  .govbb-grid-column-one-quarter-from-desktop {
+    grid-column: span 3;
   }
 }
