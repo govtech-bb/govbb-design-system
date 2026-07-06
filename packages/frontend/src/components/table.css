@@ -1,0 +1,39 @@
+/* Table — full-width data table: bold left-aligned headers, hairline row
+   separators and a heavier rule under the header row. Numeric columns opt into
+   right-alignment with tabular figures so digits line up. */
+
+.govbb-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--govbb-font-size-body);
+  line-height: var(--govbb-line-height-base);
+}
+
+.govbb-table__caption {
+  margin-bottom: var(--govbb-space-s);
+  font-weight: 700;
+  text-align: left;
+}
+
+.govbb-table__header,
+.govbb-table__cell {
+  padding: var(--govbb-space-xs) var(--govbb-space-s) var(--govbb-space-xs) 0;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--govbb-color-neutral);
+}
+
+.govbb-table__header {
+  font-weight: 700;
+}
+
+/* Heavier rule closing off the header row. */
+.govbb-table__head .govbb-table__header {
+  border-bottom-width: var(--govbb-border-width-form);
+}
+
+.govbb-table__header--numeric,
+.govbb-table__cell--numeric {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
