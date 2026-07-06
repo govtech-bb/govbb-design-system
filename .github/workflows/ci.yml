@@ -31,6 +31,9 @@ jobs:
   # must be generated on the CI image, not a laptop).
   visual-regression:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write # pushes diff images to a visual-report/pr-N branch
+      pull-requests: write # upserts the report comment
     steps:
       - uses: actions/checkout@v4
       - id: baselines
@@ -56,6 +59,13 @@ jobs:
         with:
           name: visual-regression-diffs
           path: packages/frontend/test-results
+      - name: Post diff report on the PR
+        if: failure() && github.event_name == 'pull_request'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR: ${{ github.event.pull_request.number }}
+          REPO: ${{ github.repository }}
+        run: node .github/scripts/vr-report.mjs
 
   # the react peer range is >=18; the main job runs 19, this one proves 18
   react-18:
