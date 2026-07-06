@@ -249,6 +249,7 @@
           class="govbb-number-input-wrapper"
           role="group"
           aria-labelledby="qty-label"
+          data-govbb-module="number-input"
         >
           <input
             class="govbb-number-input"
@@ -289,7 +290,7 @@
         <p class="govbb-hint" id="poa-hint">
           This could be a recent utility bill or bank statement
         </p>
-        <div class="govbb-file-upload">
+        <div class="govbb-file-upload" data-govbb-module="file-upload">
           <label class="govbb-file-upload__dropzone" for="poa">
             <span class="govbb-file-upload__info">
               <span class="govbb-file-upload__title">Upload a file</span>
@@ -313,17 +314,7 @@
               >
             </span>
           </label>
-          <ul class="govbb-file-upload__list">
-            <li class="govbb-file-upload__item">
-              <span class="govbb-file-upload__name">proof-of-address.pdf</span>
-              <button
-                class="govbb-button govbb-button--text govbb-button--negative"
-                type="button"
-              >
-                Remove
-              </button>
-            </li>
-          </ul>
+          <ul class="govbb-file-upload__list"></ul>
         </div>
       </div>
     </section>
@@ -562,5 +553,9 @@
         </div>
       </footer>
     </section>
+    <script type="module">
+      import { initAll } from '/index.js';
+      initAll();
+    </script>
   </body>
 </html>
