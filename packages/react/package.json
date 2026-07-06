@@ -20,7 +20,7 @@
     "react": ">=18"
   },
   "dependencies": {
-    "@govtech-bb/frontend": "workspace:*",
+    "@govtech-bb/frontend": "workspace:^",
     "class-variance-authority": "^0.7.1"
   },
   "devDependencies": {
@@ -38,6 +38,11 @@
   "scripts": {
     "build": "tsup",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run"
+    "test": "vitest run",
+    "prepublishOnly": "pnpm build"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
   }
 }

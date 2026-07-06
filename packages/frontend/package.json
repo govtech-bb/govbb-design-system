@@ -30,12 +30,17 @@
   "scripts": {
     "dev": "vite",
     "build": "lightningcss --bundle --minify --custom-media --browserslist src/index.css -o dist/govbb.css",
-    "test": "vitest run"
+    "test": "vitest run",
+    "prepublishOnly": "pnpm build"
   },
   "devDependencies": {
     "jsdom": "^29.1.1",
     "lightningcss-cli": "^1.30.2",
     "vite": "^8.1.0",
     "vitest": "^4.1.9"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
   }
 }
