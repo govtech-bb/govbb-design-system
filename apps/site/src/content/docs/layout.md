@@ -48,6 +48,14 @@ Available fractions: `full`, `three-quarters`, `two-thirds`, `one-half`,
 `one-third`, `one-quarter`. Fractions in a row should sum to a whole; a row
 with leftover tracks simply leaves trailing space.
 
+Each fraction also has a `-from-desktop` variant (for example
+`govbb-grid-column-one-third-from-desktop`) that stays full width through
+tablet and only takes its fraction on desktop — use it when a sidebar is too
+cramped at tablet widths.
+
+Rows nest: a `govbb-grid-row` inside a column starts a fresh 12-column grid
+scoped to that column's width.
+
 ```html
 <div class="govbb-grid-row">
   <div class="govbb-grid-column-one-quarter"><p>Quarter</p></div>

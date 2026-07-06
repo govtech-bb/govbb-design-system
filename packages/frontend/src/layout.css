@@ -31,12 +31,19 @@
   column-gap: var(--govbb-space-m);
 }
 
+/* The -from-desktop variants hold full width through tablet and only take
+   their fraction on desktop — for sidebars too cramped at tablet widths. */
 .govbb-grid-column-full,
 .govbb-grid-column-three-quarters,
 .govbb-grid-column-two-thirds,
 .govbb-grid-column-one-half,
 .govbb-grid-column-one-third,
-.govbb-grid-column-one-quarter {
+.govbb-grid-column-one-quarter,
+.govbb-grid-column-three-quarters-from-desktop,
+.govbb-grid-column-two-thirds-from-desktop,
+.govbb-grid-column-one-half-from-desktop,
+.govbb-grid-column-one-third-from-desktop,
+.govbb-grid-column-one-quarter-from-desktop {
   grid-column: span 12;
 }
 
@@ -66,6 +73,28 @@
   }
 
   .govbb-grid-column-one-quarter {
+    grid-column: span 3;
+  }
+}
+
+@media (--desktop) {
+  .govbb-grid-column-three-quarters-from-desktop {
+    grid-column: span 9;
+  }
+
+  .govbb-grid-column-two-thirds-from-desktop {
+    grid-column: span 8;
+  }
+
+  .govbb-grid-column-one-half-from-desktop {
+    grid-column: span 6;
+  }
+
+  .govbb-grid-column-one-third-from-desktop {
+    grid-column: span 4;
+  }
+
+  .govbb-grid-column-one-quarter-from-desktop {
     grid-column: span 3;
   }
 }
