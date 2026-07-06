@@ -1,5 +1,5 @@
 @import './tokens.css';
-/* Button styles come from the real design-system package (@govtech-bb/styles),
+/* Button styles come from the real design-system package (@govtech-bb/frontend),
    imported in BaseLayout — no placeholder button CSS here. */
 
 *,
@@ -26,8 +26,8 @@ body {
 }
 
 /* Base link colour applies to unclassed (content) links only, so it doesn't
-   override component classes like .govbb-btn that carry their own colour from
-   the design-system package (whose rules sit in a lower @layer). */
+   override component classes like .govbb-button that carry their own colour
+   from the design-system package (whose rules sit in a lower @layer). */
 a:not([class]) {
   color: var(--govbb-color-link);
 }
@@ -37,7 +37,7 @@ a:not([class]):hover {
 a:focus-visible,
 button:focus-visible,
 input:focus-visible {
-  outline: 3px solid var(--govbb-color-focus);
+  outline: 3px solid var(--govbb-color-focus-site);
   outline-offset: 2px;
 }
 
@@ -362,7 +362,7 @@ main {
   margin: 0;
 }
 .govbb-signup {
-  background: var(--govbb-color-surface);
+  background: var(--govbb-color-panel);
   border-radius: var(--govbb-radius-lg);
   padding: var(--govbb-space-4);
   margin-top: var(--govbb-space-4);
@@ -453,10 +453,10 @@ main {
   border-radius: var(--govbb-radius);
 }
 .govbb-sidebar__links a:hover {
-  background: var(--govbb-color-surface);
+  background: var(--govbb-color-panel);
 }
 .govbb-sidebar__links a[aria-current='page'] {
-  background: var(--govbb-color-surface);
+  background: var(--govbb-color-panel);
   color: var(--govbb-color-teal);
   font-weight: 600;
 }
@@ -499,5 +499,5 @@ main {
   border-radius: var(--govbb-radius-lg);
   text-align: center;
   color: var(--govbb-color-text-muted);
-  background: var(--govbb-color-surface);
+  background: var(--govbb-color-panel);
 }

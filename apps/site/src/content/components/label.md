@@ -13,15 +13,13 @@ group: Form elements
   <p class="govbb-hint" id="nrn-hint">
     It is on your national ID card. For example, 850101-0123
   </p>
-  <div class="govbb-input-wrapper">
-    <input
-      class="govbb-input"
-      id="nrn"
-      name="nrn"
-      type="text"
-      aria-describedby="nrn-hint"
-    />
-  </div>
+  <input
+    class="govbb-input"
+    id="nrn"
+    name="nrn"
+    type="text"
+    aria-describedby="nrn-hint"
+  />
 </div>
 ```
 
@@ -57,14 +55,12 @@ with `aria-describedby` so it is announced alongside the label.
 ```html title="Label without hint text"
 <div class="govbb-form-group">
   <label class="govbb-label" for="email-address">Email address</label>
-  <div class="govbb-input-wrapper">
-    <input
-      class="govbb-input"
-      id="email-address"
-      name="email-address"
-      type="email"
-    />
-  </div>
+  <input
+    class="govbb-input"
+    id="email-address"
+    name="email-address"
+    type="email"
+  />
 </div>
 ```
 

@@ -11,15 +11,13 @@ group: Form elements
 <div class="govbb-form-group">
   <label class="govbb-label" for="full-name">Full name</label>
   <p class="govbb-hint" id="full-name-hint">As it appears on your ID</p>
-  <div class="govbb-input-wrapper">
-    <input
-      class="govbb-input"
-      id="full-name"
-      name="full-name"
-      type="text"
-      aria-describedby="full-name-hint"
-    />
-  </div>
+  <input
+    class="govbb-input"
+    id="full-name"
+    name="full-name"
+    type="text"
+    aria-describedby="full-name-hint"
+  />
 </div>
 ```
 
@@ -71,16 +69,14 @@ address".
   <p class="govbb-error-message" id="email-error" role="alert">
     Enter a valid email address
   </p>
-  <div class="govbb-input-wrapper">
-    <input
-      class="govbb-input"
-      id="email"
-      name="email"
-      type="email"
-      aria-invalid="true"
-      aria-describedby="email-error"
-    />
-  </div>
+  <input
+    class="govbb-input"
+    id="email"
+    name="email"
+    type="email"
+    aria-invalid="true"
+    aria-describedby="email-error"
+  />
 </div>
 ```
 
@@ -94,15 +90,13 @@ why the field is unavailable.
 ```html title="Disabled input"
 <div class="govbb-form-group">
   <label class="govbb-label" for="disabled-input">Disabled input</label>
-  <div class="govbb-input-wrapper">
-    <input
-      class="govbb-input"
-      id="disabled-input"
-      name="disabled-input"
-      type="text"
-      value="Read only"
-      disabled
-    />
-  </div>
+  <input
+    class="govbb-input"
+    id="disabled-input"
+    name="disabled-input"
+    type="text"
+    value="Read only"
+    disabled
+  />
 </div>
 ```

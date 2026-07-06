@@ -1,8 +1,8 @@
 ---
 import { Code } from 'astro:components';
 // Inject the real design-system stylesheet into the preview iframe so examples
-// render with the actual component styles (e.g. the real .govbb-btn button).
-import libraryCss from '@govtech-bb/styles?raw';
+// render with the actual component styles (e.g. the real .govbb-button button).
+import libraryCss from '@govtech-bb/frontend/css?raw';
 
 /*
  * Example — a live component preview with its source shown in a code panel.
@@ -41,7 +41,7 @@ const previewStyles = `
     gap: 16px;
     align-items: center;
     justify-content: center;
-    font-family: var(--govbb-font-base, system-ui, sans-serif);
+    font-family: var(--govbb-font-sans, system-ui, sans-serif);
     background: #fff;
   }
 `;
@@ -265,7 +265,7 @@ const codeBlocks = [
     outline: 3px solid transparent;
     outline-offset: -3px;
     box-shadow:
-      inset 0 0 0 2px var(--govbb-color-focus),
+      inset 0 0 0 2px var(--govbb-color-focus-site),
       inset 0 0 0 4px #0b0c0c;
   }
   .govbb-example__code :global(pre) {

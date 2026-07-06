@@ -139,9 +139,7 @@ sits as a sibling of its radio item and appears only when that radio is checked.
   <div class="govbb-radio-item__conditional">
     <div class="govbb-form-group">
       <label class="govbb-label" for="r-email-addr">Email address</label>
-      <div class="govbb-input-wrapper">
-        <input class="govbb-input" id="r-email-addr" type="email" />
-      </div>
+      <input class="govbb-input" id="r-email-addr" type="email" />
     </div>
   </div>
   <div class="govbb-radio-item">
@@ -158,9 +156,7 @@ sits as a sibling of its radio item and appears only when that radio is checked.
   <div class="govbb-radio-item__conditional">
     <div class="govbb-form-group">
       <label class="govbb-label" for="r-phone-num">Phone number</label>
-      <div class="govbb-input-wrapper">
-        <input class="govbb-input" id="r-phone-num" type="tel" />
-      </div>
+      <input class="govbb-input" id="r-phone-num" type="tel" />
     </div>
   </div>
   <div class="govbb-radio-item">

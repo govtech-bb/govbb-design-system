@@ -35,9 +35,9 @@ importers:
 
   apps/site:
     dependencies:
-      '@govtech-bb/styles':
-        specifier: 1.0.0-alpha.16
-        version: 1.0.0-alpha.16
+      '@govtech-bb/frontend':
+        specifier: workspace:*
+        version: link:../../packages/frontend
       astro:
         specifier: ^7.0.4
         version: 7.0.4(@astrojs/markdown-remark@7.2.0)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.1)(@types/node@26.0.1)(jiti@2.6.1)(yaml@2.9.0)
@@ -666,9 +666,6 @@ packages:
     peerDependenciesMeta:
       '@noble/hashes':
         optional: true
-
-  '@govtech-bb/styles@1.0.0-alpha.16':
-    resolution: {integrity: sha512-Ny8tgqjGuL48Z0DWvpBZe+PP+K2xJI+JJybQUDiFWSzQgYc/P7ovJ4CVFvBGBj07mYMWJE9cD7UY96TaHl36PQ==}
 
   '@img/colour@1.1.0':
     resolution: {integrity: sha512-Td76q7j57o/tLVdgS746cYARfSyxk8iEfRxewL9h4OMzYhbW4TAcppl0mT4eyqXddh6L/jwoM75mo7ixa/pCeQ==}
@@ -3896,8 +3893,6 @@ snapshots:
     optional: true
 
   '@exodus/bytes@1.15.1': {}
-
-  '@govtech-bb/styles@1.0.0-alpha.16': {}
 
   '@img/colour@1.1.0': {}
 
