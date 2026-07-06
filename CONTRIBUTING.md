@@ -72,6 +72,25 @@ pnpm changelog:unreleased # preview entries not yet in a release
 
 Do **not** manually edit `CHANGELOG.md` — fix the commit message instead and regenerate.
 
+## Releasing
+
+Releases are one button: the **Release** workflow in GitHub Actions
+(`workflow_dispatch`). Give it a version (e.g. `0.1.0`, no leading `v`) and it:
+
+1. re-runs the full CI gate (lint, typecheck, test, build);
+2. bumps `@govtech-bb/frontend` and `@govtech-bb/react` to that version
+   (lockstep — the two always share a version);
+3. regenerates `CHANGELOG.md` with git-cliff, commits
+   `chore: release vX.Y.Z` and tags `vX.Y.Z` on `main`;
+4. publishes both packages to npm with provenance (the `workspace:^` dep in
+   react is rewritten to `^X.Y.Z` at publish time);
+5. creates a GitHub release with the changelog section as notes.
+
+Requires the `NPM_TOKEN` repo secret (npm automation token with publish
+rights on the `@govtech-bb` scope). Don't publish from a laptop — both
+packages have `prepublishOnly` builds as a backstop, but the workflow is the
+source of truth.
+
 ## Tooling at a glance
 
 | Tool               | Purpose                                                            |

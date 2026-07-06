@@ -11,16 +11,24 @@ group: Form elements
 <div class="govbb-form-group">
   <label class="govbb-label" for="full-name">Full name</label>
   <p class="govbb-hint" id="full-name-hint">As it appears on your ID</p>
-  <div class="govbb-input-wrapper">
-    <input
-      class="govbb-input"
-      id="full-name"
-      name="full-name"
-      type="text"
-      aria-describedby="full-name-hint"
-    />
-  </div>
+  <input
+    class="govbb-input"
+    id="full-name"
+    name="full-name"
+    type="text"
+    aria-describedby="full-name-hint"
+  />
 </div>
+```
+
+```tsx
+import { FormGroup, Hint, Input, Label } from '@govtech-bb/react';
+
+<FormGroup>
+  <Label htmlFor="full-name">Full name</Label>
+  <Hint id="full-name-hint">As it appears on your ID</Hint>
+  <Input id="full-name" name="full-name" aria-describedby="full-name-hint" />
+</FormGroup>;
 ```
 
 The Input component lets users enter a single line of short, free-form text, such
@@ -71,17 +79,33 @@ address".
   <p class="govbb-error-message" id="email-error" role="alert">
     Enter a valid email address
   </p>
-  <div class="govbb-input-wrapper">
-    <input
-      class="govbb-input"
-      id="email"
-      name="email"
-      type="email"
-      aria-invalid="true"
-      aria-describedby="email-error"
-    />
-  </div>
+  <input
+    class="govbb-input"
+    id="email"
+    name="email"
+    type="email"
+    aria-invalid="true"
+    aria-describedby="email-error"
+  />
 </div>
+```
+
+```tsx
+import { ErrorMessage, FormGroup, Input, Label } from '@govtech-bb/react';
+
+<FormGroup>
+  <Label htmlFor="email">Email address</Label>
+  <ErrorMessage id="email-error" role="alert">
+    Enter a valid email address
+  </ErrorMessage>
+  <Input
+    id="email"
+    name="email"
+    type="email"
+    aria-invalid
+    aria-describedby="email-error"
+  />
+</FormGroup>;
 ```
 
 ## Disabled inputs
@@ -94,15 +118,27 @@ why the field is unavailable.
 ```html title="Disabled input"
 <div class="govbb-form-group">
   <label class="govbb-label" for="disabled-input">Disabled input</label>
-  <div class="govbb-input-wrapper">
-    <input
-      class="govbb-input"
-      id="disabled-input"
-      name="disabled-input"
-      type="text"
-      value="Read only"
-      disabled
-    />
-  </div>
+  <input
+    class="govbb-input"
+    id="disabled-input"
+    name="disabled-input"
+    type="text"
+    value="Read only"
+    disabled
+  />
 </div>
+```
+
+```tsx
+import { FormGroup, Input, Label } from '@govtech-bb/react';
+
+<FormGroup>
+  <Label htmlFor="disabled-input">Disabled input</Label>
+  <Input
+    id="disabled-input"
+    name="disabled-input"
+    defaultValue="Read only"
+    disabled
+  />
+</FormGroup>;
 ```

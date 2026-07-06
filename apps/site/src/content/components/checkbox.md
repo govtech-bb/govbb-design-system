@@ -46,6 +46,17 @@ group: Form elements
 </fieldset>
 ```
 
+```tsx
+import { Checkbox, Fieldset, Hint } from '@govtech-bb/react';
+
+<Fieldset legend="How would you like to be contacted?">
+  <Hint>Select all that apply</Hint>
+  <Checkbox name="contact" value="email" label="Email" />
+  <Checkbox name="contact" value="phone" label="Phone" />
+  <Checkbox name="contact" value="post" label="Post" />
+</Fieldset>;
+```
+
 The Checkbox component lets users select any number of options from a list,
 including none, or toggle a single option on or off. Each checkbox operates
 independently, so selecting one does not affect the others.
@@ -97,6 +108,12 @@ accepting terms and conditions.
 </div>
 ```
 
+```tsx
+import { Checkbox } from '@govtech-bb/react';
+
+<Checkbox name="terms" value="yes" label="I agree to the terms of service" />;
+```
+
 ## Disabled checkboxes
 
 Disable a checkbox only when an option is genuinely unavailable to the user, and
@@ -116,4 +133,10 @@ about what they need to do to enable it.
   />
   <label class="govbb-checkbox-item__label" for="sms">SMS (unavailable)</label>
 </div>
+```
+
+```tsx
+import { Checkbox } from '@govtech-bb/react';
+
+<Checkbox name="contact" value="sms" label="SMS (unavailable)" disabled />;
 ```

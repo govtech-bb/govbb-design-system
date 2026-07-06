@@ -1,8 +1,8 @@
 ---
 import { Code } from 'astro:components';
 // Inject the real design-system stylesheet into the preview iframe so examples
-// render with the actual component styles (e.g. the real .govbb-btn button).
-import libraryCss from '@govtech-bb/styles?raw';
+// render with the actual component styles (e.g. the real .govbb-button button).
+import libraryCss from '@govtech-bb/frontend/css?raw';
 
 /*
  * Example — a live component preview with its source shown in a code panel.
@@ -41,16 +41,17 @@ const previewStyles = `
     gap: 16px;
     align-items: center;
     justify-content: center;
-    font-family: var(--govbb-font-base, system-ui, sans-serif);
+    font-family: var(--govbb-font-sans, system-ui, sans-serif);
     background: #fff;
   }
 `;
 const srcdoc = `<!doctype html><html lang="en"><head><meta charset="utf-8"><style>${libraryCss}\n${css}\n${previewStyles}</style></head><body>${html}</body></html>`;
 
 // Data-driven source list — only render tabs for sources that exist.
+// React leads when present (the design system's primary consumer).
 const codeBlocks = [
-  { label: 'HTML', lang: 'html' as const, code: html },
   ...(react ? [{ label: 'React', lang: 'tsx' as const, code: react }] : []),
+  { label: 'HTML', lang: 'html' as const, code: html },
   ...(css ? [{ label: 'CSS', lang: 'css' as const, code: css }] : []),
 ];
 ---
@@ -151,6 +152,7 @@ const codeBlocks = [
        Both views are pinned to --h and scroll internally — content taller
        than --h never changes the block's outer height. */
     --govbb-example-row-h: 44px;
+    --govbb-example-bar-h: 36px;
     --govbb-example-h: 300px;
     --govbb-example-ease: cubic-bezier(0.23, 1, 0.32, 1);
     margin: var(--govbb-space-5) 0;
@@ -172,16 +174,18 @@ const codeBlocks = [
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-width: 120px;
     height: var(--govbb-example-row-h);
     padding: 0 var(--govbb-space-3);
     font: inherit;
-    font-size: 0.8125rem; /* 13px */
+    font-size: 0.875rem; /* 14px */
+    font-weight: 500;
     background: transparent;
     border: 0;
     border-bottom: 2px solid transparent;
     margin-bottom: -1px;
     cursor: pointer;
+    /* The comp uses blue-40 (#99a8cc) here, but that's 2.4:1 on white — fails
+       WCAG AA. Nearest passing muted token instead (7:1). */
     color: var(--govbb-color-text-muted);
     transition:
       color 150ms var(--govbb-example-ease),
@@ -193,7 +197,6 @@ const codeBlocks = [
   .govbb-example__view-tab[aria-selected='true'] {
     color: var(--govbb-color-teal);
     border-bottom-color: var(--govbb-color-teal);
-    font-weight: 600;
   }
 
   /* Preview panel — white card */
@@ -212,16 +215,18 @@ const codeBlocks = [
     border: 0;
   }
 
-  /* Code view — dark panel */
+  /* Code view — white panel with a light language bar over a dark editor */
   .govbb-example__code {
+    background: var(--govbb-color-white);
+    border: 1px solid var(--govbb-color-border);
     border-radius: var(--govbb-radius-lg);
     overflow: hidden;
   }
   .govbb-example__bar {
     display: flex;
     align-items: stretch;
-    height: var(--govbb-example-row-h);
-    background: #222428;
+    height: var(--govbb-example-bar-h);
+    background: #f8f9fa; /* bar grey from the Figma comp; no token this light */
   }
   .govbb-example__langs {
     display: flex;
@@ -230,27 +235,31 @@ const codeBlocks = [
   .govbb-example__copy {
     padding: 0 var(--govbb-space-3);
     font: inherit;
-    font-size: 0.8125rem; /* 13px — matches Preview/Code tabs */
+    font-size: 0.75rem; /* 12px */
     background: transparent;
     border: 0;
     cursor: pointer;
-    color: #8c949e;
+    color: var(--govbb-mid-grey-00);
     transition:
       color 150ms var(--govbb-example-ease),
       background-color 150ms var(--govbb-example-ease),
       transform 120ms var(--govbb-example-ease);
   }
   .govbb-example__lang-tab[aria-selected='true'] {
-    background: #2e3036;
-    color: #edf0f2;
-    font-weight: 500;
+    background: var(--govbb-color-white);
+    color: var(--govbb-green-00);
+    font-weight: 600;
+    border-inline: 1px solid var(--govbb-color-border);
+  }
+  .govbb-example__lang-tab[aria-selected='true']:first-child {
+    border-left: 0;
   }
   .govbb-example__copy {
     margin-left: auto;
   }
   .govbb-example__copy:hover,
   .govbb-example__lang-tab:hover {
-    color: #edf0f2;
+    color: var(--govbb-color-text);
   }
   .govbb-example__copy:active {
     transform: scale(0.97);
@@ -265,17 +274,18 @@ const codeBlocks = [
     outline: 3px solid transparent;
     outline-offset: -3px;
     box-shadow:
-      inset 0 0 0 2px var(--govbb-color-focus),
+      inset 0 0 0 2px var(--govbb-color-focus-site),
       inset 0 0 0 4px #0b0c0c;
   }
   .govbb-example__code :global(pre) {
     margin: 0;
     padding: var(--govbb-space-3) var(--govbb-space-4);
     /* Same total height as the preview view: --h − the language bar. */
-    height: calc(var(--govbb-example-h) - var(--govbb-example-row-h));
+    height: calc(var(--govbb-example-h) - var(--govbb-example-bar-h));
     overflow: auto;
     font-size: 0.8125rem;
     line-height: 1.6;
+    background: #1e1e1e !important; /* pin Shiki dark-plus bg per the comp */
   }
   /* Line numbers — pure CSS counter over Shiki's per-line spans. */
   .govbb-example__code :global(pre code) {
@@ -288,7 +298,7 @@ const codeBlocks = [
     width: 1.5rem;
     margin-right: var(--govbb-space-3);
     text-align: right;
-    color: #6e7681;
+    color: #8b949e; /* 5.6:1 on the #1e1e1e editor — #6e7681 failed AA */
     user-select: none; /* keep line numbers out of drag-selected copies */
   }
 

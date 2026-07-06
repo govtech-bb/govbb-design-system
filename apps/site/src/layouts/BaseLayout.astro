@@ -1,8 +1,9 @@
 ---
-// Real design-system styles (published package). Imported before global.css so
-// the site's own chrome styles still win on any conflict. Provides the real
-// tokens, the Figtree @font-face, and the .govbb-btn* button classes.
-import '@govtech-bb/styles';
+// Real design-system styles (workspace frontend package). Imported before
+// global.css so the site's own chrome styles still win on any conflict.
+// Provides the real tokens, the Figtree @font-face, and the component classes
+// (e.g. .govbb-button*).
+import '@govtech-bb/frontend/css';
 import '../styles/global.css';
 import GovBanner from '../components/GovBanner.astro';
 import Header from '../components/Header.astro';

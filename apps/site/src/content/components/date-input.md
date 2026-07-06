@@ -14,44 +14,52 @@ group: Form elements
     <p class="govbb-hint" id="dob-hint">For example, 27 3 1990</p>
     <div class="govbb-date-input">
       <div class="govbb-date-input__part">
-        <label class="govbb-date-input__label" for="dob-day">Day</label>
-        <div class="govbb-date-input-wrapper">
-          <input
-            class="govbb-date-input__field"
-            id="dob-day"
-            name="dob[day]"
-            type="text"
-            inputmode="numeric"
-          />
-        </div>
+        <label class="govbb-label" for="dob-day">Day</label>
+        <input
+          class="govbb-input govbb-date-input__field"
+          id="dob-day"
+          name="dob[day]"
+          type="text"
+          inputmode="numeric"
+        />
       </div>
       <div class="govbb-date-input__part">
-        <label class="govbb-date-input__label" for="dob-month">Month</label>
-        <div class="govbb-date-input-wrapper">
-          <input
-            class="govbb-date-input__field"
-            id="dob-month"
-            name="dob[month]"
-            type="text"
-            inputmode="numeric"
-          />
-        </div>
+        <label class="govbb-label" for="dob-month">Month</label>
+        <input
+          class="govbb-input govbb-date-input__field"
+          id="dob-month"
+          name="dob[month]"
+          type="text"
+          inputmode="numeric"
+        />
       </div>
       <div class="govbb-date-input__part">
-        <label class="govbb-date-input__label" for="dob-year">Year</label>
-        <div class="govbb-date-input-wrapper govbb-date-input-wrapper--year">
-          <input
-            class="govbb-date-input__field"
-            id="dob-year"
-            name="dob[year]"
-            type="text"
-            inputmode="numeric"
-          />
-        </div>
+        <label class="govbb-label" for="dob-year">Year</label>
+        <input
+          class="govbb-input govbb-date-input__field govbb-date-input__field--year"
+          id="dob-year"
+          name="dob[year]"
+          type="text"
+          inputmode="numeric"
+        />
       </div>
     </div>
   </fieldset>
 </div>
+```
+
+```tsx
+import { DateInput, FormGroup } from '@govtech-bb/react';
+
+<FormGroup>
+  <DateInput
+    legend="Date of birth"
+    hint="For example, 27 3 1990"
+    dayProps={{ name: 'dob[day]' }}
+    monthProps={{ name: 'dob[month]' }}
+    yearProps={{ name: 'dob[year]' }}
+  />
+</FormGroup>;
 ```
 
 The Date Input component lets users enter a memorable date, such as a date of
@@ -104,45 +112,51 @@ of it.
     </p>
     <div class="govbb-date-input">
       <div class="govbb-date-input__part">
-        <label class="govbb-date-input__label" for="dob2-day">Day</label>
-        <div class="govbb-date-input-wrapper">
-          <input
-            class="govbb-date-input__field"
-            id="dob2-day"
-            name="dob2[day]"
-            type="text"
-            inputmode="numeric"
-            aria-invalid="true"
-          />
-        </div>
+        <label class="govbb-label" for="dob2-day">Day</label>
+        <input
+          class="govbb-input govbb-date-input__field"
+          id="dob2-day"
+          name="dob2[day]"
+          type="text"
+          inputmode="numeric"
+          aria-invalid="true"
+        />
       </div>
       <div class="govbb-date-input__part">
-        <label class="govbb-date-input__label" for="dob2-month">Month</label>
-        <div class="govbb-date-input-wrapper">
-          <input
-            class="govbb-date-input__field"
-            id="dob2-month"
-            name="dob2[month]"
-            type="text"
-            inputmode="numeric"
-            aria-invalid="true"
-          />
-        </div>
+        <label class="govbb-label" for="dob2-month">Month</label>
+        <input
+          class="govbb-input govbb-date-input__field"
+          id="dob2-month"
+          name="dob2[month]"
+          type="text"
+          inputmode="numeric"
+          aria-invalid="true"
+        />
       </div>
       <div class="govbb-date-input__part">
-        <label class="govbb-date-input__label" for="dob2-year">Year</label>
-        <div class="govbb-date-input-wrapper govbb-date-input-wrapper--year">
-          <input
-            class="govbb-date-input__field"
-            id="dob2-year"
-            name="dob2[year]"
-            type="text"
-            inputmode="numeric"
-            aria-invalid="true"
-          />
-        </div>
+        <label class="govbb-label" for="dob2-year">Year</label>
+        <input
+          class="govbb-input govbb-date-input__field govbb-date-input__field--year"
+          id="dob2-year"
+          name="dob2[year]"
+          type="text"
+          inputmode="numeric"
+          aria-invalid="true"
+        />
       </div>
     </div>
   </fieldset>
 </div>
+```
+
+```tsx
+import { DateInput, FormGroup } from '@govtech-bb/react';
+
+<FormGroup>
+  <DateInput
+    legend="Date of birth"
+    hint="For example, 27 3 1990"
+    error="Enter a valid date"
+  />
+</FormGroup>;
 ```

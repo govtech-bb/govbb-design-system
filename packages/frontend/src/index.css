@@ -8,29 +8,30 @@
 @import url('./tokens.css') layer(tokens);
 @import url('./base.css') layer(base);
 @import url('./layout.css') layer(components);
-@import url('./components/back-button.css') layer(components);
-@import url('./components/breadcrumbs.css') layer(components);
-@import url('./components/button.css') layer(components);
-@import url('./components/button-group.css') layer(components);
-@import url('./components/checkbox-radio.css') layer(components);
-@import url('./components/date-input.css') layer(components);
-@import url('./components/error-summary.css') layer(components);
-@import url('./components/file-upload.css') layer(components);
-@import url('./components/footer.css') layer(components);
-@import url('./components/form.css') layer(components);
-@import url('./components/header.css') layer(components);
-@import url('./components/input.css') layer(components);
-@import url('./components/link.css') layer(components);
-@import url('./components/list.css') layer(components);
-@import url('./components/number-input.css') layer(components);
-@import url('./components/official-banner.css') layer(components);
-@import url('./components/pill.css') layer(components);
-@import url('./components/search.css') layer(components);
-@import url('./components/select.css') layer(components);
-@import url('./components/show-hide.css') layer(components);
-@import url('./components/status-banner.css') layer(components);
-@import url('./components/summary-list.css') layer(components);
-@import url('./components/table.css') layer(components);
+@import url('./components/back-button/back-button.css') layer(components);
+@import url('./components/breadcrumbs/breadcrumbs.css') layer(components);
+@import url('./components/button/button.css') layer(components);
+@import url('./components/button-group/button-group.css') layer(components);
+@import url('./components/checkbox-radio/checkbox-radio.css') layer(components);
+@import url('./components/date-input/date-input.css') layer(components);
+@import url('./components/error-summary/error-summary.css') layer(components);
+@import url('./components/file-upload/file-upload.css') layer(components);
+@import url('./components/footer/footer.css') layer(components);
+@import url('./components/form/form.css') layer(components);
+@import url('./components/header/header.css') layer(components);
+@import url('./components/input/input.css') layer(components);
+@import url('./components/link/link.css') layer(components);
+@import url('./components/list/list.css') layer(components);
+@import url('./components/number-input/number-input.css') layer(components);
+@import url('./components/official-banner/official-banner.css')
+layer(components);
+@import url('./components/pill/pill.css') layer(components);
+@import url('./components/search/search.css') layer(components);
+@import url('./components/select/select.css') layer(components);
+@import url('./components/show-hide/show-hide.css') layer(components);
+@import url('./components/status-banner/status-banner.css') layer(components);
+@import url('./components/summary-list/summary-list.css') layer(components);
+@import url('./components/table/table.css') layer(components);
 
 /* Shared focus ring last within the components layer, so it wins specificity
    ties against the components' own :hover shadows. */

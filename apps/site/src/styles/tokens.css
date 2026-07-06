@@ -1,45 +1,45 @@
 /*
  * GovBB site tokens.
  *
- * Colours and the base font are aliased to the real published tokens from
- * `@govtech-bb/styles` (imported in BaseLayout), making that package the single
- * source of truth for brand values. A few site values the package does not
- * define yet are kept as literals and flagged below. Type scale, spacing and
- * layout tokens are site-specific (the package ships no equivalents) and drive
- * this site's layout.
+ * Colours and the base font are aliased to the real tokens from
+ * `@govtech-bb/frontend` (imported in BaseLayout), making that package the
+ * single source of truth for brand values. A few site values the package does
+ * not define yet are kept as literals and flagged below. Type scale, spacing
+ * and layout tokens are site-specific (the package ships no equivalents) and
+ * drive this site's layout.
  */
 :root {
-  /* Brand — from @govtech-bb/styles */
+  /* Brand — from @govtech-bb/frontend */
   --govbb-color-teal: var(
-    --color-teal-00
+    --govbb-teal-00
   ); /* primary: buttons, links, active states */
-  --govbb-color-teal-dark: #0a4a4e; /* hover — package has no darker-teal token */
-  --govbb-color-navy: var(--color-blue-100); /* footer + gov banner */
+  --govbb-color-teal-dark: var(--govbb-color-interactive-active); /* hover */
+  --govbb-color-navy: var(--govbb-blue-100); /* footer + gov banner */
 
-  /* Ink & surfaces — from @govtech-bb/styles */
-  --govbb-color-text: var(--color-text);
-  --govbb-color-text-muted: var(--color-text-muted);
-  --govbb-color-placeholder: var(--color-blue-40);
-  --govbb-color-white: var(--color-white-00);
-  --govbb-color-bg: var(--color-background);
-  --govbb-color-surface: var(
-    --color-blue-10
+  /* Ink & surfaces — from @govtech-bb/frontend */
+  --govbb-color-text: var(--govbb-color-ink);
+  --govbb-color-text-muted: var(--govbb-color-muted);
+  --govbb-color-placeholder: var(--govbb-blue-40);
+  --govbb-color-white: var(--govbb-white-00);
+  --govbb-color-bg: var(--govbb-white-00);
+  --govbb-color-panel: var(
+    --govbb-blue-10
   ); /* gov bar, email box, active sidebar */
-  --govbb-color-band: var(--color-pink-10); /* "Get started" band */
-  --govbb-color-border: var(--color-grey-00);
+  --govbb-color-band: var(--govbb-pink-10); /* "Get started" band */
+  --govbb-color-border: var(--govbb-grey-00);
 
   /* Interaction */
   --govbb-color-link: var(--govbb-color-teal);
   --govbb-color-link-hover: var(--govbb-color-teal-dark);
-  --govbb-color-focus: #ffdd00; /* focus yellow — package has no focus token */
+  --govbb-color-focus-site: #ffdd00; /* site chrome keeps the GOV.UK focus yellow */
 
   /* Decorative card fills — no package equivalents (site-specific) */
   --govbb-card-pink: #ffd4f0;
   --govbb-card-lavender: #ddc0e9;
-  --govbb-card-teal: var(--color-teal-40);
+  --govbb-card-teal: var(--govbb-teal-40);
 
-  /* Typography — real Figtree face ships with @govtech-bb/styles */
-  --govbb-font-base: var(--font-family-base);
+  /* Typography — real Figtree face ships with @govtech-bb/frontend */
+  --govbb-font-base: var(--govbb-font-sans);
   --govbb-font-size-base: 1.125rem; /* 18px */
   --govbb-line-height-base: 1.5;
 

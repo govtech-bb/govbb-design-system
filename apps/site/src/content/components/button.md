@@ -8,9 +8,13 @@ group: Actions
 ## Preview
 
 ```html title="Button variants"
-<button class="govbb-btn" type="button">Primary</button>
-<button class="govbb-btn--secondary" type="button">Secondary</button>
-<button class="govbb-btn--tertiary" type="button">Tertiary</button>
+<button class="govbb-button" type="button">Primary</button>
+<button class="govbb-button govbb-button--secondary" type="button">
+  Secondary
+</button>
+<button class="govbb-button govbb-button--tertiary" type="button">
+  Tertiary
+</button>
 ```
 
 ```tsx
@@ -49,7 +53,7 @@ information about what they need to do to enable it. Prefer keeping the button
 active and showing an error when the user tries to continue.
 
 ```html title="Disabled button"
-<button class="govbb-btn" type="button" disabled>Submit application</button>
+<button class="govbb-button" type="button" disabled>Submit application</button>
 ```
 
 ```tsx

@@ -34,6 +34,18 @@ group: Feedback
 </div>
 ```
 
+```tsx
+import { ErrorSummary } from '@govtech-bb/react';
+
+<ErrorSummary
+  errors={[
+    { href: '#email', label: 'Enter a valid email address' },
+    { href: '#parish', label: 'Select a parish' },
+    { href: '#terms', label: 'Accept the terms and conditions' },
+  ]}
+/>;
+```
+
 The Error Summary component lists every problem on a page after a failed form
 submission, with a link to each field that needs to be fixed. It gives users a
 single place to see what went wrong instead of hunting through the form for
@@ -91,4 +103,17 @@ the one error.
     </li>
   </ul>
 </div>
+```
+
+```tsx
+import { useRef } from 'react';
+import { ErrorSummary } from '@govtech-bb/react';
+
+// after a failed submit: summaryRef.current?.focus()
+const summaryRef = useRef<HTMLDivElement>(null);
+
+<ErrorSummary
+  ref={summaryRef}
+  errors={[{ href: '#full-name', label: 'Enter your full name' }]}
+/>;
 ```

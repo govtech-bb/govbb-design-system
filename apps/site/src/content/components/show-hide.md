@@ -18,6 +18,14 @@ group: Content
 </details>
 ```
 
+```tsx
+import { ShowHide } from '@govtech-bb/react';
+
+<ShowHide summary="Help with this form">
+  <p>If you cannot find your ID number, check the back of your citizen card.</p>
+</ShowHide>;
+```
+
 The Show/Hide component is a disclosure that reveals secondary content when a
 user chooses to see it. It is useful for help text and other detail that not
 every user needs to read.
@@ -56,4 +64,15 @@ closed.
     </p>
   </div>
 </details>
+```
+
+```tsx
+import { ShowHide } from '@govtech-bb/react';
+
+<ShowHide summary="More information" open>
+  <p>
+    This panel is open on page load. Use this sparingly — most disclosures
+    should start closed.
+  </p>
+</ShowHide>;
 ```

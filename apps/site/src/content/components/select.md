@@ -11,33 +11,56 @@ group: Form elements
 <div class="govbb-form-group">
   <label class="govbb-label" for="parish">Parish</label>
   <p class="govbb-hint" id="parish-hint">Where you currently live</p>
-  <div class="govbb-select-wrapper">
-    <select
-      class="govbb-select"
-      id="parish"
-      name="parish"
-      aria-describedby="parish-hint"
-    >
-      <option value="" disabled selected>Select a parish</option>
-      <option value="christ-church">Christ Church</option>
-      <option value="st-andrew">Saint Andrew</option>
-      <option value="st-george">Saint George</option>
-      <option value="st-james">Saint James</option>
-      <option value="st-john">Saint John</option>
-      <option value="st-joseph">Saint Joseph</option>
-      <option value="st-lucy">Saint Lucy</option>
-      <option value="st-michael">Saint Michael</option>
-      <option value="st-peter">Saint Peter</option>
-      <option value="st-philip">Saint Philip</option>
-      <option value="st-thomas">Saint Thomas</option>
-    </select>
-    <span class="govbb-select__chevron" aria-hidden="true">
-      <svg viewBox="0 0 12 8" xmlns="http://www.w3.org/2000/svg">
-        <path d="M0 8 6 0 12 8z" />
-      </svg>
-    </span>
-  </div>
+  <select
+    class="govbb-select"
+    id="parish"
+    name="parish"
+    aria-describedby="parish-hint"
+  >
+    <option value="" disabled selected>Select a parish</option>
+    <option value="christ-church">Christ Church</option>
+    <option value="st-andrew">Saint Andrew</option>
+    <option value="st-george">Saint George</option>
+    <option value="st-james">Saint James</option>
+    <option value="st-john">Saint John</option>
+    <option value="st-joseph">Saint Joseph</option>
+    <option value="st-lucy">Saint Lucy</option>
+    <option value="st-michael">Saint Michael</option>
+    <option value="st-peter">Saint Peter</option>
+    <option value="st-philip">Saint Philip</option>
+    <option value="st-thomas">Saint Thomas</option>
+  </select>
 </div>
+```
+
+```tsx
+import { FormGroup, Hint, Label, Select } from '@govtech-bb/react';
+
+<FormGroup>
+  <Label htmlFor="parish">Parish</Label>
+  <Hint id="parish-hint">Where you currently live</Hint>
+  <Select
+    id="parish"
+    name="parish"
+    defaultValue=""
+    aria-describedby="parish-hint"
+  >
+    <option value="" disabled>
+      Select a parish
+    </option>
+    <option value="christ-church">Christ Church</option>
+    <option value="st-andrew">Saint Andrew</option>
+    <option value="st-george">Saint George</option>
+    <option value="st-james">Saint James</option>
+    <option value="st-john">Saint John</option>
+    <option value="st-joseph">Saint Joseph</option>
+    <option value="st-lucy">Saint Lucy</option>
+    <option value="st-michael">Saint Michael</option>
+    <option value="st-peter">Saint Peter</option>
+    <option value="st-philip">Saint Philip</option>
+    <option value="st-thomas">Saint Thomas</option>
+  </Select>
+</FormGroup>;
 ```
 
 The Select component is a dropdown that lets users choose a single option from a
@@ -82,26 +105,44 @@ Keep error messages specific and actionable, such as "Select a parish".
   <p class="govbb-error-message" id="parish-error-error" role="alert">
     Select a parish
   </p>
-  <div class="govbb-select-wrapper">
-    <select
-      class="govbb-select"
-      id="parish-error"
-      name="parish"
-      aria-invalid="true"
-      aria-describedby="parish-error-error"
-    >
-      <option value="" disabled selected>Select a parish</option>
-      <option value="christ-church">Christ Church</option>
-      <option value="st-michael">Saint Michael</option>
-      <option value="st-james">Saint James</option>
-    </select>
-    <span class="govbb-select__chevron" aria-hidden="true">
-      <svg viewBox="0 0 12 8" xmlns="http://www.w3.org/2000/svg">
-        <path d="M0 8 6 0 12 8z" />
-      </svg>
-    </span>
-  </div>
+  <select
+    class="govbb-select"
+    id="parish-error"
+    name="parish"
+    aria-invalid="true"
+    aria-describedby="parish-error-error"
+  >
+    <option value="" disabled selected>Select a parish</option>
+    <option value="christ-church">Christ Church</option>
+    <option value="st-michael">Saint Michael</option>
+    <option value="st-james">Saint James</option>
+  </select>
 </div>
+```
+
+```tsx
+import { ErrorMessage, FormGroup, Label, Select } from '@govtech-bb/react';
+
+<FormGroup>
+  <Label htmlFor="parish-error">Parish</Label>
+  <ErrorMessage id="parish-error-error" role="alert">
+    Select a parish
+  </ErrorMessage>
+  <Select
+    id="parish-error"
+    name="parish"
+    defaultValue=""
+    aria-invalid
+    aria-describedby="parish-error-error"
+  >
+    <option value="" disabled>
+      Select a parish
+    </option>
+    <option value="christ-church">Christ Church</option>
+    <option value="st-michael">Saint Michael</option>
+    <option value="st-james">Saint James</option>
+  </Select>
+</FormGroup>;
 ```
 
 ## Disabled selects
@@ -114,16 +155,23 @@ why the field is unavailable.
 ```html title="Disabled select"
 <div class="govbb-form-group">
   <label class="govbb-label" for="parish-disabled">Parish</label>
-  <div class="govbb-select-wrapper">
-    <select class="govbb-select" id="parish-disabled" name="parish" disabled>
-      <option value="" disabled selected>Select a parish</option>
-      <option value="christ-church">Christ Church</option>
-    </select>
-    <span class="govbb-select__chevron" aria-hidden="true">
-      <svg viewBox="0 0 12 8" xmlns="http://www.w3.org/2000/svg">
-        <path d="M0 8 6 0 12 8z" />
-      </svg>
-    </span>
-  </div>
+  <select class="govbb-select" id="parish-disabled" name="parish" disabled>
+    <option value="" disabled selected>Select a parish</option>
+    <option value="christ-church">Christ Church</option>
+  </select>
 </div>
+```
+
+```tsx
+import { FormGroup, Label, Select } from '@govtech-bb/react';
+
+<FormGroup>
+  <Label htmlFor="parish-disabled">Parish</Label>
+  <Select id="parish-disabled" name="parish" defaultValue="" disabled>
+    <option value="" disabled>
+      Select a parish
+    </option>
+    <option value="christ-church">Christ Church</option>
+  </Select>
+</FormGroup>;
 ```
