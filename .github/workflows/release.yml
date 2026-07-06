@@ -1,0 +1,70 @@
+name: Release
+
+# One-button lockstep release of @govtech-bb/frontend and @govtech-bb/react:
+# gate on the full CI suite, bump both versions, regenerate the changelog
+# (git-cliff), commit + tag on main, publish to npm with provenance, and cut
+# a GitHub release whose notes are the changelog section.
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to release, no leading v (e.g. 0.1.0)'
+        required: true
+
+permissions:
+  contents: write
+  id-token: write # npm provenance
+
+concurrency: release
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0 # git-cliff walks the full history
+      - run: corepack enable
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+          registry-url: https://registry.npmjs.org
+      - run: pnpm install --frozen-lockfile
+
+      # same gate as ci.yml — never release a red tree
+      - run: pnpm lint
+      - run: pnpm -r typecheck
+      - run: pnpm test
+      - run: pnpm build
+
+      - name: Bump package versions
+        run: pnpm --filter "./packages/*" exec npm pkg set version=${{ inputs.version }}
+
+      - name: Regenerate changelog
+        run: pnpm exec git-cliff --tag v${{ inputs.version }} --output CHANGELOG.md
+
+      - name: Commit and tag
+        env:
+          LEFTHOOK: '0' # checks already ran above
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add packages/frontend/package.json packages/react/package.json CHANGELOG.md
+          git commit -m "chore: release v${{ inputs.version }}"
+          git tag "v${{ inputs.version }}"
+          git push origin main --follow-tags
+
+      - name: Publish to npm
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: pnpm publish -r --no-git-checks
+
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          pnpm exec git-cliff --latest --strip header > release-notes.md
+          gh release create "v${{ inputs.version }}" --title "v${{ inputs.version }}" --notes-file release-notes.md
