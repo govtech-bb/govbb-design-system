@@ -27,8 +27,9 @@
   font-weight: 700;
 }
 
-/* Heavier rule closing off the header row. */
-.govbb-table__head .govbb-table__header {
+/* Heavier rule closing off the header row. Keys off the semantic <thead> the
+   markup already has, so a correct table gets it without an extra class. */
+.govbb-table thead .govbb-table__header {
   border-bottom-width: var(--govbb-border-width-form);
 }
 
