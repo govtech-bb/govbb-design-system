@@ -23,6 +23,18 @@ group: Form elements
 </div>
 ```
 
+```tsx
+import { FormGroup, Hint, Input, Label } from '@govtech-bb/react';
+
+<FormGroup>
+  <Label htmlFor="nrn">National registration number</Label>
+  <Hint id="nrn-hint">
+    It is on your national ID card. For example, 850101-0123
+  </Hint>
+  <Input id="nrn" name="nrn" aria-describedby="nrn-hint" />
+</FormGroup>;
+```
+
 The Label component names the field it sits above, so users know what answer is
 expected before they start typing. Every form control — input, select, text area,
 checkbox, or radio — needs a visible label.
@@ -62,6 +74,15 @@ with `aria-describedby` so it is announced alongside the label.
     type="email"
   />
 </div>
+```
+
+```tsx
+import { FormGroup, Input, Label } from '@govtech-bb/react';
+
+<FormGroup>
+  <Label htmlFor="email-address">Email address</Label>
+  <Input id="email-address" name="email-address" type="email" />
+</FormGroup>;
 ```
 
 ## Grouping controls

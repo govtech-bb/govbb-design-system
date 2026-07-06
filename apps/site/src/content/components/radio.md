@@ -49,6 +49,16 @@ group: Form elements
 </fieldset>
 ```
 
+```tsx
+import { Fieldset, Radio } from '@govtech-bb/react';
+
+<Fieldset legend="Where do you live?">
+  <Radio name="parish" value="st-michael" label="Saint Michael" />
+  <Radio name="parish" value="christ-church" label="Christ Church" />
+  <Radio name="parish" value="st-james" label="Saint James" />
+</Fieldset>;
+```
+
 The Radio component lets users pick exactly one option from a short list of
 mutually exclusive choices. Always wrap a group of radios in a `<fieldset>` with
 a `<legend>` that asks the question, since screen readers announce the legend
@@ -118,6 +128,26 @@ screen readers announce it alongside the option's label.
 </fieldset>
 ```
 
+```tsx
+import { Fieldset, Radio } from '@govtech-bb/react';
+
+<Fieldset legend="How would you like to be contacted?">
+  <Radio
+    name="contact"
+    value="email"
+    label="Email"
+    hint="We'll only use this to send updates about your application."
+  />
+  <Radio
+    name="contact"
+    value="phone"
+    label="Phone"
+    hint="A government officer may call between 9am and 5pm."
+  />
+  <Radio name="contact" value="post" label="Post" />
+</Fieldset>;
+```
+
 ## Conditional reveal
 
 Show follow-up content when a specific option is selected. The conditional block
@@ -171,6 +201,37 @@ sits as a sibling of its radio item and appears only when that radio is checked.
     <label class="govbb-radio-item__label" for="r-post">Post (disabled)</label>
   </div>
 </fieldset>
+```
+
+```tsx
+import { Fieldset, FormGroup, Input, Label, Radio } from '@govtech-bb/react';
+
+<Fieldset legend="Preferred contact method">
+  <Radio
+    name="contact2"
+    value="email"
+    label="Email"
+    conditional={
+      <FormGroup>
+        <Label htmlFor="r-email-addr">Email address</Label>
+        <Input id="r-email-addr" type="email" />
+      </FormGroup>
+    }
+  />
+  <Radio
+    name="contact2"
+    value="phone"
+    label="Phone"
+    defaultChecked
+    conditional={
+      <FormGroup>
+        <Label htmlFor="r-phone-num">Phone number</Label>
+        <Input id="r-phone-num" type="tel" />
+      </FormGroup>
+    }
+  />
+  <Radio name="contact2" value="post" label="Post (disabled)" disabled />
+</Fieldset>;
 ```
 
 ## Tips
