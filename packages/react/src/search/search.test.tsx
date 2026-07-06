@@ -1,3 +1,4 @@
+import { expectNoAxeViolations } from '../testing/axe';
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { Search } from './search';
@@ -20,4 +21,9 @@ describe('Search', () => {
     expect(input.name).toBe('query');
     expect(input.value).toBe('tax');
   });
+});
+
+it('has no axe violations', async () => {
+  const { container } = render(<Search />);
+  await expectNoAxeViolations(container);
 });

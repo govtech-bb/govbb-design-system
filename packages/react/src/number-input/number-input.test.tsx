@@ -1,3 +1,5 @@
+import { Label } from '../form/form';
+import { expectNoAxeViolations } from '../testing/axe';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { createRef, useState } from 'react';
 import { describe, expect, it, vi } from 'vitest';
@@ -46,4 +48,22 @@ describe('NumberInput', () => {
     render(<NumberInput ref={ref} aria-label="Qty" />);
     expect(ref.current).toBe(screen.getByRole('spinbutton', { name: 'Qty' }));
   });
+});
+
+it('has no axe violations', async () => {
+  const { container } = render(
+    <>
+      <Label id="qty-label" htmlFor="qty">
+        Quantity
+      </Label>
+      <NumberInput
+        id="qty"
+        labelId="qty-label"
+        min={1}
+        max={10}
+        defaultValue={1}
+      />
+    </>,
+  );
+  await expectNoAxeViolations(container);
 });

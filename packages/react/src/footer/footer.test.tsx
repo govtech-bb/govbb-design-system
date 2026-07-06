@@ -1,3 +1,4 @@
+import { expectNoAxeViolations } from '../testing/axe';
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { Footer, FooterLink } from './footer';
@@ -19,4 +20,13 @@ describe('Footer', () => {
       'govbb-footer__copy',
     );
   });
+});
+
+it('has no axe violations', async () => {
+  const { container } = render(
+    <Footer coatSrc="/coat.svg" copy="© 2026 Government of Barbados">
+      <FooterLink href="/cookies">Cookie policy</FooterLink>
+    </Footer>,
+  );
+  await expectNoAxeViolations(container);
 });

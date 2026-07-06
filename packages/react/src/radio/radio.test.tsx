@@ -1,3 +1,5 @@
+import { Fieldset } from '../form/form';
+import { expectNoAxeViolations } from '../testing/axe';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { Radio } from './radio';
@@ -27,4 +29,14 @@ describe('Radio', () => {
       'govbb-radio-item__conditional',
     );
   });
+});
+
+it('has no axe violations', async () => {
+  const { container } = render(
+    <Fieldset legend="Where do you live?">
+      <Radio name="parish" label="Saint Michael" />
+      <Radio name="parish" label="Other" conditional={<p>Which parish?</p>} />
+    </Fieldset>,
+  );
+  await expectNoAxeViolations(container);
 });

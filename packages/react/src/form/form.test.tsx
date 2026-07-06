@@ -1,3 +1,5 @@
+import { Input } from '../input/input';
+import { expectNoAxeViolations } from '../testing/axe';
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { ErrorMessage, Fieldset, FormGroup, Hint, Label } from './form';
@@ -27,4 +29,16 @@ describe('form scaffolding', () => {
     expect(fieldset.className).toBe('govbb-fieldset');
     expect(fieldset.querySelector('.govbb-fieldset__legend')).not.toBeNull();
   });
+});
+
+it('has no axe violations', async () => {
+  const { container } = render(
+    <FormGroup>
+      <Label htmlFor="fg-input">Full name</Label>
+      <Hint id="fg-hint">As it appears on your ID</Hint>
+      <ErrorMessage id="fg-err">Enter your full name</ErrorMessage>
+      <Input id="fg-input" aria-describedby="fg-hint fg-err" aria-invalid />
+    </FormGroup>,
+  );
+  await expectNoAxeViolations(container);
 });

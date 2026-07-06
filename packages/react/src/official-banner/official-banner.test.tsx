@@ -1,3 +1,4 @@
+import { expectNoAxeViolations } from '../testing/axe';
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { OfficialBanner } from './official-banner';
@@ -16,4 +17,11 @@ describe('OfficialBanner', () => {
       screen.getByRole('link', { name: 'Learn more' }).getAttribute('href'),
     ).toBe('/about');
   });
+});
+
+it('has no axe violations', async () => {
+  const { container } = render(
+    <OfficialBanner crestSrc="/crest.svg" linkHref="/about" />,
+  );
+  await expectNoAxeViolations(container);
 });
