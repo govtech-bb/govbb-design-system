@@ -17,6 +17,7 @@
     "assets",
     "dist",
     "src",
+    "!src/**/*.test.js",
     "index.js",
     "index.d.ts"
   ],

@@ -5,8 +5,8 @@
  * Components that need JS register here, keyed by their data-govbb-module value.
  * CSS-only components register nothing.
  */
-import { FileUpload } from './src/components/file-upload.js';
-import { NumberInput } from './src/components/number-input.js';
+import { FileUpload } from './src/components/file-upload/file-upload.js';
+import { NumberInput } from './src/components/number-input/number-input.js';
 
 /** @type {Record<string, new (el: HTMLElement) => { destroy(): void }>} */
 const registry = {

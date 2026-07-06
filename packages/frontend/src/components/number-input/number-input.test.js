@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { initAll } from '../index.js';
+import { initAll } from '../../../index.js';
 
 function mount() {
   document.body.innerHTML = `

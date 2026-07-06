@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from 'vitest';
-import { initAll } from '../index.js';
+import { initAll } from '../../../index.js';
 
 /* jsdom lacks DataTransfer; a minimal stand-in for the remove path. */
 class FakeDataTransfer {
