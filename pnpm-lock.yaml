@@ -79,7 +79,7 @@ importers:
   packages/react:
     dependencies:
       '@govtech-bb/frontend':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../frontend
       class-variance-authority:
         specifier: ^0.7.1
