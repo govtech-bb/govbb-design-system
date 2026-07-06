@@ -8,8 +8,10 @@
 @import url('./tokens.css') layer(tokens);
 @import url('./base.css') layer(base);
 @import url('./layout.css') layer(components);
+@import url('./components/back-button.css') layer(components);
 @import url('./components/breadcrumbs.css') layer(components);
 @import url('./components/button.css') layer(components);
+@import url('./components/button-group.css') layer(components);
 @import url('./components/checkbox-radio.css') layer(components);
 @import url('./components/date-input.css') layer(components);
 @import url('./components/error-summary.css') layer(components);
@@ -22,10 +24,13 @@
 @import url('./components/list.css') layer(components);
 @import url('./components/number-input.css') layer(components);
 @import url('./components/official-banner.css') layer(components);
+@import url('./components/pill.css') layer(components);
 @import url('./components/search.css') layer(components);
 @import url('./components/select.css') layer(components);
 @import url('./components/show-hide.css') layer(components);
 @import url('./components/status-banner.css') layer(components);
+@import url('./components/summary-list.css') layer(components);
+@import url('./components/table.css') layer(components);
 
 /* Shared focus ring last within the components layer, so it wins specificity
    ties against the components' own :hover shadows. */
