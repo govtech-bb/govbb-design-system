@@ -1,41 +1,16 @@
-/* Pill — a small rounded status label (tag / badge). Neutral by default; the
-   colour modifiers map to the semantic states. Each pairs a dark ink from the
-   state's ramp with its pale tint so the text keeps a strong contrast. */
+/* Pill — the quiet service-type label shown under a service link (e.g.
+   "Information service" / "Digital service" on the services index). Per the
+   Figma pattern library it is muted body text with a little vertical padding —
+   no fill, no uppercase, no colour states. */
 
 .govbb-pill {
   display: inline-flex;
   align-items: center;
-  gap: var(--govbb-space-xxs);
-  padding: var(--govbb-space-xxs) var(--govbb-space-xs);
-  font-size: var(--govbb-font-size-caption-sm);
-  font-weight: 700;
-  line-height: 1;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
-  color: var(--govbb-color-ink);
-  background: var(--govbb-color-neutral);
-  border-radius: 999px;
+  justify-content: center;
+  padding-block: var(--govbb-space-xxs);
+  font-size: var(--govbb-font-size-body);
+  line-height: var(--govbb-line-height-base);
+  color: var(--govbb-color-muted);
+  border-radius: var(--govbb-radius);
   white-space: nowrap;
-}
-
-.govbb-pill--info {
-  color: var(--govbb-blue-100);
-  background: var(--govbb-blue-10);
-}
-
-.govbb-pill--success {
-  color: var(--govbb-green-00);
-  background: var(--govbb-green-10);
-}
-
-/* Warning keeps ink on the amber tint — the yellow ramp is too light to carry
-   text on its own pale tint. */
-.govbb-pill--warning {
-  color: var(--govbb-color-ink);
-  background: var(--govbb-yellow-40);
-}
-
-.govbb-pill--error {
-  color: var(--govbb-red-00);
-  background: var(--govbb-red-10);
 }
