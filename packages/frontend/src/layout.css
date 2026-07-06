@@ -1,12 +1,18 @@
 /* Page scaffolding: width container, main wrapper, and the column grid.
    No component styling here — only how page-level regions occupy space. */
 
-/* Page width container — centres content and widens the gutters on tablet+.
-   Wrap page content in <div class="govbb-width-container">. */
+/* Page width container. The design sets no max width — content is fluid with
+   gutters that grow with the viewport: 16px at the mobile frame (375) up to
+   128px at the desktop frame (1512), interpolated linearly by the clamp
+   (9.85vw − 1.31rem passes through both anchor points). Wrap page content in
+   <div class="govbb-width-container">. */
 .govbb-width-container {
-  max-inline-size: 960px;
   margin-inline: auto;
-  padding-inline: var(--govbb-space-s);
+  padding-inline: clamp(
+    var(--govbb-space-s),
+    9.85vw - 1.31rem,
+    var(--govbb-space-xl)
+  );
 }
 
 /* Vertical breathing room for the <main> landmark. */
@@ -48,10 +54,6 @@
 }
 
 @media (--tablet) {
-  .govbb-width-container {
-    padding-inline: var(--govbb-space-m);
-  }
-
   .govbb-main-wrapper {
     padding-block: var(--govbb-space-m);
   }

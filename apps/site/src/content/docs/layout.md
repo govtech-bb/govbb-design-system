@@ -10,8 +10,9 @@ no React wrappers, so use the classes directly in any framework.
 
 ## Page scaffold
 
-Every page wraps its content in the width container — it centres the page at
-960px and keeps consistent gutters. The main content sits in the main wrapper,
+Every page wraps its content in the width container. The design sets no fixed
+page width — content is fluid, with side gutters that grow with the viewport
+from 16px on mobile to 128px at desktop. The main content sits in the main wrapper,
 which renders vertical breathing room and should carry the `main-content` id
 that a skip link targets.
 
