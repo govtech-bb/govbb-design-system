@@ -124,7 +124,7 @@ img:not([class]) {
 
 /* ── Prose / content typography ───────────────────────────────── */
 .govbb-prose {
-  max-width: 44rem;
+  max-width: 50rem;
 }
 .govbb-prose > :first-child {
   margin-top: 0;
@@ -189,7 +189,7 @@ img:not([class]) {
   max-width: none;
 }
 .govbb-prose--article > :not(.govbb-example) {
-  max-width: 44rem;
+  max-width: 50rem;
 }
 
 /* ── Page header (article title + subtitle) ───────────────────── */
@@ -270,7 +270,8 @@ img:not([class]) {
   margin: 0;
 }
 .govbb-colorcard__desc {
-  color: var(--govbb-color-text-muted);
+  /* muted grey fails AA on the lavender card fill — darken to ≥4.5:1 */
+  color: color-mix(in oklab, var(--govbb-color-text-muted), black 20%);
   margin: 0;
   flex: 1;
 }
@@ -364,7 +365,8 @@ img:not([class]) {
 /* ── Article layout (sidebar | content | on-this-page) ────────── */
 .govbb-article {
   display: grid;
-  grid-template-columns: var(--govbb-sidebar-width) minmax(0, 1fr);
+  /* sidebar shrinks to its content, capped at the design's 280px */
+  grid-template-columns: fit-content(var(--govbb-sidebar-width)) minmax(0, 1fr);
   gap: var(--govbb-space-6);
   padding-block: var(--govbb-space-6) var(--govbb-space-8);
   align-items: start;
@@ -393,34 +395,49 @@ img:not([class]) {
 .govbb-sidebar {
   position: sticky;
   top: var(--govbb-space-4);
+  min-width: 200px;
 }
 .govbb-sidebar__section + .govbb-sidebar__section {
-  margin-top: var(--govbb-space-4);
+  margin-top: var(--govbb-space-2);
 }
+/* Sub-group headings (Actions, Form elements, …) — Figma 402:5074 */
 .govbb-sidebar__heading {
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 1.5;
+  margin: 0;
+  padding-block: var(--govbb-space-2);
+}
+/* The first heading is the section title (Components) — Figma 402:5066 */
+.govbb-sidebar__section:first-child .govbb-sidebar__heading {
   font-weight: 700;
   font-size: 1rem;
-  margin: 0 0 var(--govbb-space-2);
+  padding-block: 0 var(--govbb-space-2);
 }
+/* Link list hangs off a 1px grey rail; the active link paints its own
+   teal rail segment on top of it — Figma 402:5064 */
 .govbb-sidebar__links {
   list-style: none;
-  margin: 0;
+  margin: 0 0 0 2px;
   padding: 0;
+  border-left: 1px solid var(--govbb-color-border);
 }
 .govbb-sidebar__links a {
   display: block;
+  margin-left: -1px;
   padding: var(--govbb-space-2) var(--govbb-space-3);
-  color: var(--govbb-color-text);
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--govbb-color-text-muted);
   text-decoration: none;
-  border-radius: var(--govbb-radius);
+  border-left: 1px solid transparent;
 }
 .govbb-sidebar__links a:hover {
-  background: var(--govbb-color-panel);
+  color: var(--govbb-color-teal);
 }
 .govbb-sidebar__links a[aria-current='page'] {
-  background: var(--govbb-color-panel);
   color: var(--govbb-color-teal);
-  font-weight: 600;
+  border-left-color: var(--govbb-color-teal);
 }
 
 /* ── On this page rail ────────────────────────────────────────── */
