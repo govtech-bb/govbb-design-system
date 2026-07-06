@@ -1,0 +1,42 @@
+/* Back button — a quiet "return to the previous page" link with a leading
+   chevron. Rendered as an <a>; the chevron is a CSS-drawn corner (two borders
+   rotated) so it needs no asset and scales with the text. Focus/active show a
+   gold background instead of an outline, matching .govbb-link. */
+
+.govbb-back-button {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--govbb-space-xxs);
+  font-size: var(--govbb-font-size-caption);
+  line-height: var(--govbb-line-height-base);
+  color: var(--govbb-color-interactive);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+  outline: none;
+
+  /* Top + left borders form a top-left corner; rotating it counter-clockwise
+     points the opening right, reading as a "<" chevron. */
+  &::before {
+    content: '';
+    width: 0.4em;
+    height: 0.4em;
+    border: solid currentcolor;
+    border-width: 2px 0 0 2px;
+    transform: rotate(-45deg);
+    transform-origin: center;
+  }
+
+  &:hover {
+    color: var(--govbb-color-ink);
+    background-color: var(--govbb-teal-10);
+    text-decoration: none;
+  }
+
+  &:active,
+  &:focus-visible {
+    color: var(--govbb-color-ink);
+    background-color: var(--govbb-color-brand-accent);
+    text-decoration: none;
+  }
+}
