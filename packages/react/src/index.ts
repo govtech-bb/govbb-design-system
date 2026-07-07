@@ -1,7 +1,11 @@
+export { BackButton } from './back-button/back-button';
+export type { BackButtonProps } from './back-button/back-button';
 export { Breadcrumbs } from './breadcrumbs/breadcrumbs';
 export type { BreadcrumbsProps } from './breadcrumbs/breadcrumbs';
 export { Button } from './button/button';
 export type { ButtonProps } from './button/button';
+export { ButtonGroup } from './button-group/button-group';
+export type { ButtonGroupProps } from './button-group/button-group';
 export { Checkbox } from './checkbox/checkbox';
 export type { CheckboxProps } from './checkbox/checkbox';
 export { DateInput } from './date-input/date-input';
@@ -32,6 +36,8 @@ export { NumberInput } from './number-input/number-input';
 export type { NumberInputProps } from './number-input/number-input';
 export { OfficialBanner } from './official-banner/official-banner';
 export type { OfficialBannerProps } from './official-banner/official-banner';
+export { Pill } from './pill/pill';
+export type { PillProps } from './pill/pill';
 export { Radio } from './radio/radio';
 export type { RadioProps } from './radio/radio';
 export { Search } from './search/search';
@@ -42,3 +48,11 @@ export { ShowHide } from './show-hide/show-hide';
 export type { ShowHideProps } from './show-hide/show-hide';
 export { StatusBanner } from './status-banner/status-banner';
 export type { StatusBannerProps } from './status-banner/status-banner';
+export { SummaryList } from './summary-list/summary-list';
+export type { SummaryListProps } from './summary-list/summary-list';
+export { Table, TableCell, TableHeader } from './table/table';
+export type {
+  TableCellProps,
+  TableHeaderProps,
+  TableProps,
+} from './table/table';
