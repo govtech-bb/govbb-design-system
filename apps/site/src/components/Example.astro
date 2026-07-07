@@ -23,8 +23,11 @@ interface Props {
   css?: string;
   /** Accessible label for the example. */
   title?: string;
+  /** Lay the preview out as a full-width block instead of centring the
+      example — for page chrome (header, footer, banners) and tables. */
+  fullWidth?: boolean;
 }
-const { html, react, css = '', title } = Astro.props;
+const { html, react, css = '', title, fullWidth = false } = Astro.props;
 
 // Unique id so the tab/tabpanel ARIA relationships are scoped per instance.
 const uid = 'ex-' + Math.random().toString(36).slice(2, 9);
@@ -36,13 +39,17 @@ const previewStyles = `
     padding: 32px;
     box-sizing: border-box;
     min-height: 100vh;
-    display: flex;
+    font-family: var(--govbb-font-sans, system-ui, sans-serif);
+    background: #fff;
+    ${
+      fullWidth
+        ? ''
+        : `display: flex;
     flex-wrap: wrap;
     gap: 16px;
     align-items: center;
-    justify-content: center;
-    font-family: var(--govbb-font-sans, system-ui, sans-serif);
-    background: #fff;
+    justify-content: center;`
+    }
   }
 `;
 const srcdoc = `<!doctype html><html lang="en"><head><meta charset="utf-8"><style>${libraryCss}\n${css}\n${previewStyles}</style></head><body>${html}</body></html>`;
@@ -310,6 +317,8 @@ const codeBlocks = [
 </style>
 
 <script>
+  import { initAll } from '@govtech-bb/frontend';
+
   const examples = document.querySelectorAll<HTMLElement>('[data-example]');
 
   // Wire one WAI-ARIA tablist: click + arrow/Home/End move and select.
@@ -343,6 +352,19 @@ const codeBlocks = [
   };
 
   examples.forEach((example) => {
+    // Run the progressive-enhancement runtime inside the preview iframe so
+    // behavioural examples (number input, file upload) actually work.
+    const frame = example.querySelector<HTMLIFrameElement>('[data-example-frame]');
+    const enhance = () => {
+      const doc = frame?.contentDocument;
+      if (!frame || !doc?.body?.childElementCount || frame.dataset.enhanced)
+        return;
+      frame.dataset.enhanced = 'true';
+      initAll(doc);
+    };
+    frame?.addEventListener('load', enhance);
+    enhance(); // srcdoc may already be loaded before this script runs
+
     // Top-level Preview / Code toggle.
     const viewTabs = Array.from(
       example.querySelectorAll<HTMLButtonElement>('.govbb-example__view-tab'),

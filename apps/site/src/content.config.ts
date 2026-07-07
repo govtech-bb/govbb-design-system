@@ -24,7 +24,13 @@ const components = defineCollection({
     description: z.string(),
     /** One-line subtitle shown under the page title. */
     lede: z.string(),
-    group: z.enum(['Actions', 'Form elements', 'Content', 'Feedback']),
+    group: z.enum([
+      'Actions',
+      'Form elements',
+      'Navigation',
+      'Content',
+      'Feedback',
+    ]),
   }),
 });
 

@@ -14,8 +14,11 @@ export class NumberInput {
 
   /** @param {MouseEvent} event */
   onClick(event) {
-    if (!(event.target instanceof Element)) return;
-    const button = event.target.closest('.govbb-number-input__step');
+    // Duck-typed rather than instanceof Element: the element may belong to
+    // another realm when initAll() is called on a different document (iframe).
+    const target = /** @type {Element | null} */ (event.target);
+    if (typeof target?.closest !== 'function') return;
+    const button = target.closest('.govbb-number-input__step');
     const input = this.input;
     if (!button || !input || input.disabled || input.readOnly) return;
     if (button.classList.contains('govbb-number-input__step--down')) {

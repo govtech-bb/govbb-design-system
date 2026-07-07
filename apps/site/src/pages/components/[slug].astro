@@ -29,6 +29,9 @@ const fences = [
 ].map((m) => ({
   lang: m[1],
   title: /title="([^"]*)"/.exec(m[2])?.[1],
+  // A `full` word in the fence meta lays the preview out as a full-width
+  // block (for page chrome: header, footer, banners, tables).
+  full: /(^|\s)full(\s|$)/.test(m[2]),
   code: m[3].trim(),
 }));
 const parts = (entry.rendered?.html ?? '').split(/<pre[^>]*>[\s\S]*?<\/pre>/);
@@ -42,16 +45,20 @@ if (parts.length !== fences.length + 1) {
 // but whitespace between them) into a single example.
 type Block =
   | { prose: string; example?: never }
-  | { example: { title?: string; html: string; react?: string }; prose?: never };
+  | {
+      example: { title?: string; html: string; react?: string; full?: boolean };
+      prose?: never;
+    };
 const blocks: Block[] = [{ prose: parts[0] }];
 for (let i = 0; i < fences.length; i++) {
   const fence = fences[i];
   if (fence.lang !== 'html') {
     throw new Error(`${entry.id}: \`\`\`tsx fence must directly follow an \`\`\`html fence`);
   }
-  const example: { title?: string; html: string; react?: string } = {
+  const example: { title?: string; html: string; react?: string; full?: boolean } = {
     title: fence.title,
     html: fence.code,
+    full: fence.full,
   };
   if (fences[i + 1]?.lang === 'tsx' && parts[i + 1].trim() === '') {
     example.react = fences[i + 1].code;
@@ -78,6 +85,7 @@ for (let i = 0; i < fences.length; i++) {
             html={block.example.html}
             react={block.example.react}
             title={block.example.title}
+            fullWidth={block.example.full}
           />
         ) : (
           <Fragment set:html={block.prose} />
