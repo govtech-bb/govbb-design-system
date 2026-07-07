@@ -10,7 +10,7 @@ export class FileUpload {
     this.input = el.querySelector('input[type="file"]');
     this.list = el.querySelector('.govbb-file-upload__list');
     if (!this.list) {
-      this.list = document.createElement('ul');
+      this.list = el.ownerDocument.createElement('ul');
       this.list.className = 'govbb-file-upload__list';
       el.append(this.list);
     }
@@ -23,13 +23,14 @@ export class FileUpload {
   }
 
   render() {
+    const doc = this.el.ownerDocument;
     const items = Array.from(this.input?.files ?? [], (file, index) => {
-      const item = document.createElement('li');
+      const item = doc.createElement('li');
       item.className = 'govbb-file-upload__item';
-      const name = document.createElement('span');
+      const name = doc.createElement('span');
       name.className = 'govbb-file-upload__name';
       name.textContent = file.name;
-      const remove = document.createElement('button');
+      const remove = doc.createElement('button');
       remove.className =
         'govbb-button govbb-button--text govbb-button--negative';
       remove.type = 'button';
@@ -43,8 +44,11 @@ export class FileUpload {
 
   /** @param {MouseEvent} event */
   onClick(event) {
-    if (!(event.target instanceof Element)) return;
-    const button = event.target.closest('button[data-index]');
+    // Duck-typed rather than instanceof Element: the element may belong to
+    // another realm when initAll() is called on a different document (iframe).
+    const target = /** @type {Element | null} */ (event.target);
+    if (typeof target?.closest !== 'function') return;
+    const button = target.closest('button[data-index]');
     if (!button || !this.input) return;
     const index = Number(button.dataset.index);
     const transfer = new DataTransfer();
