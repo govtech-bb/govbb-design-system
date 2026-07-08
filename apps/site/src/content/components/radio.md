@@ -67,13 +67,13 @@ with every option so users hear what they are answering.
 ## When to use this component
 
 Use radios when users must pick exactly one option and the list is short enough
-to show all options at once — roughly five or fewer. Put the most common or
+to show all options , roughly five or fewer. Put the most common or
 recommended option first, and fall back to alphabetical order only when no
 meaningful priority exists.
 
 ## When not to use this component
 
-Do not use radios when users can pick more than one option — use checkboxes
+Do not use radios when users can pick more than one option. Use checkboxes
 instead. If the list of options is long, a select fits better than a full list
 of radios.
 
@@ -237,5 +237,5 @@ import { Fieldset, FormGroup, Input, Label, Radio } from '@govtech-bb/react';
 ## Tips
 
 Do not pre-select an answer. Letting users make an active choice ensures they
-give an answer they actually mean — pre-selecting an option skips the decision
+give an answer they actually mean: pre-selecting an option skips the decision
 and can produce answers users did not intend to give.

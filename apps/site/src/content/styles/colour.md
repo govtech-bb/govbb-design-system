@@ -1,33 +1,33 @@
 ---
 title: Colour
-description: The palette — semantic colour tokens and the primitive ramp they resolve to, with hex values.
+description: 'The palette: semantic colour tokens and the primitive ramp they resolve to, with hex values.'
 lede: Use colour through semantic tokens; reach for the primitive ramp only for a specific shade.
 order: 2
 examples: true
 ---
 
 Always apply colour through [tokens](/styles/tokens/), never hex values. Start
-with the semantic tokens — they name a job, stay correct if the palette is
+with the semantic tokens: they name a job, stay correct if the palette is
 retuned, and cover almost every case. Drop down to a primitive only when you
 genuinely need a specific shade with no semantic meaning.
 
 ## Semantic colours
 
-| Token                              | Hex       | Use for                                       |
-| ---------------------------------- | --------- | --------------------------------------------- |
-| `--govbb-color-brand`              | `#00267f` | Brand ultramarine — headers, brand surfaces   |
-| `--govbb-color-brand-accent`       | `#ffc726` | Brand gold accent                             |
-| `--govbb-color-ink`                | `#000`    | Body text                                     |
-| `--govbb-color-surface`            | `#fff`    | Page and component backgrounds                |
-| `--govbb-color-muted`              | `#595959` | Secondary text, hints                         |
-| `--govbb-color-interactive`        | `#0e5f64` | Primary actions, checked form-control fill    |
-| `--govbb-color-interactive-active` | `#0a4549` | Pressed state of the primary action           |
-| `--govbb-color-focus`              | `#30c0c8` | Focus ring                                    |
-| `--govbb-color-focus-danger`       | `#ff6b6b` | Focus ring on destructive actions             |
-| `--govbb-color-error`              | `#a42c2c` | Invalid state — error text, borders, messages |
-| `--govbb-color-neutral`            | `#e0e4e9` | Secondary fills, dividers                     |
-| `--govbb-color-highlight`          | `#e5e9f2` | Selected surfaces                             |
-| `--govbb-color-tertiary`           | `#00654a` | Tertiary actions                              |
+| Token                              | Hex       | Use for                                      |
+| ---------------------------------- | --------- | -------------------------------------------- |
+| `--govbb-color-brand`              | `#00267f` | Brand ultramarine: headers, brand surfaces   |
+| `--govbb-color-brand-accent`       | `#ffc726` | Brand gold accent                            |
+| `--govbb-color-ink`                | `#000`    | Body text                                    |
+| `--govbb-color-surface`            | `#fff`    | Page and component backgrounds               |
+| `--govbb-color-muted`              | `#595959` | Secondary text, hints                        |
+| `--govbb-color-interactive`        | `#0e5f64` | Primary actions, checked form-control fill   |
+| `--govbb-color-interactive-active` | `#0a4549` | Pressed state of the primary action          |
+| `--govbb-color-focus`              | `#30c0c8` | Focus ring                                   |
+| `--govbb-color-focus-danger`       | `#ff6b6b` | Focus ring on destructive actions            |
+| `--govbb-color-error`              | `#a42c2c` | Invalid state: error text, borders, messages |
+| `--govbb-color-neutral`            | `#e0e4e9` | Secondary fills, dividers                    |
+| `--govbb-color-highlight`          | `#e5e9f2` | Selected surfaces                            |
+| `--govbb-color-tertiary`           | `#00654a` | Tertiary actions                             |
 
 ```html
 <div style="width: 120px; font-size: 14px; font-family: system-ui, sans-serif">
@@ -163,7 +163,7 @@ Every text and background combination must meet
 [WCAG AA contrast](https://www.w3.org/WAI/WCAG21/Understanding/contrast-minimum.html):
 4.5:1 for body text, 3:1 for large text and interface graphics. The dark `00`
 shades pass as text on white (except `--govbb-yellow-00`); the pale `10` and
-`40` tints and the vivid `100` shades generally do not — treat those as
+`40` tints and the vivid `100` shades generally do not. Treat those as
 backgrounds and accents. For
 example, `--govbb-blue-40` on white is roughly 2.4:1, so it must never carry
 text. Check any combination the tables do not already vouch for before you

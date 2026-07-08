@@ -36,8 +36,8 @@ import { FormGroup, Hint, Input, Label } from '@govtech-bb/react';
 ```
 
 The Label component names the field it sits above, so users know what answer is
-expected before they start typing. Every form control — input, select, text area,
-checkbox, or radio — needs a visible label.
+expected before they start typing. Every form control (input, select, text area,
+checkbox, or radio) needs a visible label.
 
 ## When to use this component
 
@@ -49,13 +49,13 @@ assistive technology announces the label whenever the control receives focus.
 
 Do not use placeholder text in place of a label. Placeholder text disappears as
 soon as the user starts typing, offers no persistent reminder of what is being
-asked, and is easy to miss altogether — particularly for users of screen
+asked, and is easy to miss , particularly for users of screen
 magnification or those who are easily distracted.
 
 ## Writing label text
 
 Write labels as short noun phrases, such as _"Email address"_, rather than
-questions or instructions. Keep the label focused on naming the field — put any
+questions or instructions. Keep the label focused on naming the field. Put any
 extra detail, such as an expected format or example, in hint text instead.
 
 ## Pairing with hint text
@@ -89,5 +89,5 @@ import { FormGroup, Input, Label } from '@govtech-bb/react';
 
 Use only one label per control. To name a group of related controls, such as a
 set of checkboxes or radio buttons, use a `<fieldset>` with a `<legend>` instead
-of a label — this frames the question for the whole group rather than a single
+of a label. This frames the question for the whole group rather than a single
 field.

@@ -69,7 +69,7 @@ single question.
 
 ## When to use this component
 
-Use a date input for dates the user already knows and can recall unassisted —
+Use a date input for dates the user already knows and can recall unassisted,
 such as a date of birth, a passport expiry date, or an anniversary. Typing three
 short numbers is faster and more reliable than operating a calendar widget for
 dates like these.
@@ -77,7 +77,7 @@ dates like these.
 ## When not to use this component
 
 Do not use a date input when the user needs to look up a date rather than recall
-it — for example, choosing the next available appointment slot or selecting a date
+it, for example choosing the next available appointment slot or selecting a date
 range. Use a date picker instead, so the user can browse a calendar and see which
 dates are available.
 
@@ -88,7 +88,7 @@ birth", and label each field "Day", "Month", and "Year". Use hint text
 (`.govbb-hint`) below the legend to show an example format, such as "For example,
 27 3 1990", and link it to the fieldset with `aria-describedby`. Set
 `inputmode="numeric"` on each field so mobile keyboards show digits, and do not
-require leading zeros — accept both "3" and "03".
+require leading zeros: accept both "3" and "03".
 
 ## Errors
 
@@ -108,7 +108,7 @@ of it.
     <legend class="govbb-fieldset__legend">Date of birth</legend>
     <p class="govbb-hint" id="dob2-hint">For example, 27 3 1990</p>
     <p class="govbb-error-message" id="dob2-error" role="alert">
-      Enter a valid date
+      Date of birth must be a real date
     </p>
     <div class="govbb-date-input">
       <div class="govbb-date-input__part">
@@ -156,7 +156,7 @@ import { DateInput, FormGroup } from '@govtech-bb/react';
   <DateInput
     legend="Date of birth"
     hint="For example, 27 3 1990"
-    error="Enter a valid date"
+    error="Date of birth must be a real date"
   />
 </FormGroup>;
 ```

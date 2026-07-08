@@ -64,7 +64,7 @@ import { FormGroup, Hint, Label, Select } from '@govtech-bb/react';
 ```
 
 The Select component is a dropdown that lets users choose a single option from a
-long list, such as a parish or a country. It is a last resort for long lists —
+long list, such as a parish or a country. It is a last resort for long lists:
 most questions are easier to answer with visible options.
 
 ## When to use this component
@@ -76,11 +76,11 @@ not slow users down.
 
 ## When not to use this component
 
-Do not use a select for five or fewer options — radio buttons show every choice
+Do not use a select for five or fewer options: radio buttons show every choice
 at once and are easier to scan and select. Do not use a select for data users
 would want to search for, such as a long list of countries, without also
 offering a typeahead. And do not use a select when more than one answer is
-allowed — use checkboxes instead.
+allowed. Use checkboxes instead.
 
 ## Guidance
 
@@ -101,16 +101,16 @@ Keep error messages specific and actionable, such as "Select a parish".
 
 ```html title="Select with error"
 <div class="govbb-form-group">
-  <label class="govbb-label" for="parish-error">Parish</label>
-  <p class="govbb-error-message" id="parish-error-error" role="alert">
+  <label class="govbb-label" for="parish">Parish</label>
+  <p class="govbb-error-message" id="parish-error" role="alert">
     Select a parish
   </p>
   <select
     class="govbb-select"
-    id="parish-error"
+    id="parish"
     name="parish"
     aria-invalid="true"
-    aria-describedby="parish-error-error"
+    aria-describedby="parish-error"
   >
     <option value="" disabled selected>Select a parish</option>
     <option value="christ-church">Christ Church</option>
@@ -124,16 +124,16 @@ Keep error messages specific and actionable, such as "Select a parish".
 import { ErrorMessage, FormGroup, Label, Select } from '@govtech-bb/react';
 
 <FormGroup>
-  <Label htmlFor="parish-error">Parish</Label>
-  <ErrorMessage id="parish-error-error" role="alert">
+  <Label htmlFor="parish">Parish</Label>
+  <ErrorMessage id="parish-error" role="alert">
     Select a parish
   </ErrorMessage>
   <Select
-    id="parish-error"
+    id="parish"
     name="parish"
     defaultValue=""
     aria-invalid
-    aria-describedby="parish-error-error"
+    aria-describedby="parish-error"
   >
     <option value="" disabled>
       Select a parish

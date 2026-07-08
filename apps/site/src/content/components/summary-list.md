@@ -30,22 +30,23 @@ group: Content
 </dl>
 ```
 
-The Summary list component displays pairs of related information — a bold key
-and a plain value — one row per pair. It is built on a description list
+The Summary list component displays pairs of related information (a bold key
+and a plain value), one row per pair. It is built on a description list
 (`<dl>`), so each key is a `<dt>` and each value a `<dd>`. On small screens the
 key stacks above the value; from tablet widths up they sit side by side with
-the keys in a fixed-width column.
+the keys in a fixed-width column. There is no React wrapper yet, so use the
+HTML directly.
 
 ## When to use this component
 
 Use a summary list to present information a user has already given, or facts
 about a person, application or service. It is the core of the
 _check your answers_ pattern: at the end of a form, show the user's answers as
-a summary list so they can confirm everything is correct before submitting —
-for example, before submitting a passport renewal or an NIS claim.
+a summary list so they can confirm everything is correct before submitting,
+for example before submitting a passport renewal or an NIS claim.
 
 ## When not to use this component
 
 Do not use a summary list for data that users need to compare across several
-items — use a table instead. Do not use it for simple lists of links or steps —
-use a list instead.
+items. Use a table instead. Do not use it for simple lists of links or steps. Use a list
+instead.

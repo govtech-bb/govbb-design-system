@@ -38,12 +38,12 @@ import { FormGroup, Hint, Input, Label } from '@govtech-bb/react';
 The Form group is the shared scaffolding around every form control: a wrapper
 (`.govbb-form-group`) that stacks the label (`.govbb-label`), optional hint
 text (`.govbb-hint`), optional error message (`.govbb-error-message`) and the
-control itself with consistent spacing. It holds no state — compose the pieces
+control itself with consistent spacing. It holds no state: compose the pieces
 you need.
 
 ## When to use this component
 
-Wrap every form control — input, select, textarea, date input and the rest —
+Wrap every form control (input, select, textarea, date input and the rest)
 in a form group so the label, hint and error message sit in a consistent
 order. Use hint text to explain a format or give an example, such as "For
 example, 27 3 1990", and link it to the control with `aria-describedby` so
@@ -53,7 +53,7 @@ screen readers announce it.
 
 Do not use a form group for content that isn't a form field, such as headings
 or body text. Do not put hint text inside the label or use placeholder text as
-a hint — placeholder text disappears as soon as the user starts typing.
+a hint: placeholder text disappears as soon as the user starts typing.
 
 ## Error messages
 
@@ -99,8 +99,8 @@ import { ErrorMessage, FormGroup, Input, Label } from '@govtech-bb/react';
 
 ## Grouping related fields with a fieldset
 
-When several controls answer a single question — radios, checkboxes, or the
-parts of a date — wrap them in a fieldset (`.govbb-fieldset`) with a legend
+When several controls answer a single question (radios, checkboxes, or the
+parts of a date), wrap them in a fieldset (`.govbb-fieldset`) with a legend
 (`.govbb-fieldset__legend`) inside the form group. The legend acts as the
 question; each control keeps its own label.
 

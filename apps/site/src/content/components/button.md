@@ -31,13 +31,13 @@ describes the action it performs.
 
 ## When to use this component
 
-Use a button for the primary action on a page — the thing you most want the user
+Use a button for the primary action on a page: the thing you most want the user
 to do next, such as _Save and continue_. Write button text as a short, specific
 verb phrase in sentence case.
 
 ## When not to use this component
 
-Do not use a button to navigate between pages — use a link instead. If a user is
+Do not use a button to navigate between pages. Use a link instead. If a user is
 moving to another page rather than triggering an action, a link sets the right
 expectation.
 
@@ -81,7 +81,7 @@ group alongside the buttons.
 ```
 
 Add the `govbb-button-group--vertical` modifier to stack the actions and
-stretch each one to the full width of the group — for narrow layouts or
+stretch each one to the full width of the group, for narrow layouts or
 full-width action stacks, such as accept and reject choices on mobile.
 
 ```html title="Vertical button group"

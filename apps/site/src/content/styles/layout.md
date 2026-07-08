@@ -5,7 +5,7 @@ order: 3
 lede: Structure pages with the width container, main wrapper and column grid.
 ---
 
-Layout classes are page scaffolding, not components — they only decide how
+Layout classes are page scaffolding, not components: they only decide how
 regions of a page occupy space. They ship in the design system CSS; there are
 no React wrappers, so use the classes directly in any framework.
 
@@ -16,11 +16,11 @@ Page margins (the space either side of the content) are fluid: they grow
 linearly with the viewport from 16px at the mobile frame (375px) to 128px at
 the desktop frame (1512px), where the container stops growing and centres.
 
-| Range            | Columns             | Column gutter | Page margins  | Container width |
-| ---------------- | ------------------- | ------------- | ------------- | --------------- |
-| below 800px      | stacked, full width | —             | 16px – 58px   | fluid           |
-| 800px – 1439px   | 12                  | 32px          | 58px – 121px  | fluid           |
-| 1440px and above | 12                  | 32px          | 121px – 128px | max 1512px      |
+| Range            | Columns             | Column gutter | Page margins   | Container width |
+| ---------------- | ------------------- | ------------- | -------------- | --------------- |
+| below 800px      | stacked, full width | none          | 16px to 58px   | fluid           |
+| 800px to 1439px  | 12                  | 32px          | 58px to 121px  | fluid           |
+| 1440px and above | 12                  | 32px          | 121px to 128px | max 1512px      |
 
 ### Mobile (below 800px)
 
@@ -29,7 +29,7 @@ portrait.
 
 <svg viewBox="0 0 450 313" role="img" aria-label="Grid diagram" style="width:100%;height:auto;display:block;background:#f8f9fa;border:1px solid #e0e4e9;border-radius:8px" xmlns="http://www.w3.org/2000/svg"><rect x="34.7646484375" y="38.0" width="380.626953125" height="340" rx="16.880859375" stroke="#e0e4e9" stroke-width="5.626953125" fill="none"/><rect x="37.578125" y="40.8" width="375" height="340" rx="14.0673828125" fill="#fff"/><rect x="53.6" y="57.7" width="343" height="39.4" rx="2.110107421875" fill="#e5e9f2" stroke="#99a8cc" stroke-opacity="0.5" stroke-width="0.70"/><rect x="53.6" y="108.3" width="343" height="39.4" rx="2.110107421875" fill="#e5e9f2" stroke="#99a8cc" stroke-opacity="0.5" stroke-width="0.70"/><rect x="53.6" y="159.0" width="343" height="39.4" rx="2.110107421875" fill="#e5e9f2" stroke="#99a8cc" stroke-opacity="0.5" stroke-width="0.70"/><rect x="36.3" y="12.7" width="18.7" height="14.1" rx="2.8" fill="#00267f"/><text x="45.6" y="23.0" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9.1" fill="#fff">16</text><path d="M37.6 32.4v5.6M37.6 35.2H53.6M53.6 32.4v5.6" stroke="#00267f" stroke-width="0.70" fill="none"/><rect x="395.3" y="12.7" width="18.7" height="14.1" rx="2.8" fill="#00267f"/><text x="404.6" y="23.0" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9.1" fill="#fff">16</text><path d="M396.6 32.4v5.6M396.6 35.2H412.6M412.6 32.4v5.6" stroke="#00267f" stroke-width="0.70" fill="none"/><path d="M53.6 218.0v5.6M53.6 220.9H396.6M396.6 218.0v5.6" stroke="#00267f" stroke-width="0.70" fill="none"/><rect x="207.2" y="213.8" width="35.7" height="14.1" rx="2.8" fill="#00267f"/><text x="225.1" y="224.1" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9.1" fill="#fff">fluid</text></svg>
 
-### Tablet (800px – 1439px)
+### Tablet (800px to 1439px)
 
 The 12 columns apply. Use fraction classes to span them; `-from-desktop`
 variants still stack here.
@@ -56,7 +56,7 @@ Lightning CSS. Components reference the names, never the numbers.
 | `--tablet`  | 800px and up  | fraction classes take their spans    |
 | `--desktop` | 1440px and up | `-from-desktop` variants take effect |
 
-The page margin needs no breakpoint at all — it is one clamp,
+The page margin needs no breakpoint at all: it is one clamp,
 `clamp(16px, 9.85vw − 1.31rem, 128px)`, which passes through both design
 anchors (16px at 375, 128px at 1512) and holds beyond.
 
@@ -107,7 +107,7 @@ with leftover tracks simply leaves trailing space.
 
 Each fraction also has a `-from-desktop` variant (for example
 `govbb-grid-column-one-third-from-desktop`) that stays full width through
-tablet and only takes its fraction on desktop — use it when a sidebar is too
+tablet and only takes its fraction on desktop. Use it when a sidebar is too
 cramped at tablet widths.
 
 Rows nest: a `govbb-grid-row` inside a column starts a fresh 12-column grid
@@ -115,10 +115,10 @@ scoped to that column's width.
 
 ## When to use the grid
 
-Use the grid whenever a page places content side by side — a main column with
+Use the grid whenever a page places content side by side: a main column with
 a sidebar, cards in halves or quarters, or a form constrained to two-thirds so
 line lengths stay readable.
 
-Do not use the grid for spacing inside a component — components own their
+Do not use the grid for spacing inside a component: components own their
 internal layout. Do not nest grids more than one level deep; if a layout needs
 that, simplify the page instead.

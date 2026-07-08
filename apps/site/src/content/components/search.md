@@ -28,8 +28,8 @@ import { Search } from '@govtech-bb/react';
 ```
 
 The Search component joins a search input and a submit button into a single
-unit. The label is visually hidden — the joined input and button already read
-as search — but stays available to screen readers.
+unit. The label is visually hidden (the joined input and button already read
+as search) but stays available to screen readers.
 
 ## When to use this component
 
@@ -40,7 +40,7 @@ share their search.
 
 ## When not to use this component
 
-Do not use search as a substitute for clear navigation — most users should be
+Do not use search as a substitute for clear navigation: most users should be
 able to reach common services without it. Do not use it to filter a short list
 on the same page; showing the full list is simpler and more predictable.
 

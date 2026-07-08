@@ -89,13 +89,13 @@ verified another way, such as evidence of address or a scanned certificate.
 
 Do not ask users to upload a file when the information could instead be entered as
 text, looked up from another government system, or confirmed by a simple
-declaration. Every upload is extra work and a chance to fail — only ask for one
+declaration. Every upload is extra work and a chance to fail. Only ask for one
 when it is strictly necessary.
 
 ## Guidance
 
 State the accepted file types and the maximum size up front, in the subtitle and
-the `.govbb-file-upload__max-size` text — users should not have to guess and
+the `.govbb-file-upload__max-size` text: users should not have to guess and
 fail. Keep uploaded files visible in the list (`.govbb-file-upload__list`) so
 users can confirm what they attached, and give each one a _Remove_ action so
 they can correct a mistake without starting over.
@@ -113,20 +113,17 @@ _"Select a file"_ or _"The file must be smaller than 25MB"_.
 
 ```html title="File upload with an error"
 <div class="govbb-form-group">
-  <label
-    class="govbb-label"
-    id="proof-of-address-err-label"
-    for="proof-of-address-err"
+  <label class="govbb-label" id="proof-of-address-label" for="proof-of-address"
     >Proof of address</label
   >
-  <p class="govbb-hint" id="proof-of-address-err-hint">
+  <p class="govbb-hint" id="proof-of-address-hint">
     This could be a recent utility bill or bank statement
   </p>
-  <p class="govbb-error-message" id="proof-of-address-err-error" role="alert">
+  <p class="govbb-error-message" id="proof-of-address-error" role="alert">
     Select a file
   </p>
   <div class="govbb-file-upload" data-govbb-module="file-upload">
-    <label class="govbb-file-upload__dropzone" for="proof-of-address-err">
+    <label class="govbb-file-upload__dropzone" for="proof-of-address">
       <span class="govbb-file-upload__info">
         <span class="govbb-file-upload__title">Upload a file</span>
         <span class="govbb-file-upload__subtitle"
@@ -135,12 +132,12 @@ _"Select a file"_ or _"The file must be smaller than 25MB"_.
       </span>
       <input
         class="govbb-file-upload__input govbb-visually-hidden"
-        id="proof-of-address-err"
+        id="proof-of-address"
         name="proof-of-address"
         type="file"
         aria-invalid="true"
-        aria-labelledby="proof-of-address-err-label"
-        aria-describedby="proof-of-address-err-hint proof-of-address-err-error"
+        aria-labelledby="proof-of-address-label"
+        aria-describedby="proof-of-address-hint proof-of-address-error"
       />
       <span class="govbb-file-upload__action">
         <span class="govbb-button govbb-button--tertiary" aria-hidden="true"

@@ -38,20 +38,20 @@ import { Breadcrumbs } from '@govtech-bb/react';
 ```
 
 The Breadcrumbs component shows the pages above the current one in the site
-hierarchy, starting from the homepage. It does not include the current page —
+hierarchy, starting from the homepage. It does not include the current page:
 users can see that from the page title. The chevron separators are drawn with
 CSS, so nothing extra is announced to screen readers.
 
 ## When to use this component
 
 Use breadcrumbs when a page sits within a hierarchy of more than one level and
-users are likely to want to move back up it — for example, from a guide about
+users are likely to want to move back up it, for example from a guide about
 renewing a passport up to the passports topic page.
 
 ## When not to use this component
 
-Do not use breadcrumbs inside a linear, multi-step transaction — use the
-[back button](/components/back-button) instead. Avoid breadcrumbs if the site
+Do not use breadcrumbs inside a linear, multi-step transaction. Use the
+[back button](/components/back-button/) instead. Avoid breadcrumbs if the site
 is only one level deep, where a link back to the homepage does the same job
 with less noise.
 

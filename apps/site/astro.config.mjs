@@ -8,6 +8,12 @@ import pagefind from 'astro-pagefind';
 // /pagefind/) and powers the /search/ results.
 export default defineConfig({
   site: 'https://design-system.gov.bb',
+  // No typographic substitutions: smartypants turns `--` into an en dash,
+  // which mangles token names in inline SVG labels (e.g. `--tablet`) and
+  // reintroduces dashes the house style bans.
+  markdown: {
+    smartypants: false,
+  },
   integrations: [pagefind()],
   redirects: {
     '/documentation/layout': '/styles/layout',

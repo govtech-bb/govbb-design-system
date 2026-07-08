@@ -12,7 +12,7 @@ We have decided the design system and the services built on it will **not** use 
 
 FAQs are a sign that something is wrong. If users have to ask the same question over and
 over, the content that should have answered it is missing, hard to find, or unclear. A
-list of questions and answers bolted onto the side does not fix that — it hides it.
+list of questions and answers bolted onto the side does not fix that: it hides it.
 
 Instead of adding an FAQ, we fix the underlying content so the answer is where the user
 needs it, in plain language, at the point they need it.
@@ -25,6 +25,6 @@ needs it, in plain language, at the point they need it.
 
 ## Why record this
 
-Recording decisions like this — with the reasoning and the date — means we do not have to
+Recording decisions like this, with the reasoning and the date, means we do not have to
 relitigate them later, and new contributors can understand _why_ the system is the way it
 is.

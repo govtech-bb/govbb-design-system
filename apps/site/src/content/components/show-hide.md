@@ -51,7 +51,7 @@ extra scripting.
 ## Open by default
 
 A disclosure can start open if the content inside it is useful to most users but
-still optional to read. Use this sparingly — most disclosures should start
+still optional to read. Use this sparingly: most disclosures should start
 closed.
 
 ```html title="Open by default"
@@ -59,7 +59,7 @@ closed.
   <summary class="govbb-show-hide__summary">More information</summary>
   <div class="govbb-show-hide__content">
     <p>
-      This panel is open on page load. Use this sparingly — most disclosures
+      This panel is open on page load. Use this sparingly: most disclosures
       should start closed.
     </p>
   </div>
@@ -71,8 +71,8 @@ import { ShowHide } from '@govtech-bb/react';
 
 <ShowHide summary="More information" open>
   <p>
-    This panel is open on page load. Use this sparingly — most disclosures
-    should start closed.
+    This panel is open on page load. Use this sparingly: most disclosures should
+    start closed.
   </p>
 </ShowHide>;
 ```

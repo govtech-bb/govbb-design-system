@@ -25,21 +25,21 @@ import { StatusBanner } from '@govtech-bb/react';
 ```
 
 The Status banner component is a full-width coloured strip that tells users
-where a page sits in its lifecycle — in Alpha or Beta testing, migrated from an
+where a page sits in its lifecycle: in Alpha or Beta testing, migrated from an
 older site, or affected by a service disruption. It holds one or two short
 paragraphs.
 
 ## When to use this component
 
 Use a status banner when the state of the page changes what users should
-expect from it — a service still being tested, content moved from an older
+expect from it: a service still being tested, content moved from an older
 site, or a disruption to the service the page describes. Show one banner per
 page, directly below the header, and keep the message to a sentence or two
 with a link to more detail or a feedback route.
 
 ## When not to use this component
 
-Do not use a status banner for form validation errors — use the error summary
+Do not use a status banner for form validation errors. Use the error summary
 and error messages instead. Do not stack more than one banner on a page, and
 do not use one for routine content that isn't about the page's status.
 

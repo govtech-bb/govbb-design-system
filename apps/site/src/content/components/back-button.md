@@ -12,10 +12,11 @@ group: Navigation
 ```
 
 The back button is a link with the brand's swept arrow that takes users back to
-the previous page. It composes with the link component — use both classes,
-`govbb-link govbb-back-button` — so the arrow follows the link's colour on
+the previous page. It composes with the link component: use both classes,
+`govbb-link govbb-back-button`, so the arrow follows the link's colour on
 hover, active and focus. Point `href` at the previous page in the journey so
-the link works without JavaScript.
+the link works without JavaScript. There is no React wrapper yet, so use the
+HTML directly.
 
 ## When to use this component
 
@@ -26,8 +27,8 @@ keep the label as _Back_.
 
 ## When not to use this component
 
-Do not rely on the back button as the only way to reverse a step — users may
+Do not rely on the back button as the only way to reverse a step: users may
 use the browser's back button instead, so the service must handle that too. Do
-not use it together with [breadcrumbs](/components/breadcrumbs) on the same
+not use it together with [breadcrumbs](/components/breadcrumbs/) on the same
 page: pick the one that matches the journey, breadcrumbs for a hierarchy and
 the back button for a linear transaction.

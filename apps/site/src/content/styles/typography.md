@@ -11,16 +11,16 @@ examples: true
 The design system uses [Figtree](https://fonts.google.com/specimen/Figtree),
 a friendly geometric sans-serif. The font files ship with the
 `@govtech-bb/frontend` package as variable-weight woff2 subsets, so you do
-not need to load it from a font service — importing the design system CSS is
+not need to load it from a font service: importing the design system CSS is
 enough.
 
 The stack is published as `--govbb-font-sans`, which falls back to the system
 sans-serif stack while the font loads or where it lacks a glyph. Figtree is
-served in the 400–700 weight range; the design system only uses regular (400)
+served in the 400 to 700 weight range; the design system only uses regular (400)
 and bold (700).
 
 Body text is set at 20px (`--govbb-font-size-body`) with a line height of 1.5
-by default — you get this for free on any page that includes the design
+by default. You get this for free on any page that includes the design
 system CSS.
 
 ## Type scale
@@ -44,7 +44,7 @@ the raw tokens only in your own CSS.
 
 The display and heading classes are bold (700); the body and caption classes
 are regular (400). Because they are utilities, they win over component
-typography — applying one to a component element is an explicit override.
+typography, so applying one to a component element is an explicit override.
 
 ```html title="Type scale"
 <p class="govbb-text-display">Display</p>
@@ -61,7 +61,7 @@ typography — applying one to a component element is an explicit override.
 ## Headings
 
 Choose the heading element for the document structure and the class for the
-size — they are deliberately independent:
+size. The two are deliberately independent:
 
 ```html title="Heading with a size class"
 <h1 class="govbb-text-h1">Register a birth</h1>
@@ -69,7 +69,7 @@ size — they are deliberately independent:
 
 Bare headings only get weight and rhythm from the base styles, so put a
 `.govbb-text-*` class on every heading you want on the scale. Keep heading
-levels in order without skipping — if an `h3` looks too small for its place
+levels in order without skipping. If an `h3` looks too small for its place
 on the page, change its class, not its level. Use one `h1` per page, and
 reserve `govbb-text-display` for landing-page heroes rather than routine page
 titles.
@@ -77,12 +77,12 @@ titles.
 ## Links
 
 Links inside body content get quiet base styles automatically. Where a link
-needs the full treatment — underline offset, hover and focus highlight states
-— use the `govbb-link` class or the React `Link` component. See the
+needs the full treatment (underline offset, hover and focus highlight states),
+use the `govbb-link` class or the React `Link` component. See the
 [Link component](/components/link/) for guidance and examples.
 
 ## Lists
 
-Lists have their own page under typography — see
+Lists have their own page under typography. See
 [Lists](/styles/typography/lists/) for the plain, bulleted and numbered
 variants with live examples.

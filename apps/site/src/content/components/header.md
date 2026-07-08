@@ -28,9 +28,9 @@ import { Header } from '@govtech-bb/react';
 ```
 
 The Header sits at the top of every page, directly below the
-[official banner](/components/official-banner). It holds the gov.bb logo, which
+[official banner](/components/official-banner/). It holds the gov.bb logo, which
 links back to the homepage so users always have a way to start again. The logo
-image ships in the `@govtech-bb/frontend` package under `assets/images/` — host
+image ships in the `@govtech-bb/frontend` package under `assets/images/`. Host
 it with your service and point `src` at your copy.
 
 ## When to use this component

@@ -69,7 +69,7 @@ toggle a single option on or off, such as agreeing to terms and conditions.
 ## When not to use this component
 
 Do not use checkboxes when a user must choose exactly one option from a list of
-mutually exclusive choices — use radio buttons instead.
+mutually exclusive choices. Use radio buttons instead.
 
 ## Guidance
 
@@ -79,14 +79,14 @@ the options with their question for assistive technology.
 
 Do not pre-select options. Pre-selected checkboxes make it more likely that users
 will not notice they have skipped a question, or will submit an answer they did
-not intend — let users make an active choice.
+not intend. Let users make an active choice.
 
 Order options by relevance, listing the most common or recommended choices first.
 Fall back to alphabetical order only when no meaningful priority exists.
 
 Make the number of selectable options clear. Do not assume users will infer from
 the visual difference between checkboxes and radio buttons that they can select
-more than one — add a hint such as _"Select all that apply"_ where it helps.
+more than one. Add a hint such as _"Select all that apply"_ where it helps.
 
 ## Single checkbox
 
@@ -118,7 +118,7 @@ import { Checkbox } from '@govtech-bb/react';
 
 Disable a checkbox only when an option is genuinely unavailable to the user, and
 say why in the label, for example _"(unavailable)"_. As with buttons, avoid
-disabling wherever possible — a disabled checkbox gives the user no information
+disabling wherever possible: a disabled checkbox gives the user no information
 about what they need to do to enable it.
 
 ```html title="Disabled checkbox"

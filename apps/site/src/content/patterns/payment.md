@@ -10,12 +10,15 @@ lede: Walks users through paying a fee, and reports whether it worked.
 <div class="govbb-payment">
   <div class="govbb-payment__heading">
     <h2 class="govbb-payment__title">Complete your payment</h2>
-    <p>Please review and complete your payment to finalize your submission</p>
+    <p>
+      Check the details below, then continue to payment to finish your
+      submission
+    </p>
   </div>
   <dl class="govbb-payment__items">
     <div class="govbb-payment__row">
       <dt class="govbb-payment__key">Service:</dt>
-      <dd class="govbb-payment__value">Application Fee</dd>
+      <dd class="govbb-payment__value">Application fee</dd>
     </div>
     <div class="govbb-payment__row">
       <dt class="govbb-payment__key">Unit price:</dt>
@@ -37,23 +40,23 @@ lede: Walks users through paying a fee, and reports whether it worked.
 </div>
 ```
 
-The Payment pattern summarises a fee before the user pays it — the service,
-unit price, quantity and total — with a button that takes them to the payment
+The Payment pattern summarises a fee before the user pays it (the service,
+unit price, quantity and total), with a button that takes them to the payment
 provider, and a note telling them where they are being sent. The itemised
 rows are a description list (`<dl>`), so screen readers announce each label
-with its value.
+with its value. There is no React wrapper yet, so use the HTML directly.
 
 ## When to use this pattern
 
 Use the payment component at the payment step of a service, once the user has
 reviewed their application and the fee is fixed. Keep the note honest about
-what happens next — name the payment provider the user will be redirected to.
+what happens next: name the payment provider the user will be redirected to.
 
 ## When not to use this pattern
 
-Do not use it to list fees the user is not about to pay — use a table instead.
+Do not use it to list fees the user is not about to pay. Use a table instead.
 Do not use the success or failed variants for anything other than the outcome
-of a payment — use the status banner for page-level notices.
+of a payment. Use the status banner for page-level notices.
 
 ## Success
 
@@ -73,7 +76,7 @@ next (such as a confirmation email).
   <dl class="govbb-payment__items">
     <div class="govbb-payment__row">
       <dt class="govbb-payment__key">Service:</dt>
-      <dd class="govbb-payment__value">Application Fee</dd>
+      <dd class="govbb-payment__value">Application fee</dd>
     </div>
     <div class="govbb-payment__row">
       <dt class="govbb-payment__key">Amount:</dt>
@@ -85,7 +88,7 @@ next (such as a confirmation email).
     </div>
     <div class="govbb-payment__row">
       <dt class="govbb-payment__key">Date:</dt>
-      <dd class="govbb-payment__value">12/12/2026</dd>
+      <dd class="govbb-payment__value">12 December 2026</dd>
     </div>
   </dl>
 </div>

@@ -13,7 +13,7 @@ group: Page furniture
     <div class="govbb-official-banner__crest">
       <img
         class="govbb-official-banner__icon"
-        src="/assets/images/govbb-creast.svg"
+        src="/assets/images/govbb-crest.svg"
         alt=""
       />
     </div>
@@ -28,21 +28,21 @@ group: Page furniture
 ```tsx
 import { OfficialBanner } from '@govtech-bb/react';
 
-<OfficialBanner crestSrc="/assets/images/govbb-creast.svg" linkHref="#" />;
+<OfficialBanner crestSrc="/assets/images/govbb-crest.svg" linkHref="#" />;
 ```
 
 The official banner is a thin dark blue bar at the very top of the page,
-above the [header](/components/header). It shows the coat of arms and a short
+above the [header](/components/header/). It shows the coat of arms and a short
 message confirming that users are on a genuine Government of Barbados website,
 with an optional link to more detail. The crest image is decorative, so keep
-`alt=""` — it ships in the `@govtech-bb/frontend` package under
+`alt=""`. It ships in the `@govtech-bb/frontend` package under
 `assets/images/`.
 
 ## When to use this component
 
 Use the official banner at the very top of every page of a gov.bb service,
-above the header. It helps users trust that the service — and any personal
-information it asks for — belongs to the Government of Barbados.
+above the header. It helps users trust that the service, and any personal
+information it asks for, belongs to the Government of Barbados.
 
 ## When not to use this component
 

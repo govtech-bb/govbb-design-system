@@ -21,15 +21,15 @@ entries.sort((a, b) => a.data.title.localeCompare(b.data.title));
       live preview and the code you can copy.
     </p>
     <p>
-      More components are being migrated into the system. For now the code panel shows
-      HTML and CSS; web component and React versions will follow.
+      More components are being migrated into the system. Each example shows its HTML,
+      and a React version where a wrapper exists in <code>@govtech-bb/react</code>.
     </p>
     <h2>Available components</h2>
     <ul>
       {
         entries.map((entry) => (
           <li>
-            <a href={`/components/${entry.id}/`}>{entry.data.title}</a> —{' '}
+            <a href={`/components/${entry.id}/`}>{entry.data.title}</a> -{' '}
             {entry.data.lede}
           </li>
         ))
