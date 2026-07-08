@@ -64,15 +64,20 @@ export async function getStylesSidebar(): Promise<SidebarGroup[]> {
       a.data.order - b.data.order || a.data.title.localeCompare(b.data.title),
   );
   const topLevel = entries.filter((e) => !e.id.includes('/'));
+  const hasChildren = (id: string) =>
+    entries.some((e) => e.id.startsWith(`${id}/`));
   return [
     {
       heading: 'Styles',
       links: [
         { label: 'Overview', href: '/styles/' },
-        ...topLevel.map((e) => ({
-          label: e.data.title,
-          href: `/styles/${e.id}/`,
-        })),
+        // Parents with children are represented by their own group below.
+        ...topLevel
+          .filter((e) => !hasChildren(e.id))
+          .map((e) => ({
+            label: e.data.title,
+            href: `/styles/${e.id}/`,
+          })),
       ],
     },
     ...topLevel.flatMap((parent) => {
