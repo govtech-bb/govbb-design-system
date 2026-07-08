@@ -1,0 +1,25 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Page not found" description="The page you were looking for could not be found.">
+  <section class="govbb-width-container govbb-page-section" data-pagefind-ignore>
+    <div class="govbb-page-header">
+      <h1 class="govbb-page-title">Page not found</h1>
+      <p class="govbb-page-subtitle">
+        If you typed the web address, check it is correct. If you followed a link, it may be out of
+        date.
+      </p>
+    </div>
+
+    <div class="govbb-prose">
+      <p>Try one of these instead:</p>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/components/">Components</a></li>
+        <li><a href="/documentation/">Documentation</a></li>
+        <li><a href="/search/">Search the design system</a></li>
+      </ul>
+    </div>
+  </section>
+</BaseLayout>
