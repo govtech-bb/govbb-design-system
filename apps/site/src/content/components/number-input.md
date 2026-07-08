@@ -81,15 +81,16 @@ input.
 Use a number input for small ranges where tapping the up or down button is
 quicker and less error-prone than typing, such as a quantity, a number of
 copies, or a number of people. Always set `min` and `max` when the range is
-known, and wire the stepper buttons so they cannot push the value outside it.
-The design system provides the styles only — you must add your own JavaScript
-to make the stepper buttons change the value, so the buttons in the preview
-above are not interactive.
+known: the stepper buttons step the native input, so they cannot push the
+value outside it. The stepper behaviour ships in the package's
+progressive-enhancement runtime: call `initAll()` from `@govtech-bb/frontend`
+once per page and every `data-govbb-module="number-input"` wrapper is wired
+up. The React component enhances itself.
 
 ## When not to use this component
 
 Do not use a number input for long numbers such as an ID, phone number, or
-year — use a plain input with `inputmode="numeric"` instead. Do not use it for
+year. Use a plain input with `inputmode="numeric"` instead. Do not use it for
 values that are not whole numbers unless you also set a suitable `step`. And do
 not use it as a substitute for a select or radio buttons when you are really
 offering a fixed, small set of choices.
@@ -108,42 +109,40 @@ valid range. The stepper buttons sit inside `.govbb-number-input-wrapper` with
 `role="group"` named via `aria-labelledby` pointing at the field's label, and
 each button carries an `aria-label` ("Increment" or "Decrement") together with
 `aria-controls` pointing at the input, since the buttons show no visible text of
-their own. Remember that the stepper buttons do nothing until you attach your
-own JavaScript to them.
+their own. The steppers use the input's native `stepUp()` and `stepDown()`, so
+they respect `min`, `max` and `step` without any extra code.
 
 ## Errors
 
 When a number input fails validation, show an error message
 (`.govbb-error-message`) above the input with `role="alert"`, and mark the input
 itself with `aria-invalid="true"` and `aria-describedby` pointing at the error
-message id. Keep error messages specific and actionable, such as "Enter a valid
-quantity".
+message id. Keep error messages specific and actionable, such as "Enter a
+quantity between 1 and 10".
 
 ```html title="Number input with error"
 <div class="govbb-form-group">
-  <label class="govbb-label" id="quantity-error-label" for="quantity-error"
-    >Quantity</label
-  >
-  <p class="govbb-error-message" id="quantity-error-error" role="alert">
-    Enter a valid quantity
+  <label class="govbb-label" id="quantity-label" for="quantity">Quantity</label>
+  <p class="govbb-error-message" id="quantity-error" role="alert">
+    Enter a quantity between 1 and 10
   </p>
   <div
     class="govbb-number-input-wrapper"
     role="group"
-    aria-labelledby="quantity-error-label"
+    aria-labelledby="quantity-label"
     data-govbb-module="number-input"
   >
     <input
       class="govbb-number-input"
-      id="quantity-error"
-      name="quantity-error"
+      id="quantity"
+      name="quantity"
       type="number"
       inputmode="numeric"
       min="1"
       max="10"
       step="1"
       aria-invalid="true"
-      aria-describedby="quantity-error-error"
+      aria-describedby="quantity-error"
     />
     <div class="govbb-number-input__steppers">
       <button
@@ -151,7 +150,7 @@ quantity".
         type="button"
         tabindex="-1"
         aria-label="Increment"
-        aria-controls="quantity-error"
+        aria-controls="quantity"
       ></button>
       <span class="govbb-number-input__divider" aria-hidden="true"></span>
       <button
@@ -159,7 +158,7 @@ quantity".
         type="button"
         tabindex="-1"
         aria-label="Decrement"
-        aria-controls="quantity-error"
+        aria-controls="quantity"
       ></button>
     </div>
   </div>
@@ -174,7 +173,7 @@ import { ErrorMessage, FormGroup, Label, NumberInput } from '@govtech-bb/react';
     Quantity
   </Label>
   <ErrorMessage id="quantity-error" role="alert">
-    Enter a valid quantity
+    Enter a quantity between 1 and 10
   </ErrorMessage>
   <NumberInput
     id="quantity"
