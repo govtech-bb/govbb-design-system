@@ -19,7 +19,7 @@
 
 .govbb-table__header,
 .govbb-table__cell {
-  padding: var(--govbb-space-s) var(--govbb-space-s) var(--govbb-space-s) 0;
+  padding: var(--govbb-space-s);
   text-align: left;
   vertical-align: top;
   border-bottom: 1px solid var(--govbb-color-highlight);
@@ -38,17 +38,8 @@
 /* Row headers (<th scope="row">) — a highlighted first column, with the
    surface colour as the separator so the cells read as distinct blocks. */
 .govbb-table tbody .govbb-table__header {
-  padding-inline-start: var(--govbb-space-s);
   background: var(--govbb-color-highlight);
   border-bottom-color: var(--govbb-color-surface);
-}
-
-/* When the body has row headers, indent the first column header to line its
-   text up with the highlighted cells below. */
-.govbb-table:has(tbody .govbb-table__header)
-  thead
-  .govbb-table__header:first-child {
-  padding-inline-start: var(--govbb-space-s);
 }
 
 .govbb-table__header--numeric,
