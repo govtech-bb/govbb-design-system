@@ -54,23 +54,44 @@ export async function getComponentsSidebar(): Promise<SidebarGroup[]> {
 
 // Left-sidebar navigation for the Styles section, derived from the styles
 // content collection.
+// Styles nest one level: an entry at `typography/lists.md` is a child of
+// `typography.md`, and each parent with children gets its own sidebar group
+// (Overview + children) under the main Styles group.
 export async function getStylesSidebar(): Promise<SidebarGroup[]> {
   const entries = await getCollection('styles');
   entries.sort(
     (a, b) =>
       a.data.order - b.data.order || a.data.title.localeCompare(b.data.title),
   );
+  const topLevel = entries.filter((e) => !e.id.includes('/'));
   return [
     {
       heading: 'Styles',
       links: [
         { label: 'Overview', href: '/styles/' },
-        ...entries.map((e) => ({
+        ...topLevel.map((e) => ({
           label: e.data.title,
           href: `/styles/${e.id}/`,
         })),
       ],
     },
+    ...topLevel.flatMap((parent) => {
+      const children = entries.filter((e) => e.id.startsWith(`${parent.id}/`));
+      return children.length > 0
+        ? [
+            {
+              heading: parent.data.title,
+              links: [
+                { label: 'Overview', href: `/styles/${parent.id}/` },
+                ...children.map((e) => ({
+                  label: e.data.title,
+                  href: `/styles/${e.id}/`,
+                })),
+              ],
+            },
+          ]
+        : [];
+    }),
   ];
 }
 

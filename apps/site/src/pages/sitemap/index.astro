@@ -27,7 +27,12 @@ const childrenFor = (key: Section, href: string) => {
   else if (key === 'documentation') links = documentationSidebar.flatMap((g) => g.links);
   else if (key === 'changelog')
     links = changelog.map((p) => ({ label: p.data.title, href: `/changelog/${p.id}/` }));
-  return links.filter((l) => l.href !== href); // drop the section's own index link
+  return links
+    .filter((l) => l.href !== href) // drop the section's own index link
+    .filter(
+      // nested sidebars repeat their parent as "Overview" — list each page once
+      (l, i, all) => all.findIndex((x) => x.href === l.href) === i,
+    );
 };
 
 const sections = [...primaryNav, ...secondaryNav].map((item) => ({

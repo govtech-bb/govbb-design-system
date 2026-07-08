@@ -5,7 +5,11 @@ import type { CardData } from '../../components/CardGrid.astro';
 import { getCollection } from 'astro:content';
 
 const modifiers = ['teal', 'pink', 'lavender'] as const;
-const entries = await getCollection('styles');
+// Cards show top-level pages only; nested pages (e.g. typography/lists)
+// are reached from their parent's sidebar group.
+const entries = (await getCollection('styles')).filter(
+  (e) => !e.id.includes('/'),
+);
 entries.sort(
   (a, b) =>
     a.data.order - b.data.order || a.data.title.localeCompare(b.data.title),
