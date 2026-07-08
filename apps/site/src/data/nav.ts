@@ -21,6 +21,8 @@ export const primaryNav: PrimaryNavItem[] = [
 const GROUP_ORDER = [
   'Actions',
   'Form elements',
+  'Navigation',
+  'Page furniture',
   'Content',
   'Feedback',
 ] as const;
