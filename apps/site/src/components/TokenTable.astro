@@ -1,0 +1,254 @@
+---
+/*
+ * TokenTable — a token reference table generated from the design system's
+ * tokens.css (see lib/tokens.ts), in the spirit of the SGDS token docs.
+ * Each kind gets an appropriate preview: colour swatches, spacing bars,
+ * radius shapes, or type samples. Every token name has a copy button that
+ * copies the ready-to-paste `var(--govbb-…)` form.
+ */
+import type { Token } from '../lib/tokens';
+import { contrastOnWhite, isColor, remToPx } from '../lib/tokens';
+
+interface Props {
+  tokens: Token[];
+  /** Preview style. `plain` shows no preview column. */
+  kind?: 'color' | 'space' | 'size' | 'radius' | 'plain';
+  /** Show a computed contrast-on-white column (colour tables). */
+  contrast?: boolean;
+  /** Show the "Resolves to" alias column (semantic tables). */
+  aliases?: boolean;
+  /** Header for the notes column (only shown when any token has a note). */
+  notesHeader?: string;
+  /** Accessible name for the table. */
+  label: string;
+}
+const {
+  tokens,
+  kind = 'plain',
+  contrast = false,
+  aliases = false,
+  notesHeader = 'Use for',
+  label,
+} = Astro.props;
+
+const hasNotes = tokens.some((t) => t.note);
+
+// Spacing bars scale against the largest value in the table.
+const pxOf = (t: Token) => parseFloat(remToPx(t.resolved) ?? '0');
+const maxPx = Math.max(...tokens.map(pxOf), 1);
+---
+
+<table class="tokens" aria-label={label}>
+  <thead>
+    <tr>
+      {kind !== 'plain' && <th scope="col" class="tokens__preview-col">Preview</th>}
+      <th scope="col">Token</th>
+      {aliases && <th scope="col">Resolves to</th>}
+      <th scope="col">Value</th>
+      {contrast && <th scope="col">On white</th>}
+      {hasNotes && <th scope="col">{notesHeader}</th>}
+    </tr>
+  </thead>
+  <tbody>
+    {
+      tokens.map((t) => {
+        const ratio =
+          contrast && isColor(t.resolved) ? contrastOnWhite(t.resolved) : null;
+        const px = remToPx(t.resolved);
+        return (
+          <tr>
+            {kind === 'color' && (
+              <td class="tokens__preview">
+                <span class="tokens__swatch" style={`background:${t.resolved}`} />
+              </td>
+            )}
+            {kind === 'space' && (
+              <td class="tokens__preview">
+                <span
+                  class="tokens__bar"
+                  style={`width:${(pxOf(t) / maxPx) * 100}%`}
+                />
+              </td>
+            )}
+            {kind === 'size' && (
+              <td class="tokens__preview">
+                <span class="tokens__sample" style={`font-size:${t.resolved}`}>
+                  Aa
+                </span>
+              </td>
+            )}
+            {kind === 'radius' && (
+              <td class="tokens__preview">
+                <span
+                  class="tokens__shape"
+                  style={`border-radius:${t.resolved}`}
+                />
+              </td>
+            )}
+            <td>
+              <span class="tokens__name">
+                <code>{t.name}</code>
+                <button
+                  class="tokens__copy"
+                  type="button"
+                  data-copy-token={t.name}
+                  aria-label={`Copy var(${t.name})`}
+                >
+                  Copy
+                </button>
+              </span>
+            </td>
+            {aliases && (
+              <td>{t.aliasOf ? <code>{t.aliasOf}</code> : <span class="tokens__own">own value</span>}</td>
+            )}
+            <td>
+              <code>{t.resolved}</code>
+              {px && px !== t.resolved && <span class="tokens__px"> {px}</span>}
+            </td>
+            {contrast && (
+              <td>
+                {ratio && (
+                  <span
+                    class:list={[
+                      'tokens__ratio',
+                      { 'tokens__ratio--fail': ratio < 4.5 },
+                    ]}
+                  >
+                    {ratio.toFixed(1)}:1{' '}
+                    {ratio >= 4.5 ? 'AA' : ratio >= 3 ? 'AA large only' : 'fails AA'}
+                  </span>
+                )}
+              </td>
+            )}
+            {hasNotes && <td class="tokens__note">{t.note}</td>}
+          </tr>
+        );
+      })
+    }
+  </tbody>
+</table>
+
+<style>
+  .tokens {
+    width: 100%;
+    border-collapse: collapse;
+    margin-block: var(--govbb-space-3) var(--govbb-space-5);
+    font-size: 1rem;
+  }
+  .tokens th,
+  .tokens td {
+    text-align: left;
+    vertical-align: middle;
+    padding: 10px 16px 10px 0;
+    border-bottom: 1px solid var(--govbb-color-border);
+  }
+  .tokens th {
+    font-weight: 600;
+    border-bottom-color: var(--govbb-mid-grey-00);
+  }
+  .tokens code {
+    font-size: 0.875em;
+    background: var(--govbb-blue-10);
+    border-radius: var(--govbb-radius);
+    padding: 0.1em 0.35em;
+    white-space: nowrap;
+  }
+  .tokens__preview-col {
+    width: 8rem;
+  }
+  .tokens__preview {
+    padding-right: var(--govbb-space-3);
+  }
+  .tokens__swatch {
+    display: block;
+    width: 3.5rem;
+    height: 1.75rem;
+    border-radius: var(--govbb-radius);
+    border: 1px solid var(--govbb-color-border);
+  }
+  .tokens__bar {
+    display: block;
+    height: 1rem;
+    min-width: 2px;
+    border-radius: 2px;
+    background: var(--govbb-color-interactive);
+  }
+  .tokens__sample {
+    display: block;
+    line-height: 1;
+    font-weight: 700;
+    max-height: 5rem;
+    overflow: hidden;
+  }
+  .tokens__shape {
+    display: block;
+    width: 3rem;
+    height: 3rem;
+    background: var(--govbb-color-highlight);
+    border: 2px solid var(--govbb-color-interactive);
+  }
+  .tokens__name {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--govbb-space-2);
+  }
+  .tokens__copy {
+    font: inherit;
+    font-size: 0.75rem;
+    line-height: 1;
+    padding: 4px 8px;
+    color: var(--govbb-color-teal);
+    background: transparent;
+    border: 1px solid var(--govbb-color-border);
+    border-radius: var(--govbb-radius);
+    cursor: pointer;
+  }
+  .tokens__copy:hover {
+    border-color: var(--govbb-color-teal);
+  }
+  .tokens__copy[data-copied] {
+    color: var(--govbb-green-00);
+    border-color: var(--govbb-green-00);
+  }
+  .tokens__px,
+  .tokens__own,
+  .tokens__note {
+    color: var(--govbb-color-text-muted);
+  }
+  .tokens__ratio--fail {
+    color: var(--govbb-color-error);
+  }
+
+  /* Narrow screens: hide the preview column rather than crush the values. */
+  @media (max-width: 640px) {
+    .tokens__preview,
+    .tokens__preview-col {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  // One delegated listener for every table on the page. Copies the
+  // ready-to-paste var() form and flips the button label briefly.
+  if (!(window as any).__govbbTokenCopy) {
+    (window as any).__govbbTokenCopy = true;
+    document.addEventListener('click', async (event) => {
+      const button = (event.target as Element).closest<HTMLButtonElement>(
+        '[data-copy-token]',
+      );
+      if (!button) return;
+      try {
+        await navigator.clipboard.writeText(`var(${button.dataset.copyToken})`);
+        button.textContent = 'Copied';
+        button.setAttribute('data-copied', '');
+        window.setTimeout(() => {
+          button.textContent = 'Copy';
+          button.removeAttribute('data-copied');
+        }, 1500);
+      } catch {
+        button.textContent = 'Press Ctrl+C';
+      }
+    });
+  }
+</script>

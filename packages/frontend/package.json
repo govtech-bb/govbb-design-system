@@ -11,6 +11,7 @@
       "import": "./index.js"
     },
     "./css": "./dist/govbb.css",
+    "./tokens.css": "./src/tokens.css",
     "./assets/*": "./assets/*"
   },
   "files": [

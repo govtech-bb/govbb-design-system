@@ -94,8 +94,8 @@
   --govbb-space-s: 1rem; /* 16px */
   --govbb-space-xm: 1.5rem; /* 24px */
   --govbb-space-m: 2rem; /* 32px */
-  --govbb-space-l: 4rem; /* 64px — placeholder pending Figma confirmation */
-  --govbb-space-xl: 8rem; /* 128px — desktop-frame page gutter */
+  --govbb-space-l: 4rem; /* placeholder pending Figma confirmation */
+  --govbb-space-xl: 8rem; /* desktop-frame page gutter */
 
   --govbb-radius: 4px;
 }

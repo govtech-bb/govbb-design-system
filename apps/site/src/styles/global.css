@@ -403,6 +403,14 @@ img:not([class]) {
   top: var(--govbb-space-4);
   min-width: 200px;
 }
+/* Single column: a sticky sidebar rides down the page over the content
+   (the grid container is its sticky range), so pin it back into the flow.
+   Must come after the sticky rule — same specificity, cascade decides. */
+@media (max-width: 800px) {
+  .govbb-sidebar {
+    position: static;
+  }
+}
 .govbb-sidebar__section + .govbb-sidebar__section {
   margin-top: var(--govbb-space-2);
 }

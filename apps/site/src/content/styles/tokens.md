@@ -11,6 +11,9 @@ and every component style resolves to them. Use them in your own CSS so your
 service stays consistent with the components, and picks up palette changes
 automatically when the system updates.
 
+The tables on this page are generated from the design system's `tokens.css`
+at build time, so the values shown are always the values that ship.
+
 ## Two tiers
 
 Tokens come in two tiers, and the tier tells you whether you should reach for
@@ -28,6 +31,17 @@ something to use directly.
 and aliases the primitive that currently does that job. Prefer these: if the
 palette is retuned, the semantic name keeps meaning the right thing and your
 CSS needs no changes.
+
+## How tokens build a component
+
+The real button, annotated. Each callout is a token its stylesheet actually
+references, and the fill resolves through the semantic tier to one primitive.
+Pick a new value for `--govbb-teal-00` and the button, the callout, and every
+other component on the same tokens follow. No component CSS changes.
+
+```token-demo
+live: true
+```
 
 ## Using tokens
 
@@ -52,37 +66,57 @@ page can use them:
 ## Semantic colour tokens
 
 These are the colour tokens to build with. The [Colour](/styles/colour/) page
-resolves each one to its hex value and documents the full primitive ramp.
+documents the full primitive ramp each one resolves to.
 
-| Token                              | Maps to               | Use for                                      |
-| ---------------------------------- | --------------------- | -------------------------------------------- |
-| `--govbb-color-brand`              | `--govbb-blue-100`    | Brand ultramarine: headers, brand surfaces   |
-| `--govbb-color-brand-accent`       | `--govbb-yellow-100`  | Brand gold accent                            |
-| `--govbb-color-ink`                | `--govbb-black-00`    | Body text                                    |
-| `--govbb-color-surface`            | `--govbb-white-00`    | Page and component backgrounds               |
-| `--govbb-color-muted`              | `--govbb-mid-grey-00` | Secondary text, hints                        |
-| `--govbb-color-interactive`        | `--govbb-teal-00`     | Primary actions, checked form-control fill   |
-| `--govbb-color-interactive-active` | own value             | Pressed state of the primary action          |
-| `--govbb-color-focus`              | `--govbb-teal-100`    | Focus ring                                   |
-| `--govbb-color-focus-danger`       | `--govbb-red-100`     | Focus ring on destructive actions            |
-| `--govbb-color-error`              | `--govbb-red-00`      | Invalid state: error text, borders, messages |
-| `--govbb-color-neutral`            | `--govbb-grey-00`     | Secondary fills, dividers                    |
-| `--govbb-color-highlight`          | `--govbb-blue-10`     | Selected surfaces                            |
-| `--govbb-color-tertiary`           | `--govbb-green-00`    | Tertiary actions                             |
+```token-table
+tokens: semantic-colors
+kind: color
+aliases: true
+label: Semantic colour tokens
+```
 
 `--govbb-color-interactive-active` is the one semantic token with its own
-value (`#0a4549`, a darkened interactive teal) rather than a primitive alias.
+value (a darkened interactive teal) rather than a primitive alias.
 
-## Type, spacing and radius tokens
+## Type tokens
 
-The other token groups follow the same pattern, a small named scale you use
-instead of raw values:
+The typeface stack and the size ramp. The [Typography](/styles/typography/)
+page pairs each size with its line height and shows the `.govbb-text-*`
+utility classes that apply them.
 
-- **Type**: `--govbb-font-sans` (the Figtree stack) plus a size ramp from
-  `--govbb-font-size-display` down to `--govbb-font-size-caption-sm`, with
-  matching line-height tokens. See [Typography](/styles/typography/).
-- **Spacing**: a scale from `--govbb-space-xxs` (4px) to `--govbb-space-xl`
-  (128px). See [Spacing](/styles/spacing/).
-- **Radius and borders**: `--govbb-radius` (4px) for rounded corners and
-  `--govbb-border-width-form` (2px) for form-control borders, plus
-  `--govbb-opacity-disabled` and `--govbb-shadow-form-hover` for form states.
+```token-table
+tokens: pick --govbb-font-sans
+label: Font stack token
+```
+
+```token-table
+tokens: prefix --govbb-font-size-
+kind: size
+label: Font size tokens
+```
+
+## Spacing tokens
+
+A single rem-based scale, from `xxs` to `xl`. See [Spacing](/styles/spacing/)
+for how to apply it.
+
+```token-table
+tokens: prefix --govbb-space-
+kind: space
+label: Spacing tokens
+```
+
+## Radius and form tokens
+
+Rounded corners, form-control borders and form states.
+
+```token-table
+tokens: pick --govbb-radius
+kind: radius
+label: Radius token
+```
+
+```token-table
+tokens: pick --govbb-border-width-form --govbb-opacity-disabled --govbb-shadow-form-hover
+label: Form state tokens
+```

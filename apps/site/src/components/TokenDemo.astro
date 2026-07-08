@@ -1,0 +1,339 @@
+---
+/*
+ * TokenDemo — the real button, annotated with the tokens that build it, plus
+ * a live "change it once" control. The anatomy renders in an isolated iframe
+ * with the real package CSS; the callouts are anchored to the button's box
+ * edges (not hand-tuned page pixels), so they stay attached if the button's
+ * size changes. Picking a swatch rewrites the --govbb-teal-00 primitive on
+ * the iframe root: the button's fill, the fill callout's hex, and the other
+ * components below all follow.
+ *
+ * Every value shown comes from the token parser, so the annotations can't
+ * drift from the shipped stylesheet.
+ */
+import libraryCss from '@govtech-bb/frontend/css?raw';
+import { pick, remToPx } from '../lib/tokens';
+
+const [shipped, radius, fontBody, spaceS, spaceXm] = pick(
+  '--govbb-teal-00',
+  '--govbb-radius',
+  '--govbb-font-size-body',
+  '--govbb-space-s',
+  '--govbb-space-xm',
+);
+
+// Demo alternates: dark 00/100-tier shades that keep AA contrast on white,
+// pulled from the real ramp so the demo never shows an invented colour.
+const options = [
+  { label: 'Teal', note: 'shipped', value: shipped.resolved },
+  ...pick('--govbb-blue-100', '--govbb-green-00', '--govbb-pink-00').map(
+    (t) => ({ label: t.name.replace('--govbb-', ''), note: '', value: t.resolved }),
+  ),
+];
+
+const anatomyStyles = `
+  html { color-scheme: light; background: #fff; }
+  body {
+    margin: 0;
+    box-sizing: border-box;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    align-items: center;
+    font-family: var(--govbb-font-sans, system-ui, sans-serif);
+    background: #fff;
+    overflow: hidden;
+  }
+  .govbb-button, .govbb-checkbox, .govbb-link {
+    transition: background-color 200ms ease, border-color 200ms ease,
+      color 200ms ease;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .govbb-button, .govbb-checkbox, .govbb-link { transition: none; }
+  }
+
+  /* Anatomy: callout chips anchored to the button's box edges. Coordinates
+     are relative to the button wrapper, so they follow the box, not the
+     page. */
+  .anatomy {
+    position: relative;
+    margin: 76px 110px;
+  }
+  .chip {
+    position: absolute;
+    width: max-content;
+    max-width: 220px;
+    padding: 6px 10px;
+    background: #fff;
+    border: 1px solid #e0e4e9;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgb(0 0 0 / 0.06);
+    font-size: 12px;
+    line-height: 1.35;
+  }
+  .chip__title { font-weight: 700; }
+  .chip code { font-family: ui-monospace, monospace; font-size: 11px; }
+  .chip__sub { color: #595959; font-size: 11px; }
+  .line {
+    position: absolute;
+    width: 1px;
+    height: 26px;
+    background: #595959;
+  }
+  .line::after {
+    content: '';
+    position: absolute;
+    left: -2.5px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #595959;
+  }
+  /* corners: top-left */
+  .line--radius { left: 10px; bottom: 100%; }
+  .line--radius::after { bottom: -3px; }
+  .chip--radius { bottom: calc(100% + 32px); left: 10px; transform: translateX(-70%); }
+  /* label: top, over the text */
+  .line--type { left: 62%; bottom: 100%; }
+  .line--type::after { bottom: -3px; }
+  .chip--type { bottom: calc(100% + 32px); left: 62%; transform: translateX(-12%); }
+  /* padding: bottom-left */
+  .line--padding { left: 14%; top: 100%; }
+  .line--padding::after { top: -3px; }
+  .chip--padding { top: calc(100% + 32px); left: 14%; transform: translateX(-60%); }
+  /* fill: bottom-right */
+  .line--fill { left: 80%; top: 100%; }
+  .line--fill::after { top: -3px; }
+  .chip--fill { top: calc(100% + 32px); left: 80%; transform: translateX(-22%); }
+
+  .follow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 24px;
+    align-items: center;
+    justify-content: center;
+  }
+  .follow__label { font-size: 14px; color: #595959; }
+
+  /* Narrow: the diagram becomes a plain stack, chips in flow, no lines. */
+  @media (max-width: 620px) {
+    body { padding: 20px; gap: 24px; }
+    .anatomy {
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+    .chip { position: static; transform: none; max-width: none; }
+    .line { display: none; }
+  }
+`;
+const anatomyHtml = `
+  <figure class="anatomy" role="group" aria-label="Button anatomy: the tokens that build it">
+    <button class="govbb-button" type="button">Save and continue</button>
+    <span class="line line--radius" aria-hidden="true"></span>
+    <div class="chip chip--radius">
+      <div class="chip__title">Corners</div>
+      <code>--govbb-radius</code>
+      <div class="chip__sub">${radius.resolved}</div>
+    </div>
+    <span class="line line--type" aria-hidden="true"></span>
+    <div class="chip chip--type">
+      <div class="chip__title">Label</div>
+      <code>--govbb-font-size-body</code>
+      <div class="chip__sub">${fontBody.resolved} (${remToPx(fontBody.resolved)})</div>
+    </div>
+    <span class="line line--padding" aria-hidden="true"></span>
+    <div class="chip chip--padding">
+      <div class="chip__title">Padding</div>
+      <code>--govbb-space-s --govbb-space-xm</code>
+      <div class="chip__sub">${remToPx(spaceS.resolved)} ${remToPx(spaceXm.resolved)}</div>
+    </div>
+    <span class="line line--fill" aria-hidden="true"></span>
+    <div class="chip chip--fill">
+      <div class="chip__title">Fill</div>
+      <code>--govbb-color-interactive</code>
+      <div class="chip__sub">&#8627; <code>--govbb-teal-00</code> <span data-anatomy-hex>${shipped.resolved}</span></div>
+    </div>
+  </figure>
+  <div class="follow">
+    <span class="follow__label">Every component on the same tokens follows:</span>
+    <div class="govbb-checkbox-item">
+      <input class="govbb-checkbox" id="demo-email" type="checkbox" checked />
+      <label class="govbb-checkbox-item__label" for="demo-email">Email me updates</label>
+    </div>
+    <a class="govbb-link" href="#" onclick="return false">Renew a driver's licence</a>
+  </div>
+`;
+const srcdoc = `<!doctype html><html lang="en"><head><meta charset="utf-8"><style>${libraryCss}\n${anatomyStyles}</style></head><body>${anatomyHtml}</body></html>`;
+---
+
+<div class="token-demo" data-token-demo>
+  <div class="token-demo__stage">
+    <iframe title="Button anatomy and live token demo" srcdoc={srcdoc} loading="lazy" data-demo-frame
+    ></iframe>
+  </div>
+
+  <div class="token-demo__controls">
+    <span class="token-demo__label" id="token-demo-label">
+      Set <code>--govbb-teal-00</code> to
+    </span>
+    <div
+      role="group"
+      aria-labelledby="token-demo-label"
+      class="token-demo__options"
+    >
+      {
+        options.map((option, i) => (
+          <button
+            class="token-demo__option"
+            type="button"
+            aria-pressed={i === 0 ? 'true' : 'false'}
+            data-demo-value={option.value}
+          >
+            <span
+              class="token-demo__chip"
+              style={`background:${option.value}`}
+              aria-hidden="true"
+            />
+            <span class="token-demo__option-name">
+              {option.label}
+              {option.note && (
+                <span class="token-demo__option-note">{option.note}</span>
+              )}
+            </span>
+          </button>
+        ))
+      }
+    </div>
+    <span class="token-demo__note">Demo only: nothing ships.</span>
+  </div>
+</div>
+
+<style>
+  .token-demo {
+    margin-block: var(--govbb-space-4) var(--govbb-space-6);
+    border: 1px solid var(--govbb-color-border);
+    border-radius: var(--govbb-radius-lg);
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgb(0 0 0 / 0.05);
+  }
+  .token-demo__stage iframe {
+    display: block;
+    width: 100%;
+    /* initial guess; the script fits it to the stage content once loaded */
+    height: 420px;
+    border: 0;
+  }
+
+  /* Control bar: tinted strip under the stage. */
+  .token-demo__controls {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--govbb-space-2) var(--govbb-space-3);
+    padding: var(--govbb-space-3) var(--govbb-space-4);
+    background: var(--govbb-color-panel);
+    border-top: 1px solid var(--govbb-color-border);
+  }
+  .token-demo__label {
+    font-size: 0.9375rem;
+    font-weight: 600;
+  }
+  .token-demo__label code {
+    font-size: 0.875em;
+    font-weight: 400;
+    background: var(--govbb-color-white);
+    border: 1px solid var(--govbb-color-border);
+    border-radius: var(--govbb-radius);
+    padding: 0.1em 0.35em;
+  }
+  .token-demo__options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--govbb-space-2);
+  }
+  .token-demo__option {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--govbb-space-2);
+    font: inherit;
+    font-size: 0.875rem;
+    line-height: 1.2;
+    padding: 8px 14px 8px 10px;
+    background: var(--govbb-color-white);
+    border: 1px solid var(--govbb-color-border);
+    border-radius: 999px;
+    cursor: pointer;
+    transition:
+      border-color 150ms ease,
+      box-shadow 150ms ease;
+  }
+  .token-demo__option:hover {
+    border-color: var(--govbb-color-text-muted);
+  }
+  .token-demo__option[aria-pressed='true'] {
+    border-color: var(--govbb-color-text);
+    box-shadow: inset 0 0 0 1px var(--govbb-color-text);
+    font-weight: 600;
+  }
+  .token-demo__option-name {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .token-demo__option-note {
+    font-size: 0.6875rem;
+    font-weight: 400;
+    color: var(--govbb-color-text-muted);
+  }
+  .token-demo__chip {
+    display: block;
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 50%;
+    box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.15);
+    flex: none;
+  }
+  .token-demo__note {
+    margin-left: auto;
+    font-size: 0.75rem;
+    color: var(--govbb-color-text-muted);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .token-demo__option {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-token-demo]').forEach((demo) => {
+    const frame = demo.querySelector<HTMLIFrameElement>('[data-demo-frame]');
+    const buttons = demo.querySelectorAll<HTMLButtonElement>('[data-demo-value]');
+
+    // Fit the iframe to the anatomy's rendered height (it stacks on narrow
+    // screens), and refit when the viewport changes.
+    const fit = () => {
+      const body = frame?.contentDocument?.body;
+      if (body && frame) frame.style.height = `${body.scrollHeight}px`;
+    };
+    frame?.addEventListener('load', fit);
+    if (frame?.contentDocument?.readyState === 'complete') fit();
+    window.addEventListener('resize', fit);
+    buttons.forEach((button) => {
+      button.addEventListener('click', () => {
+        const value = button.dataset.demoValue ?? '';
+        const doc = frame?.contentDocument;
+        doc?.documentElement.style.setProperty('--govbb-teal-00', value);
+        const hex = doc?.querySelector('[data-anatomy-hex]');
+        if (hex) hex.textContent = value;
+        buttons.forEach((b) =>
+          b.setAttribute('aria-pressed', String(b === button)),
+        );
+      });
+    });
+  });
+</script>

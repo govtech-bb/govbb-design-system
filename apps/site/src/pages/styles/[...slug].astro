@@ -2,8 +2,12 @@
 import { getCollection, render } from 'astro:content';
 import ArticleLayout from '../../layouts/ArticleLayout.astro';
 import Example from '../../components/Example.astro';
+import TokenDemo from '../../components/TokenDemo.astro';
+import TokenTable from '../../components/TokenTable.astro';
 import { getStylesSidebar } from '../../data/nav';
 import { buildExampleBlocks } from '../../lib/example-blocks';
+import { buildTokenBlocks } from '../../lib/token-blocks';
+import { select, withAliasNotes } from '../../lib/tokens';
 
 export async function getStaticPaths() {
   const entries = await getCollection('styles');
@@ -21,9 +25,14 @@ const onThisPage = headings
   .map((h) => ({ label: h.text, href: `#${h.slug}` }));
 
 // Pages that opt in via `examples: true` get their ```html fences rendered as
-// live previews; the rest (whose fences are page-level scaffolds) render as
-// plain code blocks.
-const blocks = entry.data.examples ? buildExampleBlocks(entry) : null;
+// live previews; pages with ```token-table fences get generated token tables
+// (see lib/token-blocks.ts); the rest render their fences as plain code.
+const tokenBlocks =
+  entry.body?.includes('```token-table') || entry.body?.includes('```token-demo')
+    ? buildTokenBlocks(entry)
+    : null;
+const blocks =
+  !tokenBlocks && entry.data.examples ? buildExampleBlocks(entry) : null;
 ---
 
 <ArticleLayout
@@ -38,7 +47,30 @@ const blocks = entry.data.examples ? buildExampleBlocks(entry) : null;
 >
   <div class="govbb-prose govbb-prose--article">
     {
-      blocks ? (
+      tokenBlocks ? (
+        tokenBlocks.map((block) =>
+          block.demo ? (
+            <TokenDemo />
+          ) : block.table ? (
+            <TokenTable
+              tokens={
+                block.table.notes === 'aliased-by'
+                  ? withAliasNotes(select(block.table.tokens))
+                  : select(block.table.tokens)
+              }
+              kind={block.table.kind}
+              contrast={block.table.contrast}
+              aliases={block.table.aliases}
+              notesHeader={
+                block.table.notes === 'aliased-by' ? 'Aliased by' : undefined
+              }
+              label={block.table.label ?? 'Design tokens'}
+            />
+          ) : (
+            <Fragment set:html={block.prose} />
+          ),
+        )
+      ) : blocks ? (
         blocks.map((block) =>
           block.example ? (
             <Example

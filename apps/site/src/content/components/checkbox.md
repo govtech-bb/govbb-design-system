@@ -3,6 +3,7 @@ title: Checkbox
 description: Use checkboxes to let users select one or more options from a list.
 lede: Checkboxes let users select any number of options from a list, including none.
 group: Form elements
+css: checkbox-radio
 ---
 
 ## Preview

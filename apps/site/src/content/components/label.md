@@ -3,6 +3,7 @@ title: Label
 description: Use the label component to name the field a form control sits above.
 lede: Names the field it sits above. Every form control needs one.
 group: Form elements
+css: form
 ---
 
 ## Preview

@@ -32,6 +32,10 @@ const components = defineCollection({
       'Content',
       'Feedback',
     ]),
+    /** Frontend-package component directory whose CSS drives the "Tokens
+        used" section, when it differs from the page id (e.g. checkbox and
+        radio both live in checkbox-radio). */
+    css: z.string().optional(),
   }),
 });
 
