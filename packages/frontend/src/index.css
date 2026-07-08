@@ -24,6 +24,7 @@
 @import url('./components/number-input/number-input.css') layer(components);
 @import url('./components/official-banner/official-banner.css')
 layer(components);
+@import url('./components/payment/payment.css') layer(components);
 @import url('./components/search/search.css') layer(components);
 @import url('./components/select/select.css') layer(components);
 @import url('./components/show-hide/show-hide.css') layer(components);

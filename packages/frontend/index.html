@@ -624,6 +624,82 @@
     </section>
 
     <section>
+      <h2>Payment</h2>
+      <div class="govbb-payment" style="width: 100%">
+        <div class="govbb-payment__heading">
+          <h2 class="govbb-payment__title">Complete your payment</h2>
+          <p>
+            Please review and complete your payment to finalize your submission
+          </p>
+        </div>
+        <dl class="govbb-payment__items">
+          <div class="govbb-payment__row">
+            <dt class="govbb-payment__key">Service:</dt>
+            <dd class="govbb-payment__value">Application Fee</dd>
+          </div>
+          <div class="govbb-payment__row">
+            <dt class="govbb-payment__key">Unit price:</dt>
+            <dd class="govbb-payment__value">$10</dd>
+          </div>
+          <div class="govbb-payment__row">
+            <dt class="govbb-payment__key">Quantity:</dt>
+            <dd class="govbb-payment__value">2</dd>
+          </div>
+          <div class="govbb-payment__row">
+            <dt class="govbb-payment__key">Amount:</dt>
+            <dd class="govbb-payment__value">$20</dd>
+          </div>
+        </dl>
+        <button class="govbb-button" type="button">Continue to payment</button>
+        <p class="govbb-payment__note">
+          You will be redirected to EZ Pay to securely complete your payment.
+        </p>
+      </div>
+      <div class="govbb-payment govbb-payment--success" style="width: 100%">
+        <div class="govbb-payment__heading">
+          <h2 class="govbb-payment__title">Your payment was successful</h2>
+          <p>
+            Your payment has been received. We've sent a confirmation email to
+            the address you provided.
+          </p>
+        </div>
+        <dl class="govbb-payment__items">
+          <div class="govbb-payment__row">
+            <dt class="govbb-payment__key">Service:</dt>
+            <dd class="govbb-payment__value">Application Fee</dd>
+          </div>
+          <div class="govbb-payment__row">
+            <dt class="govbb-payment__key">Amount:</dt>
+            <dd class="govbb-payment__value">$20</dd>
+          </div>
+          <div class="govbb-payment__row">
+            <dt class="govbb-payment__key">Reference number:</dt>
+            <dd class="govbb-payment__value">UIGWB248U42</dd>
+          </div>
+          <div class="govbb-payment__row">
+            <dt class="govbb-payment__key">Date:</dt>
+            <dd class="govbb-payment__value">12/12/2026</dd>
+          </div>
+        </dl>
+      </div>
+      <div class="govbb-payment govbb-payment--failed" style="width: 100%">
+        <div class="govbb-payment__heading">
+          <h2 class="govbb-payment__title">
+            Unfortunately, your payment was unsuccessful
+          </h2>
+          <p>Your payment could not be processed. You have not been charged.</p>
+        </div>
+        <p>
+          Try paying again. If the problem continues, check with your bank or
+          try a different payment method.
+        </p>
+        <button class="govbb-button govbb-button--secondary" type="button">
+          Try again
+        </button>
+      </div>
+    </section>
+
+    <section>
       <h2>Summary list</h2>
       <dl class="govbb-summary-list" style="width: 100%">
         <div class="govbb-summary-list__row">

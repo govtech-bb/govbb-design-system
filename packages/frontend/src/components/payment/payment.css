@@ -1,0 +1,86 @@
+/* Payment — block walking a user through paying a fee: a heading closed off
+   by a rule, key/value rows (a <dl>), then a button and a note. The --success
+   and --failed modifiers restyle the whole block as the payment outcome, per
+   the Figma comps. */
+
+.govbb-payment {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--govbb-space-xm);
+  padding: var(--govbb-space-xm);
+  font-size: var(--govbb-font-size-body);
+  line-height: var(--govbb-line-height-base);
+  color: var(--govbb-color-ink);
+  background: var(--govbb-color-highlight);
+  border-radius: var(--govbb-radius);
+}
+
+.govbb-payment__heading {
+  display: flex;
+  flex-direction: column;
+  gap: var(--govbb-space-xxs);
+  width: 100%;
+  padding-bottom: var(--govbb-space-xm);
+  border-bottom: 1px solid var(--govbb-color-muted);
+}
+
+.govbb-payment__heading > p {
+  margin: 0;
+}
+
+.govbb-payment__title {
+  margin: 0;
+  font-size: var(--govbb-font-size-h2);
+  font-weight: 700;
+  line-height: var(--govbb-line-height-h2);
+}
+
+.govbb-payment__items {
+  display: flex;
+  flex-direction: column;
+  gap: var(--govbb-space-s);
+  width: 100%;
+  margin: 0;
+}
+
+.govbb-payment__row {
+  display: flex;
+  gap: var(--govbb-space-s);
+  width: 100%;
+}
+
+/* Bold key stretches, pushing the value to the right edge. */
+.govbb-payment__key {
+  flex: 1;
+  font-weight: 700;
+}
+
+.govbb-payment__value {
+  margin: 0;
+}
+
+.govbb-payment__note {
+  margin: 0;
+  font-style: italic;
+  color: var(--govbb-color-muted);
+}
+
+/* Outcomes — white text on green / red, with a lighter rule and note. */
+.govbb-payment--success,
+.govbb-payment--failed {
+  color: var(--govbb-color-surface);
+}
+
+.govbb-payment--success {
+  background: var(--govbb-green-00);
+}
+
+.govbb-payment--failed {
+  background: var(--govbb-red-00);
+}
+
+.govbb-payment--success .govbb-payment__heading,
+.govbb-payment--failed .govbb-payment__heading {
+  border-bottom-color: var(--govbb-color-neutral);
+}
