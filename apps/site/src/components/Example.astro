@@ -310,7 +310,24 @@ const codeBlocks = [
 </style>
 
 <script>
+  import { initAll } from '@govtech-bb/frontend';
+
   const examples = document.querySelectorAll<HTMLElement>('[data-example]');
+
+  // Behavioural components (number input, file upload) ship a PE runtime in
+  // the frontend package. The srcdoc iframes are same-origin, so run initAll
+  // against each preview document once it has loaded — previews then behave
+  // like the real components, not just look like them.
+  const enhanceFrame = (frame: HTMLIFrameElement) => {
+    const doc = frame.contentDocument;
+    if (doc) initAll(doc);
+  };
+  document
+    .querySelectorAll<HTMLIFrameElement>('[data-example-frame]')
+    .forEach((frame) => {
+      frame.addEventListener('load', () => enhanceFrame(frame));
+      if (frame.contentDocument?.readyState === 'complete') enhanceFrame(frame);
+    });
 
   // Wire one WAI-ARIA tablist: click + arrow/Home/End move and select.
   const setupTabs = (
