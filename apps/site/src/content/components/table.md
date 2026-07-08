@@ -20,15 +20,15 @@ group: Content
   </thead>
   <tbody>
     <tr>
-      <td class="govbb-table__cell">Passport renewal</td>
+      <th class="govbb-table__header" scope="row">Passport renewal</th>
       <td class="govbb-table__cell">10 working days</td>
     </tr>
     <tr>
-      <td class="govbb-table__cell">First adult passport</td>
+      <th class="govbb-table__header" scope="row">First adult passport</th>
       <td class="govbb-table__cell">15 working days</td>
     </tr>
     <tr>
-      <td class="govbb-table__cell">Child passport</td>
+      <th class="govbb-table__header" scope="row">Child passport</th>
       <td class="govbb-table__cell">10 working days</td>
     </tr>
   </tbody>
@@ -36,10 +36,11 @@ group: Content
 ```
 
 The Table component presents structured data with bold left-aligned headers, a
-heavier rule under the header row and hairline separators between rows. Always
-include a caption describing what the table shows, and use `scope="col"` (or
-`scope="row"`) on header cells so screen readers can associate each cell with
-its header.
+navy rule under the header row and pale-blue hairline separators between rows.
+When the first column identifies each row, mark it up as a row header
+(`<th scope="row">`) — it renders as a highlighted cell, and screen readers
+associate the row's cells with it. Always include a caption describing what
+the table shows, and use `scope="col"` on column headers.
 
 ## When to use this component
 

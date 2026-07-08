@@ -1,6 +1,8 @@
-/* Table — full-width data table: bold left-aligned headers, hairline row
-   separators and a heavier rule under the header row. Numeric columns opt into
-   right-alignment with tabular figures so digits line up. */
+/* Table — full-width data table, per the Figma comps: bold left-aligned
+   headers, a navy rule under the header row, pale-blue hairline separators
+   between rows, and highlighted row-header cells (<th scope="row">) in the
+   first column. Numeric columns opt into right-alignment with tabular figures
+   so digits line up. */
 
 .govbb-table {
   width: 100%;
@@ -17,20 +19,36 @@
 
 .govbb-table__header,
 .govbb-table__cell {
-  padding: var(--govbb-space-xs) var(--govbb-space-s) var(--govbb-space-xs) 0;
+  padding: var(--govbb-space-s) var(--govbb-space-s) var(--govbb-space-s) 0;
   text-align: left;
   vertical-align: top;
-  border-bottom: 1px solid var(--govbb-color-neutral);
+  border-bottom: 1px solid var(--govbb-color-highlight);
 }
 
 .govbb-table__header {
   font-weight: 700;
 }
 
-/* Heavier rule closing off the header row. Keys off the semantic <thead> the
+/* Navy rule closing off the header row. Keys off the semantic <thead> the
    markup already has, so a correct table gets it without an extra class. */
 .govbb-table thead .govbb-table__header {
-  border-bottom-width: var(--govbb-border-width-form);
+  border-bottom-color: var(--govbb-blue-00);
+}
+
+/* Row headers (<th scope="row">) — a highlighted first column, with the
+   surface colour as the separator so the cells read as distinct blocks. */
+.govbb-table tbody .govbb-table__header {
+  padding-inline-start: var(--govbb-space-s);
+  background: var(--govbb-color-highlight);
+  border-bottom-color: var(--govbb-color-surface);
+}
+
+/* When the body has row headers, indent the first column header to line its
+   text up with the highlighted cells below. */
+.govbb-table:has(tbody .govbb-table__header)
+  thead
+  .govbb-table__header:first-child {
+  padding-inline-start: var(--govbb-space-s);
 }
 
 .govbb-table__header--numeric,
