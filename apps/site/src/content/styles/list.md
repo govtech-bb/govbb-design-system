@@ -2,7 +2,7 @@
 title: List
 description: Use lists to make blocks of text easier to read and scan.
 lede: Lists group related items so they are easier to read and scan.
-group: Content
+examples: true
 ---
 
 ## Preview
@@ -37,17 +37,17 @@ import { List } from '@govtech-bb/react';
 </List>;
 ```
 
-The List component is plain by default — no markers and no indent — which suits
+Lists are plain by default — no markers and no indent — which suits
 lists of links or rows, like a list of government services. Bulleted and
 numbered variants opt back into markers with a hanging indent.
 
-## When to use this component
+## When to use lists
 
 Use a list to group related items — such as documents to bring, steps to
 follow, or links to services. The plain list works well for navigation-style
 lists of links; the bulleted and numbered variants suit items within body text.
 
-## When not to use this component
+## When not to use lists
 
 Do not use a list for key/value information such as a user's answers — use a
 summary list instead. Do not use it for data that users need to compare across

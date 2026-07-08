@@ -1,7 +1,9 @@
 ---
 import { getCollection, render } from 'astro:content';
 import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import Example from '../../components/Example.astro';
 import { getStylesSidebar } from '../../data/nav';
+import { buildExampleBlocks } from '../../lib/example-blocks';
 
 export async function getStaticPaths() {
   const entries = await getCollection('styles');
@@ -17,6 +19,11 @@ const { Content, headings } = await render(entry);
 const onThisPage = headings
   .filter((h) => h.depth === 2)
   .map((h) => ({ label: h.text, href: `#${h.slug}` }));
+
+// Pages that opt in via `examples: true` get their ```html fences rendered as
+// live previews; the rest (whose fences are page-level scaffolds) render as
+// plain code blocks.
+const blocks = entry.data.examples ? buildExampleBlocks(entry) : null;
 ---
 
 <ArticleLayout
@@ -30,6 +37,22 @@ const onThisPage = headings
   onThisPage={onThisPage}
 >
   <div class="govbb-prose govbb-prose--article">
-    <Content />
+    {
+      blocks ? (
+        blocks.map((block) =>
+          block.example ? (
+            <Example
+              html={block.example.html}
+              react={block.example.react}
+              title={block.example.title}
+            />
+          ) : (
+            <Fragment set:html={block.prose} />
+          ),
+        )
+      ) : (
+        <Content />
+      )
+    }
   </div>
 </ArticleLayout>

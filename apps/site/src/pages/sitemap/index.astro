@@ -2,8 +2,11 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import {
   primaryNav,
+  secondaryNav,
   getComponentsSidebar,
   getDocumentationSidebar,
+  getPatternsSidebar,
+  getStylesSidebar,
 } from '../../data/nav';
 import { getSortedChangelog } from '../../data/changelog';
 import type { Section } from '../../types';
@@ -11,19 +14,23 @@ import type { Section } from '../../types';
 const changelog = await getSortedChangelog();
 const componentsSidebar = await getComponentsSidebar();
 const documentationSidebar = await getDocumentationSidebar();
+const patternsSidebar = await getPatternsSidebar();
+const stylesSidebar = await getStylesSidebar();
 
 // Sub-links per section, derived from the same nav/content sources the rest of
 // the site uses, so the sitemap stays in step as pages are added.
 const childrenFor = (key: Section, href: string) => {
   let links: { label: string; href: string }[] = [];
-  if (key === 'components') links = componentsSidebar.flatMap((g) => g.links);
+  if (key === 'styles') links = stylesSidebar.flatMap((g) => g.links);
+  else if (key === 'patterns') links = patternsSidebar.flatMap((g) => g.links);
+  else if (key === 'components') links = componentsSidebar.flatMap((g) => g.links);
   else if (key === 'documentation') links = documentationSidebar.flatMap((g) => g.links);
   else if (key === 'changelog')
     links = changelog.map((p) => ({ label: p.data.title, href: `/changelog/${p.id}/` }));
   return links.filter((l) => l.href !== href); // drop the section's own index link
 };
 
-const sections = primaryNav.map((item) => ({
+const sections = [...primaryNav, ...secondaryNav].map((item) => ({
   ...item,
   children: childrenFor(item.key, item.href),
 }));

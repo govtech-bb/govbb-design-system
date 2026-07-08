@@ -1,4 +1,9 @@
 // Top-level site sections. Single source of truth for the nav union — used by
 // the header (active state) and the layouts.
 export type Section =
-  'styles' | 'components' | 'documentation' | 'ai-skills' | 'changelog';
+  | 'styles'
+  | 'patterns'
+  | 'components'
+  | 'documentation'
+  | 'ai-skills'
+  | 'changelog';

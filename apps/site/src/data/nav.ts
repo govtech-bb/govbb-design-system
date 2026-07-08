@@ -10,7 +10,13 @@ export interface PrimaryNavItem {
 }
 export const primaryNav: PrimaryNavItem[] = [
   { key: 'styles', label: 'Styles', href: '/styles/' },
+  { key: 'patterns', label: 'Patterns', href: '/patterns/' },
   { key: 'components', label: 'Components', href: '/components/' },
+];
+
+// Sections kept out of the header (GOV.UK-style: styles / patterns /
+// components only) but still linked from the footer and sitemap.
+export const secondaryNav: PrimaryNavItem[] = [
   { key: 'documentation', label: 'Documentation', href: '/documentation/' },
   { key: 'ai-skills', label: 'AI skills', href: '/ai-skills/' },
   { key: 'changelog', label: 'Changelog', href: '/changelog/' },
@@ -59,6 +65,25 @@ export async function getStylesSidebar(): Promise<SidebarGroup[]> {
         ...entries.map((e) => ({
           label: e.data.title,
           href: `/styles/${e.id}/`,
+        })),
+      ],
+    },
+  ];
+}
+
+// Left-sidebar navigation for the Patterns section, derived from the patterns
+// content collection.
+export async function getPatternsSidebar(): Promise<SidebarGroup[]> {
+  const entries = await getCollection('patterns');
+  entries.sort((a, b) => a.data.title.localeCompare(b.data.title));
+  return [
+    {
+      heading: 'Patterns',
+      links: [
+        { label: 'Overview', href: '/patterns/' },
+        ...entries.map((e) => ({
+          label: e.data.title,
+          href: `/patterns/${e.id}/`,
         })),
       ],
     },

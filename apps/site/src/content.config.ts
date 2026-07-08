@@ -46,9 +46,23 @@ const docs = defineCollection({
 });
 
 // Foundations: layout, colour, typography, spacing — the visual language
-// underneath the components.
+// underneath the components. Pages whose ```html fences are self-contained
+// snippets set `examples: true` to render them as live previews; pages whose
+// fences are page-level scaffolds (like layout) leave them as plain code.
 const styles = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/styles' }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    lede: z.string(),
+    examples: z.boolean().default(false),
+  }),
+});
+
+// Patterns: task-level guidance composing several components, such as taking
+// a payment. Same live-example treatment as component pages.
+const patterns = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/patterns' }),
   schema: z.object({
     title: z.string(),
     description: z.string(),
@@ -56,4 +70,4 @@ const styles = defineCollection({
   }),
 });
 
-export const collections = { changelog, components, docs, styles };
+export const collections = { changelog, components, docs, patterns, styles };

@@ -1,0 +1,35 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CardGrid from '../../components/CardGrid.astro';
+import type { CardData } from '../../components/CardGrid.astro';
+import { getCollection } from 'astro:content';
+
+const modifiers = ['teal', 'pink', 'lavender'] as const;
+const entries = await getCollection('patterns');
+entries.sort((a, b) => a.data.title.localeCompare(b.data.title));
+const cards: CardData[] = entries.map((entry, i) => ({
+  title: entry.data.title,
+  href: `/patterns/${entry.id}/`,
+  modifier: modifiers[i % modifiers.length],
+  desc: entry.data.description,
+  link: `View ${entry.data.title.toLowerCase()}`,
+}));
+---
+
+<BaseLayout
+  title="Patterns"
+  section="patterns"
+  description="Best-practice ways to handle common tasks in government services, composed from the components."
+>
+  <section class="govbb-width-container govbb-page-section">
+    <div class="govbb-page-header">
+      <h1 class="govbb-page-title">Patterns</h1>
+      <p class="govbb-page-subtitle">
+        Best-practice ways to handle common tasks in government services,
+        composed from the components.
+      </p>
+    </div>
+
+    <CardGrid cards={cards} />
+  </section>
+</BaseLayout>

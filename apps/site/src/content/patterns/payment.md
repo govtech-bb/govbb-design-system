@@ -1,8 +1,7 @@
 ---
 title: Payment
-description: Use the payment component to walk users through paying a fee and show the outcome.
+description: Use the payment pattern to walk users through paying a fee and show the outcome.
 lede: Walks users through paying a fee, and reports whether it worked.
-group: Actions
 ---
 
 ## Preview
@@ -38,19 +37,19 @@ group: Actions
 </div>
 ```
 
-The Payment component summarises a fee before the user pays it — the service,
+The Payment pattern summarises a fee before the user pays it — the service,
 unit price, quantity and total — with a button that takes them to the payment
 provider, and a note telling them where they are being sent. The itemised
 rows are a description list (`<dl>`), so screen readers announce each label
 with its value.
 
-## When to use this component
+## When to use this pattern
 
 Use the payment component at the payment step of a service, once the user has
 reviewed their application and the fee is fixed. Keep the note honest about
 what happens next — name the payment provider the user will be redirected to.
 
-## When not to use this component
+## When not to use this pattern
 
 Do not use it to list fees the user is not about to pay — use a table instead.
 Do not use the success or failed variants for anything other than the outcome
