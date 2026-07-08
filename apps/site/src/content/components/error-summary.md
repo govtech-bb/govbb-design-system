@@ -19,7 +19,7 @@ group: Feedback
   <ul class="govbb-error-summary__list">
     <li>
       <a class="govbb-error-summary__link" href="#email"
-        >Enter a valid email address</a
+        >Enter an email address in the correct format, like name@example.com</a
       >
     </li>
     <li>
@@ -39,7 +39,11 @@ import { ErrorSummary } from '@govtech-bb/react';
 
 <ErrorSummary
   errors={[
-    { href: '#email', label: 'Enter a valid email address' },
+    {
+      href: '#email',
+      label:
+        'Enter an email address in the correct format, like name@example.com',
+    },
     { href: '#parish', label: 'Select a parish' },
     { href: '#terms', label: 'Accept the terms and conditions' },
   ]}
@@ -53,16 +57,16 @@ individual error messages.
 
 ## When to use this component
 
-Use an error summary whenever a form submission fails validation and there is
-more than one field to fix. Place it at the top of the page, above the form,
-so it is the first thing a user encounters when the page reloads.
+Use an error summary whenever a form submission fails validation, even when
+only one field has failed. Place it at the top of the page, above the form,
+so it is the first thing a user encounters when the page reloads. Always pair
+it with an error message next to each failed field.
 
 ## When not to use this component
 
-Do not use an error summary when only a single field has failed — show the
-error message next to that field instead. Do not use it for general page
-notices or success messages; it is only for validation errors that block
-submission.
+Do not use an error summary for general page notices or success messages; it
+is only for validation errors that block submission. Do not show one before
+the user has submitted the form.
 
 ## Placement and focus
 
@@ -81,10 +85,10 @@ refer to the same problem.
 
 ## Single error
 
-Only show a summary when there is more than one field to fix. When a single
-field fails validation, put the error message next to that input rather than
-showing a summary — but if a summary is already on the page, it can still list
-the one error.
+Show the summary even when only one field has failed. Keeping the behaviour
+the same on every failed submission means keyboard focus always lands in the
+same place and users learn one pattern, not two. The field itself still gets
+its own error message.
 
 ```html title="Error summary with a single error"
 <div
