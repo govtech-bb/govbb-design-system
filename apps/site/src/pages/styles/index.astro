@@ -6,7 +6,10 @@ import { getCollection } from 'astro:content';
 
 const modifiers = ['teal', 'pink', 'lavender'] as const;
 const entries = await getCollection('styles');
-entries.sort((a, b) => a.data.title.localeCompare(b.data.title));
+entries.sort(
+  (a, b) =>
+    a.data.order - b.data.order || a.data.title.localeCompare(b.data.title),
+);
 const cards: CardData[] = entries.map((entry, i) => ({
   title: entry.data.title,
   href: `/styles/${entry.id}/`,

@@ -1,6 +1,7 @@
 ---
 title: Layout
 description: How to structure a page with the width container, main wrapper and grid.
+order: 3
 lede: Structure pages with the width container, main wrapper and column grid.
 ---
 

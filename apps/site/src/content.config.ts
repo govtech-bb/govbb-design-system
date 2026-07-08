@@ -56,6 +56,8 @@ const styles = defineCollection({
     description: z.string(),
     lede: z.string(),
     examples: z.boolean().default(false),
+    /** Display order in the sidebar and overview cards. */
+    order: z.number().default(99),
   }),
 });
 

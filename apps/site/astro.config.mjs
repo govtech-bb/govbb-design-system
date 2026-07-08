@@ -11,7 +11,8 @@ export default defineConfig({
   integrations: [pagefind()],
   redirects: {
     '/documentation/layout': '/styles/layout',
-    '/components/list': '/styles/list',
+    '/components/list': '/styles/typography',
+    '/styles/list': '/styles/typography',
     '/components/payment': '/patterns/payment',
   },
 });

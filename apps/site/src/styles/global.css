@@ -249,7 +249,13 @@ img:not([class]) {
 .govbb-cardgrid {
   display: grid;
   gap: var(--govbb-space-4);
-  grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+
+  /* Responsive, but never more than 3 per row: each column is at least a
+     third of the row (minus gaps), so wide screens cap at 3. */
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(max(17rem, calc((100% - 2 * var(--govbb-space-4)) / 3)), 1fr)
+  );
   list-style: none;
   padding: 0;
   margin: 0;

@@ -56,7 +56,10 @@ export async function getComponentsSidebar(): Promise<SidebarGroup[]> {
 // content collection.
 export async function getStylesSidebar(): Promise<SidebarGroup[]> {
   const entries = await getCollection('styles');
-  entries.sort((a, b) => a.data.title.localeCompare(b.data.title));
+  entries.sort(
+    (a, b) =>
+      a.data.order - b.data.order || a.data.title.localeCompare(b.data.title),
+  );
   return [
     {
       heading: 'Styles',
