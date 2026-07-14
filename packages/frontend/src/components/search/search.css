@@ -62,10 +62,22 @@
 
 .govbb-search__button:hover {
   background: color-mix(in oklab, var(--govbb-color-interactive), white 15%);
-  box-shadow: inset 0 0 0 4px rgb(255 255 255 / 10%);
+  box-shadow: inset 0 0 0 4px var(--govbb-overlay-light-10);
 }
 
 .govbb-search__button:active {
   background: color-mix(in oklab, var(--govbb-color-interactive), black 18%);
-  box-shadow: inset 0 0 0 3px rgb(0 0 0 / 20%);
+  box-shadow: inset 0 0 0 3px var(--govbb-overlay-dark-20);
+}
+
+/* Disabled — same dimming as the rest of the form family. pointer-events:none
+   on the button also suppresses its :hover/:active recolour. */
+.govbb-search__input:disabled,
+.govbb-search__button:disabled {
+  opacity: var(--govbb-opacity-disabled);
+  cursor: not-allowed;
+}
+
+.govbb-search__button:disabled {
+  pointer-events: none;
 }

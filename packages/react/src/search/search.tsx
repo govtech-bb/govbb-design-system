@@ -37,7 +37,12 @@ export const Search = forwardRef<HTMLFormElement, SearchProps>(function Search(
   const autoId = useId();
   const inputId = inputProps?.id ?? autoId;
   return (
-    <form ref={ref} className={search({ borderless, className })} {...props}>
+    <form
+      ref={ref}
+      role="search"
+      className={search({ borderless, className })}
+      {...props}
+    >
       <label className="govbb-visually-hidden" htmlFor={inputId}>
         {label}
       </label>

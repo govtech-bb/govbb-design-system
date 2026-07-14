@@ -8,7 +8,12 @@ group: Navigation
 ## Preview
 
 ```html title="Search"
-<form class="govbb-search" action="/search" style="max-width: 30rem">
+<form
+  role="search"
+  class="govbb-search"
+  action="/search"
+  style="max-width: 30rem"
+>
   <label class="govbb-visually-hidden" for="search-q">Search</label>
   <input
     class="govbb-search__input"
@@ -52,6 +57,7 @@ itself provides the contrast and a border would clash.
 
 ```html title="Borderless search"
 <form
+  role="search"
   class="govbb-search govbb-search--borderless"
   action="/search"
   style="max-width: 30rem"
