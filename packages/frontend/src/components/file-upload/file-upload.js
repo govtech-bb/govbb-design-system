@@ -35,6 +35,8 @@ export class FileUpload {
       remove.type = 'button';
       remove.dataset.index = String(index);
       remove.textContent = this.removeLabel;
+      // distinguish the buttons for screen readers ("Remove passport.pdf")
+      remove.setAttribute('aria-label', `${this.removeLabel} ${file.name}`);
       item.append(name, remove);
       return item;
     });
