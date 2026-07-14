@@ -1,8 +1,6 @@
 ---
 import { Code } from 'astro:components';
-// Inject the real design-system stylesheet into the preview iframe so examples
-// render with the actual component styles (e.g. the real .govbb-button button).
-import libraryCss from '@govtech-bb/frontend/css?raw';
+import libraryCssUrl from '@govtech-bb/frontend/css?url';
 
 /*
  * Example — a live component preview with its source shown in a code panel.
@@ -45,7 +43,7 @@ const previewStyles = `
     background: #fff;
   }
 `;
-const srcdoc = `<!doctype html><html lang="en"><head><meta charset="utf-8"><style>${libraryCss}\n${css}\n${previewStyles}</style></head><body>${html}</body></html>`;
+const srcdoc = `<!doctype html><html lang="en"><head><meta charset="utf-8"><link rel="stylesheet" href="${libraryCssUrl}"><style>${css}\n${previewStyles}</style></head><body>${html}</body></html>`;
 
 // Data-driven source list — only render tabs for sources that exist.
 // React leads when present (the design system's primary consumer).
@@ -184,8 +182,6 @@ const codeBlocks = [
     border-bottom: 2px solid transparent;
     margin-bottom: -1px;
     cursor: pointer;
-    /* The comp uses blue-40 (#99a8cc) here, but that's 2.4:1 on white — fails
-       WCAG AA. Nearest passing muted token instead (7:1). */
     color: var(--govbb-color-text-muted);
     transition:
       color 150ms var(--govbb-example-ease),
@@ -264,10 +260,6 @@ const codeBlocks = [
   .govbb-example__copy:active {
     transform: scale(0.97);
   }
-
-  /* Keyboard focus — borders are stripped, so restore a visible ring.
-     GOV.UK compound ring (yellow bounded by dark) so it clears WCAG 2.4.11
-     on both the white view tabs and the dark code bar. */
   .govbb-example__view-tab:focus-visible,
   .govbb-example__lang-tab:focus-visible,
   .govbb-example__copy:focus-visible {
@@ -314,10 +306,6 @@ const codeBlocks = [
 
   const examples = document.querySelectorAll<HTMLElement>('[data-example]');
 
-  // Behavioural components (number input, file upload) ship a PE runtime in
-  // the frontend package. The srcdoc iframes are same-origin, so run initAll
-  // against each preview document once it has loaded — previews then behave
-  // like the real components, not just look like them.
   const enhanceFrame = (frame: HTMLIFrameElement) => {
     const doc = frame.contentDocument;
     if (doc) initAll(doc);
