@@ -5,6 +5,10 @@
 // (e.g. .govbb-button*).
 import '@govtech-bb/frontend/css';
 import '../styles/global.css';
+// Preload the latin subset so Figtree (font-display: swap) is fetched before
+// the CSS parses — avoids a guaranteed FOUT on cold loads. Vite resolves this
+// to the same hashed URL the bundled @font-face points at.
+import figtreeLatinUrl from '@govtech-bb/frontend/assets/fonts/figtree-latin.woff2?url';
 import GovBanner from '../components/GovBanner.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
@@ -26,6 +30,13 @@ const fullTitle = `${title} - GovBB Design System`;
     <title>{fullTitle}</title>
     {description && <meta name="description" content={description} />}
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link
+      rel="preload"
+      href={figtreeLatinUrl}
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
   </head>
   <body class="govbb-page">
     <a class="govbb-skip-link" href="#main-content">Skip to main content</a>
