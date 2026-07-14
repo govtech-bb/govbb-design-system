@@ -40,9 +40,13 @@
 
 .govbb-footer__divider {
   margin-block: 0;
-  margin-inline: calc(var(--govbb-space-s) * -1);
+
+  /* Full bleed: mirror the container's fluid gutter, not just its 16px
+     minimum, so the rule reaches the viewport edge at every width. */
+  margin-inline: calc(var(--govbb-page-gutter) * -1);
   border: 0;
-  border-top: 4px solid rgb(0 0 0 / 25%);
+  border-top: 4px solid
+    color-mix(in srgb, var(--govbb-color-ink) 25%, transparent);
 }
 
 .govbb-footer__end {

@@ -19,15 +19,21 @@
    at the desktop frame, interpolated linearly by the clamp (9.85vw − 1.31rem
    passes through both anchor points). At the cap that leaves the comp's
    1256px of content (border-box, so the max includes the gutters). Wrap page
-   content in <div class="govbb-width-container">. */
-.govbb-width-container {
-  max-inline-size: 1512px;
-  margin-inline: auto;
-  padding-inline: clamp(
+   content in <div class="govbb-width-container">. The gutter is a custom
+   property so full-bleed elements inside the container (e.g. the footer
+   divider) can mirror it with a negative margin. */
+:root {
+  --govbb-page-gutter: clamp(
     var(--govbb-space-s),
     9.85vw - 1.31rem,
     var(--govbb-space-xl)
   );
+}
+
+.govbb-width-container {
+  max-inline-size: 1512px;
+  margin-inline: auto;
+  padding-inline: var(--govbb-page-gutter);
 }
 
 /* Vertical breathing room for the <main> landmark. */
