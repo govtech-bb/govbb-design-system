@@ -25,6 +25,12 @@ That's it — `pnpm install` also installs the git hooks (via Lefthook), so comm
    (Stylelint enforces this).
 4. Open a PR into `main`.
 
+Every component ships CSS in `packages/frontend` and, usually, a thin wrapper
+in `packages/react` (plus a docs page in `apps/site`). The deliberate
+exception: **payment** is documented as a pattern, not a component, and has no
+React wrapper. If you add a component to one package, add (or file an issue
+for) the other two pieces.
+
 ## Commit messages
 
 We use [Conventional Commits](https://www.conventionalcommits.org/). A `commit-msg`
