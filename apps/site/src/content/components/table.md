@@ -35,13 +35,6 @@ group: Content
 </table>
 ```
 
-The Table component presents structured data with bold left-aligned headers, a
-navy rule under the header row and pale-blue hairline separators between rows.
-When the first column identifies each row, mark it up as a row header
-(`<th scope="row">`): it renders as a highlighted cell, and screen readers
-associate the row's cells with it. Always include a caption describing what
-the table shows, and use `scope="col"` on column headers.
-
 ```tsx
 import { Table, TableCell, TableHeader } from '@govtech-bb/react';
 
@@ -60,6 +53,13 @@ import { Table, TableCell, TableHeader } from '@govtech-bb/react';
   </tbody>
 </Table>;
 ```
+
+The Table component presents structured data with bold left-aligned headers, a
+navy rule under the header row and pale-blue hairline separators between rows.
+When the first column identifies each row, mark it up as a row header
+(`<th scope="row">`): it renders as a highlighted cell, and screen readers
+associate the row's cells with it. Always include a caption describing what
+the table shows, and use `scope="col"` on column headers.
 
 ## When to use this component
 

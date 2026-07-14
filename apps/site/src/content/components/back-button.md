@@ -11,17 +11,17 @@ group: Navigation
 <a class="govbb-link govbb-back-button" href="#">Back</a>
 ```
 
-The back button is a link with the brand's swept arrow that takes users back to
-the previous page. It composes with the link component: use both classes,
-`govbb-link govbb-back-button`, so the arrow follows the link's colour on
-hover, active and focus. Point `href` at the previous page in the journey so
-the link works without JavaScript.
-
 ```tsx
 import { BackButton } from '@govtech-bb/react';
 
 <BackButton href="/previous-page" />;
 ```
+
+The back button is a link with the brand's swept arrow that takes users back to
+the previous page. It composes with the link component: use both classes,
+`govbb-link govbb-back-button`, so the arrow follows the link's colour on
+hover, active and focus. Point `href` at the previous page in the journey so
+the link works without JavaScript.
 
 ## When to use this component
 
