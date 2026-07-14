@@ -56,6 +56,27 @@ a set of links. Use a list instead. Do not use a table purely for visual
 layout. If you are showing a single set of key/value pairs, such as a user's
 answers, use the summary list component instead.
 
+## Wide tables
+
+A table with many columns can be wider than a phone screen. Wrap it in a
+`govbb-table-container` so the table scrolls sideways inside the wrapper
+instead of forcing the whole page to scroll. Give the wrapper `tabindex="0"`,
+`role="region"` and an `aria-label` so keyboard users can focus it and scroll,
+and screen readers announce what it contains.
+
+```html title="Table that scrolls on small screens"
+<div
+  class="govbb-table-container"
+  tabindex="0"
+  role="region"
+  aria-label="Passport processing times"
+>
+  <table class="govbb-table">
+    <!-- caption, thead, tbody as above -->
+  </table>
+</div>
+```
+
 ## Numeric columns
 
 Add the `--numeric` modifier to a column's header and cells to right-align the

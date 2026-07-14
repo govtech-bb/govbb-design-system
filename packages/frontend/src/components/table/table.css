@@ -4,6 +4,15 @@
    first column. Numeric columns opt into right-alignment with tabular figures
    so digits line up. */
 
+/* Wide tables scroll inside this wrapper instead of forcing the page
+   sideways on narrow viewports:
+   <div class="govbb-table-container" tabindex="0" role="region"
+        aria-label="…"> — focusable so keyboard users can scroll it. */
+.govbb-table-container {
+  width: 100%;
+  overflow-x: auto;
+}
+
 .govbb-table {
   width: 100%;
   border-collapse: collapse;
