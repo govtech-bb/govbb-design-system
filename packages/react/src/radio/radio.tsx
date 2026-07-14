@@ -20,12 +20,22 @@ export interface RadioProps extends InputHTMLAttributes<HTMLInputElement> {
 
 /** Ref goes to the <input>, not the wrapping item div. */
 export const Radio = forwardRef<HTMLInputElement, RadioProps>(function Radio(
-  { label, hint, conditional, id, className, ...props },
+  {
+    label,
+    hint,
+    conditional,
+    id,
+    className,
+    'aria-describedby': ariaDescribedBy,
+    ...props
+  },
   ref,
 ) {
   const autoId = useId();
   const inputId = id ?? autoId;
   const hintId = hint != null ? `${inputId}-hint` : undefined;
+  const conditionalId =
+    conditional != null ? `${inputId}-conditional` : undefined;
   return (
     <>
       <div className="govbb-radio-item">
@@ -34,7 +44,15 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(function Radio(
           className={cx('govbb-radio', className)}
           id={inputId}
           type="radio"
-          aria-describedby={hintId}
+          aria-describedby={cx(hintId, ariaDescribedBy) || undefined}
+          aria-controls={conditionalId}
+          // The reveal itself is pure CSS (:has), so expanded state can only
+          // be reported when the consumer controls `checked`.
+          aria-expanded={
+            conditionalId != null && props.checked != null
+              ? props.checked
+              : undefined
+          }
           {...props}
         />
         <label className="govbb-radio-item__label" htmlFor={inputId}>
@@ -47,7 +65,9 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(function Radio(
         )}
       </div>
       {conditional != null && (
-        <div className="govbb-radio-item__conditional">{conditional}</div>
+        <div className="govbb-radio-item__conditional" id={conditionalId}>
+          {conditional}
+        </div>
       )}
     </>
   );
