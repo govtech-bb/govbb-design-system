@@ -79,6 +79,13 @@ export const FileUpload = forwardRef<HTMLInputElement, FileUploadProps>(
                   <button
                     className="govbb-button govbb-button--text govbb-button--negative"
                     type="button"
+                    // Matches the PE runtime: name each button after its file
+                    // so "Remove" buttons are distinguishable to AT.
+                    aria-label={
+                      typeof removeLabel === 'string'
+                        ? `${removeLabel} ${name}`
+                        : undefined
+                    }
                     onClick={onRemove}
                   >
                     {removeLabel}

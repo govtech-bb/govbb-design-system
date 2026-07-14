@@ -14,7 +14,7 @@ describe('FileUpload', () => {
       />,
     );
     expect(screen.getByText('proof.pdf')).toBeDefined();
-    fireEvent.click(screen.getByRole('button', { name: 'Remove' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Remove proof.pdf' }));
     expect(onRemove).toHaveBeenCalledOnce();
   });
 
