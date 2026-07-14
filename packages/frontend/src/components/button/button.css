@@ -38,12 +38,12 @@
   /* inset shadow = inner border, no layout shift, follows the radius */
   &:hover {
     background: color-mix(in oklab, var(--govbb-color-interactive), white 15%);
-    box-shadow: inset 0 0 0 4px rgb(255 255 255 / 10%);
+    box-shadow: inset 0 0 0 4px var(--govbb-overlay-light-10);
   }
 
   &:active {
     background: color-mix(in oklab, var(--govbb-color-interactive), black 18%);
-    box-shadow: inset 0 0 0 3px rgb(0 0 0 / 20%);
+    box-shadow: inset 0 0 0 3px var(--govbb-overlay-dark-20);
   }
 
   /* outline (not box-shadow) to avoid edge artifacts; offset leaves a gap */
@@ -61,12 +61,12 @@
   /* already light, so hover only adds the overlay */
   &:hover {
     background: var(--govbb-color-neutral);
-    box-shadow: inset 0 0 0 4px rgb(0 0 0 / 5%);
+    box-shadow: inset 0 0 0 4px var(--govbb-overlay-dark-5);
   }
 
   &:active {
     background: color-mix(in oklab, var(--govbb-color-neutral), black 18%);
-    box-shadow: inset 0 0 0 3px rgb(0 0 0 / 10%);
+    box-shadow: inset 0 0 0 3px var(--govbb-overlay-dark-10);
   }
 }
 
@@ -86,7 +86,7 @@
     background: var(--govbb-color-tertiary);
     box-shadow:
       inset 0 0 0 2px var(--govbb-color-tertiary),
-      inset 0 0 0 3px rgb(0 0 0 / 10%);
+      inset 0 0 0 3px var(--govbb-overlay-dark-10);
   }
 
   /* ring meets the outline, no gap */
@@ -124,12 +124,12 @@
 
   &:hover {
     background: color-mix(in oklab, var(--govbb-color-error), white 15%);
-    box-shadow: inset 0 0 0 4px rgb(255 255 255 / 10%);
+    box-shadow: inset 0 0 0 4px var(--govbb-overlay-light-10);
   }
 
   &:active {
     background: color-mix(in oklab, var(--govbb-color-error), black 18%);
-    box-shadow: inset 0 0 0 3px rgb(0 0 0 / 20%);
+    box-shadow: inset 0 0 0 3px var(--govbb-overlay-dark-20);
   }
 
   &:focus-visible {
@@ -177,12 +177,12 @@
 
   &:hover {
     background: var(--govbb-color-surface);
-    box-shadow: inset 0 0 0 4px rgb(0 0 0 / 5%);
+    box-shadow: inset 0 0 0 4px var(--govbb-overlay-dark-5);
   }
 
   &:active {
     background: color-mix(in oklab, var(--govbb-color-surface), black 10%);
-    box-shadow: inset 0 0 0 3px rgb(0 0 0 / 10%);
+    box-shadow: inset 0 0 0 3px var(--govbb-overlay-dark-10);
   }
 
   &.govbb-button--tertiary {
@@ -193,7 +193,7 @@
     &:hover,
     &:active {
       color: var(--govbb-color-surface);
-      background: rgb(255 255 255 / 10%);
+      background: var(--govbb-overlay-light-10);
       box-shadow: inset 0 0 0 2px var(--govbb-color-surface);
     }
   }

@@ -60,7 +60,7 @@
 
 /* The same top/left inset shadow as other fields, stopping at the chevron. */
 .govbb-select:hover {
-  --govbb-select-hover: rgb(0 0 0 / 10%);
+  --govbb-select-hover: var(--govbb-overlay-dark-10);
 }
 
 /* Keyboard focus ring: shared rule in focus.css. */
