@@ -32,7 +32,7 @@ export const ErrorSummary = forwardRef<HTMLDivElement, ErrorSummaryProps>(
         <ul className="govbb-error-summary__list">
           {errors.map(({ href, label }) => (
             <li key={href}>
-              <a className="govbb-error-summary__link" href={href}>
+              <a className="govbb-link govbb-error-summary__link" href={href}>
                 {label}
               </a>
             </li>

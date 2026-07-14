@@ -18,15 +18,17 @@ group: Feedback
   </h2>
   <ul class="govbb-error-summary__list">
     <li>
-      <a class="govbb-error-summary__link" href="#email"
+      <a class="govbb-link govbb-error-summary__link" href="#email"
         >Enter an email address in the correct format, like name@example.com</a
       >
     </li>
     <li>
-      <a class="govbb-error-summary__link" href="#parish">Select a parish</a>
+      <a class="govbb-link govbb-error-summary__link" href="#parish"
+        >Select a parish</a
+      >
     </li>
     <li>
-      <a class="govbb-error-summary__link" href="#terms"
+      <a class="govbb-link govbb-error-summary__link" href="#terms"
         >Accept the terms and conditions</a
       >
     </li>
@@ -101,7 +103,7 @@ its own error message.
   </h2>
   <ul class="govbb-error-summary__list">
     <li>
-      <a class="govbb-error-summary__link" href="#full-name"
+      <a class="govbb-link govbb-error-summary__link" href="#full-name"
         >Enter your full name</a
       >
     </li>

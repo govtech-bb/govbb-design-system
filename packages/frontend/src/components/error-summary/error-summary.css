@@ -24,26 +24,12 @@
   list-style: none;
 }
 
-.govbb-error-summary__link {
+.govbb-link.govbb-error-summary__link {
   font-size: var(--govbb-font-size-body);
   line-height: var(--govbb-line-height-base);
   color: var(--govbb-color-error);
-  text-decoration: underline;
-  text-underline-offset: 2px;
 }
 
-.govbb-error-summary__link:hover,
-.govbb-error-summary__link:active,
-.govbb-error-summary__link:focus-visible {
-  color: var(--govbb-color-ink);
-  text-decoration: none;
-}
-
-.govbb-error-summary__link:hover {
+.govbb-link.govbb-error-summary__link:hover {
   background-color: var(--govbb-red-10); /* error, tint */
-}
-
-.govbb-error-summary__link:active,
-.govbb-error-summary__link:focus-visible {
-  background-color: var(--govbb-color-brand-accent);
 }
