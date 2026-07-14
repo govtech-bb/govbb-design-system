@@ -43,7 +43,7 @@
 /* Link colour and underline come from the base link styles; long URLs used as
    labels must not blow the trail open. */
 .govbb-breadcrumbs__link {
-  word-break: break-all;
+  overflow-wrap: anywhere; /* shatters only when a label can't wrap whole */
 }
 
 @media (--mobile) {
