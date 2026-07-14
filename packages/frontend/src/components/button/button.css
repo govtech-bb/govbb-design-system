@@ -26,6 +26,9 @@
     box-shadow 150ms ease,
     color 150ms ease;
 
+  /* pointer-events only blocks the mouse — an [aria-disabled] element is
+     still focusable and Enter/Space still fires. Consumers using
+     aria-disabled (e.g. on link-buttons) must gate the handler themselves. */
   &:is(:disabled, [aria-disabled='true']) {
     opacity: var(--govbb-opacity-disabled);
     cursor: not-allowed;
