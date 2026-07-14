@@ -383,7 +383,10 @@ img:not([class]) {
   gap: var(--govbb-space-6);
   align-items: start;
 }
-@media (max-width: 1100px) {
+/* Breakpoints in rem (like the package's custom media) so they track user
+   font-size preferences. 68.75rem = 1100px, 50rem = 800px (the package's
+   --tablet). */
+@media (max-width: 68.75rem) {
   .govbb-article__main {
     grid-template-columns: minmax(0, 1fr);
   }
@@ -391,9 +394,15 @@ img:not([class]) {
     display: none;
   }
 }
-@media (max-width: 800px) {
+@media (max-width: 50rem) {
   .govbb-article {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* Content first on phones — otherwise the full component nav stacks above
+     the article. DOM order is unchanged (skip link + nav-first tab order). */
+  .govbb-article > .govbb-sidebar {
+    order: 1;
   }
 }
 
@@ -406,7 +415,7 @@ img:not([class]) {
 /* Single column: a sticky sidebar rides down the page over the content
    (the grid container is its sticky range), so pin it back into the flow.
    Must come after the sticky rule — same specificity, cascade decides. */
-@media (max-width: 800px) {
+@media (max-width: 50rem) {
   .govbb-sidebar {
     position: static;
   }
