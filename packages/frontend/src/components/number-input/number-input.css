@@ -21,10 +21,6 @@
   box-shadow: var(--govbb-shadow-form-hover);
 }
 
-.govbb-number-input-wrapper:focus-within {
-  box-shadow: 0 0 0 4px var(--govbb-color-focus);
-}
-
 .govbb-number-input-wrapper:has([aria-invalid='true']) {
   border-color: var(--govbb-color-error);
 }
