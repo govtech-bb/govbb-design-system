@@ -20,8 +20,14 @@ const registry = {
  */
 export function initAll(root = document) {
   for (const el of root.querySelectorAll('[data-govbb-module]')) {
+    // Guard against double-init (e.g. initAll called on overlapping roots),
+    // which would attach duplicate listeners.
+    if ('govbbInit' in el.dataset) continue;
     const Module = registry[el.dataset.govbbModule];
-    if (Module) new Module(el);
+    if (Module) {
+      el.dataset.govbbInit = '';
+      new Module(el);
+    }
   }
 }
 
