@@ -5,6 +5,12 @@
    __coat image and __copy line. Two columns from the tablet breakpoint. */
 
 .govbb-footer {
+  /* dark band: links inside go white; hover is the teal tint with dark
+     teal text, per the Figma links sheet (the link component reads these) */
+  --govbb-link-color: currentcolor;
+  --govbb-link-hover-color: var(--govbb-teal-ink);
+  --govbb-link-hover-bg: var(--govbb-teal-10);
+
   overflow: hidden;
   color: var(--govbb-color-surface);
   background: var(--govbb-color-brand);
@@ -22,10 +28,8 @@
   padding-block: var(--govbb-space-m);
 }
 
-/* Links stay white on the dark band — override the base link colours. */
-.govbb-footer__link,
-.govbb-footer__link:hover {
-  color: inherit;
+/* Link colours come from the footer's link variables above. */
+.govbb-footer__link {
   font-size: var(--govbb-font-size-body);
   line-height: var(--govbb-line-height-base);
 }

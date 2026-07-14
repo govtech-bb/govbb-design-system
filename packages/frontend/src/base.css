@@ -33,12 +33,13 @@
 }
 
 :where(a) {
-  color: var(--govbb-color-interactive);
+  color: var(--govbb-link-color);
   text-underline-offset: 2px;
 }
 
 :where(a:hover) {
-  color: var(--govbb-color-interactive-active);
+  color: var(--govbb-link-hover-color);
+  background-color: var(--govbb-link-hover-bg);
 }
 
 /* Default keyboard focus ring for anything without its own. Components with
@@ -52,9 +53,12 @@
    error-summary and show/hide. After the ring rule so the outline reset wins
    at equal (zero) specificity. */
 :where(a:focus-visible) {
-  color: var(--govbb-color-ink);
-  background-color: var(--govbb-color-brand-accent);
-  outline: none;
+  color: var(--govbb-link-active-color);
+  background-color: var(--govbb-link-active-bg);
+
+  /* invisible normally; forced-colors mode strips the gold background and
+     recolours this outline, so keyboard focus stays visible (WCAG 2.4.7) */
+  outline: 2px solid transparent;
   text-decoration: none;
 }
 

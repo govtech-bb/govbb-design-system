@@ -360,6 +360,47 @@
     </section>
 
     <section>
+      <h2>Link — same class, surface-aware</h2>
+      <!-- identical markup in each container: the container's custom-property
+           overrides restyle the link, nothing on the link itself changes -->
+      <p style="width: 100%; margin: 0; padding: 1rem; border: 1px dashed #ccc">
+        On white: <a class="govbb-link" href="#">this is a link</a>
+      </p>
+      <!-- a custom dark container declares its surface once (three custom
+           properties); footer / official banner / payment outcomes already
+           declare these in their component CSS -->
+      <p
+        style="
+          --govbb-link-color: currentcolor;
+          --govbb-link-hover-color: var(--govbb-teal-ink);
+          --govbb-link-hover-bg: var(--govbb-teal-10);
+
+          width: 100%;
+          margin: 0;
+          padding: 1rem;
+          color: #fff;
+          background: var(--govbb-color-brand);
+        "
+      >
+        On dark: <a class="govbb-link" href="#">this is a link</a>
+      </p>
+      <p
+        style="
+          --govbb-link-color: var(--govbb-color-ink);
+          --govbb-link-hover-color: var(--govbb-color-ink);
+          --govbb-link-hover-bg: var(--govbb-color-surface);
+
+          width: 100%;
+          margin: 0;
+          padding: 1rem;
+          background: var(--govbb-teal-10);
+        "
+      >
+        On tint: <a class="govbb-link" href="#">this is a link</a>
+      </p>
+    </section>
+
+    <section>
       <h2>List — plain / bullet / number</h2>
       <ul class="govbb-list">
         <li><a class="govbb-link" href="#">Apply for a passport</a></li>
@@ -587,6 +628,9 @@
               >Terms &amp; conditions</a
             >
             <a class="govbb-footer__link" href="/sitemap">Sitemap</a>
+            <!-- plain govbb-link: goes white automatically via the footer's
+                 link-variable overrides -->
+            <a class="govbb-link" href="/contact">Contact (plain govbb-link)</a>
           </nav>
           <hr class="govbb-footer__divider" aria-hidden="true" />
           <div class="govbb-footer__end">
@@ -661,6 +705,7 @@
           <p>
             Your payment has been received. We've sent a confirmation email to
             the address you provided.
+            <a class="govbb-link" href="#">View your receipt</a>
           </p>
         </div>
         <dl class="govbb-payment__items">
@@ -692,6 +737,9 @@
         <p>
           Try paying again. If the problem continues, check with your bank or
           try a different payment method.
+        </p>
+        <p class="govbb-payment__note">
+          No charge was made to your card for this attempt.
         </p>
         <button class="govbb-button govbb-button--secondary" type="button">
           Try again

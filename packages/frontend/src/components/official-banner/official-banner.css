@@ -5,6 +5,12 @@
    holding the message and an optional __link. */
 
 .govbb-official-banner {
+  /* dark band: links inside go white; hover is the teal tint with dark
+     teal text, per the Figma links sheet (the link component reads these) */
+  --govbb-link-color: currentcolor;
+  --govbb-link-hover-color: var(--govbb-teal-ink);
+  --govbb-link-hover-bg: var(--govbb-teal-10);
+
   color: var(--govbb-color-surface);
   background: var(--govbb-color-brand);
 }
@@ -37,12 +43,7 @@
   gap: var(--govbb-space-s);
 }
 
-/* The link stays white on the dark band — override the base link colours. */
-.govbb-official-banner__link,
-.govbb-official-banner__link:hover {
-  color: inherit;
-}
-
+/* Link colours come from the banner's link variables above. */
 .govbb-official-banner__link:hover {
   text-decoration: none;
 }

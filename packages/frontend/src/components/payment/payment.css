@@ -4,6 +4,12 @@
    the Figma comps. */
 
 .govbb-payment {
+  /* tinted surface: links inside go ink and hover lifts to a white
+     background, per the Figma links sheet */
+  --govbb-link-color: var(--govbb-color-ink);
+  --govbb-link-hover-color: var(--govbb-color-ink);
+  --govbb-link-hover-bg: var(--govbb-color-surface);
+
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -69,6 +75,12 @@
 /* Outcomes — white text on green / red, with a lighter rule and note. */
 .govbb-payment--success,
 .govbb-payment--failed {
+  /* dark surface: links inside go white; hover is the teal tint with dark
+     teal text, per the Figma links sheet (the link component reads these) */
+  --govbb-link-color: currentcolor;
+  --govbb-link-hover-color: var(--govbb-teal-ink);
+  --govbb-link-hover-bg: var(--govbb-teal-10);
+
   color: var(--govbb-color-surface);
 }
 
@@ -83,4 +95,11 @@
 .govbb-payment--success .govbb-payment__heading,
 .govbb-payment--failed .govbb-payment__heading {
   border-bottom-color: var(--govbb-color-neutral);
+}
+
+/* The muted grey note is unreadable on the outcome colours (~1:1) — use the
+   same lighter neutral as the rule. */
+.govbb-payment--success .govbb-payment__note,
+.govbb-payment--failed .govbb-payment__note {
+  color: var(--govbb-color-neutral);
 }

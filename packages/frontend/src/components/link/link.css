@@ -4,23 +4,32 @@
    outline, matching the error-summary and show/hide links. */
 
 .govbb-link {
-  color: var(--govbb-color-interactive);
+  color: var(--govbb-link-color);
   cursor: pointer;
   outline: none;
   text-decoration: underline;
   text-underline-offset: 2px;
 }
 
+/* Visited links keep the surface's default link colour (links sheet) —
+   without this the browser's purple leaks through. */
+.govbb-link:visited {
+  color: var(--govbb-link-color);
+}
+
 .govbb-link:hover {
-  color: var(--govbb-color-ink);
-  background-color: var(--govbb-teal-10);
+  color: var(--govbb-link-hover-color);
+  background-color: var(--govbb-link-hover-bg);
   text-decoration: none;
 }
 
 .govbb-link:active,
 .govbb-link:focus-visible {
-  color: var(--govbb-color-ink);
-  background-color: var(--govbb-color-brand-accent);
+  color: var(--govbb-link-active-color);
+  background-color: var(--govbb-link-active-bg);
+
+  /* renders the ring in forced-colors mode, where the gold bg is stripped */
+  outline: 2px solid transparent;
   text-decoration: none;
 }
 

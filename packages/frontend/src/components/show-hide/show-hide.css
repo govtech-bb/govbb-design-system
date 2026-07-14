@@ -54,6 +54,9 @@
 .govbb-show-hide__summary:active,
 .govbb-show-hide__summary:focus-visible {
   background: var(--govbb-color-brand-accent);
+
+  /* renders the ring in forced-colors mode, where the gold bg is stripped */
+  outline: 2px solid transparent;
 }
 
 .govbb-show-hide__content {

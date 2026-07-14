@@ -9,6 +9,7 @@
   --govbb-grey-00: #e0e4e9;
   --govbb-mid-grey-00: #595959;
 
+  --govbb-teal-ink: #083a3d; /* hover text on dark surfaces (links sheet) */
   --govbb-teal-00: #0e5f64;
   --govbb-teal-10: #eaf9f9;
   --govbb-teal-40: #ace6e9;
@@ -61,6 +62,18 @@
   --govbb-color-neutral: var(--govbb-grey-00); /* secondary fill, dividers */
   --govbb-color-highlight: var(--govbb-blue-10); /* selected surfaces */
   --govbb-color-tertiary: var(--govbb-green-00); /* tertiary action */
+
+  /* ---- Link states ---- */
+
+  /* Links read their colours from these, so a component with a dark or tinted
+     background overrides them once on its container and every link inside
+     adapts (see the Figma links sheet: default/hover vary per surface;
+     focus/active are gold + ink everywhere). */
+  --govbb-link-color: var(--govbb-color-interactive);
+  --govbb-link-hover-color: var(--govbb-color-ink);
+  --govbb-link-hover-bg: var(--govbb-teal-10);
+  --govbb-link-active-color: var(--govbb-color-ink);
+  --govbb-link-active-bg: var(--govbb-color-brand-accent);
 
   --govbb-border-width-form: 2px;
   --govbb-opacity-disabled: 0.4;

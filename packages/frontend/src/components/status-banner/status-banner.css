@@ -5,6 +5,12 @@
    softer corner when nested inside content. */
 
 .govbb-status-banner {
+  /* tinted surface: links inside go ink and hover lifts to a white
+     background, per the Figma links sheet */
+  --govbb-link-color: var(--govbb-color-ink);
+  --govbb-link-hover-color: var(--govbb-color-ink);
+  --govbb-link-hover-bg: var(--govbb-color-surface);
+
   width: 100%;
   padding: var(--govbb-space-s);
   font-size: var(--govbb-font-size-body);
