@@ -23,6 +23,8 @@ export class NumberInput {
     } else {
       input.stepUp();
     }
+    // both events, like a native stepper (and matching the React wrapper)
+    input.dispatchEvent(new Event('input', { bubbles: true }));
     input.dispatchEvent(new Event('change', { bubbles: true }));
   }
 

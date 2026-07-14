@@ -22,8 +22,10 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
       if (dir === 1) el.stepUp();
       else el.stepDown();
       // stepUp/stepDown bypass React's value tracking, so this synthetic input
-      // event is not deduped and onChange fires with the new value.
+      // event is not deduped and onChange fires with the new value. The change
+      // event matches native steppers and the frontend PE runtime.
       el.dispatchEvent(new Event('input', { bubbles: true }));
+      el.dispatchEvent(new Event('change', { bubbles: true }));
     };
     return (
       <div

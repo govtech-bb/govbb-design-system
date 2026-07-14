@@ -19,15 +19,18 @@ function mount() {
 }
 
 describe('number-input module', () => {
-  it('steps up and down and emits change', () => {
+  it('steps up and down and emits input and change', () => {
     const { input, up, down } = mount();
     const onChange = vi.fn();
+    const onInput = vi.fn();
     input.addEventListener('change', onChange);
+    input.addEventListener('input', onInput);
     up.click();
     expect(input.value).toBe('2');
     down.click();
     expect(input.value).toBe('1');
     expect(onChange).toHaveBeenCalledTimes(2);
+    expect(onInput).toHaveBeenCalledTimes(2);
   });
 
   it('clamps at max', () => {
