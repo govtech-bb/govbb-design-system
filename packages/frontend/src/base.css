@@ -63,11 +63,15 @@
 }
 
 /* Collapse every transition (state fades, the show/hide triangle rotation)
-   for users who ask for reduced motion. */
+   for users who ask for reduced motion. Animations are guarded too, so the
+   first component to ship @keyframes is covered automatically. */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
   *::after {
     transition-duration: 0s;
+    animation-duration: 0.01ms;
+    animation-iteration-count: 1;
+    scroll-behavior: auto;
   }
 }
