@@ -19,7 +19,9 @@
   /* Ink & surfaces — from @govtech-bb/frontend */
   --govbb-color-text: var(--govbb-color-ink);
   --govbb-color-text-muted: var(--govbb-color-muted);
-  --govbb-color-placeholder: var(--govbb-blue-40);
+  /* blue-40 fails AA for placeholder text (2.38:1) — same approved deviation
+     as the tabs: use the package's muted grey (7.0:1). */
+  --govbb-color-placeholder: var(--govbb-color-muted);
   --govbb-color-white: var(--govbb-white-00);
   --govbb-color-bg: var(--govbb-white-00);
   --govbb-color-panel: var(
@@ -33,15 +35,18 @@
   --govbb-color-link-hover: var(--govbb-color-teal-dark);
   --govbb-color-focus-site: #ffdd00; /* site chrome keeps the GOV.UK focus yellow */
 
-  /* Decorative card fills — no package equivalents (site-specific) */
-  --govbb-card-pink: #ffd4f0;
-  --govbb-card-lavender: #ddc0e9;
+  /* Decorative card fills — aliases of the package ramp */
+  --govbb-card-pink: var(--govbb-pink-40);
+  --govbb-card-lavender: var(--govbb-purple-40);
   --govbb-card-teal: var(--govbb-teal-40);
+  --govbb-card-yellow: var(--govbb-yellow-40);
 
   /* Typography — real Figtree face ships with @govtech-bb/frontend */
   --govbb-font-base: var(--govbb-font-sans);
   --govbb-font-size-base: 1.125rem; /* 18px */
-  --govbb-line-height-base: 1.5;
+
+  /* line-height-base and radius come from @govtech-bb/frontend — do not
+     redefine them here or the site silently shadows the package. */
 
   /* Type scale (site layout — px) */
   --govbb-font-size-hero: 5rem; /* 80px */
@@ -60,7 +65,6 @@
   --govbb-space-8: 4rem;
 
   /* Layout (site layout) */
-  --govbb-radius: 4px;
   --govbb-radius-lg: 8px;
   --govbb-sidebar-width: 280px;
   --govbb-rail-width: 200px;
