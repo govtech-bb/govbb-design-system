@@ -31,7 +31,9 @@
   /* Fixed key column width from the Figma check-answers block. */
   .govbb-summary-list__row {
     display: grid;
-    grid-template-columns: 242px 1fr;
+
+    /* 15.125rem = the comp's 242px, in rem so it tracks text zoom */
+    grid-template-columns: 15.125rem 1fr;
     gap: var(--govbb-space-s);
     align-items: start;
   }

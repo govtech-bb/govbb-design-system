@@ -32,8 +32,11 @@
 .govbb-checkbox::before,
 .govbb-radio::before {
   content: '';
-  width: 19px;
-  height: 19px;
+
+  /* 1.1875rem = the comp's 19px, in rem so the mark keeps pace with its
+     rem-sized control under text zoom */
+  width: 1.1875rem;
+  height: 1.1875rem;
   background: var(--govbb-color-interactive);
   transform: scale(0);
 }

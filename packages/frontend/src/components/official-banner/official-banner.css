@@ -33,7 +33,7 @@
   display: block;
   flex-shrink: 0;
   width: auto;
-  height: 24px;
+  height: 1.5rem; /* 24px, in rem so the crest scales with text zoom */
 }
 
 .govbb-official-banner__text {
