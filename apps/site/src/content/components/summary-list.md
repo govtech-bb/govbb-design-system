@@ -34,8 +34,18 @@ The Summary list component displays pairs of related information (a bold key
 and a plain value), one row per pair. It is built on a description list
 (`<dl>`), so each key is a `<dt>` and each value a `<dd>`. On small screens the
 key stacks above the value; from tablet widths up they sit side by side with
-the keys in a fixed-width column. There is no React wrapper yet, so use the
-HTML directly.
+the keys in a fixed-width column.
+
+```tsx
+import { SummaryList } from '@govtech-bb/react';
+
+<SummaryList
+  rows={[
+    { key: 'Name', value: 'Alex Nurse' },
+    { key: 'Date of birth', value: '14 March 1990' },
+  ]}
+/>;
+```
 
 ## When to use this component
 

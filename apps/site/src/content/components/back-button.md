@@ -15,8 +15,13 @@ The back button is a link with the brand's swept arrow that takes users back to
 the previous page. It composes with the link component: use both classes,
 `govbb-link govbb-back-button`, so the arrow follows the link's colour on
 hover, active and focus. Point `href` at the previous page in the journey so
-the link works without JavaScript. There is no React wrapper yet, so use the
-HTML directly.
+the link works without JavaScript.
+
+```tsx
+import { BackButton } from '@govtech-bb/react';
+
+<BackButton href="/previous-page" />;
+```
 
 ## When to use this component
 

@@ -1,3 +1,5 @@
+export { BackButton } from './back-button/back-button';
+export type { BackButtonProps } from './back-button/back-button';
 export { Breadcrumbs } from './breadcrumbs/breadcrumbs';
 export type { BreadcrumbsProps } from './breadcrumbs/breadcrumbs';
 export { Button } from './button/button';
@@ -42,3 +44,14 @@ export { ShowHide } from './show-hide/show-hide';
 export type { ShowHideProps } from './show-hide/show-hide';
 export { StatusBanner } from './status-banner/status-banner';
 export type { StatusBannerProps } from './status-banner/status-banner';
+export { SummaryList } from './summary-list/summary-list';
+export type {
+  SummaryListProps,
+  SummaryListRow,
+} from './summary-list/summary-list';
+export { Table, TableCell, TableHeader } from './table/table';
+export type {
+  TableCellProps,
+  TableHeaderProps,
+  TableProps,
+} from './table/table';

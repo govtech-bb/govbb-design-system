@@ -40,8 +40,26 @@ navy rule under the header row and pale-blue hairline separators between rows.
 When the first column identifies each row, mark it up as a row header
 (`<th scope="row">`): it renders as a highlighted cell, and screen readers
 associate the row's cells with it. Always include a caption describing what
-the table shows, and use `scope="col"` on column headers. There is no React
-wrapper yet, so use the HTML directly.
+the table shows, and use `scope="col"` on column headers.
+
+```tsx
+import { Table, TableCell, TableHeader } from '@govtech-bb/react';
+
+<Table caption="Passport processing times">
+  <thead>
+    <tr>
+      <TableHeader scope="col">Service</TableHeader>
+      <TableHeader scope="col">Processing time</TableHeader>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <TableHeader scope="row">Passport renewal</TableHeader>
+      <TableCell>10 working days</TableCell>
+    </tr>
+  </tbody>
+</Table>;
+```
 
 ## When to use this component
 
