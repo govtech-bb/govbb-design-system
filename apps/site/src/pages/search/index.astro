@@ -58,7 +58,7 @@ import SearchBar from '../../components/SearchBar.astro';
     color: var(--govbb-color-text-muted);
   }
   .govbb-result__excerpt :global(mark) {
-    background: var(--govbb-card-yellow, #fce8a6);
+    background: var(--govbb-card-yellow);
     color: inherit;
   }
 </style>
@@ -99,15 +99,23 @@ import SearchBar from '../../components/SearchBar.astro';
         }
         status.textContent = `${results.length} result${results.length === 1 ? '' : 's'} for “${query}”.`;
 
-        list.innerHTML = results
-          .map(
-            (d: any) => `
-            <li>
-              <a class="govbb-result__title" href="${d.url}">${d.meta?.title ?? d.url}</a>
-              <p class="govbb-result__excerpt">${d.excerpt}</p>
-            </li>`,
-          )
-          .join('');
+        // Title/url via textContent (never interpolated as HTML); the excerpt
+        // is pagefind-generated markup (<mark> highlights only), so it may be
+        // set as innerHTML.
+        list.replaceChildren(
+          ...results.map((d: any) => {
+            const li = document.createElement('li');
+            const a = document.createElement('a');
+            a.className = 'govbb-result__title';
+            a.href = d.url;
+            a.textContent = d.meta?.title ?? d.url;
+            const p = document.createElement('p');
+            p.className = 'govbb-result__excerpt';
+            p.innerHTML = d.excerpt;
+            li.append(a, p);
+            return li;
+          }),
+        );
       } catch (e) {
         status.textContent = 'Search error: ' + ((e as Error)?.message ?? e);
       }
