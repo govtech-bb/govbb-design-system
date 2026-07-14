@@ -41,11 +41,21 @@
   color: var(--govbb-color-interactive-active);
 }
 
-/* Default keyboard focus ring for anything without its own (links, summaries,
-   etc.). Components with bespoke rings override via the components layer. */
+/* Default keyboard focus ring for anything without its own. Components with
+   bespoke rings override via the components layer. */
 :where(:focus-visible) {
   outline: 4px solid var(--govbb-color-focus);
   outline-offset: 2px;
+}
+
+/* Links focus with the gold highlight, not the ring — matches .govbb-link,
+   error-summary and show/hide. After the ring rule so the outline reset wins
+   at equal (zero) specificity. */
+:where(a:focus-visible) {
+  color: var(--govbb-color-ink);
+  background-color: var(--govbb-color-brand-accent);
+  outline: none;
+  text-decoration: none;
 }
 
 /* Collapse every transition (state fades, the show/hide triangle rotation)
