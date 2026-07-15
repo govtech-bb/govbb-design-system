@@ -33,9 +33,18 @@ export const DateInput = forwardRef<HTMLFieldSetElement, DateInputProps>(
     const hintId = hint != null ? `${id}-hint` : undefined;
     const errorId = error != null ? `${id}-error` : undefined;
     const parts = [
-      { label: 'Day', partId: `${id}-day`, props: dayProps },
-      { label: 'Month', partId: `${id}-month`, props: monthProps },
-      { label: 'Year', partId: `${id}-year`, props: yearProps, year: true },
+      { label: 'Day', partId: dayProps?.id ?? `${id}-day`, props: dayProps },
+      {
+        label: 'Month',
+        partId: monthProps?.id ?? `${id}-month`,
+        props: monthProps,
+      },
+      {
+        label: 'Year',
+        partId: yearProps?.id ?? `${id}-year`,
+        props: yearProps,
+        year: true,
+      },
     ];
     return (
       <fieldset

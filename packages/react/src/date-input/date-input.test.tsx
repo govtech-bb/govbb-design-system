@@ -22,6 +22,21 @@ describe('DateInput', () => {
     );
     expect(screen.getByLabelText('Month')).toBeDefined();
   });
+
+  it('respects consumer-provided ids on the part inputs', () => {
+    render(
+      <DateInput
+        legend="Start date"
+        dayProps={{ id: 'start-date-day' }}
+        monthProps={{ id: 'start-date-month' }}
+      />,
+    );
+    const day = screen.getByLabelText('Day');
+    expect(day.id).toBe('start-date-day');
+    expect(screen.getByLabelText('Month').id).toBe('start-date-month');
+    // Year gets the auto-generated fallback and stays labelled.
+    expect(screen.getByLabelText('Year').id).not.toBe('');
+  });
 });
 
 it('has no axe violations', async () => {
