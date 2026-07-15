@@ -30,7 +30,7 @@ export const StatusBanner = forwardRef<HTMLDivElement, StatusBannerProps>(
         className={statusBanner({ variant, rounded, className })}
         {...props}
       >
-        <p>{children}</p>
+        {children}
       </div>
     );
   },
