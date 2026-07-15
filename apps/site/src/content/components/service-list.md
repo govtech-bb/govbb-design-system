@@ -10,23 +10,27 @@ group: Navigation
 ```html title="Service list"
 <ul class="govbb-service-list">
   <li class="govbb-service-list__item">
-    <h3 class="govbb-service-list__heading">
-      <a class="govbb-link govbb-service-list__link" href="#">
-        Family, birth and relationships
-      </a>
-    </h3>
-    <p class="govbb-service-list__description">
-      Managing key life events and family responsibilities, from registering a
-      birth to caring for others
-    </p>
+    <div class="govbb-service-list__wrapper">
+      <h3 class="govbb-service-list__heading">
+        <a class="govbb-link govbb-service-list__link" href="#">
+          Family, birth and relationships
+        </a>
+      </h3>
+      <p class="govbb-service-list__description">
+        Managing key life events and family responsibilities, from registering a
+        birth to caring for others
+      </p>
+    </div>
   </li>
   <li class="govbb-service-list__item">
-    <h3 class="govbb-service-list__heading">
-      <a class="govbb-link govbb-service-list__link" href="#">
-        Travel and transport
-      </a>
-    </h3>
-    <p class="govbb-service-list__tag">Information service</p>
+    <div class="govbb-service-list__wrapper">
+      <h3 class="govbb-service-list__heading">
+        <a class="govbb-link govbb-service-list__link" href="#">
+          Travel and transport
+        </a>
+      </h3>
+      <p class="govbb-service-list__tag">Information service</p>
+    </div>
   </li>
 </ul>
 ```

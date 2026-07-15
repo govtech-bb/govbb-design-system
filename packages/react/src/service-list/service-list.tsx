@@ -40,9 +40,9 @@ export interface ServiceListItemProps extends AnchorHTMLAttributes<HTMLAnchorEle
 
 /**
  * One service list entry — a whole-card click target (GOV.UK cards pattern):
- * the heading holds the only link, whose stretched ::after covers the item,
- * so the description stays plain text and the accessible name stays the
- * service name. Anchor attributes (and `className`) land on the link; the
+ * the heading holds the only link, whose stretched ::after covers the padded
+ * __wrapper, so the description stays plain text and the accessible name stays
+ * the service name. Anchor attributes (and `className`) land on the link; the
  * ref does too.
  */
 export const ServiceListItem = forwardRef<
@@ -64,19 +64,21 @@ export const ServiceListItem = forwardRef<
   const Anchor: ElementType = linkComponent;
   return (
     <li className="govbb-service-list__item">
-      <HeadingTag className="govbb-service-list__heading">
-        <Anchor
-          ref={ref}
-          className={cx('govbb-link govbb-service-list__link', className)}
-          {...props}
-        >
-          {children}
-        </Anchor>
-      </HeadingTag>
-      {description != null && (
-        <p className="govbb-service-list__description">{description}</p>
-      )}
-      {tag != null && <p className="govbb-service-list__tag">{tag}</p>}
+      <div className="govbb-service-list__wrapper">
+        <HeadingTag className="govbb-service-list__heading">
+          <Anchor
+            ref={ref}
+            className={cx('govbb-link govbb-service-list__link', className)}
+            {...props}
+          >
+            {children}
+          </Anchor>
+        </HeadingTag>
+        {description != null && (
+          <p className="govbb-service-list__description">{description}</p>
+        )}
+        {tag != null && <p className="govbb-service-list__tag">{tag}</p>}
+      </div>
     </li>
   );
 });
