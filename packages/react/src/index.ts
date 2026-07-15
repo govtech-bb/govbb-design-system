@@ -13,6 +13,8 @@ export type {
   ErrorSummaryProps,
   ErrorSummaryItem,
 } from './error-summary/error-summary';
+export { Feedback } from './feedback/feedback';
+export type { FeedbackProps } from './feedback/feedback';
 export { FileUpload } from './file-upload/file-upload';
 export type { FileUploadProps } from './file-upload/file-upload';
 export { Footer, FooterLink } from './footer/footer';

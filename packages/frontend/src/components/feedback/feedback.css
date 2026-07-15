@@ -1,0 +1,40 @@
+/* Feedback — "Was this helpful?" box inviting feedback on the current page.
+   A gold-bordered tinted block holding a heading, a line of body copy and a
+   link to the feedback route:
+   <aside class="govbb-feedback">
+     <h3 class="govbb-feedback__heading">Was this helpful?</h3>
+     <p>Give us your feedback about this page.</p>
+     <a class="govbb-link" href="/feedback">Help us improve alpha.gov.bb</a>
+   </aside> */
+
+.govbb-feedback {
+  /* tinted surface: links inside go ink and hover lifts to a white
+     background, same as the status banner */
+  --govbb-link-color: var(--govbb-color-ink);
+  --govbb-link-hover-color: var(--govbb-color-ink);
+  --govbb-link-hover-bg: var(--govbb-color-surface);
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--govbb-space-xs);
+  align-items: flex-start;
+  padding: var(--govbb-space-xm) var(--govbb-space-s);
+  overflow-wrap: break-word;
+  font-size: var(--govbb-font-size-body);
+  line-height: var(--govbb-line-height-base);
+  color: var(--govbb-color-ink);
+  background: var(--govbb-yellow-40);
+  border: 4px solid var(--govbb-yellow-100);
+}
+
+.govbb-feedback__heading {
+  margin: 0;
+  font-size: var(--govbb-font-size-h3);
+  font-weight: 700;
+  line-height: var(--govbb-line-height-h3);
+}
+
+/* The flex gap owns the vertical rhythm; strip the base paragraph margin. */
+.govbb-feedback p {
+  margin: 0;
+}
