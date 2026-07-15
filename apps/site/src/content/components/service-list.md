@@ -135,34 +135,9 @@ services. The visual size stays the same at every level; pick the level that
 fits the page outline with `headingLevel` (h2, h3 or h4; the default is h3),
 or by changing the element in HTML.
 
-```tsx
-import { ServiceList, ServiceListItem } from '@govtech-bb/react';
-
-// On a page whose only heading above the list is the h1:
-<ServiceList>
-  <ServiceListItem href="/family" headingLevel="h2">
-    Family, birth and relationships
-  </ServiceListItem>
-</ServiceList>;
-```
-
 ## Client-side routing
 
 In React each item accepts a `linkComponent`, the same adapter pattern as the
 [link](/components/link/) component, so a single-page app can navigate without
 a full page load. Anchor attributes, including analytics data attributes, are
 spread onto the link.
-
-```tsx
-import { ServiceList, ServiceListItem } from '@govtech-bb/react';
-
-<ServiceList>
-  <ServiceListItem
-    href="/family"
-    linkComponent={RouterLink}
-    data-analytics="service-family"
-  >
-    Family, birth and relationships
-  </ServiceListItem>
-</ServiceList>;
-```
