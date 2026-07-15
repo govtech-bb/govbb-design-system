@@ -1,10 +1,16 @@
 ---
 import { getCollection } from 'astro:content';
 import ArticleLayout from '../../layouts/ArticleLayout.astro';
-import { getComponentsSidebar } from '../../data/nav';
+import { getComponentsSidebar, GROUP_ORDER } from '../../data/nav';
 
 const entries = await getCollection('components');
 entries.sort((a, b) => a.data.title.localeCompare(b.data.title));
+
+// Same grouping as the sidebar, so the page and the nav tell one story.
+const groups = GROUP_ORDER.map((heading) => ({
+  heading,
+  entries: entries.filter((e) => e.data.group === heading),
+})).filter((g) => g.entries.length > 0);
 ---
 <ArticleLayout
   title="Components"
@@ -24,16 +30,22 @@ entries.sort((a, b) => a.data.title.localeCompare(b.data.title));
       More components are being migrated into the system. Each example shows its HTML,
       and a React version where a wrapper exists in <code>@govtech-bb/react</code>.
     </p>
-    <h2>Available components</h2>
-    <ul>
-      {
-        entries.map((entry) => (
-          <li>
-            <a href={`/components/${entry.id}/`}>{entry.data.title}</a> -{' '}
-            {entry.data.lede}
-          </li>
-        ))
-      }
-    </ul>
   </div>
+  {
+    groups.map((group) => (
+      <section class="govbb-compgroup">
+        <h2 class="govbb-compgroup__heading">{group.heading}</h2>
+        <ul class="govbb-cardgrid">
+          {group.entries.map((entry) => (
+            <li>
+              <a class="govbb-compcard" href={`/components/${entry.id}/`}>
+                <h3 class="govbb-compcard__title">{entry.data.title}</h3>
+                <p class="govbb-compcard__desc">{entry.data.lede}</p>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))
+  }
 </ArticleLayout>
