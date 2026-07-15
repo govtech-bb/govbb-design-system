@@ -20,7 +20,10 @@ group: Feedback
 import { StatusBanner } from '@govtech-bb/react';
 
 <StatusBanner variant="alpha">
-  This page is in <a href="#">Alpha</a>. Your feedback will help us improve it.
+  <p>
+    This page is in <a href="#">Alpha</a>. Your feedback will help us improve
+    it.
+  </p>
 </StatusBanner>;
 ```
 
@@ -69,13 +72,15 @@ for service disruptions.
 import { StatusBanner } from '@govtech-bb/react';
 
 <StatusBanner variant="beta">
-  This page is in <a href="#">Beta</a>. Your feedback will help us improve it.
+  <p>
+    This page is in <a href="#">Beta</a>. Your feedback will help us improve it.
+  </p>
 </StatusBanner>
 <StatusBanner variant="migrated">
-  This page has moved from an older site. <a href="#">Learn more</a>
+  <p>This page has moved from an older site. <a href="#">Learn more</a></p>
 </StatusBanner>
 <StatusBanner variant="service">
-  Passport appointments are currently disrupted. <a href="#">Check status</a>
+  <p>Passport appointments are currently disrupted. <a href="#">Check status</a></p>
 </StatusBanner>
 ```
 
@@ -97,6 +102,8 @@ header.
 import { StatusBanner } from '@govtech-bb/react';
 
 <StatusBanner variant="migrated" rounded>
-  This page has moved from an older site. <a href="#">Learn more</a>
+  <p>
+    This page has moved from an older site. <a href="#">Learn more</a>
+  </p>
 </StatusBanner>;
 ```
