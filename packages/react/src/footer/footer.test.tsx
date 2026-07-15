@@ -19,7 +19,7 @@ describe('Footer', () => {
       screen.getByRole('navigation', { name: 'Footer navigation' }),
     ).toBeDefined();
     expect(screen.getByRole('link', { name: 'Cookie policy' }).className).toBe(
-      'govbb-footer__link',
+      'govbb-link govbb-footer__link',
     );
     expect(screen.getByText('© 2026 Government of Barbados').className).toBe(
       'govbb-footer__copy',
@@ -36,7 +36,7 @@ describe('Footer', () => {
     );
     const link = screen.getByRole('link', { name: 'Cookie policy' });
     expect(link.getAttribute('data-router')).toBe('true');
-    expect(link.className).toBe('govbb-footer__link');
+    expect(link.className).toBe('govbb-link govbb-footer__link');
   });
 });
 

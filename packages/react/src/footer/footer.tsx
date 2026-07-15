@@ -51,7 +51,7 @@ export const FooterLink = forwardRef<HTMLAnchorElement, FooterLinkProps>(
     return (
       <Anchor
         ref={ref}
-        className={cx('govbb-footer__link', className)}
+        className={cx('govbb-link govbb-footer__link', className)}
         {...props}
       />
     );
