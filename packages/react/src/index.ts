@@ -30,7 +30,7 @@ export type { HeaderProps } from './header/header';
 export { Input, Textarea } from './input/input';
 export type { InputProps, TextareaProps } from './input/input';
 export { Link } from './link/link';
-export type { LinkProps } from './link/link';
+export type { LinkComponent, LinkProps } from './link/link';
 export { List } from './list/list';
 export type { ListProps } from './list/list';
 export { NumberInput } from './number-input/number-input';
@@ -58,3 +58,5 @@ export type {
   TableHeaderProps,
   TableProps,
 } from './table/table';
+export { Heading, Text } from './typography/typography';
+export type { HeadingProps, TextProps } from './typography/typography';
