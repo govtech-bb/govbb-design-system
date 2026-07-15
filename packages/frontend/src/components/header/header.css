@@ -1,7 +1,9 @@
 /* Header — the gold site header holding the gov.bb logo (the link home) and,
-   optionally, a search or sign-out control. Renders on every page, directly
-   below the official banner. Markup: <header class="govbb-header"> wrapping
-   <div class="govbb-width-container govbb-header__inner">. */
+   optionally, a __nav of links and/or a search or sign-out control. Renders on
+   every page, directly below the official banner. Markup:
+   <header class="govbb-header"> wrapping
+   <div class="govbb-width-container govbb-header__inner"> with the logo link
+   first and an optional <nav class="govbb-header__nav"> of links last. */
 
 .govbb-header {
   color: var(--govbb-color-ink);
@@ -10,7 +12,9 @@
 
 .govbb-header__inner {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
+  justify-content: space-between; /* logo left, menu/controls right (Figma) */
   gap: var(--govbb-space-s);
   padding-block: var(--govbb-space-s);
 }
@@ -18,15 +22,51 @@
 .govbb-header__logo {
   display: block;
   width: auto;
-  height: 1.6875rem; /* 27px */
+  height: 1.5rem; /* 24px */
+}
+
+/* Nav links. On phones this is the expanded-menu panel from the Figma header:
+   a full-bleed blue-tint band below the gold bar with stacked bold teal links
+   (no-JS baseline — the collapsing Menu button is a future behavioural
+   component). The negative margins mirror the width-container gutter so the
+   tint spans edge to edge, and the block-end margin swallows the __inner
+   bottom padding so the panel sits flush with the header's bottom edge. */
+.govbb-header__nav {
+  display: flex;
+  flex-basis: 100%;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--govbb-space-s);
+  margin-block-end: calc(-1 * var(--govbb-space-s));
+  margin-inline: calc(-1 * var(--govbb-page-gutter));
+  padding-block: var(--govbb-space-s);
+  padding-inline: var(--govbb-page-gutter);
+  font-size: var(--govbb-font-size-caption);
+  font-weight: 700;
+  background: var(--govbb-blue-10);
 }
 
 @media (--tablet) {
   .govbb-header__inner {
-    padding-block: var(--govbb-space-xm);
+    padding-block: var(--govbb-space-m);
   }
 
   .govbb-header__logo {
     height: 2.1875rem; /* 35px */
+  }
+
+  /* Inline on the gold band: semibold ink links at the right-hand end,
+     matching the Figma menu control treatment. */
+  .govbb-header__nav {
+    --govbb-link-color: var(--govbb-color-ink);
+
+    flex-basis: auto;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--govbb-space-xm);
+    margin: 0;
+    padding: 0;
+    font-weight: 600;
+    background: none;
   }
 }

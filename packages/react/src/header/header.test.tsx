@@ -30,9 +30,27 @@ describe('Header', () => {
     expect(anchor.getAttribute('data-router')).toBe('true');
     expect(anchor.getAttribute('href')).toBe('/home');
   });
+
+  it('renders nav links in a labelled nav landmark', () => {
+    render(
+      <Header logoSrc="/logo.svg" nav={<a href="/services">Services</a>} />,
+    );
+    const nav = screen.getByRole('navigation', { name: 'Menu' });
+    expect(nav.classList.contains('govbb-header__nav')).toBe(true);
+    expect(
+      screen.getByRole('link', { name: 'Services' }).getAttribute('href'),
+    ).toBe('/services');
+  });
+
+  it('omits the nav landmark when no nav is given', () => {
+    render(<Header logoSrc="/logo.svg" />);
+    expect(screen.queryByRole('navigation')).toBeNull();
+  });
 });
 
 it('has no axe violations', async () => {
-  const { container } = render(<Header logoSrc="/logo.svg" />);
+  const { container } = render(
+    <Header logoSrc="/logo.svg" nav={<a href="/services">Services</a>} />,
+  );
   await expectNoAxeViolations(container);
 });
