@@ -1,32 +1,43 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import { getCollection } from 'astro:content';
+import { getPatternsSidebar } from '../../data/nav';
+
+const GROUP_ORDER = ['Ask users for', 'Help users to'] as const;
+const entries = await getCollection('patterns');
+entries.sort((a, b) => a.data.title.localeCompare(b.data.title));
 ---
-<BaseLayout
+<ArticleLayout
   title="Patterns"
   section="patterns"
   description="Best-practice ways to handle common tasks in government services, composed from the components."
+  pageTitle="Patterns"
+  pageSubtitle="Best-practice ways to handle common tasks in government services, composed from the components."
+  sidebarGroups={await getPatternsSidebar()}
+  sidebarLabel="Patterns"
 >
-  <section class="govbb-width-container govbb-page-section">
-    <div class="govbb-page-header">
-      <h1 class="govbb-page-title">Patterns</h1>
-      <p class="govbb-page-subtitle">
-        Best-practice ways to handle common tasks in government services,
-        composed from the components.
-      </p>
-    </div>
-
-    <div class="govbb-prose">
-      <p>
-        Patterns document how to combine components into a proven solution for a
-        whole task, such as asking for an address or confirming a decision. We
-        have not published any yet.
-      </p>
-      <p>
-        In the meantime, start from the
-        <a href="/components/">components</a>. Anything that is a single
-        component, rather than a multi-step flow, lives there — including
-        <a href="/components/payment/">payment</a>.
-      </p>
-    </div>
-  </section>
-</BaseLayout>
+  <div class="govbb-prose">
+    <p>
+      Patterns document how to combine components into a proven solution for a
+      whole task, such as asking for an address or letting people check their
+      answers before submitting.
+    </p>
+    {
+      GROUP_ORDER.map((group) => (
+        <>
+          <h2>{group}&hellip;</h2>
+          <ul>
+            {entries
+              .filter((e) => e.data.group === group)
+              .map((entry) => (
+                <li>
+                  <a href={`/patterns/${entry.id}/`}>{entry.data.title}</a> -{' '}
+                  {entry.data.lede}
+                </li>
+              ))}
+          </ul>
+        </>
+      ))
+    }
+  </div>
+</ArticleLayout>
