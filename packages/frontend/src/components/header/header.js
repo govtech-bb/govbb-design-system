@@ -1,9 +1,9 @@
 /*
- * Header menu toggle. Enhances .govbb-header: reveals the phone-only
+ * Header menu toggle. Enhances .govbb-header at every width: reveals the
  * .govbb-header__toggle button (server-rendered [hidden]) and collapses the
- * __nav panel behind it — the CSS keys the panel's visibility off the
- * toggle's aria-expanded, so this module only flips the attribute. Without
- * JS the toggle stays hidden and the nav panel stays open.
+ * __nav panel behind it, flipping the button's aria-expanded and the nav's
+ * hidden attribute on click. Without JS the toggle stays hidden and the nav
+ * panel stays open.
  */
 export class Header {
   /** @param {HTMLElement} el */
@@ -17,12 +17,14 @@ export class Header {
     this.toggle.setAttribute('aria-controls', this.nav.id);
     this.toggle.setAttribute('aria-expanded', 'false'); // start collapsed
     this.toggle.removeAttribute('hidden');
+    this.nav.hidden = true;
     this.toggle.addEventListener('click', this.onClick);
   }
 
   onClick() {
     const expanded = this.toggle.getAttribute('aria-expanded') === 'true';
     this.toggle.setAttribute('aria-expanded', String(!expanded));
+    this.nav.hidden = expanded;
   }
 
   destroy() {
@@ -31,5 +33,6 @@ export class Header {
     // back to the no-JS baseline: hidden toggle, open panel
     this.toggle.removeAttribute('aria-expanded');
     this.toggle.setAttribute('hidden', '');
+    this.nav.hidden = false;
   }
 }

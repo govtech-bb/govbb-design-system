@@ -41,8 +41,8 @@ export const Header = forwardRef<HTMLElement, HeaderProps>(function Header(
   const navId = useId();
   const [expanded, setExpanded] = useState(false);
   // The Menu toggle is a JS enhancement (same as the frontend header module):
-  // it renders [hidden] so server-rendered pages without JS keep the nav
-  // panel open, and mounting reveals it in the collapsed state.
+  // it renders [hidden] and the nav panel open, so server-rendered pages
+  // without JS keep the open panel; mounting reveals the toggle collapsed.
   const [enhanced, setEnhanced] = useState(false);
   useEffect(() => setEnhanced(true), []);
   return (
@@ -53,27 +53,30 @@ export const Header = forwardRef<HTMLElement, HeaderProps>(function Header(
         </HomeLink>
         {children}
         {nav && (
-          <>
-            <button
-              className="govbb-header__toggle"
-              type="button"
-              hidden={!enhanced}
-              aria-expanded={expanded}
-              aria-controls={navId}
-              onClick={() => setExpanded((open) => !open)}
-            >
-              Menu
-            </button>
-            <nav
-              id={navId}
-              className="govbb-header__nav"
-              aria-label={navAriaLabel}
-            >
-              {nav}
-            </nav>
-          </>
+          <button
+            className="govbb-header__toggle"
+            type="button"
+            hidden={!enhanced}
+            aria-expanded={expanded}
+            aria-controls={navId}
+            onClick={() => setExpanded((open) => !open)}
+          >
+            Menu
+          </button>
         )}
       </div>
+      {nav && (
+        <nav
+          id={navId}
+          className="govbb-header__nav"
+          aria-label={navAriaLabel}
+          hidden={enhanced && !expanded}
+        >
+          <div className="govbb-width-container govbb-header__nav-inner">
+            {nav}
+          </div>
+        </nav>
+      )}
     </header>
   );
 });

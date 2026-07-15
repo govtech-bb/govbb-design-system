@@ -31,10 +31,11 @@ describe('Header', () => {
     expect(anchor.getAttribute('href')).toBe('/home');
   });
 
-  it('renders nav links in a labelled nav landmark', () => {
+  it('renders nav links in a labelled nav landmark once expanded', () => {
     render(
       <Header logoSrc="/logo.svg" nav={<a href="/services">Services</a>} />,
     );
+    fireEvent.click(screen.getByRole('button', { name: 'Menu' }));
     const nav = screen.getByRole('navigation', { name: 'Menu' });
     expect(nav.classList.contains('govbb-header__nav')).toBe(true);
     expect(
@@ -49,26 +50,31 @@ describe('Header', () => {
   });
 
   it('renders the Menu toggle collapsed and wired to the nav', () => {
-    render(
+    const { container } = render(
       <Header logoSrc="/logo.svg" nav={<a href="/services">Services</a>} />,
     );
     const toggle = screen.getByRole('button', { name: 'Menu' });
     // the mount effect has run, so the toggle is revealed (JS enhancement)
+    // and the nav starts collapsed (hidden, hence queried by class)
     expect(toggle.hasAttribute('hidden')).toBe(false);
     expect(toggle.getAttribute('aria-expanded')).toBe('false');
-    const nav = screen.getByRole('navigation', { name: 'Menu' });
+    const nav = container.querySelector('.govbb-header__nav')!;
+    expect(nav.hasAttribute('hidden')).toBe(true);
     expect(toggle.getAttribute('aria-controls')).toBe(nav.id);
   });
 
-  it('flips aria-expanded on each toggle click', () => {
-    render(
+  it('shows and hides the nav on each toggle click', () => {
+    const { container } = render(
       <Header logoSrc="/logo.svg" nav={<a href="/services">Services</a>} />,
     );
     const toggle = screen.getByRole('button', { name: 'Menu' });
+    const nav = container.querySelector('.govbb-header__nav')!;
     fireEvent.click(toggle);
     expect(toggle.getAttribute('aria-expanded')).toBe('true');
+    expect(nav.hasAttribute('hidden')).toBe(false);
     fireEvent.click(toggle);
     expect(toggle.getAttribute('aria-expanded')).toBe('false');
+    expect(nav.hasAttribute('hidden')).toBe(true);
   });
 });
 

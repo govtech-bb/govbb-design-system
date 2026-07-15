@@ -7,10 +7,12 @@ function markup() {
       <div class="govbb-width-container govbb-header__inner">
         <a href="/"><img class="govbb-header__logo" src="/logo.svg" alt="gov.bb" /></a>
         <button class="govbb-header__toggle" type="button" hidden>Menu</button>
-        <nav class="govbb-header__nav" aria-label="Menu">
-          <a href="/services">Services</a>
-        </nav>
       </div>
+      <nav class="govbb-header__nav" aria-label="Menu">
+        <div class="govbb-width-container govbb-header__nav-inner">
+          <a href="/services">Services</a>
+        </div>
+      </nav>
     </header>`;
 }
 
@@ -24,20 +26,23 @@ function mount() {
 }
 
 describe('header module', () => {
-  it('reveals the toggle collapsed and points it at the nav', () => {
+  it('reveals the toggle and collapses the nav behind it', () => {
     const { toggle, nav } = mount();
     expect(toggle.hasAttribute('hidden')).toBe(false);
     expect(toggle.getAttribute('aria-expanded')).toBe('false');
+    expect(nav.hidden).toBe(true);
     expect(nav.id).not.toBe('');
     expect(toggle.getAttribute('aria-controls')).toBe(nav.id);
   });
 
-  it('flips aria-expanded on each click', () => {
-    const { toggle } = mount();
+  it('shows and hides the nav on each click', () => {
+    const { toggle, nav } = mount();
     toggle.click();
     expect(toggle.getAttribute('aria-expanded')).toBe('true');
+    expect(nav.hidden).toBe(false);
     toggle.click();
     expect(toggle.getAttribute('aria-expanded')).toBe('false');
+    expect(nav.hidden).toBe(true);
   });
 
   it('keeps an existing nav id', () => {
@@ -55,10 +60,12 @@ describe('header module', () => {
     document.body.innerHTML = markup();
     const module = new Header(document.querySelector('.govbb-header'));
     const toggle = document.querySelector('.govbb-header__toggle');
+    const nav = document.querySelector('.govbb-header__nav');
     module.destroy();
     expect(toggle.hasAttribute('hidden')).toBe(true);
     expect(toggle.hasAttribute('aria-expanded')).toBe(false);
+    expect(nav.hidden).toBe(false);
     toggle.click();
-    expect(toggle.hasAttribute('aria-expanded')).toBe(false); // listener gone
+    expect(nav.hidden).toBe(false); // listener gone
   });
 });
