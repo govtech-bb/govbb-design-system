@@ -1,4 +1,4 @@
-import { cx } from 'class-variance-authority';
+import { cva, cx, type VariantProps } from 'class-variance-authority';
 import {
   forwardRef,
   type AnchorHTMLAttributes,
@@ -8,18 +8,32 @@ import {
 } from 'react';
 import type { LinkComponent } from '../link/link';
 
-export type ServiceListProps = HTMLAttributes<HTMLUListElement>;
+const serviceList = cva('govbb-service-list', {
+  variants: {
+    variant: {
+      /** Category listing: big bold green names (Figma "Service"). */
+      card: '',
+      /** In-category service links: quiet teal body links (Figma
+          "Signpost block"). */
+      signpost: 'govbb-service-list--signpost',
+    },
+  },
+  defaultVariants: { variant: 'card' },
+});
+
+export interface ServiceListProps
+  extends HTMLAttributes<HTMLUListElement>, VariantProps<typeof serviceList> {}
 
 /**
  * Navigational list of services, categories or topics — use
  * <ServiceListItem /> for each entry.
  */
 export const ServiceList = forwardRef<HTMLUListElement, ServiceListProps>(
-  function ServiceList({ className, ...props }, ref) {
+  function ServiceList({ variant, className, ...props }, ref) {
     return (
       <ul
         ref={ref}
-        className={cx('govbb-service-list', className)}
+        className={serviceList({ variant, className })}
         {...props}
       />
     );

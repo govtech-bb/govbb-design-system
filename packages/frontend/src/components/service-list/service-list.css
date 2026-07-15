@@ -24,7 +24,14 @@
          <p class="govbb-service-list__tag">Information service</p>
        </div>
      </li>
-   </ul> */
+   </ul>
+
+   Two looks share that markup:
+   - default (card): category listings — big bold green names, 2px rule
+     (Figma "Service").
+   - --signpost: the links INSIDE a category — quiet teal body-size regular
+     links (Figma "Signpost block"), 2px rule that thickens to the xxs-token
+     4px from tablet width. */
 
 .govbb-service-list {
   /* service links render in the tertiary green; hover/focus behaviour comes
@@ -93,5 +100,28 @@
   .govbb-service-list__heading {
     font-size: var(--govbb-font-size-body-lg);
     line-height: var(--govbb-line-height-base);
+  }
+}
+
+/* Signpost: in-category service links. Names drop to quiet body-size regular
+   links in the standard teal at every width (these rules out-rank the tablet
+   card upsize on specificity). */
+.govbb-service-list--signpost {
+  --govbb-link-color: var(--govbb-color-interactive);
+}
+
+.govbb-service-list--signpost .govbb-service-list__heading {
+  font-size: var(--govbb-font-size-body);
+  line-height: var(--govbb-line-height-base);
+}
+
+.govbb-service-list--signpost .govbb-service-list__link {
+  font-weight: 400;
+}
+
+/* The desktop signpost rule is the thicker xxs-token divider. */
+@media (--tablet) {
+  .govbb-service-list--signpost .govbb-service-list__item {
+    border-bottom-width: var(--govbb-space-xxs);
   }
 }

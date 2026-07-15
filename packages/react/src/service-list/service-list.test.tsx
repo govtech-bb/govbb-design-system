@@ -108,6 +108,23 @@ describe('ServiceList', () => {
     expect(container.querySelector('p')).toBeNull();
   });
 
+  it('adds the signpost modifier for in-category service links', () => {
+    const { container } = render(
+      <ServiceList variant="signpost">
+        <ServiceListItem href="/register-birth">
+          Register a birth
+        </ServiceListItem>
+      </ServiceList>,
+    );
+    expect(container.firstElementChild!.className).toBe(
+      'govbb-service-list govbb-service-list--signpost',
+    );
+    // Same markup as the card look — one link inside a heading per item.
+    expect(
+      screen.getByRole('heading', { level: 3, name: 'Register a birth' }),
+    ).toBeTruthy();
+  });
+
   it('renders items with a custom link component', () => {
     const Fancy = ({
       href,
@@ -147,6 +164,15 @@ it('has no axe violations', async () => {
         </ServiceListItem>
         <ServiceListItem href="/travel" headingLevel="h2">
           Travel and transport
+        </ServiceListItem>
+      </ServiceList>
+      <ServiceList variant="signpost">
+        <ServiceListItem
+          href="/register-birth"
+          headingLevel="h2"
+          description="What you need to register a birth in Barbados"
+        >
+          Register a birth
         </ServiceListItem>
       </ServiceList>
     </main>,
