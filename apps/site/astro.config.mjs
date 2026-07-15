@@ -17,8 +17,9 @@ export default defineConfig({
   integrations: [pagefind()],
   redirects: {
     '/documentation/layout': '/styles/layout',
-    '/components/list': '/styles/typography/lists',
     '/styles/list': '/styles/typography/lists',
-    '/components/payment': '/patterns/payment',
+    // NB: no /components/list or /components/payment redirects — both are real
+    // component pages (list.md, payment.md). A redirect here outranks the
+    // dynamic [slug] route and would shadow the component page.
   },
 });
