@@ -13,7 +13,7 @@ css: checkbox-radio
   <legend class="govbb-fieldset__legend">
     How would you like to be contacted?
   </legend>
-  <div class="govbb-hint">Select all that apply</div>
+  <span class="govbb-hint">Select all that apply</span>
   <div class="govbb-checkbox-item">
     <input
       class="govbb-checkbox"

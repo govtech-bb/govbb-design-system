@@ -48,14 +48,14 @@ export const DateInput = forwardRef<HTMLFieldSetElement, DateInputProps>(
       >
         <legend className="govbb-fieldset__legend">{legend}</legend>
         {hint != null && (
-          <p className="govbb-hint" id={hintId}>
+          <span className="govbb-hint" id={hintId}>
             {hint}
-          </p>
+          </span>
         )}
         {error != null && (
-          <p className="govbb-error-message" id={errorId} role="alert">
+          <span className="govbb-error-message" id={errorId} role="alert">
             {error}
-          </p>
+          </span>
         )}
         <div className="govbb-date-input">
           {parts.map(({ label, partId, props, year }) => (

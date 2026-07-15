@@ -98,9 +98,9 @@ screen readers announce it alongside the option's label.
       aria-describedby="contact-email-hint"
     />
     <label class="govbb-radio-item__label" for="contact-email">Email</label>
-    <div class="govbb-hint" id="contact-email-hint">
+    <span class="govbb-hint" id="contact-email-hint">
       We'll only use this to send updates about your application.
-    </div>
+    </span>
   </div>
   <div class="govbb-radio-item">
     <input
@@ -112,9 +112,9 @@ screen readers announce it alongside the option's label.
       aria-describedby="contact-phone-hint"
     />
     <label class="govbb-radio-item__label" for="contact-phone">Phone</label>
-    <div class="govbb-hint" id="contact-phone-hint">
+    <span class="govbb-hint" id="contact-phone-hint">
       A government officer may call between 9am and 5pm.
-    </div>
+    </span>
   </div>
   <div class="govbb-radio-item">
     <input

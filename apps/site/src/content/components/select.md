@@ -10,7 +10,7 @@ group: Form elements
 ```html title="Select with hint text"
 <div class="govbb-form-group">
   <label class="govbb-label" for="parish">Parish</label>
-  <p class="govbb-hint" id="parish-hint">Where you currently live</p>
+  <span class="govbb-hint" id="parish-hint">Where you currently live</span>
   <select
     class="govbb-select"
     id="parish"
@@ -102,9 +102,9 @@ Keep error messages specific and actionable, such as "Select a parish".
 ```html title="Select with error"
 <div class="govbb-form-group">
   <label class="govbb-label" for="parish">Parish</label>
-  <p class="govbb-error-message" id="parish-error" role="alert">
+  <span class="govbb-error-message" id="parish-error" role="alert">
     Select a parish
-  </p>
+  </span>
   <select
     class="govbb-select"
     id="parish"

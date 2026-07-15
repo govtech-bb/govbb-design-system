@@ -10,7 +10,7 @@ group: Form elements
 ```html title="Input with hint text"
 <div class="govbb-form-group">
   <label class="govbb-label" for="full-name">Full name</label>
-  <p class="govbb-hint" id="full-name-hint">As it appears on your ID</p>
+  <span class="govbb-hint" id="full-name-hint">As it appears on your ID</span>
   <input
     class="govbb-input"
     id="full-name"
@@ -77,9 +77,9 @@ rather than calling the answer invalid.
 ```html title="Input with error"
 <div class="govbb-form-group">
   <label class="govbb-label" for="email">Email address</label>
-  <p class="govbb-error-message" id="email-error" role="alert">
+  <span class="govbb-error-message" id="email-error" role="alert">
     Enter an email address in the correct format, like name@example.com
-  </p>
+  </span>
   <input
     class="govbb-input"
     id="email"

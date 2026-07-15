@@ -138,7 +138,7 @@
       <h2>Input</h2>
       <div class="govbb-form-group">
         <label class="govbb-label" for="full-name">Full name</label>
-        <p class="govbb-hint" id="fn-hint">As it appears on your ID</p>
+        <span class="govbb-hint" id="fn-hint">As it appears on your ID</span>
         <input
           class="govbb-input"
           id="full-name"
@@ -148,9 +148,9 @@
       </div>
       <div class="govbb-form-group">
         <label class="govbb-label" for="email">Email address</label>
-        <p class="govbb-error-message" id="em-err">
+        <span class="govbb-error-message" id="em-err">
           Enter a valid email address
-        </p>
+        </span>
         <input
           class="govbb-input"
           id="email"
@@ -165,7 +165,9 @@
       <h2>Select — default / error / disabled</h2>
       <div class="govbb-form-group" style="max-width: 22.5rem">
         <label class="govbb-label" for="parish">Parish</label>
-        <p class="govbb-hint" id="parish-hint">Where you currently live</p>
+        <span class="govbb-hint" id="parish-hint"
+          >Where you currently live</span
+        >
         <select class="govbb-select" id="parish" aria-describedby="parish-hint">
           <option value="" disabled selected>Select a parish</option>
           <option value="christ-church">Christ Church</option>
@@ -177,7 +179,9 @@
 
       <div class="govbb-form-group" style="max-width: 22.5rem">
         <label class="govbb-label" for="parish-err">Parish</label>
-        <p class="govbb-error-message" id="parish-err-msg">Select a parish</p>
+        <span class="govbb-error-message" id="parish-err-msg"
+          >Select a parish</span
+        >
         <select
           class="govbb-select"
           id="parish-err"
@@ -206,7 +210,7 @@
           aria-describedby="dob-hint"
         >
           <legend class="govbb-fieldset__legend">Date of birth</legend>
-          <p class="govbb-hint" id="dob-hint">For example, 27 3 1990</p>
+          <span class="govbb-hint" id="dob-hint">For example, 27 3 1990</span>
           <div class="govbb-date-input">
             <div class="govbb-date-input__part">
               <label class="govbb-label" for="dob-day">Day</label>
@@ -244,7 +248,7 @@
       <h2>Number input</h2>
       <div class="govbb-form-group">
         <label class="govbb-label" id="qty-label" for="qty">Quantity</label>
-        <p class="govbb-hint" id="qty-hint">Between 1 and 10</p>
+        <span class="govbb-hint" id="qty-hint">Between 1 and 10</span>
         <div
           class="govbb-number-input-wrapper"
           role="group"
@@ -287,9 +291,9 @@
         <label class="govbb-label" id="poa-label" for="poa"
           >Proof of address</label
         >
-        <p class="govbb-hint" id="poa-hint">
+        <span class="govbb-hint" id="poa-hint">
           This could be a recent utility bill or bank statement
-        </p>
+        </span>
         <div class="govbb-file-upload" data-govbb-module="file-upload">
           <label class="govbb-file-upload__dropzone" for="poa">
             <span class="govbb-file-upload__info">
@@ -435,7 +439,7 @@
       <h2>Textarea</h2>
       <div class="govbb-form-group" style="max-width: 30rem">
         <label class="govbb-label" for="message">Message</label>
-        <p class="govbb-hint" id="message-hint">Up to 500 characters</p>
+        <span class="govbb-hint" id="message-hint">Up to 500 characters</span>
         <textarea
           class="govbb-textarea"
           id="message"

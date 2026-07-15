@@ -33,21 +33,21 @@ export const Label = forwardRef<HTMLLabelElement, LabelProps>(function Label(
   );
 });
 
-export interface HintProps extends HTMLAttributes<HTMLParagraphElement> {}
+export interface HintProps extends HTMLAttributes<HTMLSpanElement> {}
 
-export const Hint = forwardRef<HTMLParagraphElement, HintProps>(function Hint(
+export const Hint = forwardRef<HTMLSpanElement, HintProps>(function Hint(
   { className, ...props },
   ref,
 ) {
-  return <p ref={ref} className={cx('govbb-hint', className)} {...props} />;
+  return <span ref={ref} className={cx('govbb-hint', className)} {...props} />;
 });
 
-export interface ErrorMessageProps extends HTMLAttributes<HTMLParagraphElement> {}
+export interface ErrorMessageProps extends HTMLAttributes<HTMLSpanElement> {}
 
-export const ErrorMessage = forwardRef<HTMLParagraphElement, ErrorMessageProps>(
+export const ErrorMessage = forwardRef<HTMLSpanElement, ErrorMessageProps>(
   function ErrorMessage({ className, ...props }, ref) {
     return (
-      <p
+      <span
         ref={ref}
         className={cx('govbb-error-message', className)}
         {...props}

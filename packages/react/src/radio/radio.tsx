@@ -59,9 +59,9 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(function Radio(
           {label}
         </label>
         {hint != null && (
-          <div className="govbb-hint" id={hintId}>
+          <span className="govbb-hint" id={hintId}>
             {hint}
-          </div>
+          </span>
         )}
       </div>
       {conditional != null && (
