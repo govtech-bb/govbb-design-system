@@ -14,7 +14,7 @@ twice. Import `@govtech-bb/frontend` for the CSS and tokens, or
 
 Every official Government of Barbados service should:
 
-- use the components and patterns in this design system rather than building its own
+- use the components in this design system rather than building their own
 - meet [WCAG 2.2 AA](https://www.w3.org/TR/WCAG22/) accessibility requirements
 - use the GovBB design tokens for colour, typography and spacing
 

@@ -1,7 +1,8 @@
 ---
 title: Payment
-description: Use the payment pattern to walk users through paying a fee and show the outcome.
+description: Use the payment component to walk users through paying a fee and show the outcome.
 lede: Walks users through paying a fee, and reports whether it worked.
+group: Feedback
 ---
 
 ## Preview
@@ -40,19 +41,19 @@ lede: Walks users through paying a fee, and reports whether it worked.
 </div>
 ```
 
-The Payment pattern summarises a fee before the user pays it (the service,
+The Payment component summarises a fee before the user pays it (the service,
 unit price, quantity and total), with a button that takes them to the payment
 provider, and a note telling them where they are being sent. The itemised
 rows are a description list (`<dl>`), so screen readers announce each label
 with its value. There is no React wrapper yet, so use the HTML directly.
 
-## When to use this pattern
+## When to use this component
 
 Use the payment component at the payment step of a service, once the user has
 reviewed their application and the fee is fixed. Keep the note honest about
 what happens next: name the payment provider the user will be redirected to.
 
-## When not to use this pattern
+## When not to use this component
 
 Do not use it to list fees the user is not about to pay. Use a table instead.
 Do not use the success or failed variants for anything other than the outcome

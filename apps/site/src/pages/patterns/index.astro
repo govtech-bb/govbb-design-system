@@ -1,21 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import CardGrid from '../../components/CardGrid.astro';
-import type { CardData } from '../../components/CardGrid.astro';
-import { getCollection } from 'astro:content';
-
-const modifiers = ['teal', 'pink', 'lavender'] as const;
-const entries = await getCollection('patterns');
-entries.sort((a, b) => a.data.title.localeCompare(b.data.title));
-const cards: CardData[] = entries.map((entry, i) => ({
-  title: entry.data.title,
-  href: `/patterns/${entry.id}/`,
-  modifier: modifiers[i % modifiers.length],
-  desc: entry.data.description,
-  link: `View ${entry.data.title.toLowerCase()}`,
-}));
 ---
-
 <BaseLayout
   title="Patterns"
   section="patterns"
@@ -30,6 +15,18 @@ const cards: CardData[] = entries.map((entry, i) => ({
       </p>
     </div>
 
-    <CardGrid cards={cards} />
+    <div class="govbb-prose">
+      <p>
+        Patterns document how to combine components into a proven solution for a
+        whole task, such as asking for an address or confirming a decision. We
+        have not published any yet.
+      </p>
+      <p>
+        In the meantime, start from the
+        <a href="/components/">components</a>. Anything that is a single
+        component, rather than a multi-step flow, lives there — including
+        <a href="/components/payment/">payment</a>.
+      </p>
+    </div>
   </section>
 </BaseLayout>

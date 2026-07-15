@@ -65,15 +65,12 @@ const styles = defineCollection({
   }),
 });
 
-// Patterns: task-level guidance composing several components, such as taking
-// a payment. Same live-example treatment as component pages.
-const patterns = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/patterns' }),
-  schema: z.object({
-    title: z.string(),
-    description: z.string(),
-    lede: z.string(),
-  }),
-});
-
-export const collections = { changelog, components, docs, patterns, styles };
+// Patterns: task-level guidance composing several components. No collection
+// yet — /patterns/ is a placeholder page. When the first pattern md lands,
+// re-add here:
+//   const patterns = defineCollection({
+//     loader: glob({ pattern: '**/*.md', base: './src/content/patterns' }),
+//     schema: z.object({ title: z.string(), description: z.string(), lede: z.string() }),
+//   });
+// then include `patterns` in the export below and restore /patterns/[slug].astro.
+export const collections = { changelog, components, docs, styles };

@@ -5,7 +5,6 @@ import {
   secondaryNav,
   getComponentsSidebar,
   getDocumentationSidebar,
-  getPatternsSidebar,
   getStylesSidebar,
 } from '../../data/nav';
 import { getSortedChangelog } from '../../data/changelog';
@@ -14,7 +13,6 @@ import type { Section } from '../../types';
 const changelog = await getSortedChangelog();
 const componentsSidebar = await getComponentsSidebar();
 const documentationSidebar = await getDocumentationSidebar();
-const patternsSidebar = await getPatternsSidebar();
 const stylesSidebar = await getStylesSidebar();
 
 // Sub-links per section, derived from the same nav/content sources the rest of
@@ -22,7 +20,6 @@ const stylesSidebar = await getStylesSidebar();
 const childrenFor = (key: Section, href: string) => {
   let links: { label: string; href: string }[] = [];
   if (key === 'styles') links = stylesSidebar.flatMap((g) => g.links);
-  else if (key === 'patterns') links = patternsSidebar.flatMap((g) => g.links);
   else if (key === 'components') links = componentsSidebar.flatMap((g) => g.links);
   else if (key === 'documentation') links = documentationSidebar.flatMap((g) => g.links);
   else if (key === 'changelog')
