@@ -3,7 +3,10 @@
    every page, directly below the official banner. Markup:
    <header class="govbb-header"> wrapping
    <div class="govbb-width-container govbb-header__inner"> with the logo link
-   first and an optional <nav class="govbb-header__nav"> of links last. */
+   first, then an optional <button class="govbb-header__toggle" hidden> Menu
+   control immediately before its <nav class="govbb-header__nav"> of links.
+   The header module (data-govbb-module="header") reveals the toggle on phones
+   and collapses the panel behind it. */
 
 .govbb-header {
   color: var(--govbb-color-ink);
@@ -44,6 +47,43 @@
   font-size: var(--govbb-font-size-caption);
   font-weight: 700;
   background: var(--govbb-blue-10);
+}
+
+/* Menu toggle — the phone-only disclosure control for the __nav (the Figma
+   collapsed state: semibold ink "Menu" at the right of the gold band). Hidden
+   in the no-JS baseline, where the nav panel simply stays open; the header
+   module removes [hidden] and drives aria-expanded. Never shown from the
+   tablet breakpoint up, where the nav is an inline row. */
+.govbb-header__toggle {
+  display: none;
+  padding: 0;
+  border: 0;
+  font-family: inherit;
+  font-size: var(--govbb-font-size-caption);
+  font-weight: 600;
+  line-height: var(--govbb-line-height-base);
+  color: var(--govbb-color-ink);
+  cursor: pointer;
+  background: none;
+}
+
+.govbb-header__toggle:focus-visible {
+  outline: 4px solid var(--govbb-color-focus);
+  outline-offset: 2px;
+}
+
+@media (--mobile) {
+  .govbb-header__toggle:not([hidden]) {
+    display: inline-block;
+  }
+
+  /* Collapsed state: a revealed toggle with aria-expanded=false hides the
+     panel. Without JS the toggle keeps [hidden], this never matches, and the
+     panel stays open. */
+  .govbb-header__toggle[aria-expanded='false']:not([hidden])
+    ~ .govbb-header__nav {
+    display: none;
+  }
 }
 
 @media (--tablet) {

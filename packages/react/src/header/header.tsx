@@ -1,5 +1,12 @@
 import { cx } from 'class-variance-authority';
-import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
+import {
+  forwardRef,
+  type HTMLAttributes,
+  type ReactNode,
+  useEffect,
+  useId,
+  useState,
+} from 'react';
 import type { LinkComponent } from '../link/link';
 
 export interface HeaderProps extends HTMLAttributes<HTMLElement> {
@@ -31,6 +38,13 @@ export const Header = forwardRef<HTMLElement, HeaderProps>(function Header(
   },
   ref,
 ) {
+  const navId = useId();
+  const [expanded, setExpanded] = useState(false);
+  // The Menu toggle is a JS enhancement (same as the frontend header module):
+  // it renders [hidden] so server-rendered pages without JS keep the nav
+  // panel open, and mounting reveals it in the collapsed state.
+  const [enhanced, setEnhanced] = useState(false);
+  useEffect(() => setEnhanced(true), []);
   return (
     <header ref={ref} className={cx('govbb-header', className)} {...props}>
       <div className="govbb-width-container govbb-header__inner">
@@ -39,9 +53,25 @@ export const Header = forwardRef<HTMLElement, HeaderProps>(function Header(
         </HomeLink>
         {children}
         {nav && (
-          <nav className="govbb-header__nav" aria-label={navAriaLabel}>
-            {nav}
-          </nav>
+          <>
+            <button
+              className="govbb-header__toggle"
+              type="button"
+              hidden={!enhanced}
+              aria-expanded={expanded}
+              aria-controls={navId}
+              onClick={() => setExpanded((open) => !open)}
+            >
+              Menu
+            </button>
+            <nav
+              id={navId}
+              className="govbb-header__nav"
+              aria-label={navAriaLabel}
+            >
+              {nav}
+            </nav>
+          </>
         )}
       </div>
     </header>
