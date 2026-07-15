@@ -10,6 +10,7 @@ const statusBanner = cva('govbb-status-banner', {
       service: 'govbb-status-banner--service',
     },
     rounded: { true: 'govbb-status-banner--rounded' },
+    fullWidth: { true: 'govbb-status-banner--full-width' },
   },
 });
 
@@ -21,16 +22,24 @@ export interface StatusBannerProps
 
 export const StatusBanner = forwardRef<HTMLDivElement, StatusBannerProps>(
   function StatusBanner(
-    { variant, rounded, className, children, ...props },
+    { variant, rounded, fullWidth, className, children, ...props },
     ref,
   ) {
     return (
       <div
         ref={ref}
-        className={statusBanner({ variant, rounded, className })}
+        className={statusBanner({ variant, rounded, fullWidth, className })}
         {...props}
       >
-        <p>{children}</p>
+        {fullWidth ? (
+          // Page-level shape: full-bleed background, content aligned to the
+          // page column — same structure as the official banner.
+          <div className="govbb-width-container govbb-status-banner__inner">
+            {children}
+          </div>
+        ) : (
+          children
+        )}
       </div>
     );
   },

@@ -11,7 +11,7 @@ group: Form elements
 <div class="govbb-form-group">
   <fieldset class="govbb-fieldset" role="group" aria-describedby="dob-hint">
     <legend class="govbb-fieldset__legend">Date of birth</legend>
-    <p class="govbb-hint" id="dob-hint">For example, 27 3 1990</p>
+    <span class="govbb-hint" id="dob-hint">For example, 27 3 1990</span>
     <div class="govbb-date-input">
       <div class="govbb-date-input__part">
         <label class="govbb-label" for="dob-day">Day</label>
@@ -106,10 +106,10 @@ of it.
     aria-describedby="dob2-hint dob2-error"
   >
     <legend class="govbb-fieldset__legend">Date of birth</legend>
-    <p class="govbb-hint" id="dob2-hint">For example, 27 3 1990</p>
-    <p class="govbb-error-message" id="dob2-error" role="alert">
+    <span class="govbb-hint" id="dob2-hint">For example, 27 3 1990</span>
+    <span class="govbb-error-message" id="dob2-error" role="alert">
       Date of birth must be a real date
-    </p>
+    </span>
     <div class="govbb-date-input">
       <div class="govbb-date-input__part">
         <label class="govbb-label" for="dob2-day">Day</label>

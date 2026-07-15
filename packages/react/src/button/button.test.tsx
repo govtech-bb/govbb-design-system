@@ -2,7 +2,7 @@ import { expectNoAxeViolations } from '../testing/axe';
 import { render, screen } from '@testing-library/react';
 import { createRef } from 'react';
 import { describe, expect, it } from 'vitest';
-import { Button } from './button';
+import { Button, LinkButton } from './button';
 
 describe('Button', () => {
   it('maps variants to BEM classes and defaults type to button', () => {
@@ -25,9 +25,25 @@ describe('Button', () => {
   });
 });
 
+describe('LinkButton', () => {
+  it('is an anchor with button classes and no button role', () => {
+    render(
+      <LinkButton href="/start" variant="secondary">
+        Start now
+      </LinkButton>,
+    );
+    const link = screen.getByRole('link', { name: 'Start now' });
+    expect(link.getAttribute('href')).toBe('/start');
+    expect(link.className).toBe('govbb-button govbb-button--secondary');
+  });
+});
+
 it('has no axe violations', async () => {
   const { container } = render(
-    <Button variant="secondary">Save and continue</Button>,
+    <>
+      <Button variant="secondary">Save and continue</Button>
+      <LinkButton href="/start">Start now</LinkButton>
+    </>,
   );
   await expectNoAxeViolations(container);
 });

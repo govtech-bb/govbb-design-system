@@ -12,3 +12,9 @@ export class FileUpload {
   constructor(el: HTMLElement);
   destroy(): void;
 }
+
+/** Menu toggle for `.govbb-header` (`data-govbb-module="header"`). */
+export class Header {
+  constructor(el: HTMLElement);
+  destroy(): void;
+}

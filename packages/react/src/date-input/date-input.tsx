@@ -33,9 +33,18 @@ export const DateInput = forwardRef<HTMLFieldSetElement, DateInputProps>(
     const hintId = hint != null ? `${id}-hint` : undefined;
     const errorId = error != null ? `${id}-error` : undefined;
     const parts = [
-      { label: 'Day', partId: `${id}-day`, props: dayProps },
-      { label: 'Month', partId: `${id}-month`, props: monthProps },
-      { label: 'Year', partId: `${id}-year`, props: yearProps, year: true },
+      { label: 'Day', partId: dayProps?.id ?? `${id}-day`, props: dayProps },
+      {
+        label: 'Month',
+        partId: monthProps?.id ?? `${id}-month`,
+        props: monthProps,
+      },
+      {
+        label: 'Year',
+        partId: yearProps?.id ?? `${id}-year`,
+        props: yearProps,
+        year: true,
+      },
     ];
     return (
       <fieldset
@@ -48,14 +57,14 @@ export const DateInput = forwardRef<HTMLFieldSetElement, DateInputProps>(
       >
         <legend className="govbb-fieldset__legend">{legend}</legend>
         {hint != null && (
-          <p className="govbb-hint" id={hintId}>
+          <span className="govbb-hint" id={hintId}>
             {hint}
-          </p>
+          </span>
         )}
         {error != null && (
-          <p className="govbb-error-message" id={errorId} role="alert">
+          <span className="govbb-error-message" id={errorId} role="alert">
             {error}
-          </p>
+          </span>
         )}
         <div className="govbb-date-input">
           {parts.map(({ label, partId, props, year }) => (

@@ -12,9 +12,9 @@ group: Form elements
   <label class="govbb-label" id="proof-of-address-label" for="proof-of-address"
     >Proof of address</label
   >
-  <p class="govbb-hint" id="proof-of-address-hint">
+  <span class="govbb-hint" id="proof-of-address-hint">
     This could be a recent utility bill or bank statement
-  </p>
+  </span>
   <div class="govbb-file-upload" data-govbb-module="file-upload">
     <label class="govbb-file-upload__dropzone" for="proof-of-address">
       <span class="govbb-file-upload__info">
@@ -116,12 +116,12 @@ _"Select a file"_ or _"The file must be smaller than 25MB"_.
   <label class="govbb-label" id="proof-of-address-label" for="proof-of-address"
     >Proof of address</label
   >
-  <p class="govbb-hint" id="proof-of-address-hint">
+  <span class="govbb-hint" id="proof-of-address-hint">
     This could be a recent utility bill or bank statement
-  </p>
-  <p class="govbb-error-message" id="proof-of-address-error" role="alert">
+  </span>
+  <span class="govbb-error-message" id="proof-of-address-error" role="alert">
     Select a file
-  </p>
+  </span>
   <div class="govbb-file-upload" data-govbb-module="file-upload">
     <label class="govbb-file-upload__dropzone" for="proof-of-address">
       <span class="govbb-file-upload__info">

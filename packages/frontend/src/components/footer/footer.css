@@ -28,14 +28,12 @@
   padding-block: var(--govbb-space-m);
 }
 
-/* Link colours come from the footer's link variables above. */
+/* Footer links are .govbb-link (that class owns colour/underline/hover/focus);
+   the footer only re-themes it via the --govbb-link-* variables above and sets
+   the footer's own type size. */
 .govbb-footer__link {
   font-size: var(--govbb-font-size-body);
   line-height: var(--govbb-line-height-base);
-}
-
-.govbb-footer__link:hover {
-  text-decoration: none;
 }
 
 .govbb-footer__divider {

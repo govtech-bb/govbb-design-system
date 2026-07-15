@@ -2,9 +2,11 @@ import { cx } from 'class-variance-authority';
 import {
   forwardRef,
   type AnchorHTMLAttributes,
+  type ElementType,
   type HTMLAttributes,
   type ReactNode,
 } from 'react';
+import type { LinkComponent } from '../link/link';
 
 export interface FooterProps extends HTMLAttributes<HTMLElement> {
   /** Coat-of-arms image URL — the consumer hosts the asset. */
@@ -37,12 +39,21 @@ export const Footer = forwardRef<HTMLElement, FooterProps>(function Footer(
   );
 });
 
-export interface FooterLinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {}
+export interface FooterLinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
+  /** Swap the underlying `<a>` for a router link component. */
+  linkComponent?: LinkComponent;
+}
 
 export const FooterLink = forwardRef<HTMLAnchorElement, FooterLinkProps>(
-  function FooterLink({ className, ...props }, ref) {
+  function FooterLink({ linkComponent = 'a', className, ...props }, ref) {
+    // Widened so the optional `href` from AnchorHTMLAttributes can spread.
+    const Anchor: ElementType = linkComponent;
     return (
-      <a ref={ref} className={cx('govbb-footer__link', className)} {...props} />
+      <Anchor
+        ref={ref}
+        className={cx('govbb-link govbb-footer__link', className)}
+        {...props}
+      />
     );
   },
 );

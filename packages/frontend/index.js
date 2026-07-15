@@ -6,11 +6,13 @@
  * CSS-only components register nothing.
  */
 import { FileUpload } from './src/components/file-upload/file-upload.js';
+import { Header } from './src/components/header/header.js';
 import { NumberInput } from './src/components/number-input/number-input.js';
 
 /** @type {Record<string, new (el: HTMLElement) => { destroy(): void }>} */
 const registry = {
   'file-upload': FileUpload,
+  header: Header,
   'number-input': NumberInput,
 };
 
@@ -31,4 +33,4 @@ export function initAll(root = document) {
   }
 }
 
-export { FileUpload, NumberInput };
+export { FileUpload, Header, NumberInput };

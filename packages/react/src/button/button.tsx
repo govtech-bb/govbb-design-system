@@ -1,5 +1,9 @@
 import { cva, type VariantProps } from 'class-variance-authority';
-import { forwardRef, type ButtonHTMLAttributes } from 'react';
+import {
+  forwardRef,
+  type AnchorHTMLAttributes,
+  type ButtonHTMLAttributes,
+} from 'react';
 
 /*
  * cva maps props to the govbb-button classes; the CSS owns how they look. This
@@ -36,6 +40,31 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       <button
         ref={ref}
         type={type}
+        className={button({ variant, negative, inverse, className })}
+        {...props}
+      />
+    );
+  },
+);
+
+export interface LinkButtonProps
+  extends
+    AnchorHTMLAttributes<HTMLAnchorElement>,
+    VariantProps<typeof button> {}
+
+/*
+ * An <a> that looks like a Button — the GOV.UK "start button" pattern, for
+ * navigation styled as a primary action. It stays a link (no role="button"):
+ * it goes somewhere, it doesn't submit.
+ */
+export const LinkButton = forwardRef<HTMLAnchorElement, LinkButtonProps>(
+  function LinkButton(
+    { variant, negative, inverse, className, ...props },
+    ref,
+  ) {
+    return (
+      <a
+        ref={ref}
         className={button({ variant, negative, inverse, className })}
         {...props}
       />

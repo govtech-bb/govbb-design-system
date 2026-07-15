@@ -11,9 +11,9 @@ css: form
 ```html title="Label with hint text"
 <div class="govbb-form-group">
   <label class="govbb-label" for="nrn">National registration number</label>
-  <p class="govbb-hint" id="nrn-hint">
+  <span class="govbb-hint" id="nrn-hint">
     It is on your national ID card. For example, 850101-0123
-  </p>
+  </span>
   <input
     class="govbb-input"
     id="nrn"

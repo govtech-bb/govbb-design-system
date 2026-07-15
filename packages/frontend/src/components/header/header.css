@@ -1,7 +1,14 @@
-/* Header — the gold site header holding the gov.bb logo (the link home) and,
-   optionally, a search or sign-out control. Renders on every page, directly
-   below the official banner. Markup: <header class="govbb-header"> wrapping
-   <div class="govbb-width-container govbb-header__inner">. */
+/* Header — the gold site header holding the gov.bb logo (the link home), an
+   optional search or sign-out control, and the site menu. Renders on every
+   page, directly below the official banner. Markup:
+   <header class="govbb-header"> wrapping
+   <div class="govbb-width-container govbb-header__inner"> (logo link first,
+   then a <button class="govbb-header__toggle" hidden> Menu control) followed
+   by <nav class="govbb-header__nav"> holding a
+   <div class="govbb-width-container govbb-header__nav-inner"> of links.
+   The header module (data-govbb-module="header") reveals the toggle and
+   collapses the nav behind it via the hidden attribute, at every width —
+   the menu is always a disclosure, never an inline row (Figma). */
 
 .govbb-header {
   color: var(--govbb-color-ink);
@@ -11,6 +18,7 @@
 .govbb-header__inner {
   display: flex;
   align-items: center;
+  justify-content: space-between; /* logo left, menu/controls right (Figma) */
   gap: var(--govbb-space-s);
   padding-block: var(--govbb-space-s);
 }
@@ -18,12 +26,53 @@
 .govbb-header__logo {
   display: block;
   width: auto;
-  height: 1.6875rem; /* 27px */
+  height: 1.5rem; /* 24px */
+}
+
+/* Menu toggle — the disclosure control for the __nav (the Figma collapsed
+   state: semibold ink "Menu" at the right of the gold band). Ships [hidden]
+   for the no-JS baseline, where the nav panel simply stays open; JS reveals
+   it. No display is set here, so the hidden attribute alone controls it. */
+.govbb-header__toggle {
+  padding: 0;
+  border: 0;
+  font-family: inherit;
+  font-size: var(--govbb-font-size-caption);
+  font-weight: 600;
+  line-height: var(--govbb-line-height-base);
+  color: var(--govbb-color-ink);
+  cursor: pointer;
+  background: none;
+}
+
+.govbb-header__toggle:focus-visible {
+  outline: 4px solid var(--govbb-color-focus);
+  outline-offset: 2px;
+}
+
+/* Nav — the expanded-menu panel from the Figma header: a full-width blue-tint
+   band below the gold bar with stacked bold teal links (the default link
+   colour), the same at every breakpoint. JS collapses it with the hidden
+   attribute; no display is set on the <nav> itself so hidden just works,
+   while the __nav-inner width container keeps the links aligned with the
+   logo above. */
+.govbb-header__nav {
+  font-size: var(--govbb-font-size-caption);
+  font-weight: 700;
+  background: var(--govbb-blue-10);
+}
+
+.govbb-header__nav-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--govbb-space-s);
+  padding-block: var(--govbb-space-s);
 }
 
 @media (--tablet) {
   .govbb-header__inner {
-    padding-block: var(--govbb-space-xm);
+    padding-block: var(--govbb-space-m);
   }
 
   .govbb-header__logo {

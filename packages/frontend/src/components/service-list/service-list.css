@@ -1,0 +1,127 @@
+/* Service list — navigational list of services, categories or topics: each
+   entry is a bold green underlined link inside a heading, an optional
+   one-line description and an optional category tag ("Digital service" /
+   "Information service"). Entries are separated by a 2px neutral rule.
+
+   Whole-card click (GOV.UK cards pattern): the __wrapper is the positioned,
+   padded card and the link's ::after stretches over it, so the full entry —
+   heading, description, padding — is one clickable target while the accessible
+   link name stays the heading text. Hovering or focusing anywhere on the card
+   hits the stretched link, so the link's own hover/focus/active states show —
+   the card itself is not painted.
+
+   <ul class="govbb-service-list">
+     <li class="govbb-service-list__item">
+       <div class="govbb-service-list__wrapper">
+         <h3 class="govbb-service-list__heading">
+           <a class="govbb-link govbb-service-list__link" href="#">
+             Family, birth and relationships
+           </a>
+         </h3>
+         <p class="govbb-service-list__description">
+           Managing key life events and family responsibilities
+         </p>
+         <p class="govbb-service-list__tag">Information service</p>
+       </div>
+     </li>
+   </ul>
+
+   Two looks share that markup:
+   - default (card): category listings — big bold green names, 2px rule
+     (Figma "Service").
+   - --signpost: the links INSIDE a category — quiet teal body-size regular
+     links (Figma "Signpost block"), 2px rule that thickens to the xxs-token
+     4px from tablet width. */
+
+.govbb-service-list {
+  /* service links render in the tertiary green; hover/focus behaviour comes
+     from .govbb-link reading the same custom properties */
+  --govbb-link-color: var(--govbb-color-tertiary);
+
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  overflow-wrap: break-word;
+  font-size: var(--govbb-font-size-body);
+  line-height: var(--govbb-line-height-base);
+  color: var(--govbb-color-ink);
+  list-style: none;
+}
+
+/* The list item holds the separator rule between entries. */
+.govbb-service-list__item {
+  border-bottom: 2px solid var(--govbb-color-neutral);
+}
+
+/* The card wrapper owns the padding and is the positioning context for the
+   stretched link, so the whole padded area — not just the text — is clickable. */
+.govbb-service-list__wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--govbb-space-xs);
+  align-items: flex-start;
+  padding-block: var(--govbb-space-s);
+}
+
+/* Any heading level (h2-h4) renders the same; weight comes from base.css. */
+.govbb-service-list__heading {
+  margin: 0;
+  font-size: var(--govbb-font-size-h3);
+  line-height: var(--govbb-line-height-h3);
+}
+
+.govbb-service-list__link {
+  overflow-wrap: anywhere; /* long service names must not blow the column open */
+  font-weight: 700;
+}
+
+/* Stretched link: the whole card is the click target. Hover/focus/active
+   states live on the link itself (.govbb-link), not the card — hovering
+   anywhere over the card hits this ::after, so the link shows its state. */
+.govbb-service-list__link::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+
+.govbb-service-list__description,
+.govbb-service-list__tag {
+  margin: 0;
+}
+
+.govbb-service-list__tag {
+  color: var(--govbb-color-muted);
+}
+
+/* The desktop frame sizes service names up to the large-body size. */
+@media (--tablet) {
+  .govbb-service-list__heading {
+    font-size: var(--govbb-font-size-body-lg);
+    line-height: var(--govbb-line-height-base);
+  }
+}
+
+/* Signpost: in-category service links. Names drop to quiet body-size regular
+   links in the standard teal at every width (these rules out-rank the tablet
+   card upsize on specificity). */
+.govbb-service-list--signpost {
+  --govbb-link-color: var(--govbb-color-interactive);
+}
+
+.govbb-service-list--signpost .govbb-service-list__heading {
+  font-size: var(--govbb-font-size-body);
+  line-height: var(--govbb-line-height-base);
+}
+
+.govbb-service-list--signpost .govbb-service-list__link {
+  font-weight: 400;
+}
+
+/* The desktop signpost rule is the thicker xxs-token divider. */
+@media (--tablet) {
+  .govbb-service-list--signpost .govbb-service-list__item {
+    border-bottom-width: var(--govbb-space-xxs);
+  }
+}

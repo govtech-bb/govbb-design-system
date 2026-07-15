@@ -10,9 +10,9 @@ group: Form elements
 ```html title="Form group with hint text"
 <div class="govbb-form-group">
   <label class="govbb-label" for="nis-number">NIS number</label>
-  <p class="govbb-hint" id="nis-number-hint">
+  <span class="govbb-hint" id="nis-number-hint">
     Your National Insurance number, for example 123456
-  </p>
+  </span>
   <input
     class="govbb-input"
     id="nis-number"
@@ -66,9 +66,9 @@ number".
 ```html title="Form group with error message"
 <div class="govbb-form-group">
   <label class="govbb-label" for="licence-number">Licence number</label>
-  <p class="govbb-error-message" id="licence-number-error" role="alert">
+  <span class="govbb-error-message" id="licence-number-error" role="alert">
     Enter your driver's licence number
-  </p>
+  </span>
   <input
     class="govbb-input"
     id="licence-number"
@@ -110,9 +110,9 @@ question; each control keeps its own label.
     <legend class="govbb-fieldset__legend">
       Where do you want to collect your passport?
     </legend>
-    <p class="govbb-hint" id="collection-hint">
+    <span class="govbb-hint" id="collection-hint">
       Choose the office closest to you
-    </p>
+    </span>
     <div class="govbb-radio-item">
       <input
         class="govbb-radio"

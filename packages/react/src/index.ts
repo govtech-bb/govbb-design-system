@@ -2,14 +2,19 @@ export { BackButton } from './back-button/back-button';
 export type { BackButtonProps } from './back-button/back-button';
 export { Breadcrumbs } from './breadcrumbs/breadcrumbs';
 export type { BreadcrumbsProps } from './breadcrumbs/breadcrumbs';
-export { Button } from './button/button';
-export type { ButtonProps } from './button/button';
-export { Checkbox } from './checkbox/checkbox';
-export type { CheckboxProps } from './checkbox/checkbox';
+export { Button, LinkButton } from './button/button';
+export type { ButtonProps, LinkButtonProps } from './button/button';
+export { Checkbox, CheckboxGroup } from './checkbox/checkbox';
+export type { CheckboxProps, CheckboxGroupProps } from './checkbox/checkbox';
 export { DateInput } from './date-input/date-input';
 export type { DateInputProps } from './date-input/date-input';
 export { ErrorSummary } from './error-summary/error-summary';
-export type { ErrorSummaryProps } from './error-summary/error-summary';
+export type {
+  ErrorSummaryProps,
+  ErrorSummaryItem,
+} from './error-summary/error-summary';
+export { Feedback } from './feedback/feedback';
+export type { FeedbackProps } from './feedback/feedback';
 export { FileUpload } from './file-upload/file-upload';
 export type { FileUploadProps } from './file-upload/file-upload';
 export { Footer, FooterLink } from './footer/footer';
@@ -27,19 +32,24 @@ export type { HeaderProps } from './header/header';
 export { Input, Textarea } from './input/input';
 export type { InputProps, TextareaProps } from './input/input';
 export { Link } from './link/link';
-export type { LinkProps } from './link/link';
+export type { LinkComponent, LinkProps } from './link/link';
 export { List } from './list/list';
 export type { ListProps } from './list/list';
 export { NumberInput } from './number-input/number-input';
 export type { NumberInputProps } from './number-input/number-input';
 export { OfficialBanner } from './official-banner/official-banner';
 export type { OfficialBannerProps } from './official-banner/official-banner';
-export { Radio } from './radio/radio';
-export type { RadioProps } from './radio/radio';
+export { Radio, RadioGroup } from './radio/radio';
+export type { RadioProps, RadioGroupProps } from './radio/radio';
 export { Search } from './search/search';
 export type { SearchProps } from './search/search';
 export { Select } from './select/select';
 export type { SelectProps } from './select/select';
+export { ServiceList, ServiceListItem } from './service-list/service-list';
+export type {
+  ServiceListProps,
+  ServiceListItemProps,
+} from './service-list/service-list';
 export { ShowHide } from './show-hide/show-hide';
 export type { ShowHideProps } from './show-hide/show-hide';
 export { StatusBanner } from './status-banner/status-banner';
@@ -55,3 +65,5 @@ export type {
   TableHeaderProps,
   TableProps,
 } from './table/table';
+export { Heading, Text } from './typography/typography';
+export type { HeadingProps, TextProps } from './typography/typography';

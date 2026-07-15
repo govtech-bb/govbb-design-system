@@ -10,7 +10,7 @@ group: Form elements
 ```html title="Number input with hint text"
 <div class="govbb-form-group">
   <label class="govbb-label" id="quantity-label" for="quantity">Quantity</label>
-  <p class="govbb-hint" id="quantity-hint">Between 1 and 10</p>
+  <span class="govbb-hint" id="quantity-hint">Between 1 and 10</span>
   <div
     class="govbb-number-input-wrapper"
     role="group"
@@ -123,9 +123,9 @@ quantity between 1 and 10".
 ```html title="Number input with error"
 <div class="govbb-form-group">
   <label class="govbb-label" id="quantity-label" for="quantity">Quantity</label>
-  <p class="govbb-error-message" id="quantity-error" role="alert">
+  <span class="govbb-error-message" id="quantity-error" role="alert">
     Enter a quantity between 1 and 10
-  </p>
+  </span>
   <div
     class="govbb-number-input-wrapper"
     role="group"
