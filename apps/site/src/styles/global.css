@@ -250,11 +250,12 @@ img:not([class]) {
   display: grid;
   gap: var(--govbb-space-4);
 
-  /* Responsive, but never more than 3 per row: each column is at least a
-     third of the row (minus gaps), so wide screens cap at 3. */
+  /* Responsive, but never more than 4 per row: each column is at least a
+     quarter of the row (minus gaps), so wide screens cap at 4 and medium
+     screens fall to a balanced 2×2. */
   grid-template-columns: repeat(
     auto-fill,
-    minmax(max(17rem, calc((100% - 2 * var(--govbb-space-4)) / 3)), 1fr)
+    minmax(max(17rem, calc((100% - 3 * var(--govbb-space-4)) / 4)), 1fr)
   );
   list-style: none;
   padding: 0;
@@ -297,14 +298,11 @@ img:not([class]) {
 .govbb-colorcard--teal {
   background: var(--govbb-card-teal);
 }
-
-/* ── "What's new" + Community section ─────────────────────────── */
-.govbb-twocol {
-  display: grid;
-  gap: var(--govbb-space-6);
-  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
-  padding-block: var(--govbb-space-8);
+.govbb-colorcard--yellow {
+  background: var(--govbb-card-yellow);
 }
+
+/* ── Changelog entries (changelog index) ──────────────────────── */
 .govbb-update {
   display: flex;
   flex-direction: column;
@@ -330,44 +328,6 @@ img:not([class]) {
   color: var(--govbb-color-text-muted);
   margin: 0;
 }
-.govbb-signup {
-  background: var(--govbb-color-panel);
-  border-radius: var(--govbb-radius-lg);
-  padding: var(--govbb-space-4);
-  margin-top: var(--govbb-space-4);
-}
-.govbb-signup__title {
-  font-weight: 600;
-  font-size: 1.125rem;
-  margin: 0 0 var(--govbb-space-3);
-}
-.govbb-signup__form {
-  display: flex;
-  gap: var(--govbb-space-2);
-  flex-wrap: wrap;
-}
-.govbb-signup__input {
-  flex: 1 1 12rem;
-  font: inherit;
-  font-size: 0.875rem;
-  padding: var(--govbb-space-2) var(--govbb-space-3);
-  border: 1px solid var(--govbb-color-border);
-  border-radius: var(--govbb-radius);
-  background: var(--govbb-color-white);
-}
-.govbb-signup__input::placeholder {
-  color: var(--govbb-color-placeholder);
-}
-
-.govbb-linklist {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: var(--govbb-space-2);
-}
-
 /* ── Article layout (sidebar | content | on-this-page) ────────── */
 .govbb-article {
   display: grid;

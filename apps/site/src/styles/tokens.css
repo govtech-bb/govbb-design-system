@@ -19,9 +19,6 @@
   /* Ink & surfaces — from @govtech-bb/frontend */
   --govbb-color-text: var(--govbb-color-ink);
   --govbb-color-text-muted: var(--govbb-color-muted);
-  /* blue-40 fails AA for placeholder text (2.38:1) — same approved deviation
-     as the tabs: use the package's muted grey (7.0:1). */
-  --govbb-color-placeholder: var(--govbb-color-muted);
   --govbb-color-white: var(--govbb-white-00);
   --govbb-color-bg: var(--govbb-white-00);
   --govbb-color-panel: var(
