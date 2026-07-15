@@ -1,7 +1,7 @@
 import { expectNoAxeViolations } from '../testing/axe';
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { createRef } from 'react';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { ErrorSummary } from './error-summary';
 
 describe('ErrorSummary', () => {
@@ -21,6 +21,41 @@ describe('ErrorSummary', () => {
     expect(link.getAttribute('href')).toBe('#email');
     ref.current!.focus();
     expect(document.activeElement).toBe(alert);
+  });
+
+  it('focuses the targeted field on link click and fires onErrorClick', () => {
+    const onErrorClick = vi.fn();
+    render(
+      <>
+        <ErrorSummary
+          errors={[{ href: '#email', label: 'Enter a valid email address' }]}
+          onErrorClick={onErrorClick}
+        />
+        <input id="email" aria-label="Email" />
+      </>,
+    );
+    fireEvent.click(
+      screen.getByRole('link', { name: 'Enter a valid email address' }),
+    );
+    expect(onErrorClick).toHaveBeenCalledWith(
+      { href: '#email', label: 'Enter a valid email address' },
+      expect.anything(),
+    );
+    expect(document.activeElement).toBe(screen.getByLabelText('Email'));
+  });
+
+  it('skips the default focus when the handler prevents default', () => {
+    render(
+      <>
+        <ErrorSummary
+          errors={[{ href: '#name', label: 'Enter your name' }]}
+          onErrorClick={(_item, event) => event.preventDefault()}
+        />
+        <input id="name" aria-label="Name" />
+      </>,
+    );
+    fireEvent.click(screen.getByRole('link', { name: 'Enter your name' }));
+    expect(document.activeElement).not.toBe(screen.getByLabelText('Name'));
   });
 });
 

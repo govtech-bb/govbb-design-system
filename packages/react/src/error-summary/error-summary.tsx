@@ -1,10 +1,21 @@
 import { cx } from 'class-variance-authority';
-import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
+import {
+  forwardRef,
+  type HTMLAttributes,
+  type MouseEvent,
+  type ReactNode,
+} from 'react';
 
 /*
  * Focusable (tabIndex -1) so the consumer can move focus here on failed
  * submit, per the GOV.UK pattern: summaryRef.current?.focus().
  */
+
+export interface ErrorSummaryItem {
+  /** Targets the offending field's id, e.g. `#date-of-birth`. */
+  href: string;
+  label: ReactNode;
+}
 
 export interface ErrorSummaryProps extends Omit<
   HTMLAttributes<HTMLDivElement>,
@@ -12,14 +23,31 @@ export interface ErrorSummaryProps extends Omit<
 > {
   title?: ReactNode;
   /** One entry per error; href targets the offending field's id. */
-  errors: Array<{ href: string; label: ReactNode }>;
+  errors: ErrorSummaryItem[];
+  /**
+   * Called when a summary link is activated. By default the linked control is
+   * focused (the GOV.UK behaviour); call `event.preventDefault()` to skip that.
+   */
+  onErrorClick?: (
+    item: ErrorSummaryItem,
+    event: MouseEvent<HTMLAnchorElement>,
+  ) => void;
 }
 
 export const ErrorSummary = forwardRef<HTMLDivElement, ErrorSummaryProps>(
   function ErrorSummary(
-    { title = 'There is a problem', errors, className, ...props },
+    { title = 'There is a problem', errors, onErrorClick, className, ...props },
     ref,
   ) {
+    function handleClick(
+      item: ErrorSummaryItem,
+      event: MouseEvent<HTMLAnchorElement>,
+    ) {
+      onErrorClick?.(item, event);
+      if (event.defaultPrevented || !item.href.startsWith('#')) return;
+      const target = document.getElementById(item.href.slice(1));
+      if (target != null) target.focus();
+    }
     return (
       <div
         ref={ref}
@@ -30,10 +58,14 @@ export const ErrorSummary = forwardRef<HTMLDivElement, ErrorSummaryProps>(
       >
         <h2 className="govbb-error-summary__title">{title}</h2>
         <ul className="govbb-error-summary__list">
-          {errors.map(({ href, label }) => (
-            <li key={href}>
-              <a className="govbb-link govbb-error-summary__link" href={href}>
-                {label}
+          {errors.map((item) => (
+            <li key={item.href}>
+              <a
+                className="govbb-link govbb-error-summary__link"
+                href={item.href}
+                onClick={(event) => handleClick(item, event)}
+              >
+                {item.label}
               </a>
             </li>
           ))}
