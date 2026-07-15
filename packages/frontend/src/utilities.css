@@ -58,6 +58,12 @@
   font-weight: 400;
 }
 
+/* Bold at the current size. Visual bolding only — where the emphasis is
+   semantic, use <strong> instead. */
+.govbb-text-bold {
+  font-weight: 700;
+}
+
 /* Hidden from sight, still read by screen readers and focusable. */
 .govbb-visually-hidden {
   position: absolute;
