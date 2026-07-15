@@ -29,7 +29,7 @@ export const secondaryNav: PrimaryNavItem[] = [
 
 // Display order of the component groups (the values of the `group` frontmatter
 // field in src/content/components/).
-const GROUP_ORDER = [
+export const GROUP_ORDER = [
   'Actions',
   'Form elements',
   'Navigation',

@@ -298,6 +298,43 @@ img:not([class]) {
 .govbb-colorcard--teal {
   background: var(--govbb-card-teal);
 }
+
+/* ── Component index cards (quiet, bordered — the colour fills stay
+   reserved for the top-level wayfinding cards) ─────────────────── */
+.govbb-compgroup {
+  margin-block: var(--govbb-space-6);
+}
+.govbb-compgroup__heading {
+  font-size: 1.75rem;
+  line-height: 1.25;
+  margin: 0 0 var(--govbb-space-4);
+}
+.govbb-compcard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--govbb-space-2);
+  height: 100%;
+  padding: var(--govbb-space-4);
+  border: 1px solid var(--govbb-color-border);
+  text-decoration: none;
+}
+.govbb-compcard:hover {
+  border-color: var(--govbb-color-teal);
+}
+.govbb-compcard__title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--govbb-color-teal);
+  margin: 0;
+}
+.govbb-compcard:hover .govbb-compcard__title {
+  text-decoration: underline;
+}
+.govbb-compcard__desc {
+  color: var(--govbb-color-text-muted);
+  font-size: 1rem;
+  margin: 0;
+}
 .govbb-colorcard--yellow {
   background: var(--govbb-card-yellow);
 }
