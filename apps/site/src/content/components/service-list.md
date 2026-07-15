@@ -52,11 +52,15 @@ import { ServiceList, ServiceListItem } from '@govtech-bb/react';
 ```
 
 The Service list component is a vertical list of navigation entries separated
-by a neutral rule. Each entry is a card: a heading holding a bold green
-underlined link, an optional one-line description and an optional tag naming
-the kind of service, such as "Digital service" or "Information service".
-Service names render at the heading-three size on small screens and step up
-to the large body size from tablet width.
+by a neutral rule. Each entry is a card: a heading holding an underlined
+link, an optional one-line description and an optional tag naming the kind of
+service, such as "Digital service" or "Information service".
+
+It has two looks. The default, for listings of categories, gives entries big
+bold green names: heading-three size on small screens, stepping up to the
+large body size from tablet width. The signpost look, for the service links
+inside a category, keeps names at the quiet body size in the standard teal
+link colour, with a divider that thickens from 2px to 4px from tablet width.
 
 ## Whole-card click target
 
@@ -71,13 +75,51 @@ Because the markup relies on this, do not add a second link or other
 interactive control inside an entry; the stretched link would sit on top of
 it.
 
+## Signpost look
+
+Use the `govbb-service-list--signpost` modifier (or `variant="signpost"` in
+React) for the links inside a category: the destinations are services, not
+more categories, so the names step down to regular-weight body-size links in
+the standard teal. The markup, whole-card click behaviour, descriptions and
+tags all work the same as the default look.
+
+```html title="Signpost service list"
+<ul class="govbb-service-list govbb-service-list--signpost">
+  <li class="govbb-service-list__item">
+    <div class="govbb-service-list__wrapper">
+      <h3 class="govbb-service-list__heading">
+        <a class="govbb-link govbb-service-list__link" href="#">
+          Register a birth
+        </a>
+      </h3>
+      <p class="govbb-service-list__description">
+        What you need to register a birth in Barbados
+      </p>
+    </div>
+  </li>
+</ul>
+```
+
+```tsx
+import { ServiceList, ServiceListItem } from '@govtech-bb/react';
+
+<ServiceList variant="signpost">
+  <ServiceListItem
+    href="/register-birth"
+    description="What you need to register a birth in Barbados"
+  >
+    Register a birth
+  </ServiceListItem>
+</ServiceList>;
+```
+
 ## When to use this component
 
 Use a service list wherever users pick a destination from a set of services,
-categories or topics: the categories on a homepage, the services inside a
-category page, or an A to Z of services. Add a description when the link name
-alone does not say what users will find, and a tag when it helps users know
-what kind of service to expect.
+categories or topics: the categories on a homepage with the default look, the
+services inside a category page with the signpost look, or an A to Z of
+services. Add a description when the link name alone does not say what users
+will find, and a tag when it helps users know what kind of service to expect.
 
 ## When not to use this component
 
