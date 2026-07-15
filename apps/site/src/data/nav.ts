@@ -13,11 +13,6 @@ export const primaryNav: PrimaryNavItem[] = [
   { key: 'patterns', label: 'Patterns', href: '/patterns/' },
   { key: 'components', label: 'Components', href: '/components/' },
 ];
-// Patterns is a placeholder for now: its only page (payment) was a single
-// component, not a multi-component flow, so it moved to /components/. When the
-// first real pattern lands, re-add the `patterns` collection in
-// content.config.ts, a /patterns/[slug].astro route, a getPatternsSidebar()
-// here, and swap /patterns/index.astro to a CardGrid over the collection.
 
 // Sections kept out of the header (GOV.UK-style: styles / components only)
 // but still linked from the footer and sitemap.
@@ -101,6 +96,29 @@ export async function getStylesSidebar(): Promise<SidebarGroup[]> {
             },
           ]
         : [];
+    }),
+  ];
+}
+
+// Display order of the pattern groups (the values of the `group` frontmatter
+// field in src/content/patterns/).
+const PATTERN_GROUP_ORDER = ['Ask users for', 'Help users to'] as const;
+
+// Left-sidebar navigation for the Patterns section, derived from the patterns
+// content collection — grouped like the components sidebar.
+export async function getPatternsSidebar(): Promise<SidebarGroup[]> {
+  const entries = await getCollection('patterns');
+  entries.sort((a, b) => a.data.title.localeCompare(b.data.title));
+  return [
+    {
+      heading: 'Patterns',
+      links: [{ label: 'Overview', href: '/patterns/' }],
+    },
+    ...PATTERN_GROUP_ORDER.flatMap((heading) => {
+      const links = entries
+        .filter((e) => e.data.group === heading)
+        .map((e) => ({ label: e.data.title, href: `/patterns/${e.id}/` }));
+      return links.length > 0 ? [{ heading, links }] : [];
     }),
   ];
 }
