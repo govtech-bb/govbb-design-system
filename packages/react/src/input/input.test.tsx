@@ -13,6 +13,29 @@ describe('Input', () => {
     expect(ref.current).toBe(input);
     expect(input.className).toBe('govbb-input extra');
   });
+
+  it('stays bare (no form-group) without label/hint/error', () => {
+    const { container } = render(<Input aria-label="Name" />);
+    expect(container.querySelector('.govbb-form-group')).toBeNull();
+  });
+
+  it('self-composes label, hint and error when given them', () => {
+    const { container } = render(
+      <Input
+        label="Average weekly pay"
+        hint="Include overtime"
+        error="Enter your pay"
+      />,
+    );
+    const input = screen.getByRole('textbox', { name: 'Average weekly pay' });
+    const hint = screen.getByText('Include overtime');
+    const error = screen.getByText('Enter your pay');
+    expect(container.querySelector('.govbb-form-group')).not.toBeNull();
+    expect(input.getAttribute('aria-describedby')).toBe(
+      `${hint.id} ${error.id}`,
+    );
+    expect(input.getAttribute('aria-invalid')).toBe('true');
+  });
 });
 
 describe('Textarea', () => {
