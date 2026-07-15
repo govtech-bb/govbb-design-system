@@ -43,8 +43,15 @@ the raw tokens only in your own CSS.
 | `govbb-text-caption-sm` | 0.75rem (12px) | 1.5         | fine print                       |
 
 The display and heading classes are bold (700); the body and caption classes
-are regular (400). Because they are utilities, they win over component
-typography, so applying one to a component element is an explicit override.
+are regular (400). Where a run of body or caption text needs visual bolding,
+add `govbb-text-bold`; where the emphasis is semantic, use `<strong>` instead.
+Because they are utilities, they win over component typography, so applying
+one to a component element is an explicit override.
+
+In React, the `Heading` and `Text` components apply these classes for you:
+`<Heading as="h1">` renders an `h1` with `govbb-text-h1`, and `size` changes
+the class independently of the element. `Text` takes `as` (`p`, `span`, `div`),
+`size` (`body-lg`, `body`, `caption`, `caption-sm`) and `weight` (`bold`).
 
 ```html title="Type scale"
 <p class="govbb-text-display">Display</p>
@@ -66,6 +73,9 @@ size. The two are deliberately independent:
 ```html title="Heading with a size class"
 <h1 class="govbb-text-h1">Register a birth</h1>
 ```
+
+In React this is `<Heading as="h1" size="h1">`, or just `<Heading as="h1">`,
+since `size` defaults to matching the element.
 
 Bare headings only get weight and rhythm from the base styles, so put a
 `.govbb-text-*` class on every heading you want on the scale. Keep heading
