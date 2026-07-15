@@ -523,12 +523,18 @@
 
     <section>
       <h2>Status banner — alpha / beta / migrated / service</h2>
-      <div class="govbb-status-banner govbb-status-banner--alpha">
-        <p>
-          This page is in <a href="#">Alpha</a>. Your feedback will help us
-          improve it.
-        </p>
+      <p>Full-width (page-level, content aligned to the width container):</p>
+      <div
+        class="govbb-status-banner govbb-status-banner--alpha govbb-status-banner--full-width"
+      >
+        <div class="govbb-width-container govbb-status-banner__inner">
+          <p>
+            This page is in <a href="#">Alpha</a>. Your feedback will help us
+            improve it.
+          </p>
+        </div>
       </div>
+      <p>Inline (inside the content column, own padding):</p>
       <div class="govbb-status-banner govbb-status-banner--beta">
         <p>
           This page is in <a href="#">Beta</a>. Your feedback will help us
