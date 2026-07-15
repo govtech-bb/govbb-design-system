@@ -108,10 +108,16 @@ const {
     font-size: 1rem;
     padding: var(--govbb-space-1) var(--govbb-space-3);
   }
+  /* Keyboard focus: the design system's form-control ring (see the package's
+     focus.css) — a box-shadow ring that follows the corner radius, plus a
+     transparent outline so a ring still renders in forced-colors mode. The
+     focused half lifts above the adjoining one so the ring isn't cut. */
   .govbb-searchbar__input:focus-visible,
   .govbb-searchbar__button:focus-visible {
-    outline: 3px solid var(--govbb-color-focus-site);
+    box-shadow: 0 0 0 4px var(--govbb-color-focus);
+    outline: 2px solid transparent;
     outline-offset: 2px;
     position: relative;
+    z-index: 1;
   }
 </style>
