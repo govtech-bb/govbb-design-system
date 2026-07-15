@@ -16,6 +16,34 @@ describe('StatusBanner', () => {
     expect(screen.getByText('This page has moved.').tagName).toBe('P');
   });
 
+  it('does not wrap content when not full width', () => {
+    const { container } = render(
+      <StatusBanner variant="alpha">
+        <p>Inline notice.</p>
+      </StatusBanner>,
+    );
+    expect(container.querySelector('.govbb-status-banner__inner')).toBeNull();
+    expect(container.querySelector('.govbb-status-banner > p')).not.toBeNull();
+  });
+
+  it('fullWidth adds the modifier and a width-container inner', () => {
+    const { container } = render(
+      <StatusBanner variant="alpha" fullWidth>
+        <p>This page is in Alpha.</p>
+      </StatusBanner>,
+    );
+    expect(container.firstElementChild!.className).toBe(
+      'govbb-status-banner govbb-status-banner--alpha govbb-status-banner--full-width',
+    );
+    // Content sits inside the page width container so it lines up with the
+    // header/footer content column.
+    expect(
+      container.querySelector(
+        '.govbb-status-banner--full-width > .govbb-width-container.govbb-status-banner__inner > p',
+      ),
+    ).not.toBeNull();
+  });
+
   it('renders content as-is, allowing multiple paragraphs', () => {
     const { container } = render(
       <StatusBanner variant="migrated">
@@ -32,11 +60,18 @@ describe('StatusBanner', () => {
 
 it('has no axe violations', async () => {
   const { container } = render(
-    <StatusBanner variant="beta">
-      <p>
-        This page is in <a href="/beta">Beta</a>.
-      </p>
-    </StatusBanner>,
+    <>
+      <StatusBanner variant="beta">
+        <p>
+          This page is in <a href="/beta">Beta</a>.
+        </p>
+      </StatusBanner>
+      <StatusBanner variant="alpha" fullWidth>
+        <p>
+          This page is in <a href="/alpha">Alpha</a>.
+        </p>
+      </StatusBanner>
+    </>,
   );
   await expectNoAxeViolations(container);
 });

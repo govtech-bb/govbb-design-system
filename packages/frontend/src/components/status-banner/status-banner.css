@@ -1,8 +1,13 @@
 /* Status banner — coloured strip stating where a page sits in its lifecycle.
-   One per page, just below the header. Markup:
-   <div class="govbb-status-banner govbb-status-banner--alpha"> (or --beta /
-   --migrated / --service) containing one or two <p>s. Add --rounded for a
-   softer corner when nested inside content. */
+   Two shapes:
+   - Inline (default): a compact block inside the page content column.
+     <div class="govbb-status-banner govbb-status-banner--alpha"> (or --beta /
+     --migrated / --service) containing one or two <p>s. Add --rounded for a
+     softer corner when nested inside content.
+   - Page-level: add --full-width and wrap the content in
+     <div class="govbb-width-container govbb-status-banner__inner"> so the
+     tinted background bleeds edge to edge while the text lines up with the
+     header/footer content column — the same pattern as the official banner. */
 
 .govbb-status-banner {
   /* tinted surface: links inside go ink and hover lifts to a white
@@ -18,11 +23,21 @@
   color: var(--govbb-color-ink);
 }
 
-.govbb-status-banner > p {
+/* Full-width shape: the width container owns the inline gutters, the inner
+   keeps the vertical rhythm. */
+.govbb-status-banner--full-width {
+  padding: 0;
+}
+
+.govbb-status-banner__inner {
+  padding-block: var(--govbb-space-s);
+}
+
+:where(.govbb-status-banner, .govbb-status-banner__inner) > p {
   margin: 0;
 }
 
-.govbb-status-banner > p + p {
+:where(.govbb-status-banner, .govbb-status-banner__inner) > p + p {
   margin-top: var(--govbb-space-xs);
 }
 
