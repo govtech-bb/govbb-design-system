@@ -6,7 +6,9 @@
    Whole-card click (GOV.UK cards pattern): the item is the positioned card
    and the link's ::after stretches over it, so the full entry — heading,
    description, padding — is one clickable target while the accessible link
-   name stays the heading text. Hover/focus paint the whole card via :has().
+   name stays the heading text. Hovering or focusing anywhere on the card hits
+   the stretched link, so the link's own hover/focus/active states show — the
+   card itself is not painted.
 
    <ul class="govbb-service-list">
      <li class="govbb-service-list__item">
@@ -58,29 +60,16 @@
 
 .govbb-service-list__link {
   overflow-wrap: anywhere; /* long service names must not blow the column open */
+  font-weight: 700;
 }
 
-/* Stretched link: the whole card is the click target. */
+/* Stretched link: the whole card is the click target. Hover/focus/active
+   states live on the link itself (.govbb-link), not the card — hovering
+   anywhere over the card hits this ::after, so the link shows its state. */
 .govbb-service-list__link::after {
   content: '';
   position: absolute;
   inset: 0;
-}
-
-/* Hovering or focusing anywhere on the card hits the stretched link; paint
-   the full card with the link's own state surface so the affordance reads
-   card-wide, not just on the heading text. */
-.govbb-service-list__item:has(.govbb-service-list__link:hover) {
-  background-color: var(--govbb-link-hover-bg);
-}
-
-.govbb-service-list__item:has(.govbb-service-list__link:focus-visible),
-.govbb-service-list__item:has(.govbb-service-list__link:active) {
-  background-color: var(--govbb-link-active-bg);
-
-  /* invisible normally; forced-colors mode strips the gold background and
-     recolours this outline, so keyboard focus stays visible on the card */
-  outline: 2px solid transparent;
 }
 
 .govbb-service-list__description,

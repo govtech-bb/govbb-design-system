@@ -60,8 +60,8 @@ The whole entry is clickable, following the GOV.UK cards pattern: the link
 carries a stretched pseudo-element that covers the entire item, so tapping
 the description or the space around it follows the link too. There is still
 exactly one link per entry, and its accessible name is the service name; the
-description stays plain text. Hover and keyboard focus highlight the whole
-card, not just the heading text.
+description stays plain text. Hovering or focusing anywhere on the card shows
+the link's own hover and focus states, since the whole area is the link.
 
 Because the markup relies on this, do not add a second link or other
 interactive control inside an entry; the stretched link would sit on top of
