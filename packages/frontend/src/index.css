@@ -28,6 +28,7 @@ layer(components);
 @import url('./components/payment/payment.css') layer(components);
 @import url('./components/search/search.css') layer(components);
 @import url('./components/select/select.css') layer(components);
+@import url('./components/service-list/service-list.css') layer(components);
 @import url('./components/show-hide/show-hide.css') layer(components);
 @import url('./components/status-banner/status-banner.css') layer(components);
 @import url('./components/summary-list/summary-list.css') layer(components);

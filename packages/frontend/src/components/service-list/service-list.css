@@ -1,0 +1,101 @@
+/* Service list — navigational list of services, categories or topics: each
+   entry is a bold green underlined link inside a heading, an optional
+   one-line description and an optional category tag ("Digital service" /
+   "Information service"). Entries are separated by a 2px neutral rule.
+
+   Whole-card click (GOV.UK cards pattern): the item is the positioned card
+   and the link's ::after stretches over it, so the full entry — heading,
+   description, padding — is one clickable target while the accessible link
+   name stays the heading text. Hover/focus paint the whole card via :has().
+
+   <ul class="govbb-service-list">
+     <li class="govbb-service-list__item">
+       <h3 class="govbb-service-list__heading">
+         <a class="govbb-link govbb-service-list__link" href="#">
+           Family, birth and relationships
+         </a>
+       </h3>
+       <p class="govbb-service-list__description">
+         Managing key life events and family responsibilities
+       </p>
+       <p class="govbb-service-list__tag">Information service</p>
+     </li>
+   </ul> */
+
+.govbb-service-list {
+  /* service links render in the tertiary green; hover/focus behaviour comes
+     from .govbb-link reading the same custom properties */
+  --govbb-link-color: var(--govbb-color-tertiary);
+
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  overflow-wrap: break-word;
+  font-size: var(--govbb-font-size-body);
+  line-height: var(--govbb-line-height-base);
+  color: var(--govbb-color-ink);
+  list-style: none;
+}
+
+/* The card: positioning context for the stretched link. */
+.govbb-service-list__item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--govbb-space-xs);
+  align-items: flex-start;
+  padding-block: var(--govbb-space-s);
+  border-bottom: 2px solid var(--govbb-color-neutral);
+}
+
+/* Any heading level (h2-h4) renders the same; weight comes from base.css. */
+.govbb-service-list__heading {
+  margin: 0;
+  font-size: var(--govbb-font-size-h3);
+  line-height: var(--govbb-line-height-h3);
+}
+
+.govbb-service-list__link {
+  overflow-wrap: anywhere; /* long service names must not blow the column open */
+}
+
+/* Stretched link: the whole card is the click target. */
+.govbb-service-list__link::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+
+/* Hovering or focusing anywhere on the card hits the stretched link; paint
+   the full card with the link's own state surface so the affordance reads
+   card-wide, not just on the heading text. */
+.govbb-service-list__item:has(.govbb-service-list__link:hover) {
+  background-color: var(--govbb-link-hover-bg);
+}
+
+.govbb-service-list__item:has(.govbb-service-list__link:focus-visible),
+.govbb-service-list__item:has(.govbb-service-list__link:active) {
+  background-color: var(--govbb-link-active-bg);
+
+  /* invisible normally; forced-colors mode strips the gold background and
+     recolours this outline, so keyboard focus stays visible on the card */
+  outline: 2px solid transparent;
+}
+
+.govbb-service-list__description,
+.govbb-service-list__tag {
+  margin: 0;
+}
+
+.govbb-service-list__tag {
+  color: var(--govbb-color-muted);
+}
+
+/* The desktop frame sizes service names up to the large-body size. */
+@media (--tablet) {
+  .govbb-service-list__heading {
+    font-size: var(--govbb-font-size-body-lg);
+    line-height: var(--govbb-line-height-base);
+  }
+}

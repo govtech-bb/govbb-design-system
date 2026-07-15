@@ -45,6 +45,11 @@ export { Search } from './search/search';
 export type { SearchProps } from './search/search';
 export { Select } from './select/select';
 export type { SelectProps } from './select/select';
+export { ServiceList, ServiceListItem } from './service-list/service-list';
+export type {
+  ServiceListProps,
+  ServiceListItemProps,
+} from './service-list/service-list';
 export { ShowHide } from './show-hide/show-hide';
 export type { ShowHideProps } from './show-hide/show-hide';
 export { StatusBanner } from './status-banner/status-banner';
