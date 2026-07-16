@@ -308,7 +308,15 @@ const codeBlocks = [
 
   const enhanceFrame = (frame: HTMLIFrameElement) => {
     const doc = frame.contentDocument;
-    if (doc) initAll(doc);
+    if (!doc) return;
+    initAll(doc);
+    // Placeholder links (href="#") in examples must not navigate the preview
+    // iframe — clicking one would replace the little preview with the docs
+    // page. They are demo affordances, so make them inert like the buttons.
+    doc.addEventListener('click', (e) => {
+      const link = (e.target as HTMLElement).closest('a');
+      if (link?.getAttribute('href') === '#') e.preventDefault();
+    });
   };
   document
     .querySelectorAll<HTMLIFrameElement>('[data-example-frame]')
