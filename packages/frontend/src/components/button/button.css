@@ -104,15 +104,18 @@
   text-underline-offset: 2px;
   border-radius: 0; /* keep the focus ring square */
 
+  /* Deepen the tertiary green on interaction. Gold (the Figma accent) reads
+     as ~1.6:1 on white and fails WCAG AA for text; darkening the base only
+     raises its already-7:1 contrast, and carries any recolour with it. */
   &:hover {
-    color: var(--govbb-color-brand-accent);
-    background: transparent;
+    color: color-mix(in oklab, var(--govbb-color-tertiary), black 25%);
+    background: var(--govbb-green-10);
     box-shadow: none;
   }
 
   &:active {
-    color: var(--govbb-yellow-00);
-    background: transparent;
+    color: color-mix(in oklab, var(--govbb-color-tertiary), black 40%);
+    background: var(--govbb-green-40);
     box-shadow: none;
   }
 }
@@ -140,15 +143,17 @@
     color: var(--govbb-color-error);
     background: transparent;
 
+    /* Same reasoning as the base text variant: red-100 (#ff6b6b) is ~2.8:1
+       on white; darken the error base instead so hover/active stay AA. */
     &:hover {
-      color: var(--govbb-red-100);
-      background: transparent;
+      color: color-mix(in oklab, var(--govbb-color-error), black 20%);
+      background: var(--govbb-red-10);
       box-shadow: none;
     }
 
     &:active {
-      color: var(--govbb-color-error);
-      background: transparent;
+      color: color-mix(in oklab, var(--govbb-color-error), black 35%);
+      background: var(--govbb-red-40);
       box-shadow: none;
     }
   }
