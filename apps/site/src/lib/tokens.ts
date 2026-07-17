@@ -28,7 +28,7 @@ const DECL =
 for (const match of tokensCss.matchAll(DECL)) {
   const [, name, rawValue, rawNote] = match;
   const value = rawValue.replace(/\s+/g, ' ').trim();
-  let note = rawNote?.replace(/\s+/g, ' ').trim();
+  let note: string | undefined = rawNote?.replace(/\s+/g, ' ').trim();
   // Pure pixel-equivalent comments (e.g. `/* 4px */`) are redundant here:
   // the tables already compute the px value from the rem.
   if (note && /^\d+px$/.test(note)) note = undefined;

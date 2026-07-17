@@ -1,0 +1,53 @@
+---
+// Standalone template example pages: each entry in src/examples/templates/
+// renders at /examples/templates/<slug>/ as a real, chrome-less page - no
+// docs header, sidebar or footer, styled only by the frontend package, the
+// way a consumer's page would be. The docs templates section embeds these
+// URLs in its preview iframes and links here for "Open in new tab".
+import '@govtech-bb/frontend/css';
+import { getCollection } from 'astro:content';
+import { templateExamples } from '../../../lib/template-examples';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('templates');
+  // Fail the build on any md <-> html mismatch, both ways: a template page
+  // without example markup, or orphaned markup no template page owns.
+  const mdSlugs = new Set(entries.map((e) => e.id));
+  const missing = [...mdSlugs].filter((s) => !(s in templateExamples));
+  const orphaned = Object.keys(templateExamples).filter((s) => !mdSlugs.has(s));
+  if (missing.length > 0 || orphaned.length > 0) {
+    throw new Error(
+      'template examples out of step with src/content/templates:' +
+        missing.map((s) => `\n  missing src/examples/templates/${s}.html`).join('') +
+        orphaned.map((s) => `\n  orphaned src/examples/templates/${s}.html`).join(''),
+    );
+  }
+  return entries.map((entry) => ({
+    params: { slug: entry.id },
+    props: { title: entry.data.title, html: templateExamples[entry.id] },
+  }));
+}
+
+const { title, html } = Astro.props;
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    {/* Example pages are reference material, not content: keep them out of
+        search engines; pagefind skips them already (no data-pagefind-body). */}
+    <meta name="robots" content="noindex" />
+    <title>{title} example - GovBB Design System</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  </head>
+  <body>
+    <Fragment set:html={html} />
+    <script>
+      // The real progressive-enhancement runtime, exactly as a consumer's
+      // page would load it.
+      import { initAll } from '@govtech-bb/frontend';
+      initAll();
+    </script>
+  </body>
+</html>
