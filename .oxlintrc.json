@@ -3,5 +3,10 @@
   "categories": {
     "correctness": "error"
   },
-  "ignorePatterns": ["**/dist/**"]
+  "ignorePatterns": [
+    "**/dist/**",
+    // Example React snippets are ?raw-loaded display sources for the docs
+    // code panel, not modules - bare adjacent JSX is the point.
+    "apps/site/src/examples/**/*.tsx"
+  ]
 }

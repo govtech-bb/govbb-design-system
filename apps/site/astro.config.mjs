@@ -1,6 +1,8 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import pagefind from 'astro-pagefind';
+import remarkDirective from 'remark-directive';
+import { remarkExample } from './src/lib/remark-example.mjs';
 
 // Bespoke, static documentation site for design-system.gov.bb.
 // GOV.UK structure with GovBB branding — see docs/plans/123-scaffold-astro-site.md.
@@ -13,6 +15,9 @@ export default defineConfig({
   // reintroduces dashes the house style bans.
   markdown: {
     smartypants: false,
+    // `::example{id …}` directives place live examples in content markdown;
+    // the markup itself lives under src/examples/ (see lib/remark-example).
+    remarkPlugins: [remarkDirective, remarkExample],
   },
   integrations: [pagefind()],
   redirects: {
