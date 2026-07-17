@@ -5,6 +5,7 @@ import Example from '../../components/Example.astro';
 import { getTemplatesSidebar } from '../../data/nav';
 import { buildExampleBlocks } from '../../lib/example-blocks';
 import { exampleUrl, getTemplateExample } from '../../lib/template-examples';
+import { pageSource } from '../../lib/page-source';
 
 export async function getStaticPaths() {
   const entries = await getCollection('templates');
@@ -34,6 +35,7 @@ const blocks = buildExampleBlocks(entry);
   pageSubtitle={entry.data.lede}
   sidebarGroups={await getTemplatesSidebar()}
   sidebarLabel="Templates"
+  source={pageSource('templates', entry.id)}
   onThisPage={onThisPage}
 >
   <div class="govbb-prose govbb-prose--article">

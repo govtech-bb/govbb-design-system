@@ -4,6 +4,7 @@ import ArticleLayout from '../../layouts/ArticleLayout.astro';
 import Example from '../../components/Example.astro';
 import { getPatternsSidebar } from '../../data/nav';
 import { buildExampleBlocks } from '../../lib/example-blocks';
+import { pageSource } from '../../lib/page-source';
 
 export async function getStaticPaths() {
   const entries = await getCollection('patterns');
@@ -29,6 +30,7 @@ const blocks = buildExampleBlocks(entry);
   pageSubtitle={entry.data.lede}
   sidebarGroups={await getPatternsSidebar()}
   sidebarLabel="Patterns"
+  source={pageSource('patterns', entry.id)}
   onThisPage={onThisPage}
 >
   <div class="govbb-prose govbb-prose--article">

@@ -7,6 +7,7 @@ import TokenTable from '../../components/TokenTable.astro';
 import { getStylesSidebar } from '../../data/nav';
 import { buildExampleBlocks } from '../../lib/example-blocks';
 import { buildTokenBlocks } from '../../lib/token-blocks';
+import { pageSource } from '../../lib/page-source';
 import { select, withAliasNotes } from '../../lib/tokens';
 
 export async function getStaticPaths() {
@@ -43,6 +44,7 @@ const blocks =
   pageSubtitle={entry.data.lede}
   sidebarGroups={await getStylesSidebar()}
   sidebarLabel="Styles"
+  source={pageSource('styles', entry.id)}
   onThisPage={onThisPage}
 >
   <div class="govbb-prose govbb-prose--article">
