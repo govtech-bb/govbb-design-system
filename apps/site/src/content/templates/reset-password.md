@@ -5,11 +5,38 @@ lede: Takes an email address and sends a reset link, without revealing who has a
 group: Authentication
 ---
 
+## Preview
+
+```html title="Reset your password"
+<main class="govbb-width-container" id="main-content">
+  <a class="govbb-back-button" href="#">Back</a>
+
+  <h1 class="govbb-text-h1">Reset your password</h1>
+  <p class="govbb-text-body">
+    Enter the email address you used to create your account. We will send you a
+    link to reset your password.
+  </p>
+
+  <form action="#" method="post" novalidate>
+    <div class="govbb-form-group">
+      <label class="govbb-label" for="email">Email address</label>
+      <input
+        class="govbb-input"
+        id="email"
+        name="email"
+        type="email"
+        autocomplete="username"
+        spellcheck="false"
+      />
+    </div>
+
+    <button class="govbb-button" type="submit">Send reset link</button>
+  </form>
+</main>
+```
+
 The reset page takes an email address and sends a link. Keep the flow to two
 steps: request a link here, then set a new password on the page the link opens.
-Like every page of a service, the template keeps the standard
-[official banner](/components/official-banner/), [header](/components/header/)
-and [footer](/components/footer/).
 
 ## Do not reveal who has an account
 

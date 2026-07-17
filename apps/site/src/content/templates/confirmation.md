@@ -5,12 +5,29 @@ lede: Confirms the service is done, gives a reference number, and says what happ
 group: Service pages
 ---
 
+## Preview
+
+```html title="Application complete"
+<main class="govbb-width-container" id="main-content">
+  <h1 class="govbb-text-display">Application complete</h1>
+  <p class="govbb-text-body-lg">
+    Your reference number<br /><strong>HDJ2123F</strong>
+  </p>
+  <p class="govbb-text-body">
+    We have sent a confirmation email to alex.nurse@example.com.
+  </p>
+
+  <h2 class="govbb-text-h2">What happens next</h2>
+  <p class="govbb-text-body">
+    We will review your application and contact you within 10 working days. You
+    do not need to do anything else now.
+  </p>
+</main>
+```
+
 The confirmation page is the last step of a service. Make it unmistakably a
 success, show a reference number the user can keep, and tell them what happens
-next so they are not left wondering whether it worked. Like every page of a
-service, the template keeps the standard
-[official banner](/components/official-banner/), [header](/components/header/)
-and [footer](/components/footer/).
+next so they are not left wondering whether it worked.
 
 ## The reference number
 
