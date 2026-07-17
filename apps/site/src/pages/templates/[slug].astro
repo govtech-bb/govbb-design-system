@@ -4,6 +4,7 @@ import ArticleLayout from '../../layouts/ArticleLayout.astro';
 import Example from '../../components/Example.astro';
 import { getTemplatesSidebar } from '../../data/nav';
 import { buildExampleBlocks } from '../../lib/example-blocks';
+import { exampleUrl, getTemplateExample } from '../../lib/template-examples';
 
 export async function getStaticPaths() {
   const entries = await getCollection('templates');
@@ -13,10 +14,14 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const { headings } = await render(entry);
 
-// "On this page" nav derived from the markdown's h2 headings.
-const onThisPage = headings
-  .filter((h) => h.depth === 2)
-  .map((h) => ({ label: h.text, href: `#${h.slug}` }));
+// "On this page" nav: the preview the page renders first, then the markdown's
+// h2 headings.
+const onThisPage = [
+  { label: 'Preview', href: '#preview' },
+  ...headings
+    .filter((h) => h.depth === 2)
+    .map((h) => ({ label: h.text, href: `#${h.slug}` })),
+];
 
 const blocks = buildExampleBlocks(entry);
 ---
@@ -32,6 +37,15 @@ const blocks = buildExampleBlocks(entry);
   onThisPage={onThisPage}
 >
   <div class="govbb-prose govbb-prose--article">
+    <h2 id="preview">Preview</h2>
+    {/* The whole-page example is a real route rendered into the preview
+        iframe; the same markup (src/examples/templates/<slug>.html) fills
+        the code panel, so preview and source cannot drift. */}
+    <Example
+      src={exampleUrl(entry.id)}
+      html={getTemplateExample(entry.id)}
+      title={entry.data.title}
+    />
     {
       blocks.map((block) =>
         block.example ? (
@@ -39,7 +53,6 @@ const blocks = buildExampleBlocks(entry);
             html={block.example.html}
             react={block.example.react}
             title={block.example.title}
-            page={block.example.page}
           />
         ) : (
           <Fragment set:html={block.prose} />

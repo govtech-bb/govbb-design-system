@@ -5,70 +5,13 @@ lede: More than one question on a page - only when the questions are closely rel
 group: Forms
 ---
 
-## Preview
-
-```html title="Multiple questions page"
-<main class="govbb-width-container" id="main-content">
-  <a class="govbb-back-button" href="#">Back</a>
-
-  <form action="#" method="post" novalidate>
-    <h1 class="govbb-text-h1">What is your address?</h1>
-
-    <div class="govbb-form-group">
-      <label class="govbb-label" for="address-line-1">Address line 1</label>
-      <input
-        class="govbb-input"
-        id="address-line-1"
-        name="address-line-1"
-        type="text"
-        autocomplete="address-line1"
-      />
-    </div>
-
-    <div class="govbb-form-group">
-      <label class="govbb-label" for="address-line-2">
-        Address line 2 (optional)
-      </label>
-      <input
-        class="govbb-input"
-        id="address-line-2"
-        name="address-line-2"
-        type="text"
-        autocomplete="address-line2"
-      />
-    </div>
-
-    <div class="govbb-form-group">
-      <label class="govbb-label" for="town">Town or city</label>
-      <input
-        class="govbb-input"
-        id="town"
-        name="town"
-        type="text"
-        autocomplete="address-level2"
-      />
-    </div>
-
-    <div class="govbb-form-group">
-      <label class="govbb-label" for="parish">Parish</label>
-      <input
-        class="govbb-input"
-        id="parish"
-        name="parish"
-        type="text"
-        autocomplete="address-level1"
-      />
-    </div>
-
-    <button class="govbb-button" type="submit">Continue</button>
-  </form>
-</main>
-```
-
 Put more than one question on a page only when the questions are so closely
 related that answering them together makes sense - the lines of an address, the
 parts of a name, a set of contact details. When in doubt, use the
-[single question page](/templates/single-question-page/) instead.
+[single question page](/templates/single-question-page/) instead. Like every
+page of a service, the template keeps the standard
+[official banner](/components/official-banner/), [header](/components/header/)
+and [footer](/components/footer/).
 
 ## The page heading
 

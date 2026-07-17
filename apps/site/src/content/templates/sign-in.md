@@ -5,52 +5,12 @@ lede: Collects a user's credentials and links to account recovery.
 group: Authentication
 ---
 
-## Preview
-
-```html title="Sign in"
-<main class="govbb-width-container" id="main-content">
-  <h1 class="govbb-text-h1">Sign in</h1>
-
-  <form action="#" method="post" novalidate>
-    <div class="govbb-form-group">
-      <label class="govbb-label" for="email">Email address</label>
-      <input
-        class="govbb-input"
-        id="email"
-        name="email"
-        type="email"
-        autocomplete="username"
-        spellcheck="false"
-      />
-    </div>
-
-    <div class="govbb-form-group">
-      <label class="govbb-label" for="password">Password</label>
-      <input
-        class="govbb-input"
-        id="password"
-        name="password"
-        type="password"
-        autocomplete="current-password"
-      />
-    </div>
-
-    <button class="govbb-button" type="submit">Sign in</button>
-  </form>
-
-  <p class="govbb-text-body">
-    <a class="govbb-link" href="#">Reset your password</a>
-  </p>
-  <p class="govbb-text-body">
-    <a class="govbb-link" href="#">Create an account</a>
-  </p>
-</main>
-```
-
 The sign-in page collects a returning user's credentials. Set the right
 `autocomplete` values (`username`, `current-password`) so password managers and
 browsers fill the fields, and always offer routes to reset a password and to
-create an account.
+create an account. Like every page of a service, the template keeps the
+standard [official banner](/components/official-banner/),
+[header](/components/header/) and [footer](/components/footer/).
 
 ## When to use this page
 
