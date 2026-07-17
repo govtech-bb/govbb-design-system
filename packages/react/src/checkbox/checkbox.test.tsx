@@ -18,6 +18,21 @@ describe('Checkbox', () => {
     render(<Checkbox id="terms" label="Terms" />);
     expect(screen.getByRole('checkbox', { name: 'Terms' }).id).toBe('terms');
   });
+
+  it('wires a per-option hint via aria-describedby', () => {
+    render(
+      <Checkbox
+        label="British"
+        hint="Including English, Scottish, Welsh and Northern Irish"
+      />,
+    );
+    const checkbox = screen.getByRole('checkbox', { name: 'British' });
+    const hint = screen.getByText(
+      'Including English, Scottish, Welsh and Northern Irish',
+    );
+    expect(hint.className).toBe('govbb-hint');
+    expect(checkbox.getAttribute('aria-describedby')).toBe(hint.id);
+  });
 });
 
 describe('CheckboxGroup', () => {

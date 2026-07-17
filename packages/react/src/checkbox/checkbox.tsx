@@ -10,13 +10,26 @@ import { ErrorMessage, Fieldset, Hint } from '../form/form';
 export interface CheckboxProps extends InputHTMLAttributes<HTMLInputElement> {
   /** Rendered in the item's label, wired to the input via htmlFor. */
   label: ReactNode;
+  /** Per-option hint, announced with the label via aria-describedby. */
+  hint?: ReactNode;
 }
 
 /** Ref goes to the <input>, not the wrapping item div. */
 export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
-  function Checkbox({ label, id, className, ...props }, ref) {
+  function Checkbox(
+    {
+      label,
+      hint,
+      id,
+      className,
+      'aria-describedby': ariaDescribedBy,
+      ...props
+    },
+    ref,
+  ) {
     const autoId = useId();
     const inputId = id ?? autoId;
+    const hintId = hint != null ? `${inputId}-hint` : undefined;
     return (
       <div className="govbb-checkbox-item">
         <input
@@ -24,11 +37,17 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
           className={cx('govbb-checkbox', className)}
           id={inputId}
           type="checkbox"
+          aria-describedby={cx(hintId, ariaDescribedBy) || undefined}
           {...props}
         />
         <label className="govbb-checkbox-item__label" htmlFor={inputId}>
           {label}
         </label>
+        {hint != null && (
+          <span className="govbb-hint" id={hintId}>
+            {hint}
+          </span>
+        )}
       </div>
     );
   },
