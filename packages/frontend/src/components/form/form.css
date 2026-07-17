@@ -57,10 +57,22 @@
   color: var(--govbb-color-error);
 }
 
-/* Keep label, hint and error message tight together — no gap between them
-   (line-height carries the rhythm); only the field below gets the 8px. */
+/* Keep label/legend, hint and error message tight together — no gap between
+   them (line-height carries the rhythm); only the control(s) below get 8px. */
 .govbb-form-group > .govbb-label + .govbb-hint,
 .govbb-form-group > .govbb-label + .govbb-error-message,
-.govbb-form-group > .govbb-hint + .govbb-error-message {
-  margin-top: calc(var(--govbb-space-xs) * -1);
+.govbb-form-group > .govbb-hint + .govbb-error-message,
+.govbb-fieldset > .govbb-fieldset__legend + .govbb-hint,
+.govbb-fieldset > .govbb-fieldset__legend + .govbb-error-message,
+.govbb-fieldset > .govbb-hint + .govbb-error-message {
+  margin-block-start: calc(var(--govbb-space-xs) * -1);
+}
+
+/* A legend sits outside the fieldset's flex content box, so gap does not
+   separate it from the first child. Add that 8px only when controls follow
+   the legend directly; hint/error text remains grouped with the legend. */
+.govbb-fieldset
+  > .govbb-fieldset__legend
+  + :not(:where(.govbb-hint, .govbb-error-message)) {
+  margin-block-start: var(--govbb-space-xs);
 }
