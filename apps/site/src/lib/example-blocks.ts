@@ -11,6 +11,9 @@ export interface ExampleData {
   title?: string;
   html: string;
   react?: string;
+  /** Whole-page example: render the preview full-bleed (no body padding) and
+      taller. Opt in with a bare `page` token in the ```html fence meta. */
+  page?: boolean;
 }
 
 export type Block =
@@ -28,6 +31,7 @@ export function buildExampleBlocks(entry: EntryLike): Block[] {
   ].map((m) => ({
     lang: m[1],
     title: /title="([^"]*)"/.exec(m[2])?.[1],
+    page: /(^|\s)page(\s|$)/.test(m[2]),
     code: m[3].trim(),
   }));
   const parts = (entry.rendered?.html ?? '').split(/<pre[^>]*>[\s\S]*?<\/pre>/);
@@ -50,6 +54,7 @@ export function buildExampleBlocks(entry: EntryLike): Block[] {
     const example: ExampleData = {
       title: fence.title,
       html: fence.code,
+      page: fence.page,
     };
     if (fences[i + 1]?.lang === 'tsx' && parts[i + 1].trim() === '') {
       example.react = fences[i + 1].code;
