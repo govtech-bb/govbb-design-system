@@ -9,6 +9,7 @@
   align-items: flex-start;
   gap: var(--govbb-space-xs);
   width: 100%;
+  margin-bottom: var(--govbb-space-xm);
 }
 
 .govbb-fieldset {
