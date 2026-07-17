@@ -1,0 +1,48 @@
+---
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import { getCollection } from 'astro:content';
+import { getTemplatesSidebar } from '../../data/nav';
+
+const GROUP_ORDER = [
+  'Service pages',
+  'Authentication',
+  'Forms',
+  'Error pages',
+] as const;
+const entries = await getCollection('templates');
+entries.sort((a, b) => a.data.title.localeCompare(b.data.title));
+---
+<ArticleLayout
+  title="Templates"
+  section="templates"
+  description="Whole-page layouts to copy as a starting point for the common pages every service needs."
+  pageTitle="Templates"
+  pageSubtitle="Whole-page layouts to copy as a starting point for the common pages every service needs."
+  sidebarGroups={await getTemplatesSidebar()}
+  sidebarLabel="Templates"
+>
+  <div class="govbb-prose">
+    <p>
+      Templates are ready-made pages built from the components and patterns. Copy
+      one as the starting point for a page every service needs — an error page, a
+      start page, a sign-in page or a question page — then fill in your content.
+    </p>
+    {
+      GROUP_ORDER.map((group) => (
+        <>
+          <h2>{group}</h2>
+          <ul>
+            {entries
+              .filter((e) => e.data.group === group)
+              .map((entry) => (
+                <li>
+                  <a href={`/templates/${entry.id}/`}>{entry.data.title}</a> -{' '}
+                  {entry.data.lede}
+                </li>
+              ))}
+          </ul>
+        </>
+      ))
+    }
+  </div>
+</ArticleLayout>

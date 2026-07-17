@@ -6,6 +6,7 @@ import {
   getComponentsSidebar,
   getDocumentationSidebar,
   getStylesSidebar,
+  getTemplatesSidebar,
 } from '../../data/nav';
 import { getSortedChangelog } from '../../data/changelog';
 import type { Section } from '../../types';
@@ -14,6 +15,7 @@ const changelog = await getSortedChangelog();
 const componentsSidebar = await getComponentsSidebar();
 const documentationSidebar = await getDocumentationSidebar();
 const stylesSidebar = await getStylesSidebar();
+const templatesSidebar = await getTemplatesSidebar();
 
 // Sub-links per section, derived from the same nav/content sources the rest of
 // the site uses, so the sitemap stays in step as pages are added.
@@ -22,6 +24,7 @@ const childrenFor = (key: Section, href: string) => {
   if (key === 'styles') links = stylesSidebar.flatMap((g) => g.links);
   else if (key === 'components') links = componentsSidebar.flatMap((g) => g.links);
   else if (key === 'documentation') links = documentationSidebar.flatMap((g) => g.links);
+  else if (key === 'templates') links = templatesSidebar.flatMap((g) => g.links);
   else if (key === 'changelog')
     links = changelog.map((p) => ({ label: p.data.title, href: `/changelog/${p.id}/` }));
   return links
