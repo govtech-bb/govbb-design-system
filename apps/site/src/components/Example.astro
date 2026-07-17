@@ -26,24 +26,21 @@ interface Props {
   css?: string;
   /** Accessible label for the example. */
   title?: string;
-  /** Whole-page example: render the preview full-bleed (no body padding, so
-      full-width bands reach the edges) and allow a taller frame. */
-  page?: boolean;
 }
-const { html, src, react, css = '', title, page = false } = Astro.props;
+const { html, src, react, css = '', title } = Astro.props;
 
 // Unique id so the tab/tabpanel ARIA relationships are scoped per instance.
 const uid = 'ex-' + Math.random().toString(36).slice(2, 9);
 
-// Full-page examples (a real route, or a legacy `page` srcdoc) get more room
-// before the frame scrolls internally; component snippets stay compact. The
-// frame's max height is read by the fit() script.
-const maxHeight = src || page ? 900 : 640;
+// Full-page examples (a real route) get more room before the frame scrolls
+// internally; component snippets stay compact. The frame's max height is read
+// by the fit() script.
+const maxHeight = src ? 900 : 640;
 const previewStyles = `
   html { color-scheme: light; }
   body {
     margin: 0;
-    padding: ${page ? '0' : '24px'};
+    padding: 24px;
     box-sizing: border-box;
     font-family: var(--govbb-font-sans, system-ui, sans-serif);
     background: #fff;
@@ -89,16 +86,16 @@ const codeBlocks = [
         data-view="code"
       >Code</button>
     </div>
-    {/* Real routes link directly; for srcdoc examples the href is set on the
-        client (a blob: URL of the same srcdoc document), and without JS the
-        anchor stays inert rather than pointing nowhere. */}
-    <a
-      class="govbb-example__open"
-      href={src}
-      target="_blank"
-      rel="noopener"
-      data-example-open
-    >Open in new tab</a>
+    {/* A real route is a real page, so opening it in a tab is a plain link.
+        Inline srcdoc snippets have no standalone URL and no open link. */}
+    {src && (
+      <a
+        class="govbb-example__open"
+        href={src}
+        target="_blank"
+        rel="noopener"
+      >Open in new tab</a>
+    )}
   </div>
 
   <div
@@ -202,10 +199,6 @@ const codeBlocks = [
   }
   .govbb-example__open:hover {
     color: var(--govbb-color-text);
-  }
-  /* No JS: the anchor has no href, so hide the dead control */
-  .govbb-example__open:not([href]) {
-    display: none;
   }
   .govbb-example__view-tab {
     display: inline-flex;
@@ -341,7 +334,6 @@ const codeBlocks = [
 
 <script>
   import { initAll } from '@govtech-bb/frontend';
-  import libraryCssUrl from '@govtech-bb/frontend/css?url';
 
   const examples = document.querySelectorAll<HTMLElement>('[data-example]');
 
@@ -415,26 +407,6 @@ const codeBlocks = [
   };
 
   examples.forEach((example) => {
-    // "Open in new tab" — a real example route is server-rendered with a
-    // plain href; for srcdoc examples the preview is a complete document, so
-    // a blob: URL of the same string opens it as a real full-width page. One
-    // fix-up: a blob: document has an opaque base URL, so the root-relative
-    // stylesheet href would never resolve — absolutize it. The blob URLs are
-    // deliberately never revoked: they must survive repeat clicks, and the
-    // browser frees them when the page unloads.
-    const openLink = example.querySelector<HTMLAnchorElement>('[data-example-open]');
-    const frame = example.querySelector<HTMLIFrameElement>('[data-example-frame]');
-    const srcdocString = frame?.getAttribute('srcdoc');
-    if (openLink && !openLink.hasAttribute('href') && srcdocString) {
-      const popupDoc = srcdocString.replace(
-        `href="${libraryCssUrl}"`,
-        () => `href="${new URL(libraryCssUrl, location.href).href}"`,
-      );
-      openLink.href = URL.createObjectURL(
-        new Blob([popupDoc], { type: 'text/html' }),
-      );
-    }
-
     // Top-level Preview / Code toggle.
     const viewTabs = Array.from(
       example.querySelectorAll<HTMLButtonElement>('.govbb-example__view-tab'),
