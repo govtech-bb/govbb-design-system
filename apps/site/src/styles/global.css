@@ -206,6 +206,31 @@ img:not([class]) {
   margin: var(--govbb-space-3) 0 0;
 }
 
+/* "Get this page" links (GitHub source, raw markdown) under the title. */
+.govbb-page-source {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--govbb-space-2) var(--govbb-space-5);
+  list-style: none;
+  margin: var(--govbb-space-4) 0 0;
+  padding: 0;
+}
+.govbb-page-source__link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--govbb-space-2);
+  font-size: 0.875rem;
+  color: var(--govbb-color-text-muted);
+  text-decoration: none;
+}
+.govbb-page-source__link:hover {
+  color: var(--govbb-color-text);
+  text-decoration: underline;
+}
+.govbb-page-source__icon {
+  flex-shrink: 0;
+}
+
 /* ── Hero (home) ──────────────────────────────────────────────── */
 .govbb-hero {
   padding-block: var(--govbb-space-8) var(--govbb-space-8);

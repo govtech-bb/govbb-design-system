@@ -2,6 +2,7 @@
 import { getCollection, render } from 'astro:content';
 import ArticleLayout from '../../layouts/ArticleLayout.astro';
 import { getDocumentationSidebar } from '../../data/nav';
+import { pageSource } from '../../lib/page-source';
 
 export async function getStaticPaths() {
   const entries = await getCollection('docs');
@@ -23,6 +24,7 @@ const onThisPage = headings
   pageSubtitle={entry.data.lede}
   sidebarGroups={await getDocumentationSidebar()}
   sidebarLabel="Documentation"
+  source={pageSource('documentation', entry.id)}
   onThisPage={onThisPage}
 >
   <div class="govbb-prose govbb-prose--article">

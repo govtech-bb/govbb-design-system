@@ -2,8 +2,10 @@
 import BaseLayout from './BaseLayout.astro';
 import Sidebar from '../components/Sidebar.astro';
 import OnThisPage from '../components/OnThisPage.astro';
+import PageSourceLinks from '../components/PageSourceLinks.astro';
 import type { SidebarGroup } from '../components/Sidebar.astro';
 import type { TocItem } from '../components/OnThisPage.astro';
+import type { PageSource } from '../lib/page-source';
 import type { Section } from '../types';
 
 interface Props {
@@ -15,6 +17,8 @@ interface Props {
   sidebarGroups: SidebarGroup[];
   sidebarLabel?: string;
   onThisPage?: TocItem[];
+  /** "Get this page" links (GitHub source + raw markdown) under the title. */
+  source?: PageSource;
 }
 const {
   title,
@@ -25,6 +29,7 @@ const {
   sidebarGroups,
   sidebarLabel,
   onThisPage,
+  source,
 } = Astro.props;
 ---
 <BaseLayout title={title} description={description} section={section}>
@@ -35,6 +40,7 @@ const {
         <div class="govbb-page-header">
           <h1 class="govbb-page-title">{pageTitle}</h1>
           {pageSubtitle && <p class="govbb-page-subtitle">{pageSubtitle}</p>}
+          {source && <PageSourceLinks {...source} />}
         </div>
         <slot />
       </div>
