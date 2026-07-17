@@ -4,6 +4,7 @@ export type Section =
   | 'styles'
   | 'patterns'
   | 'components'
+  | 'templates'
   | 'documentation'
   | 'ai-skills'
   | 'changelog';

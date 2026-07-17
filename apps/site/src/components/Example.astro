@@ -21,24 +21,25 @@ interface Props {
   css?: string;
   /** Accessible label for the example. */
   title?: string;
+  /** Whole-page example: render the preview full-bleed (no body padding, so
+      full-width bands reach the edges) and allow a taller frame. */
+  page?: boolean;
 }
-const { html, react, css = '', title } = Astro.props;
+const { html, react, css = '', title, page = false } = Astro.props;
 
 // Unique id so the tab/tabpanel ARIA relationships are scoped per instance.
 const uid = 'ex-' + Math.random().toString(36).slice(2, 9);
 
+// Page examples go edge-to-edge (their own header/footer bands are full-width);
+// component snippets keep a comfortable gutter. The frame's max height is read
+// by the fit() script so a full page gets more room before it scrolls.
+const maxHeight = page ? 900 : 640;
 const previewStyles = `
   html { color-scheme: light; }
   body {
     margin: 0;
-    padding: 32px;
+    padding: ${page ? '0' : '24px'};
     box-sizing: border-box;
-    min-height: 100vh;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px;
-    align-items: center;
-    justify-content: center;
     font-family: var(--govbb-font-sans, system-ui, sans-serif);
     background: #fff;
   }
@@ -56,27 +57,37 @@ const codeBlocks = [
 <figure class="govbb-example" data-example>
   {title && <figcaption class="govbb-example__caption">{title}</figcaption>}
 
-  <div class="govbb-example__views" role="tablist" aria-label={title ? `${title} view` : 'Example view'}>
-    <button
-      id={`${uid}-view-preview`}
-      class="govbb-example__view-tab"
-      role="tab"
-      type="button"
-      aria-selected="true"
-      aria-controls={`${uid}-panel-preview`}
-      tabindex="0"
-      data-view="preview"
-    >Preview</button>
-    <button
-      id={`${uid}-view-code`}
-      class="govbb-example__view-tab"
-      role="tab"
-      type="button"
-      aria-selected="false"
-      aria-controls={`${uid}-panel-code`}
-      tabindex="-1"
-      data-view="code"
-    >Code</button>
+  <div class="govbb-example__views">
+    <div class="govbb-example__view-tabs" role="tablist" aria-label={title ? `${title} view` : 'Example view'}>
+      <button
+        id={`${uid}-view-preview`}
+        class="govbb-example__view-tab"
+        role="tab"
+        type="button"
+        aria-selected="true"
+        aria-controls={`${uid}-panel-preview`}
+        tabindex="0"
+        data-view="preview"
+      >Preview</button>
+      <button
+        id={`${uid}-view-code`}
+        class="govbb-example__view-tab"
+        role="tab"
+        type="button"
+        aria-selected="false"
+        aria-controls={`${uid}-panel-code`}
+        tabindex="-1"
+        data-view="code"
+      >Code</button>
+    </div>
+    {/* href is set on the client (a blob: URL of the same srcdoc document);
+        without JS the anchor stays inert rather than pointing nowhere. */}
+    <a
+      class="govbb-example__open"
+      target="_blank"
+      rel="noopener"
+      data-example-open
+    >Open in new tab</a>
   </div>
 
   <div
@@ -90,6 +101,7 @@ const codeBlocks = [
       title={title ? `Preview: ${title}` : 'Component preview'}
       srcdoc={srcdoc}
       loading="lazy"
+      data-max-height={maxHeight}
       data-example-frame
     ></iframe>
   </div>
@@ -145,13 +157,12 @@ const codeBlocks = [
 
 <style>
   .govbb-example {
-    /* Shared so both views are the same height (no jump when toggling) and
-       both tab rows are the same height (Preview/Code and HTML/React/Vue).
-       Both views are pinned to --h and scroll internally — content taller
-       than --h never changes the block's outer height. */
+    /* Shared so both tab rows are the same height (Preview/Code and
+       HTML/React/Vue). The two views size independently: the preview
+       auto-fits its content (see the script) and the code panel scrolls
+       past a max-height, so heights may differ when toggling. */
     --govbb-example-row-h: 44px;
     --govbb-example-bar-h: 36px;
-    --govbb-example-h: 300px;
     --govbb-example-ease: cubic-bezier(0.23, 1, 0.32, 1);
     margin: var(--govbb-space-5) 0;
     display: flex;
@@ -163,10 +174,26 @@ const codeBlocks = [
     margin-bottom: calc(var(--govbb-space-2) - var(--govbb-space-3));
   }
 
-  /* Top-level Preview / Code tabs */
+  /* Toolbar row: Preview / Code tabs plus the open-in-new-tab link */
   .govbb-example__views {
     display: flex;
     border-bottom: 1px solid var(--govbb-color-border);
+  }
+  .govbb-example__view-tabs {
+    display: flex;
+  }
+  .govbb-example__open {
+    margin-left: auto;
+    align-self: center;
+    font-size: 0.875rem; /* 14px */
+    color: var(--govbb-color-text-muted);
+  }
+  .govbb-example__open:hover {
+    color: var(--govbb-color-text);
+  }
+  /* No JS: the anchor has no href, so hide the dead control */
+  .govbb-example__open:not([href]) {
+    display: none;
   }
   .govbb-example__view-tab {
     display: inline-flex;
@@ -195,9 +222,8 @@ const codeBlocks = [
     border-bottom-color: var(--govbb-color-teal);
   }
 
-  /* Preview panel — white card */
+  /* Preview panel — white card, sized by the auto-fitted iframe */
   .govbb-example__preview {
-    height: var(--govbb-example-h);
     border: 1px solid var(--govbb-color-border);
     border-radius: var(--govbb-radius-lg);
     box-shadow: 0 2px 5px rgb(0 0 0 / 0.05);
@@ -207,7 +233,6 @@ const codeBlocks = [
   .govbb-example__preview iframe {
     display: block;
     width: 100%;
-    height: 100%;
     border: 0;
   }
 
@@ -262,7 +287,8 @@ const codeBlocks = [
   }
   .govbb-example__view-tab:focus-visible,
   .govbb-example__lang-tab:focus-visible,
-  .govbb-example__copy:focus-visible {
+  .govbb-example__copy:focus-visible,
+  .govbb-example__open:focus-visible {
     outline: 3px solid transparent;
     outline-offset: -3px;
     box-shadow:
@@ -272,8 +298,8 @@ const codeBlocks = [
   .govbb-example__code :global(pre) {
     margin: 0;
     padding: var(--govbb-space-3) var(--govbb-space-4);
-    /* Same total height as the preview view: --h − the language bar. */
-    height: calc(var(--govbb-example-h) - var(--govbb-example-bar-h));
+    /* Natural height for short snippets; long ones scroll past the cap. */
+    max-height: 480px;
     overflow: auto;
     font-size: 0.8125rem;
     line-height: 1.6;
@@ -303,6 +329,7 @@ const codeBlocks = [
 
 <script>
   import { initAll } from '@govtech-bb/frontend';
+  import libraryCssUrl from '@govtech-bb/frontend/css?url';
 
   const examples = document.querySelectorAll<HTMLElement>('[data-example]');
 
@@ -310,6 +337,20 @@ const codeBlocks = [
     const doc = frame.contentDocument;
     if (!doc) return;
     initAll(doc);
+    // Fit the frame to its content (same-origin srcdoc, so scrollHeight is
+    // readable), clamped so an empty example still reads as a card and a
+    // full-page template scrolls internally past the cap. Measure the body,
+    // not documentElement — the root is floored at the current viewport
+    // height, so it can only ever grow; the body reports true content height
+    // (same trick as TokenDemo). The observer re-fits on show/hide toggles
+    // and window resizes.
+    const max = Number(frame.dataset.maxHeight) || 640;
+    const fit = () => {
+      const h = Math.min(Math.max(doc.body.scrollHeight, 96), max);
+      frame.style.height = `${h}px`;
+    };
+    fit();
+    new ResizeObserver(fit).observe(doc.body);
     // Placeholder links (href="#") in examples must not navigate the preview
     // iframe — clicking one would replace the little preview with the docs
     // page. They are demo affordances, so make them inert like the buttons.
@@ -356,6 +397,25 @@ const codeBlocks = [
   };
 
   examples.forEach((example) => {
+    // "Open in new tab" — the preview srcdoc is a complete document, so a
+    // blob: URL of the same string opens it as a real full-width page. One
+    // fix-up: a blob: document has an opaque base URL, so the root-relative
+    // stylesheet href would never resolve — absolutize it. The blob URLs are
+    // deliberately never revoked: they must survive repeat clicks, and the
+    // browser frees them when the page unloads.
+    const openLink = example.querySelector<HTMLAnchorElement>('[data-example-open]');
+    const frame = example.querySelector<HTMLIFrameElement>('[data-example-frame]');
+    const srcdocString = frame?.getAttribute('srcdoc');
+    if (openLink && srcdocString) {
+      const popupDoc = srcdocString.replace(
+        `href="${libraryCssUrl}"`,
+        () => `href="${new URL(libraryCssUrl, location.href).href}"`,
+      );
+      openLink.href = URL.createObjectURL(
+        new Blob([popupDoc], { type: 'text/html' }),
+      );
+    }
+
     // Top-level Preview / Code toggle.
     const viewTabs = Array.from(
       example.querySelectorAll<HTMLButtonElement>('.govbb-example__view-tab'),

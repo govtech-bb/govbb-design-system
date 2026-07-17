@@ -1,0 +1,50 @@
+---
+import { getCollection, render } from 'astro:content';
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import Example from '../../components/Example.astro';
+import { getTemplatesSidebar } from '../../data/nav';
+import { buildExampleBlocks } from '../../lib/example-blocks';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('templates');
+  return entries.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const { headings } = await render(entry);
+
+// "On this page" nav derived from the markdown's h2 headings.
+const onThisPage = headings
+  .filter((h) => h.depth === 2)
+  .map((h) => ({ label: h.text, href: `#${h.slug}` }));
+
+const blocks = buildExampleBlocks(entry);
+---
+
+<ArticleLayout
+  title={entry.data.title}
+  section="templates"
+  description={entry.data.description}
+  pageTitle={entry.data.title}
+  pageSubtitle={entry.data.lede}
+  sidebarGroups={await getTemplatesSidebar()}
+  sidebarLabel="Templates"
+  onThisPage={onThisPage}
+>
+  <div class="govbb-prose govbb-prose--article">
+    {
+      blocks.map((block) =>
+        block.example ? (
+          <Example
+            html={block.example.html}
+            react={block.example.react}
+            title={block.example.title}
+            page={block.example.page}
+          />
+        ) : (
+          <Fragment set:html={block.prose} />
+        ),
+      )
+    }
+  </div>
+</ArticleLayout>

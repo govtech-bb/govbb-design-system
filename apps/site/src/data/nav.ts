@@ -12,6 +12,7 @@ export const primaryNav: PrimaryNavItem[] = [
   { key: 'styles', label: 'Styles', href: '/styles/' },
   { key: 'patterns', label: 'Patterns', href: '/patterns/' },
   { key: 'components', label: 'Components', href: '/components/' },
+  { key: 'templates', label: 'Templates', href: '/templates/' },
 ];
 
 // Sections kept out of the header (GOV.UK-style: styles / components only)
@@ -118,6 +119,34 @@ export async function getPatternsSidebar(): Promise<SidebarGroup[]> {
       const links = entries
         .filter((e) => e.data.group === heading)
         .map((e) => ({ label: e.data.title, href: `/patterns/${e.id}/` }));
+      return links.length > 0 ? [{ heading, links }] : [];
+    }),
+  ];
+}
+
+// Display order of the template groups (the values of the `group` frontmatter
+// field in src/content/templates/).
+const TEMPLATE_GROUP_ORDER = [
+  'Service pages',
+  'Authentication',
+  'Forms',
+  'Error pages',
+] as const;
+
+// Left-sidebar navigation for the Templates section, derived from the templates
+// content collection — grouped like the components and patterns sidebars.
+export async function getTemplatesSidebar(): Promise<SidebarGroup[]> {
+  const entries = await getCollection('templates');
+  entries.sort((a, b) => a.data.title.localeCompare(b.data.title));
+  return [
+    {
+      heading: 'Templates',
+      links: [{ label: 'Overview', href: '/templates/' }],
+    },
+    ...TEMPLATE_GROUP_ORDER.flatMap((heading) => {
+      const links = entries
+        .filter((e) => e.data.group === heading)
+        .map((e) => ({ label: e.data.title, href: `/templates/${e.id}/` }));
       return links.length > 0 ? [{ heading, links }] : [];
     }),
   ];

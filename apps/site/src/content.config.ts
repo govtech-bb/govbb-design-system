@@ -77,4 +77,24 @@ const patterns = defineCollection({
   }),
 });
 
-export const collections = { changelog, components, docs, styles, patterns };
+// Templates: whole-page scaffolds to copy as a starting point - error pages,
+// service pages (landing/start), authentication, and the generic form page.
+// Patterns say how to solve a task; templates give you the page to fill in.
+const templates = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/templates' }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    lede: z.string(),
+    group: z.enum(['Error pages', 'Service pages', 'Authentication', 'Forms']),
+  }),
+});
+
+export const collections = {
+  changelog,
+  components,
+  docs,
+  styles,
+  patterns,
+  templates,
+};
