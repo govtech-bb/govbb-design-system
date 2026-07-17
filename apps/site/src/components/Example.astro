@@ -21,17 +21,24 @@ interface Props {
   css?: string;
   /** Accessible label for the example. */
   title?: string;
+  /** Whole-page example: render the preview full-bleed (no body padding, so
+      full-width bands reach the edges) and allow a taller frame. */
+  page?: boolean;
 }
-const { html, react, css = '', title } = Astro.props;
+const { html, react, css = '', title, page = false } = Astro.props;
 
 // Unique id so the tab/tabpanel ARIA relationships are scoped per instance.
 const uid = 'ex-' + Math.random().toString(36).slice(2, 9);
 
+// Page examples go edge-to-edge (their own header/footer bands are full-width);
+// component snippets keep a comfortable gutter. The frame's max height is read
+// by the fit() script so a full page gets more room before it scrolls.
+const maxHeight = page ? 900 : 640;
 const previewStyles = `
   html { color-scheme: light; }
   body {
     margin: 0;
-    padding: 24px;
+    padding: ${page ? '0' : '24px'};
     box-sizing: border-box;
     font-family: var(--govbb-font-sans, system-ui, sans-serif);
     background: #fff;
@@ -94,6 +101,7 @@ const codeBlocks = [
       title={title ? `Preview: ${title}` : 'Component preview'}
       srcdoc={srcdoc}
       loading="lazy"
+      data-max-height={maxHeight}
       data-example-frame
     ></iframe>
   </div>
@@ -336,8 +344,9 @@ const codeBlocks = [
     // height, so it can only ever grow; the body reports true content height
     // (same trick as TokenDemo). The observer re-fits on show/hide toggles
     // and window resizes.
+    const max = Number(frame.dataset.maxHeight) || 640;
     const fit = () => {
-      const h = Math.min(Math.max(doc.body.scrollHeight, 96), 640);
+      const h = Math.min(Math.max(doc.body.scrollHeight, 96), max);
       frame.style.height = `${h}px`;
     };
     fit();

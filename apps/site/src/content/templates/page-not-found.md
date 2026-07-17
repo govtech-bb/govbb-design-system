@@ -7,25 +7,82 @@ group: Error pages
 
 ## Preview
 
-```html title="Page not found"
-<main class="govbb-width-container" id="main-content">
-  <h1 class="govbb-text-h1">Page not found</h1>
-  <p class="govbb-text-body-lg">
-    If you typed the web address, check it is correct.
-  </p>
+```html title="Page not found" page
+<div class="govbb-official-banner">
+  <div class="govbb-width-container govbb-official-banner__inner">
+    <div class="govbb-official-banner__crest">
+      <img
+        class="govbb-official-banner__icon"
+        src="/assets/images/govbb-crest.svg"
+        alt=""
+      />
+    </div>
+    <div class="govbb-official-banner__text">
+      <span>Official government website</span>
+      <a class="govbb-official-banner__link" href="#">Learn more</a>
+    </div>
+  </div>
+</div>
+<header class="govbb-header">
+  <div class="govbb-width-container govbb-header__inner">
+    <a href="/">
+      <img
+        class="govbb-header__logo"
+        src="/assets/images/govbb-logo.svg"
+        alt="gov.bb"
+      />
+    </a>
+  </div>
+</header>
+<main class="govbb-width-container govbb-main-wrapper" id="main-content">
+  <h1 class="govbb-text-h1">We couldn't find that page</h1>
   <p class="govbb-text-body">
-    If you pasted the web address, check you copied the whole address.
+    The page you're looking for may have been moved, removed, or the address may
+    have been typed incorrectly.
   </p>
-  <p class="govbb-text-body">
-    If the web address is correct or you selected a link or button,
-    <a class="govbb-link" href="#">contact us</a> if you need help.
-  </p>
+
+  <h2 class="govbb-text-h3">Suggestions:</h2>
+  <ul class="govbb-list govbb-list--bullet">
+    <li>Check the web address for typos</li>
+    <li>Return to the homepage</li>
+    <li>Browse our services directory</li>
+  </ul>
+
+  <div class="govbb-button-group">
+    <a class="govbb-button govbb-button--secondary" href="#" role="button">
+      Browse our services directory
+    </a>
+    <a class="govbb-button" href="#" role="button">Return to homepage</a>
+  </div>
 </main>
+<footer class="govbb-footer">
+  <div class="govbb-width-container govbb-footer__inner">
+    <nav class="govbb-footer__nav" aria-label="Footer navigation">
+      <a class="govbb-link govbb-footer__link" href="/">Home</a>
+      <a class="govbb-link govbb-footer__link" href="/cookies">Cookie policy</a>
+      <a class="govbb-link govbb-footer__link" href="/terms">
+        Terms &amp; conditions
+      </a>
+      <a class="govbb-link govbb-footer__link" href="/sitemap">Sitemap</a>
+    </nav>
+    <hr class="govbb-footer__divider" aria-hidden="true" />
+    <div class="govbb-footer__end">
+      <img
+        class="govbb-footer__coat"
+        src="/assets/images/govbb-crest.svg"
+        alt=""
+      />
+      <p class="govbb-footer__copy">© 2026 Government of Barbados</p>
+    </div>
+  </div>
+</footer>
 ```
 
-Show this page when a URL does not match anything. Return the `404` status code
-so crawlers and monitoring see it as an error, not a normal page. Keep the copy
-plain: tell the user what to check and give them a way to get help.
+Show this page when a URL does not match anything, and return the `404` status
+code so crawlers and monitoring see it as an error, not a normal page. Lead with
+a plain heading, say what may have happened, then give the user concrete ways
+forward: a short list of suggestions and buttons to the service directory and
+the homepage.
 
 ## When to use this page
 
@@ -35,5 +92,7 @@ typo from a page that has moved.
 
 ## What to include
 
-State that the page was not found, list the things to check, and offer a
-contact route. Do not expose stack traces, internal paths or IDs.
+State that the page was not found, list what to check, and offer routes onward.
+Do not expose stack traces, internal paths or IDs. The page keeps the standard
+[official banner](/components/official-banner/), [header](/components/header/)
+and [footer](/components/footer/) so users still know where they are.

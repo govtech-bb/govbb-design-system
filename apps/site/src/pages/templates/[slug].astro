@@ -39,6 +39,7 @@ const blocks = buildExampleBlocks(entry);
             html={block.example.html}
             react={block.example.react}
             title={block.example.title}
+            page={block.example.page}
           />
         ) : (
           <Fragment set:html={block.prose} />
