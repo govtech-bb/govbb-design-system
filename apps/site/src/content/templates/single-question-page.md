@@ -5,52 +5,14 @@ lede: 'One question per page: the default shape of a form step.'
 group: Forms
 ---
 
-## Preview
-
-```html title="Single question page"
-<main class="govbb-width-container" id="main-content">
-  <a class="govbb-back-button" href="#">Back</a>
-
-  <div class="govbb-error-summary" role="alert" tabindex="-1">
-    <h2 class="govbb-error-summary__title">There is a problem</h2>
-    <ul class="govbb-error-summary__list">
-      <li>
-        <a class="govbb-error-summary__link" href="#full-name">
-          Enter your full name
-        </a>
-      </li>
-    </ul>
-  </div>
-
-  <form action="#" method="post" novalidate>
-    <div class="govbb-form-group">
-      <label class="govbb-label" for="full-name">
-        <h1 class="govbb-text-h1">What is your full name?</h1>
-      </label>
-      <span class="govbb-error-message" id="full-name-error" role="alert">
-        Enter your full name
-      </span>
-      <input
-        class="govbb-input"
-        id="full-name"
-        name="full-name"
-        type="text"
-        autocomplete="name"
-        aria-invalid="true"
-        aria-describedby="full-name-error"
-      />
-    </div>
-
-    <button class="govbb-button" type="submit">Continue</button>
-  </form>
-</main>
-```
-
 This is the default shape of a form step: a back link, an error summary that
 appears only when validation fails, one question, and a continue button. One
 thing per page is easier to answer, easier to validate and easier to recover
 from an error - use it unless you have a specific reason to
-[group questions](/templates/multiple-questions-page/).
+[group questions](/templates/multiple-questions-page/). Like every page of a
+service, the template keeps the standard
+[official banner](/components/official-banner/), [header](/components/header/)
+and [footer](/components/footer/).
 
 ## Should this live in Patterns or Templates?
 
