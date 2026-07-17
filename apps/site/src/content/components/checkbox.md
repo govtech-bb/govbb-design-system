@@ -89,6 +89,41 @@ Make the number of selectable options clear. Do not assume users will infer from
 the visual difference between checkboxes and radio buttons that they can select
 more than one. Add a hint such as _"Select all that apply"_ where it helps.
 
+## Per-option hints
+
+Add a hint to an individual option when its label needs clarification. Link the
+hint to the checkbox with `aria-describedby`.
+
+```html title="Checkbox with a per-option hint"
+<div class="govbb-checkbox-item">
+  <input
+    class="govbb-checkbox"
+    id="nationality-british"
+    type="checkbox"
+    name="nationality"
+    value="british"
+    aria-describedby="nationality-british-hint"
+  />
+  <label class="govbb-checkbox-item__label" for="nationality-british">
+    British
+  </label>
+  <span class="govbb-hint" id="nationality-british-hint">
+    Including English, Scottish, Welsh and Northern Irish
+  </span>
+</div>
+```
+
+```tsx
+import { Checkbox } from '@govtech-bb/react';
+
+<Checkbox
+  name="nationality"
+  value="british"
+  label="British"
+  hint="Including English, Scottish, Welsh and Northern Irish"
+/>;
+```
+
 ## Single checkbox
 
 Use a standalone checkbox, without a fieldset, for a single opt-in, such as

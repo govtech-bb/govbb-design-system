@@ -14,6 +14,8 @@
   appearance: none;
   display: inline-grid;
   place-content: center;
+  grid-column: 1;
+  grid-row: 1;
   flex-shrink: 0;
   width: 3rem;
   height: 3rem;
@@ -76,20 +78,32 @@
   cursor: not-allowed;
 }
 
-/* Control + label row. */
+/* Control + copy. A per-option hint sits beneath its label instead of becoming
+   a third inline item; options without hints retain the same single-row
+   alignment. */
 .govbb-checkbox-item,
 .govbb-radio-item {
-  display: flex;
+  display: grid;
+  grid-template-columns: 3rem minmax(0, 1fr);
   align-items: center;
-  gap: 1.25rem; /* 20px — control↔label */
+  column-gap: 1.25rem; /* 20px — control↔copy */
 }
 
 .govbb-checkbox-item__label,
 .govbb-radio-item__label {
+  grid-column: 2;
+  grid-row: 1;
   font-size: var(--govbb-font-size-body);
   line-height: var(--govbb-line-height-base);
   color: var(--govbb-color-ink);
   cursor: pointer;
+}
+
+.govbb-checkbox-item > .govbb-hint,
+.govbb-radio-item > .govbb-hint {
+  grid-column: 2;
+  grid-row: 2;
+  align-self: start;
 }
 
 .govbb-checkbox:disabled + .govbb-checkbox-item__label,
