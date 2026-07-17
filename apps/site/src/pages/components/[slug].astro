@@ -19,7 +19,7 @@ const onThisPage = headings
   .filter((h) => h.depth === 2)
   .map((h) => ({ label: h.text, href: `#${h.slug}` }));
 
-const blocks = buildExampleBlocks(entry);
+const blocks = buildExampleBlocks(entry, 'components');
 ---
 
 <ArticleLayout
