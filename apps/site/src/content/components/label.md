@@ -40,18 +40,42 @@ The Label component names the field it sits above, so users know what answer is
 expected before they start typing. Every form control (input, select, text area,
 checkbox, or radio) needs a visible label.
 
-## When to use this component
+## Usage
 
-Use a label on every form control, without exception. Associate it with its
-control using `for` and `id` so clicking the label focuses the control, and so
-assistive technology announces the label whenever the control receives focus.
+<div class="govbb-usage-guidance">
+  <section class="govbb-usage-guidance__item" aria-labelledby="label-when-to-use">
+    <h3 id="label-when-to-use">
+      <span class="govbb-usage-guidance__icon govbb-usage-guidance__icon--do" aria-hidden="true">✓</span>
+      When to use
+    </h3>
+    <ul>
+      <li>Use a visible label for every form control.</li>
+      <li>Use a legend instead when one question describes a group of related controls.</li>
+    </ul>
+  </section>
+  <section class="govbb-usage-guidance__item" aria-labelledby="label-when-not-to-use">
+    <h3 id="label-when-not-to-use">
+      <span class="govbb-usage-guidance__icon govbb-usage-guidance__icon--dont" aria-hidden="true">×</span>
+      When not to use
+    </h3>
+    <ul>
+      <li>Do not use placeholder text as a replacement for a label.</li>
+      <li>Do not use a label as a container for long instructions or unrelated content.</li>
+    </ul>
+  </section>
+</div>
 
-## When not to use this component
+## Best practices
 
-Do not use placeholder text in place of a label. Placeholder text disappears as
-soon as the user starts typing, offers no persistent reminder of what is being
-asked, and is easy to miss , particularly for users of screen
-magnification or those who are easily distracted.
+### Connect the label to its control
+
+Match the label's `for` value to the control's `id`. This lets users select the
+label to focus the control and gives assistive technology a reliable name.
+
+### Write short, direct label text
+
+Use sentence case, put the important words first and do not end labels with a
+colon. Put examples, format rules and explanations in hint text instead.
 
 ## Writing label text
 

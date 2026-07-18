@@ -35,20 +35,44 @@ The Input component lets users enter a single line of short, free-form text, suc
 as a name, reference number, or email address. Every input is paired with a
 visible label so it is clear what answer is expected.
 
-## When to use this component
+## Usage
 
-Use an input for short, single-line answers where you cannot offer a fixed set of
-choices, such as a name, address line, or reference number. Choose a specific
-`type` (for example `email`, `tel`, or `url`) so mobile keyboards and browser
-validation match the answer you're asking for.
+<div class="govbb-usage-guidance">
+  <section class="govbb-usage-guidance__item" aria-labelledby="input-when-to-use">
+    <h3 id="input-when-to-use">
+      <span class="govbb-usage-guidance__icon govbb-usage-guidance__icon--do" aria-hidden="true">✓</span>
+      When to use
+    </h3>
+    <ul>
+      <li>Use an input for a short, single-line answer that users know or may paste, such as a name or reference number.</li>
+      <li>Use the input type and width that match the value being collected.</li>
+    </ul>
+  </section>
+  <section class="govbb-usage-guidance__item" aria-labelledby="input-when-not-to-use">
+    <h3 id="input-when-not-to-use">
+      <span class="govbb-usage-guidance__icon govbb-usage-guidance__icon--dont" aria-hidden="true">×</span>
+      When not to use
+    </h3>
+    <ul>
+      <li>Do not use a single-line input for a long response; use a text area.</li>
+      <li>Do not make users type an answer when a short, predictable set of choices would be easier.</li>
+    </ul>
+  </section>
+</div>
 
-## When not to use this component
+## Best practices
 
-Do not use an input when the answer spans more than a sentence. Use a text area
-instead. Do not use an input for numeric answers that need step controls, such as
-a quantity; use a number input instead. And do not use an input when you can offer
-users a fixed set of choices: a select, radio buttons, or checkboxes are easier
-and less error-prone to answer.
+### Use a visible, persistent label
+
+Place a short label above the input and use hint text for format requirements or
+examples. Do not use placeholder text as the only instruction because it
+disappears when users type.
+
+### Match browser behaviour to the answer
+
+Use `email`, `tel`, `url` and relevant `autocomplete` values where appropriate.
+Use `inputmode="numeric"` with a text input for identifiers, telephone numbers
+and other digit strings that are not quantities.
 
 ## Labels and hint text
 

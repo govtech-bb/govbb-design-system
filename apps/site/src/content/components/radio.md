@@ -65,18 +65,43 @@ mutually exclusive choices. Always wrap a group of radios in a `<fieldset>` with
 a `<legend>` that asks the question, since screen readers announce the legend
 with every option so users hear what they are answering.
 
-## When to use this component
+## Usage
 
-Use radios when users must pick exactly one option and the list is short enough
-to show all options , roughly five or fewer. Put the most common or
-recommended option first, and fall back to alphabetical order only when no
-meaningful priority exists.
+<div class="govbb-usage-guidance">
+  <section class="govbb-usage-guidance__item" aria-labelledby="radio-when-to-use">
+    <h3 id="radio-when-to-use">
+      <span class="govbb-usage-guidance__icon govbb-usage-guidance__icon--do" aria-hidden="true">✓</span>
+      When to use
+    </h3>
+    <ul>
+      <li>Use radio buttons when users must choose exactly one option from a short list.</li>
+      <li>Use them when seeing all choices at once helps users compare and decide.</li>
+    </ul>
+  </section>
+  <section class="govbb-usage-guidance__item" aria-labelledby="radio-when-not-to-use">
+    <h3 id="radio-when-not-to-use">
+      <span class="govbb-usage-guidance__icon govbb-usage-guidance__icon--dont" aria-hidden="true">×</span>
+      When not to use
+    </h3>
+    <ul>
+      <li>Do not use radio buttons when more than one option may be selected; use <a href="/components/checkbox/">checkboxes</a>.</li>
+      <li>Do not use them for a long list that is difficult to scan; consider a <a href="/components/select/">select</a>.</li>
+    </ul>
+  </section>
+</div>
 
-## When not to use this component
+## Best practices
 
-Do not use radios when users can pick more than one option. Use checkboxes
-instead. If the list of options is long, a select fits better than a full list
-of radios.
+### Group one question with a legend
+
+Put related radios in a `fieldset`, use the question as the `legend` and add a
+hint such as “Select one option” when needed. Place each radio before its label.
+
+### Avoid influencing the answer
+
+Do not preselect an option for a question. Order choices logically, add “None
+of the above” when it is a real answer, and use per-option hints only where they
+help users distinguish similar choices.
 
 ## Per-option hints
 

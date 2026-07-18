@@ -25,7 +25,11 @@ group: Ask users for
     spellcheck="false"
     aria-describedby="national-id-hint"
   />
-  <p><a class="govbb-link" href="#">Use passport number instead</a></p>
+  <p>
+    <a class="govbb-link" href="/service/passport-number/">
+      Use passport number instead
+    </a>
+  </p>
 </div>
 ```
 

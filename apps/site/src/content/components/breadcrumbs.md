@@ -42,18 +42,42 @@ hierarchy, starting from the homepage. It does not include the current page:
 users can see that from the page title. The chevron separators are drawn with
 CSS, so nothing extra is announced to screen readers.
 
-## When to use this component
+## Usage
 
-Use breadcrumbs when a page sits within a hierarchy of more than one level and
-users are likely to want to move back up it, for example from a guide about
-renewing a passport up to the passports topic page.
+<div class="govbb-usage-guidance">
+  <section class="govbb-usage-guidance__item" aria-labelledby="breadcrumbs-when-to-use">
+    <h3 id="breadcrumbs-when-to-use">
+      <span class="govbb-usage-guidance__icon govbb-usage-guidance__icon--do" aria-hidden="true">✓</span>
+      When to use
+    </h3>
+    <ul>
+      <li>Use breadcrumbs when a page sits several levels deep in a website hierarchy.</li>
+      <li>Use them when users may arrive on an interior page from search or an external link and need orientation.</li>
+    </ul>
+  </section>
+  <section class="govbb-usage-guidance__item" aria-labelledby="breadcrumbs-when-not-to-use">
+    <h3 id="breadcrumbs-when-not-to-use">
+      <span class="govbb-usage-guidance__icon govbb-usage-guidance__icon--dont" aria-hidden="true">×</span>
+      When not to use
+    </h3>
+    <ul>
+      <li>Do not use breadcrumbs to show progress through a linear service; use the <a href="/components/back-button/">back button</a>.</li>
+      <li>Do not add them to a flat website or when the same path is already clear from nearby navigation.</li>
+    </ul>
+  </section>
+</div>
 
-## When not to use this component
+## Best practices
 
-Do not use breadcrumbs inside a linear, multi-step transaction. Use the
-[back button](/components/back-button/) instead. Avoid breadcrumbs if the site
-is only one level deep, where a link back to the homepage does the same job
-with less noise.
+### Reflect the website structure
+
+Start with the homepage and end with the parent of the current page. Use short,
+recognisable labels that match the destination headings.
+
+### Use semantic navigation
+
+Wrap the ordered list in a `nav` labelled “Breadcrumb”. Keep separators out of
+the accessible name and mark the current page when it appears in the trail.
 
 ## Collapsing on mobile
 

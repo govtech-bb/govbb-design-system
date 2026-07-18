@@ -77,4 +77,17 @@ const {
     padding-inline: var(--govbb-space-s);
     font-size: var(--govbb-font-size-caption);
   }
+
+  @media (max-width: 50rem) {
+    .site-search--compact {
+      width: 100%;
+      margin-inline-start: 0;
+    }
+    .site-search--compact :global(.govbb-search__input) {
+      flex: 1 1 auto;
+      inline-size: auto;
+      min-inline-size: 0;
+      max-inline-size: none;
+    }
+  }
 </style>

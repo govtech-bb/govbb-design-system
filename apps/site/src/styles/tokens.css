@@ -21,6 +21,7 @@
   --govbb-color-text-muted: var(--govbb-color-muted);
   --govbb-color-white: var(--govbb-white-00);
   --govbb-color-bg: var(--govbb-white-00);
+  --govbb-color-example-surface: #f8f9fa; /* neutral docs preview canvas */
   --govbb-color-panel: var(
     --govbb-blue-10
   ); /* gov bar, email box, active sidebar */

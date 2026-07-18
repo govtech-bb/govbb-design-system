@@ -1,0 +1,56 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const issueUrl =
+  'https://github.com/govtech-bb/govbb-design-system/issues/new/choose';
+const repositoryUrl =
+  'https://github.com/govtech-bb/govbb-design-system';
+---
+
+<BaseLayout
+  title="Support and governance"
+  section="support"
+  description="Get help, report an issue and understand how the GovBB Design System is maintained."
+>
+  <section class="govbb-width-container govbb-page-section">
+    <div class="govbb-page-header">
+      <h1 class="govbb-page-title">Support and governance</h1>
+      <p class="govbb-page-subtitle">
+        Get help using the system, report a problem and understand how guidance
+        is maintained.
+      </p>
+    </div>
+
+    <div class="govbb-prose">
+      <h2>Get help</h2>
+      <p>
+        Start with the <a href="/documentation/">adoption guidance</a> and
+        search the component, pattern and template references. Every reference
+        page links to its source and raw Markdown.
+      </p>
+
+      <h2>Report an issue</h2>
+      <p>
+        <a href={issueUrl}>Open an issue on GitHub</a> for incorrect guidance,
+        accessibility barriers, broken examples or missing use cases. Do not
+        include personal, confidential or security-sensitive information in a
+        public issue.
+      </p>
+
+      <h2>Contribute</h2>
+      <p>
+        The GovBB Design System team maintains the published packages and this
+        documentation. Review the <a href={repositoryUrl}>source repository</a>
+        and open an issue before proposing a substantial change so the user need
+        and affected services can be agreed first.
+      </p>
+
+      <h2>How decisions are recorded</h2>
+      <p>
+        Significant design decisions are published in the
+        <a href="/changelog/">changelog</a>. Issues are triaged by the
+        maintainers; response times depend on severity and available capacity.
+      </p>
+    </div>
+  </section>
+</BaseLayout>

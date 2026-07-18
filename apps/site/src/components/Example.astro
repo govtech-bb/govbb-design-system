@@ -134,6 +134,12 @@ const codeBlocks = [
         }
       </div>
       <button class="govbb-example__copy" type="button">Copy</button>
+      <span
+        class="govbb-visually-hidden"
+        role="status"
+        aria-live="polite"
+        data-example-copy-status
+      ></span>
     </div>
 
     {
@@ -219,6 +225,7 @@ const codeBlocks = [
   }
   .govbb-example__view-tab[aria-selected='true'] {
     color: var(--govbb-color-teal);
+    font-weight: 700;
     border-bottom-color: var(--govbb-color-teal);
   }
 
@@ -247,7 +254,7 @@ const codeBlocks = [
     display: flex;
     align-items: stretch;
     height: var(--govbb-example-bar-h);
-    background: #f8f9fa; /* bar grey from the Figma comp; no token this light */
+    background: var(--govbb-color-example-surface);
   }
   .govbb-example__langs {
     display: flex;
@@ -430,16 +437,24 @@ const codeBlocks = [
 
     // Single copy button copies whichever language panel is visible.
     const copyBtn = example.querySelector<HTMLButtonElement>('.govbb-example__copy');
+    const copyStatus = example.querySelector<HTMLElement>(
+      '[data-example-copy-status]',
+    );
     copyBtn?.addEventListener('click', async () => {
       const active = example.querySelector<HTMLElement>(
         '[data-lang-panel]:not([hidden])',
       );
+      if (copyStatus) copyStatus.textContent = '';
       try {
         await navigator.clipboard.writeText(active?.dataset.code ?? '');
         copyBtn.textContent = 'Copied';
+        if (copyStatus) copyStatus.textContent = 'Code copied.';
         window.setTimeout(() => (copyBtn.textContent = 'Copy'), 1500);
       } catch {
-        copyBtn.textContent = 'Press Ctrl+C';
+        copyBtn.textContent = 'Copy failed';
+        if (copyStatus) {
+          copyStatus.textContent = 'Copy failed. Select the code and copy it manually.';
+        }
       }
     });
   });

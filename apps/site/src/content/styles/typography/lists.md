@@ -10,9 +10,17 @@ order: 1
 
 ```html title="Plain list"
 <ul class="govbb-list">
-  <li><a class="govbb-link" href="#">Apply for a passport</a></li>
-  <li><a class="govbb-link" href="#">Register a birth</a></li>
-  <li><a class="govbb-link" href="#">Renew a driver's licence</a></li>
+  <li>
+    <a class="govbb-link" href="/services/passports/">Apply for a passport</a>
+  </li>
+  <li>
+    <a class="govbb-link" href="/services/register-birth/">Register a birth</a>
+  </li>
+  <li>
+    <a class="govbb-link" href="/services/drivers-licence/">
+      Renew a driver's licence
+    </a>
+  </li>
 </ul>
 ```
 
@@ -21,17 +29,17 @@ import { List } from '@govtech-bb/react';
 
 <List>
   <li>
-    <a className="govbb-link" href="#">
+    <a className="govbb-link" href="/services/passports/">
       Apply for a passport
     </a>
   </li>
   <li>
-    <a className="govbb-link" href="#">
+    <a className="govbb-link" href="/services/register-birth/">
       Register a birth
     </a>
   </li>
   <li>
-    <a className="govbb-link" href="#">
+    <a className="govbb-link" href="/services/drivers-licence/">
       Renew a driver's licence
     </a>
   </li>

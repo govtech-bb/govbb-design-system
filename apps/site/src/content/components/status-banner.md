@@ -10,8 +10,8 @@ group: Feedback
 ```html title="Alpha status banner"
 <div class="govbb-status-banner govbb-status-banner--alpha">
   <p>
-    This page is in <a href="#">Alpha</a>. Your feedback will help us improve
-    it.
+    This page is in <a href="/service/alpha/">Alpha</a>. Your feedback will help
+    us improve it.
   </p>
 </div>
 ```
@@ -21,8 +21,8 @@ import { StatusBanner } from '@govtech-bb/react';
 
 <StatusBanner variant="alpha">
   <p>
-    This page is in <a href="#">Alpha</a>. Your feedback will help us improve
-    it.
+    This page is in <a href="/service/alpha/">Alpha</a>. Your feedback will help
+    us improve it.
   </p>
 </StatusBanner>;
 ```
@@ -36,19 +36,43 @@ page content column and brings its own padding. For the strip directly below
 the header, use the full-width shape instead: the background bleeds edge to
 edge while the text stays aligned with the page content column.
 
-## When to use this component
+## Usage
 
-Use a status banner when the state of the page changes what users should
-expect from it: a service still being tested, content moved from an older
-site, or a disruption to the service the page describes. Show one banner per
-page, directly below the header, and keep the message to a sentence or two
-with a link to more detail or a feedback route.
+<div class="govbb-usage-guidance">
+  <section class="govbb-usage-guidance__item" aria-labelledby="status-banner-when-to-use">
+    <h3 id="status-banner-when-to-use">
+      <span class="govbb-usage-guidance__icon govbb-usage-guidance__icon--do" aria-hidden="true">✓</span>
+      When to use
+    </h3>
+    <ul>
+      <li>Use a status banner when a page or service condition changes what users should expect.</li>
+      <li>Use it for a service disruption, moved content or a relevant lifecycle message.</li>
+    </ul>
+  </section>
+  <section class="govbb-usage-guidance__item" aria-labelledby="status-banner-when-not-to-use">
+    <h3 id="status-banner-when-not-to-use">
+      <span class="govbb-usage-guidance__icon govbb-usage-guidance__icon--dont" aria-hidden="true">×</span>
+      When not to use
+    </h3>
+    <ul>
+      <li>Do not use it for form validation; use an <a href="/components/error-summary/">error summary</a> and inline messages.</li>
+      <li>Do not stack banners or use one for routine content that belongs in the page body.</li>
+    </ul>
+  </section>
+</div>
 
-## When not to use this component
+## Best practices
 
-Do not use a status banner for form validation errors. Use the error summary
-and error messages instead. Do not stack more than one banner on a page, and
-do not use one for routine content that isn't about the page's status.
+### State the impact and next step
+
+Explain what has changed, who is affected and what users can do. Keep the
+message to one or two sentences and link to detail only when it helps users act.
+
+### Match urgency to semantics
+
+Do not rely on colour alone to communicate the variant. Use an assertive live
+role only for an urgent change that must interrupt the user; use ordinary
+content for information already present when the page loads.
 
 ## Page-level use
 
@@ -65,8 +89,8 @@ content. Do not wrap the banner in your own container or override its padding.
 >
   <div class="govbb-width-container govbb-status-banner__inner">
     <p>
-      This page is in <a href="#">Alpha</a>. Your feedback will help us improve
-      it.
+      This page is in <a href="/service/alpha/">Alpha</a>. Your feedback will
+      help us improve it.
     </p>
   </div>
 </div>
@@ -77,8 +101,8 @@ import { StatusBanner } from '@govtech-bb/react';
 
 <StatusBanner variant="alpha" fullWidth>
   <p>
-    This page is in <a href="#">Alpha</a>. Your feedback will help us improve
-    it.
+    This page is in <a href="/service/alpha/">Alpha</a>. Your feedback will help
+    us improve it.
   </p>
 </StatusBanner>;
 ```
@@ -95,15 +119,20 @@ for service disruptions.
 ```html title="Status banner variants"
 <div class="govbb-status-banner govbb-status-banner--beta">
   <p>
-    This page is in <a href="#">Beta</a>. Your feedback will help us improve it.
+    This page is in <a href="/service/beta/">Beta</a>. Your feedback will help
+    us improve it.
   </p>
 </div>
 <div class="govbb-status-banner govbb-status-banner--migrated">
-  <p>This page has moved from an older site. <a href="#">Learn more</a></p>
+  <p>
+    This page has moved from an older site.
+    <a href="/service/moved/">Learn more</a>
+  </p>
 </div>
 <div class="govbb-status-banner govbb-status-banner--service">
   <p>
-    Passport appointments are currently disrupted. <a href="#">Check status</a>
+    Passport appointments are currently disrupted.
+    <a href="/service-status/">Check status</a>
   </p>
 </div>
 ```
@@ -113,14 +142,20 @@ import { StatusBanner } from '@govtech-bb/react';
 
 <StatusBanner variant="beta">
   <p>
-    This page is in <a href="#">Beta</a>. Your feedback will help us improve it.
+    This page is in <a href="/service/beta/">Beta</a>. Your feedback will help us improve it.
   </p>
 </StatusBanner>
 <StatusBanner variant="migrated">
-  <p>This page has moved from an older site. <a href="#">Learn more</a></p>
+  <p>
+    This page has moved from an older site.
+    <a href="/service/moved/">Learn more</a>
+  </p>
 </StatusBanner>
 <StatusBanner variant="service">
-  <p>Passport appointments are currently disrupted. <a href="#">Check status</a></p>
+  <p>
+    Passport appointments are currently disrupted.
+    <a href="/service-status/">Check status</a>
+  </p>
 </StatusBanner>
 ```
 
@@ -134,7 +169,10 @@ header.
 <div
   class="govbb-status-banner govbb-status-banner--migrated govbb-status-banner--rounded"
 >
-  <p>This page has moved from an older site. <a href="#">Learn more</a></p>
+  <p>
+    This page has moved from an older site.
+    <a href="/service/moved/">Learn more</a>
+  </p>
 </div>
 ```
 
@@ -143,7 +181,8 @@ import { StatusBanner } from '@govtech-bb/react';
 
 <StatusBanner variant="migrated" rounded>
   <p>
-    This page has moved from an older site. <a href="#">Learn more</a>
+    This page has moved from an older site.
+    <a href="/service/moved/">Learn more</a>
   </p>
 </StatusBanner>;
 ```

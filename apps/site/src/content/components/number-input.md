@@ -1,5 +1,5 @@
 ---
-title: Number Input
+title: Number input
 description: Use the number input component to let users enter a small integer with visible increment and decrement controls.
 lede: Lets users enter a number, with buttons to step the value up or down.
 group: Form elements
@@ -76,24 +76,44 @@ quantity or a number of people, using visible increment and decrement buttons
 alongside the field. It is paired with a visible label, just like a regular
 input.
 
-## When to use this component
+## Usage
 
-Use a number input for small ranges where tapping the up or down button is
-quicker and less error-prone than typing, such as a quantity, a number of
-copies, or a number of people. Always set `min` and `max` when the range is
-known: the stepper buttons step the native input, so they cannot push the
-value outside it. The stepper behaviour ships in the package's
-progressive-enhancement runtime: call `initAll()` from `@govtech-bb/frontend`
-once per page and every `data-govbb-module="number-input"` wrapper is wired
-up. The React component enhances itself.
+<div class="govbb-usage-guidance">
+  <section class="govbb-usage-guidance__item" aria-labelledby="number-input-when-to-use">
+    <h3 id="number-input-when-to-use">
+      <span class="govbb-usage-guidance__icon govbb-usage-guidance__icon--do" aria-hidden="true">✓</span>
+      When to use
+    </h3>
+    <ul>
+      <li>Use a number input for a quantity users may type or adjust in small steps, such as the number of copies.</li>
+      <li>Use it when minimum, maximum or step rules have a clear meaning.</li>
+    </ul>
+  </section>
+  <section class="govbb-usage-guidance__item" aria-labelledby="number-input-when-not-to-use">
+    <h3 id="number-input-when-not-to-use">
+      <span class="govbb-usage-guidance__icon govbb-usage-guidance__icon--dont" aria-hidden="true">×</span>
+      When not to use
+    </h3>
+    <ul>
+      <li>Do not use it for an identifier, telephone number, year or other digit string that is not a quantity.</li>
+      <li>Do not use it when the valid answers are a small, fixed set that can be shown as radio buttons.</li>
+    </ul>
+  </section>
+</div>
 
-## When not to use this component
+## Best practices
 
-Do not use a number input for long numbers such as an ID, phone number, or
-year. Use a plain input with `inputmode="numeric"` instead. Do not use it for
-values that are not whole numbers unless you also set a suitable `step`. And do
-not use it as a substitute for a select or radio buttons when you are really
-offering a fixed, small set of choices.
+### Set meaningful constraints
+
+Add `min`, `max` and `step` when the service has those rules, and explain the
+unit in the label or suffix. Validate on the server and return a message that
+states the allowed range.
+
+### Keep typing available
+
+The step controls are a convenience, not the only input method. Let users type,
+paste and edit the value with the keyboard. Initialise the HTML enhancement with
+`initAll()` from `@govtech-bb/frontend`; the React component enhances itself.
 
 ## Labels and hint text
 

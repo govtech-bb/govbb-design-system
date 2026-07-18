@@ -16,7 +16,7 @@ group: Service pages
   <p class="govbb-text-body">
     We did not save your answers. You will need to start again.
   </p>
-  <a class="govbb-button" href="#" role="button">Start again</a>
+  <a class="govbb-button" href="/service/start/">Start again</a>
 </main>
 ```
 

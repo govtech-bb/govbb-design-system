@@ -29,17 +29,51 @@ The Button component lets users initiate an action, such as submitting a form,
 starting an application, or saving their information. The label on a button
 describes the action it performs.
 
-## When to use this component
+## Usage
 
-Use a button for the primary action on a page: the thing you most want the user
-to do next, such as _Save and continue_. Write button text as a short, specific
-verb phrase in sentence case.
+<div class="govbb-usage-guidance">
+  <section class="govbb-usage-guidance__item" aria-labelledby="button-when-to-use">
+    <h3 id="button-when-to-use">
+      <span class="govbb-usage-guidance__icon govbb-usage-guidance__icon--do" aria-hidden="true">✓</span>
+      When to use
+    </h3>
+    <ul>
+      <li>Use a button for a clear action that changes the page, saves progress or moves the task forward.</li>
+      <li>Use the button style that matches the importance and consequence of the action.</li>
+    </ul>
+  </section>
+  <section class="govbb-usage-guidance__item" aria-labelledby="button-when-not-to-use">
+    <h3 id="button-when-not-to-use">
+      <span class="govbb-usage-guidance__icon govbb-usage-guidance__icon--dont" aria-hidden="true">×</span>
+      When not to use
+    </h3>
+    <ul>
+      <li>Do not use a button for navigation when a link would be clearer.</li>
+      <li>Do not use vague labels that force users to guess what happens next.</li>
+    </ul>
+  </section>
+</div>
 
-## When not to use this component
+## Best practices
 
-Do not use a button to navigate between pages. Use a link instead. If a user is
-moving to another page rather than triggering an action, a link sets the right
-expectation.
+<div class="govbb-practice-grid">
+  <article class="govbb-practice">
+    <div class="govbb-practice__preview">
+      <span class="govbb-usage-guidance__icon govbb-usage-guidance__icon--do" aria-hidden="true">✓</span>
+      <button class="govbb-button" type="button">Save changes</button>
+    </div>
+    <h3>Use a clear action label</h3>
+    <p>Specific labels help users understand the outcome before they act.</p>
+  </article>
+  <article class="govbb-practice">
+    <div class="govbb-practice__preview">
+      <span class="govbb-usage-guidance__icon govbb-usage-guidance__icon--dont" aria-hidden="true">×</span>
+      <button class="govbb-button" type="button">Click here</button>
+    </div>
+    <h3>Do not use vague labels</h3>
+    <p>Generic labels force users to read surrounding text to understand what happens.</p>
+  </article>
+</div>
 
 ## Variants
 
@@ -76,7 +110,7 @@ group alongside the buttons.
   <button class="govbb-button govbb-button--secondary" type="button">
     Save as draft
   </button>
-  <a class="govbb-link" href="#">Cancel</a>
+  <a class="govbb-link" href="/service/">Cancel</a>
 </div>
 ```
 

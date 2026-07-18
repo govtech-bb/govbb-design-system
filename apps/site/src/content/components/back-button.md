@@ -8,7 +8,7 @@ group: Navigation
 ## Preview
 
 ```html title="Back button"
-<a class="govbb-link govbb-back-button" href="#">Back</a>
+<a class="govbb-link govbb-back-button" href="/service/previous-step/">Back</a>
 ```
 
 ```tsx
@@ -23,17 +23,40 @@ the previous page. It composes with the link component: use both classes,
 hover, active and focus. Point `href` at the previous page in the journey so
 the link works without JavaScript.
 
-## When to use this component
+## Usage
 
-Use the back button inside a multi-page transaction, such as applying for a
-passport or registering for National Insurance, so users can check or change
-an earlier answer. Place it at the top of the page, above the page title, and
-keep the label as _Back_.
+<div class="govbb-usage-guidance">
+  <section class="govbb-usage-guidance__item" aria-labelledby="back-button-when-to-use">
+    <h3 id="back-button-when-to-use">
+      <span class="govbb-usage-guidance__icon govbb-usage-guidance__icon--do" aria-hidden="true">✓</span>
+      When to use
+    </h3>
+    <ul>
+      <li>Use a back button to return to the previous page in a linear, multi-page service.</li>
+      <li>Use a more specific label, such as “Back to contact details”, when the destination may not be obvious.</li>
+    </ul>
+  </section>
+  <section class="govbb-usage-guidance__item" aria-labelledby="back-button-when-not-to-use">
+    <h3 id="back-button-when-not-to-use">
+      <span class="govbb-usage-guidance__icon govbb-usage-guidance__icon--dont" aria-hidden="true">×</span>
+      When not to use
+    </h3>
+    <ul>
+      <li>Do not use a back button to represent the website hierarchy; use <a href="/components/breadcrumbs/">breadcrumbs</a>.</li>
+      <li>Do not show a back button and breadcrumbs on the same page.</li>
+    </ul>
+  </section>
+</div>
 
-## When not to use this component
+## Best practices
 
-Do not rely on the back button as the only way to reverse a step: users may
-use the browser's back button instead, so the service must handle that too. Do
-not use it together with [breadcrumbs](/components/breadcrumbs/) on the same
-page: pick the one that matches the journey, breadcrumbs for a hierarchy and
-the back button for a linear transaction.
+### Return users to the page as they left it
+
+The destination should be the previous service step, with entered answers and
+selections preserved. The service must also cope with users choosing their
+browser's back button.
+
+### Keep the back button in a consistent place
+
+Place it near the top of the page, before the page title and main task. Make it
+work without JavaScript wherever possible.

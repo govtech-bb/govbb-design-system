@@ -9,8 +9,12 @@ group: Content
 
 ```html title="List variants"
 <ul class="govbb-list">
-  <li><a class="govbb-link" href="#">Apply for a passport</a></li>
-  <li><a class="govbb-link" href="#">Register a birth</a></li>
+  <li>
+    <a class="govbb-link" href="/services/passports/">Apply for a passport</a>
+  </li>
+  <li>
+    <a class="govbb-link" href="/services/register-birth/">Register a birth</a>
+  </li>
 </ul>
 <ul class="govbb-list govbb-list--bullet">
   <li>Proof of address</li>
@@ -42,15 +46,40 @@ items, or `--number` for steps that must happen in order. The React `List`
 renders a `<ul>` for the plain and bullet variants and an `<ol>` for the
 number variant.
 
-## When to use this component
+## Usage
 
-Use a list to make blocks of related content easier to scan, such as a set of
-task links, the documents a user must provide, or the steps in a process. Use
-the number variant only when the order matters.
+<div class="govbb-usage-guidance">
+  <section class="govbb-usage-guidance__item" aria-labelledby="list-when-to-use">
+    <h3 id="list-when-to-use">
+      <span class="govbb-usage-guidance__icon govbb-usage-guidance__icon--do" aria-hidden="true">✓</span>
+      When to use
+    </h3>
+    <ul>
+      <li>Use a bulleted list for related items when their order does not matter.</li>
+      <li>Use a numbered list for steps, rankings or instructions where sequence matters.</li>
+    </ul>
+  </section>
+  <section class="govbb-usage-guidance__item" aria-labelledby="list-when-not-to-use">
+    <h3 id="list-when-not-to-use">
+      <span class="govbb-usage-guidance__icon govbb-usage-guidance__icon--dont" aria-hidden="true">×</span>
+      When not to use
+    </h3>
+    <ul>
+      <li>Do not use a list for values users need to compare across columns; use a <a href="/components/table/">table</a>.</li>
+      <li>Do not use it for key–value facts or review answers; use a <a href="/components/summary-list/">summary list</a>.</li>
+    </ul>
+  </section>
+</div>
 
-## When not to use this component
+## Best practices
 
-Do not use a list for tabular data with more than one value per item, such as
-fees and processing times together. Use the [table](/components/table/)
-component instead. Do not use a list for a user's answers as key/value pairs;
-use the [summary list](/components/summary-list/) component.
+### Keep list items parallel
+
+Start items with the same kind of word or phrase and keep them similar in
+length. Introduce the list with a sentence that explains what the items share.
+
+### Use real list markup
+
+Use `ul` or `ol` with `li` elements rather than typed bullets, line breaks or
+visual spacing. Keep each item focused; split complicated instructions into
+separate steps.

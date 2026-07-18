@@ -14,7 +14,8 @@ twice. Import `@govtech-bb/frontend` for the CSS and tokens, or
 
 Every official Government of Barbados service should:
 
-- use the components in this design system rather than building their own
+- use components where they meet the user need and test them in the complete
+  service journey
 - meet [WCAG 2.2 AA](https://www.w3.org/TR/WCAG22/) accessibility requirements
 - use the GovBB design tokens for colour, typography and spacing
 
@@ -29,3 +30,18 @@ a choice of variants or states, its page describes when each one is appropriate.
 Guidance is written in plain language, in the second person, and describes concrete
 situations rather than abstract rules. If the same question keeps coming up, we treat that
 as a sign the guidance is unclear and fix it ([see why we don't use FAQs](/changelog/no-faqs/)).
+
+## How accessibility reviews work
+
+Documented HTML and React implementations are reviewed in source for semantic
+structure and keyboard behaviour. Automated accessibility checks cover
+references with React wrappers.
+
+This is component-level evidence, not a WCAG certificate for a complete
+service. Content, validation, integrations and the surrounding journey can
+introduce new barriers.
+
+Every service team remains responsible for testing its complete implementation
+against WCAG 2.2 AA, including its content, validation and surrounding journey.
+Teams can follow dated decisions in the [changelog](/changelog/) or
+[report a problem with the guidance](/support/).

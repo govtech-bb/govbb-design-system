@@ -62,15 +62,43 @@ The Checkbox component lets users select any number of options from a list,
 including none, or toggle a single option on or off. Each checkbox operates
 independently, so selecting one does not affect the others.
 
-## When to use this component
+## Usage
 
-Use checkboxes when users can select more than one option from a list, or need to
-toggle a single option on or off, such as agreeing to terms and conditions.
+<div class="govbb-usage-guidance">
+  <section class="govbb-usage-guidance__item" aria-labelledby="checkbox-when-to-use">
+    <h3 id="checkbox-when-to-use">
+      <span class="govbb-usage-guidance__icon govbb-usage-guidance__icon--do" aria-hidden="true">✓</span>
+      When to use
+    </h3>
+    <ul>
+      <li>Use checkboxes when users can select any number of options from a list.</li>
+      <li>Use one checkbox for a single optional choice, such as receiving updates.</li>
+    </ul>
+  </section>
+  <section class="govbb-usage-guidance__item" aria-labelledby="checkbox-when-not-to-use">
+    <h3 id="checkbox-when-not-to-use">
+      <span class="govbb-usage-guidance__icon govbb-usage-guidance__icon--dont" aria-hidden="true">×</span>
+      When not to use
+    </h3>
+    <ul>
+      <li>Do not use checkboxes when users must choose exactly one option; use <a href="/components/radio/">radio buttons</a>.</li>
+      <li>Do not use separate “Yes” and “No” checkboxes because both can be selected.</li>
+    </ul>
+  </section>
+</div>
 
-## When not to use this component
+## Best practices
 
-Do not use checkboxes when a user must choose exactly one option from a list of
-mutually exclusive choices. Use radio buttons instead.
+### Explain how many options users can choose
+
+Add a hint such as “Select all that apply” when more than one selection is
+allowed. Group related choices in a `fieldset` with a clear `legend`.
+
+### Make every option easy to select
+
+Place the checkbox before its label and connect them with matching `id` and
+`for` values so the whole label activates the control. Avoid long, overloaded
+groups; simplify or split the question when scanning becomes difficult.
 
 ## Guidance
 

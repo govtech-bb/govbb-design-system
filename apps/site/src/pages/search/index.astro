@@ -3,7 +3,10 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import SearchBar from '../../components/SearchBar.astro';
 import { primaryNav, secondaryNav } from '../../data/nav';
 ---
-<BaseLayout title="Search" description="Search the GovBB Design System.">
+<BaseLayout
+  title="Search the design system"
+  description="Search the GovBB Design System."
+>
   {/* The search page itself shouldn't appear in its own results. */}
   <section
     class="govbb-width-container govbb-page-section govbb-search-page"
@@ -22,7 +25,7 @@ import { primaryNav, secondaryNav } from '../../data/nav';
       <SearchBar
         borderless
         label="Search the design system"
-        placeholder="For example, button or typography"
+        placeholder="For example, button or typography…"
       />
       <p class="govbb-search-task__hint">
         Search by component name, user need or topic.
@@ -48,11 +51,22 @@ import { primaryNav, secondaryNav } from '../../data/nav';
         </p>
 
         <div id="search-empty" class="govbb-search-empty" hidden>
-          <h3>No matching pages</h3>
-          <p>Check the spelling or try a shorter, more general search term.</p>
+          <h3 id="search-empty-title">No matching pages</h3>
+          <p id="search-empty-message">
+            Check the spelling or try a shorter, more general search term.
+          </p>
         </div>
 
         <ul id="search-results" class="govbb-search-list" hidden></ul>
+        <button
+          id="search-more"
+          class="govbb-button govbb-button--secondary govbb-search-more"
+          type="button"
+          aria-controls="search-results"
+          hidden
+        >
+          Show more results
+        </button>
       </section>
 
       <aside class="govbb-search-browse" aria-labelledby="browse-heading">
@@ -82,7 +96,7 @@ import { primaryNav, secondaryNav } from '../../data/nav';
     max-width: 50rem;
     padding: var(--govbb-space-4);
     background: var(--govbb-color-panel);
-    border-left: 4px solid var(--govbb-color-teal);
+    border: 1px solid var(--govbb-color-border);
   }
   .govbb-search-task__label {
     margin: 0 0 var(--govbb-space-2);
@@ -117,7 +131,7 @@ import { primaryNav, secondaryNav } from '../../data/nav';
   .govbb-search-empty {
     margin-top: var(--govbb-space-4);
     padding: var(--govbb-space-4);
-    border-left: 4px solid var(--govbb-color-border);
+    border: 1px solid var(--govbb-color-border);
     background: color-mix(
       in oklab,
       var(--govbb-color-panel),
@@ -141,6 +155,9 @@ import { primaryNav, secondaryNav } from '../../data/nav';
   .govbb-search-list li {
     padding-block: var(--govbb-space-4);
     border-bottom: 1px solid var(--govbb-color-border);
+  }
+  .govbb-search-more {
+    margin-top: var(--govbb-space-4);
   }
   .govbb-result__section {
     margin: 0 0 var(--govbb-space-1);
@@ -224,6 +241,30 @@ import { primaryNav, secondaryNav } from '../../data/nav';
 </style>
 
 <script>
+  interface PagefindData {
+    url: string;
+    excerpt?: string;
+    meta?: {
+      title?: string;
+      description?: string;
+      maturity?: string;
+      accessibility?: string;
+    };
+  }
+
+  interface PagefindResult {
+    data: () => Promise<PagefindData>;
+  }
+
+  interface PagefindSearch {
+    results: PagefindResult[];
+  }
+
+  interface PagefindModule {
+    init?: () => Promise<void>;
+    search: (query: string) => Promise<PagefindSearch>;
+  }
+
   const params = new URLSearchParams(window.location.search);
   const query = (params.get('q') ?? '').trim();
 
@@ -231,6 +272,9 @@ import { primaryNav, secondaryNav } from '../../data/nav';
   const status = document.getElementById('search-status');
   const list = document.getElementById('search-results');
   const empty = document.getElementById('search-empty');
+  const emptyTitle = document.getElementById('search-empty-title');
+  const emptyMessage = document.getElementById('search-empty-message');
+  const more = document.getElementById('search-more') as HTMLButtonElement | null;
   const resultsRegion = document.getElementById('search-results-region');
 
   const getSectionLabel = (url: string) => {
@@ -263,9 +307,9 @@ import { primaryNav, secondaryNav } from '../../data/nav';
   const importPagefind = new Function(
     'p',
     'return import(p)',
-  ) as (p: string) => Promise<any>;
+  ) as (p: string) => Promise<PagefindModule>;
 
-  if (query && input && status && list) {
+  if (query && input && status && list && more) {
     input.value = query;
     status.textContent = `Searching for “${query}”…`;
     resultsRegion?.setAttribute('aria-busy', 'true');
@@ -275,43 +319,89 @@ import { primaryNav, secondaryNav } from '../../data/nav';
         const pagefind = await importPagefind('/pagefind/pagefind.js');
         await pagefind.init?.();
         const search = await pagefind.search(query);
-        const results = await Promise.all(
-          search.results.slice(0, 12).map((r: any) => r.data()),
-        );
+        const total = search.results.length;
+        const pageSize = 12;
+        let shown = 0;
 
-        if (results.length === 0) {
+        if (total === 0) {
           status.textContent = `No results found for “${query}”.`;
+          if (emptyTitle) emptyTitle.textContent = 'No matching pages';
+          if (emptyMessage) {
+            emptyMessage.textContent =
+              'Check the spelling or try a shorter, more general search term.';
+          }
           if (empty) empty.hidden = false;
           return;
         }
-        status.textContent = `${results.length} result${results.length === 1 ? '' : 's'} shown for “${query}”.`;
-        list.hidden = false;
 
-        list.replaceChildren(
-          ...results.map((d: any) => {
-            const li = document.createElement('li');
-            const article = document.createElement('article');
-            const section = document.createElement('p');
-            section.className = 'govbb-result__section';
-            section.textContent = getSectionLabel(d.url);
-            const a = document.createElement('a');
-            a.className = 'govbb-result__title';
-            a.href = d.url;
-            a.textContent = d.meta?.title ?? d.url;
-            const p = document.createElement('p');
-            p.className = 'govbb-result__excerpt';
-            p.textContent =
-              d.meta?.description ?? cleanExcerpt(d.excerpt ?? '');
-            article.append(section, a);
-            if (p.textContent) article.append(p);
-            li.append(article);
-            return li;
-          }),
-        );
-      } catch (e) {
+        const renderNextPage = async () => {
+          const results = await Promise.all(
+            search.results
+              .slice(shown, shown + pageSize)
+              .map((result) => result.data()),
+          );
+
+          list.append(
+            ...results.map((data) => {
+              const li = document.createElement('li');
+              const article = document.createElement('article');
+              const section = document.createElement('p');
+              section.className = 'govbb-result__section';
+              section.textContent = getSectionLabel(data.url);
+              const a = document.createElement('a');
+              a.className = 'govbb-result__title';
+              a.href = data.url;
+              a.textContent = data.meta?.title ?? data.url;
+              const p = document.createElement('p');
+              p.className = 'govbb-result__excerpt';
+              p.textContent =
+                data.meta?.description ?? cleanExcerpt(data.excerpt ?? '');
+              article.append(section, a);
+              if (p.textContent) article.append(p);
+              li.append(article);
+              return li;
+            }),
+          );
+
+          shown += results.length;
+          list.hidden = false;
+          const remaining = total - shown;
+          status.textContent =
+            remaining > 0
+              ? `Showing ${shown} of ${total} results for “${query}”.`
+              : `${total} result${total === 1 ? '' : 's'} for “${query}”.`;
+          more.hidden = remaining === 0;
+          more.textContent =
+            remaining > pageSize
+              ? `Show ${pageSize} more results`
+              : `Show ${remaining} more result${remaining === 1 ? '' : 's'}`;
+        };
+
+        await renderNextPage();
+        more.addEventListener('click', async () => {
+          more.disabled = true;
+          more.textContent = 'Loading…';
+          resultsRegion?.setAttribute('aria-busy', 'true');
+          try {
+            await renderNextPage();
+          } catch {
+            status.textContent = 'More results could not be loaded. Try again.';
+            more.textContent = 'Try loading more results';
+          } finally {
+            more.disabled = false;
+            resultsRegion?.removeAttribute('aria-busy');
+          }
+        });
+      } catch {
         status.textContent =
           'Search is temporarily unavailable. Browse by section or try again.';
+        if (emptyTitle) emptyTitle.textContent = 'Search unavailable';
+        if (emptyMessage) {
+          emptyMessage.textContent =
+            'Use the section links on this page, or try searching again later.';
+        }
         if (empty) empty.hidden = false;
+        more.hidden = true;
       } finally {
         resultsRegion?.removeAttribute('aria-busy');
       }

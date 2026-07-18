@@ -36,18 +36,44 @@ The Search component joins a search input and a submit button into a single
 unit. The label is visually hidden (the joined input and button already read
 as search) but stays available to screen readers.
 
-## When to use this component
+## Usage
 
-Use search when users need to find a page or service by keyword rather than by
-browsing, such as searching gov.bb for "renew passport" or "road tax". Submit
-the form to a results page with a `GET` request so users can bookmark and
-share their search.
+<div class="govbb-usage-guidance">
+  <section class="govbb-usage-guidance__item" aria-labelledby="search-when-to-use">
+    <h3 id="search-when-to-use">
+      <span class="govbb-usage-guidance__icon govbb-usage-guidance__icon--do" aria-hidden="true">✓</span>
+      When to use
+    </h3>
+    <ul>
+      <li>Use search when a website has enough content that users may look for a known term, service or topic.</li>
+      <li>Use a prominent full search field where search is a common starting point.</li>
+    </ul>
+  </section>
+  <section class="govbb-usage-guidance__item" aria-labelledby="search-when-not-to-use">
+    <h3 id="search-when-not-to-use">
+      <span class="govbb-usage-guidance__icon govbb-usage-guidance__icon--dont" aria-hidden="true">×</span>
+      When not to use
+    </h3>
+    <ul>
+      <li>Do not use search as a replacement for clear information architecture and navigation.</li>
+      <li>Do not add it to a single page or very small content set when browsing is faster.</li>
+    </ul>
+  </section>
+</div>
 
-## When not to use this component
+## Best practices
 
-Do not use search as a substitute for clear navigation: most users should be
-able to reach common services without it. Do not use it to filter a short list
-on the same page; showing the full list is simpler and more predictable.
+### Make the search scope clear
+
+Use a label that says what will be searched and keep the word “Search” in the
+submit button's accessible name. Give the field enough width for users to
+review several words before submitting.
+
+### Preserve and recover from the query
+
+Submit with `GET` so results can be bookmarked and shared. Keep the original
+query in the results field, show the result count and provide useful recovery
+when there are no matches or the search fails.
 
 ## Borderless search
 

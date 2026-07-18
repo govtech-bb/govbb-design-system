@@ -9,7 +9,7 @@ group: Authentication
 
 ```html title="Reset your password"
 <main class="govbb-width-container" id="main-content">
-  <a class="govbb-back-button" href="#">Back</a>
+  <a class="govbb-back-button" href="/account/sign-in/">Back</a>
 
   <h1 class="govbb-text-h1">Reset your password</h1>
   <p class="govbb-text-body">
@@ -17,7 +17,7 @@ group: Authentication
     link to reset your password.
   </p>
 
-  <form action="#" method="post" novalidate>
+  <form action="/account/reset-password/" method="post" novalidate>
     <div class="govbb-form-group">
       <label class="govbb-label" for="email">Email address</label>
       <input

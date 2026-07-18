@@ -33,17 +33,44 @@ links back to the homepage so users always have a way to start again. The logo
 image ships in the `@govtech-bb/frontend` package under `assets/images/`. Host
 it with your service and point `src` at your copy.
 
-## When to use this component
+## Usage
 
-Use the header at the top of every page of a gov.bb service, directly below the
-official banner. Keep it consistent across the whole service so users always
-know where they are.
+<div class="govbb-usage-guidance">
+  <section class="govbb-usage-guidance__item" aria-labelledby="header-when-to-use">
+    <h3 id="header-when-to-use">
+      <span class="govbb-usage-guidance__icon govbb-usage-guidance__icon--do" aria-hidden="true">✓</span>
+      When to use
+    </h3>
+    <ul>
+      <li>Use the header at the top of every page in a gov.bb website or service.</li>
+      <li>Use it to identify the service and provide access to its most important sections.</li>
+    </ul>
+  </section>
+  <section class="govbb-usage-guidance__item" aria-labelledby="header-when-not-to-use">
+    <h3 id="header-when-not-to-use">
+      <span class="govbb-usage-guidance__icon govbb-usage-guidance__icon--dont" aria-hidden="true">×</span>
+      When not to use
+    </h3>
+    <ul>
+      <li>Do not add a second header or use it elsewhere on the page.</li>
+      <li>Do not place page-specific notices in the header; use a <a href="/components/status-banner/">status banner</a>.</li>
+    </ul>
+  </section>
+</div>
 
-## When not to use this component
+## Best practices
 
-Do not use the header anywhere other than the top of the page, and do not add a
-second header. If you need to tell users about the status of a page or service,
-use a status banner below the header instead.
+### Keep navigation short and recognisable
+
+Use plain-language labels for important sections. Highlight the current
+section, keep ordering consistent and move lower-level navigation closer to
+the content it controls.
+
+### Preserve the same identity at every width
+
+Keep the service name visible and make the mobile menu operable by keyboard and
+assistive technology. Do not use the logo as the page's `h1` except where it is
+the genuine homepage heading.
 
 ## Adding a search
 

@@ -19,7 +19,12 @@ group: Page furniture
     </div>
     <div class="govbb-official-banner__text">
       <span>Official government website</span>
-      <a class="govbb-official-banner__link" href="#">Learn more</a>
+      <a
+        class="govbb-official-banner__link"
+        href="/government/website-information/"
+      >
+        Learn more
+      </a>
     </div>
   </div>
 </div>
@@ -28,7 +33,10 @@ group: Page furniture
 ```tsx
 import { OfficialBanner } from '@govtech-bb/react';
 
-<OfficialBanner crestSrc="/assets/images/govbb-crest.svg" linkHref="#" />;
+<OfficialBanner
+  crestSrc="/assets/images/govbb-crest.svg"
+  linkHref="/government/website-information/"
+/>;
 ```
 
 The official banner is a thin dark blue bar at the very top of the page,
@@ -38,14 +46,40 @@ with an optional link to more detail. The crest image is decorative, so keep
 `alt=""`. It ships in the `@govtech-bb/frontend` package under
 `assets/images/`.
 
-## When to use this component
+## Usage
 
-Use the official banner at the very top of every page of a gov.bb service,
-above the header. It helps users trust that the service, and any personal
-information it asks for, belongs to the Government of Barbados.
+<div class="govbb-usage-guidance">
+  <section class="govbb-usage-guidance__item" aria-labelledby="official-banner-when-to-use">
+    <h3 id="official-banner-when-to-use">
+      <span class="govbb-usage-guidance__icon govbb-usage-guidance__icon--do" aria-hidden="true">✓</span>
+      When to use
+    </h3>
+    <ul>
+      <li>Use the official banner at the very top of a Government of Barbados website or service.</li>
+      <li>Use it to help people recognise the site as an official government destination.</li>
+    </ul>
+  </section>
+  <section class="govbb-usage-guidance__item" aria-labelledby="official-banner-when-not-to-use">
+    <h3 id="official-banner-when-not-to-use">
+      <span class="govbb-usage-guidance__icon govbb-usage-guidance__icon--dont" aria-hidden="true">×</span>
+      When not to use
+    </h3>
+    <ul>
+      <li>Do not use the banner on a site that is not an official Government of Barbados service.</li>
+      <li>Do not use it for alerts, service updates or page-level messages.</li>
+    </ul>
+  </section>
+</div>
 
-## When not to use this component
+## Best practices
 
-Do not use the official banner anywhere other than the top of the page, and do
-not change its message. To tell users about the status of a page or service,
-such as a beta phase or a disruption, use a status banner instead.
+### Use the standard message and position
+
+Keep the banner above the header and use the approved wording without adding
+campaign copy, navigation or service-specific messages.
+
+### Support trust without making unsupported claims
+
+Link any expanded explanation to useful information about the government
+domain and secure connection. The banner should identify the site; it should
+not promise that a particular transaction or third-party destination is safe.

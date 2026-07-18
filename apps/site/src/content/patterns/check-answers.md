@@ -13,7 +13,7 @@ group: Help users to
     <dt class="govbb-summary-list__key">Name</dt>
     <dd class="govbb-summary-list__value">
       Alex Nurse
-      <a class="govbb-link" href="#">
+      <a class="govbb-link" href="/service/name/">
         Change<span class="govbb-visually-hidden"> name</span>
       </a>
     </dd>
@@ -22,7 +22,7 @@ group: Help users to
     <dt class="govbb-summary-list__key">Date of birth</dt>
     <dd class="govbb-summary-list__value">
       14 March 1990
-      <a class="govbb-link" href="#">
+      <a class="govbb-link" href="/service/date-of-birth/">
         Change<span class="govbb-visually-hidden"> date of birth</span>
       </a>
     </dd>
@@ -31,7 +31,7 @@ group: Help users to
     <dt class="govbb-summary-list__key">Email address</dt>
     <dd class="govbb-summary-list__value">
       alex.nurse@example.com
-      <a class="govbb-link" href="#">
+      <a class="govbb-link" href="/service/email-address/">
         Change<span class="govbb-visually-hidden"> email address</span>
       </a>
     </dd>
