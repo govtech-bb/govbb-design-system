@@ -10,6 +10,8 @@ export default defineConfig({
   site: 'https://design-system.gov.bb',
   integrations: [pagefind()],
   redirects: {
+    '/changelog': '/design-log',
+    '/changelog/[...slug]': '/design-log/[...slug]',
     '/documentation/layout': '/styles/layout',
     '/styles/list': '/styles/typography/lists',
     // NB: no /components/list or /components/payment redirects — both are real

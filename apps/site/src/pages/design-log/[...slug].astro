@@ -1,0 +1,55 @@
+---
+import { render } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import { getDesignLogSidebar } from '../../data/nav';
+import {
+  formatLogDate,
+  getSortedDesignLog,
+  KIND_LABELS,
+} from '../../data/design-log';
+import { getContentNeighbors } from '../../lib/content-navigation';
+
+export const getStaticPaths = (async () => {
+  const posts = await getSortedDesignLog();
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}) satisfies GetStaticPaths;
+
+const { post } = Astro.props;
+const { Content, headings } = await render(post);
+
+const onThisPage = headings
+  .filter((h) => h.depth === 2)
+  .map((h) => ({ label: h.text, href: `#${h.slug}` }));
+
+const posts = await getSortedDesignLog();
+const neighbors = getContentNeighbors(posts, post.id, '/design-log/');
+---
+<ArticleLayout
+  title={post.data.title}
+  section="design-log"
+  description={post.data.summary}
+  pageTitle={post.data.title}
+  pageSubtitle={post.data.summary}
+  sidebarGroups={await getDesignLogSidebar()}
+  sidebarLabel="Design log"
+  onThisPage={onThisPage}
+  breadcrumbs={[
+    { label: 'Design log', href: '/design-log/' },
+    { label: KIND_LABELS[post.data.kind] },
+  ]}
+  meta={[
+    { label: 'Logged', value: formatLogDate(post.data.date) },
+    { label: 'Kind', value: KIND_LABELS[post.data.kind] },
+    ...(post.data.author ? [{ label: 'By', value: post.data.author }] : []),
+  ]}
+  previous={neighbors.previous}
+  next={neighbors.next}
+>
+  <div class="govbb-prose govbb-prose--article">
+    <Content />
+  </div>
+</ArticleLayout>

@@ -2,14 +2,17 @@ import { defineCollection } from 'astro:content';
 import { z } from 'astro/zod';
 import { glob } from 'astro/loaders';
 
-// Changelog / decision log: dated posts recording important design decisions.
-const changelog = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/changelog' }),
+// Design log: dated posts recording design decisions, research findings and
+// other working notes behind the system.
+const designLog = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/design-log' }),
   schema: z.object({
     title: z.string(),
     date: z.coerce.date(),
     author: z.string().optional(),
     summary: z.string().optional(),
+    /** What kind of entry this is; drives the badge on the overview page. */
+    kind: z.enum(['decision', 'research', 'note']).default('decision'),
   }),
 });
 
@@ -91,7 +94,7 @@ const templates = defineCollection({
 });
 
 export const collections = {
-  changelog,
+  designLog,
   components,
   docs,
   styles,

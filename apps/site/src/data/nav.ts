@@ -43,6 +43,13 @@ export const primaryNav: PrimaryNavItem[] = [
     href: '/templates/',
     description: 'Start from complete pages assembled from the system.',
   },
+  {
+    key: 'design-log',
+    label: 'Design log',
+    href: '/design-log/',
+    description:
+      'Read the research, decisions and working notes behind the system.',
+  },
 ];
 
 // Sections kept out of the header (GOV.UK-style: styles / components only)
@@ -61,12 +68,6 @@ export const secondaryNav: PrimaryNavItem[] = [
     href: '/ai-skills/',
     description:
       'Apply the same design, accessibility and privacy standards to AI-assisted work.',
-  },
-  {
-    key: 'changelog',
-    label: 'Changelog',
-    href: '/changelog/',
-    description: 'Read dated design decisions and changes to the system.',
   },
 ];
 
@@ -200,6 +201,31 @@ export async function getTemplatesSidebar(): Promise<SidebarGroup[]> {
         .map((e) => ({ label: e.data.title, href: `/templates/${e.id}/` }));
       return links.length > 0 ? [{ heading, links }] : [];
     }),
+  ];
+}
+
+// Left-sidebar navigation for the Design log, derived from the design log
+// collection — newest first, grouped by year.
+export async function getDesignLogSidebar(): Promise<SidebarGroup[]> {
+  const entries = await getCollection('designLog');
+  entries.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+  const byYear = new Map<number, { label: string; href: string }[]>();
+  for (const e of entries) {
+    const year = e.data.date.getUTCFullYear();
+    byYear.set(year, [
+      ...(byYear.get(year) ?? []),
+      { label: e.data.title, href: `/design-log/${e.id}/` },
+    ]);
+  }
+  return [
+    {
+      heading: 'Design log',
+      links: [{ label: 'Overview', href: '/design-log/' }],
+    },
+    ...[...byYear.entries()].map(([year, links]) => ({
+      heading: String(year),
+      links,
+    })),
   ];
 }
 

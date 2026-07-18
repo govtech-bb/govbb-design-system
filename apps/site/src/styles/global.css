@@ -671,32 +671,6 @@ img:not([class]) {
   background: var(--govbb-card-yellow);
 }
 
-/* ── Changelog entries (changelog index) ──────────────────────── */
-.govbb-update {
-  display: flex;
-  flex-direction: column;
-  gap: var(--govbb-space-1);
-  margin-bottom: var(--govbb-space-4);
-}
-.govbb-update__date {
-  color: var(--govbb-color-text-muted);
-  font-size: 0.875rem;
-  margin: 0;
-}
-.govbb-update__title {
-  color: var(--govbb-color-teal);
-  font-weight: 600;
-  font-size: 1.125rem;
-  margin: 0;
-  text-decoration: none;
-}
-.govbb-update__title:hover {
-  text-decoration: underline;
-}
-.govbb-update__desc {
-  color: var(--govbb-color-text-muted);
-  margin: 0;
-}
 /* ── Article layout (sidebar | content | on-this-page) ────────── */
 .govbb-article {
   display: grid;
