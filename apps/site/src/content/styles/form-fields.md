@@ -41,41 +41,7 @@ An ordinary field contains a form group, label, optional hint, optional error
 and the control. Keep this order consistent so people can scan and recover from
 errors quickly.
 
-![Anatomy of a GovBB form field showing the form group, label, hint, error message and input.](/assets/images/form-field-anatomy.svg)
-
-```html title="Anatomy of a form field"
-<div class="govbb-form-group">
-  <label class="govbb-label" for="email">Email address</label>
-  <span class="govbb-hint" id="email-hint">
-    We will send your receipt to this address
-  </span>
-  <span class="govbb-error-message" id="email-error" role="alert">
-    Enter an email address in the correct format
-  </span>
-  <input
-    class="govbb-input"
-    id="email"
-    name="email"
-    type="email"
-    autocomplete="email"
-    aria-invalid="true"
-    aria-describedby="email-hint email-error"
-  />
-</div>
-```
-
-```tsx
-import { Input } from '@govtech-bb/react';
-
-<Input
-  name="email"
-  type="email"
-  autoComplete="email"
-  label="Email address"
-  hint="We will send your receipt to this address"
-  error="Enter an email address in the correct format"
-/>;
-```
+![Anatomy of a form field: callout lines point to the label "Email address", the hint text or error message below it, and the input beneath both.](/assets/images/form-field-anatomy.png)
 
 | Part            | Purpose                                                                      |
 | --------------- | ---------------------------------------------------------------------------- |
