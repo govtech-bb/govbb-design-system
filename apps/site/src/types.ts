@@ -8,4 +8,4 @@ export type Section =
   | 'documentation'
   | 'support'
   | 'ai-skills'
-  | 'changelog';
+  | 'design-log';

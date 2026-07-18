@@ -1,0 +1,75 @@
+---
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import DesignLogEntry from '../../components/DesignLogEntry.astro';
+import { getDesignLogSidebar } from '../../data/nav';
+import { getSortedDesignLog } from '../../data/design-log';
+
+const posts = await getSortedDesignLog();
+
+// Group by year, newest first (posts are already sorted newest first).
+const byYear = new Map<number, typeof posts>();
+for (const post of posts) {
+  const year = post.data.date.getUTCFullYear();
+  byYear.set(year, [...(byYear.get(year) ?? []), post]);
+}
+---
+<ArticleLayout
+  title="Design log"
+  section="design-log"
+  description="The research, decisions and working notes behind the design system."
+  pageTitle="Design log"
+  pageSubtitle="The research, decisions and working notes behind the system: what we found, what we chose, and why. Recording them here means we don't have to relitigate them later."
+  sidebarGroups={await getDesignLogSidebar()}
+  sidebarLabel="Design log"
+>
+  {
+    posts.length === 0 ? (
+      <p class="govbb-designlog__empty">
+        Nothing logged yet. The first entries will record the decisions and
+        research that shaped the first components.
+      </p>
+    ) : (
+      <div class="govbb-designlog">
+        {[...byYear.entries()].map(([year, entries]) => (
+          <section class="govbb-designlog__year" aria-label={String(year)}>
+            <h2 class="govbb-designlog__year-heading">{year}</h2>
+            <ol class="govbb-designlog__list">
+              {entries.map((post) => (
+                <DesignLogEntry
+                  date={post.data.date}
+                  title={post.data.title}
+                  href={`/design-log/${post.id}/`}
+                  summary={post.data.summary}
+                  kind={post.data.kind}
+                />
+              ))}
+            </ol>
+          </section>
+        ))}
+      </div>
+    )
+  }
+</ArticleLayout>
+
+<style>
+  .govbb-designlog {
+    max-width: 52rem;
+  }
+  .govbb-designlog__year + .govbb-designlog__year {
+    margin-top: var(--govbb-space-6);
+  }
+  .govbb-designlog__year-heading {
+    margin: 0 0 var(--govbb-space-2);
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--govbb-color-text-muted);
+  }
+  .govbb-designlog__list {
+    margin: 0;
+    padding: 0;
+  }
+  .govbb-designlog__empty {
+    color: var(--govbb-color-text-muted);
+    max-width: 65ch;
+  }
+</style>

@@ -1,6 +1,7 @@
 ---
 title: Why we don't use FAQs
 date: 2026-07-01
+kind: decision
 author: GovBB Design System team
 summary: Frequently asked questions are a symptom of unclear content, not a fix for it.
 ---

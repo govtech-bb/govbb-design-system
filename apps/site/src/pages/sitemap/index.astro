@@ -9,10 +9,10 @@ import {
   getStylesSidebar,
   getTemplatesSidebar,
 } from '../../data/nav';
-import { getSortedChangelog } from '../../data/changelog';
+import { getSortedDesignLog } from '../../data/design-log';
 import type { Section } from '../../types';
 
-const changelog = await getSortedChangelog();
+const designLog = await getSortedDesignLog();
 const componentsSidebar = await getComponentsSidebar();
 const documentationSidebar = await getDocumentationSidebar();
 const patternsSidebar = await getPatternsSidebar();
@@ -28,8 +28,8 @@ const childrenFor = (key: Section, href: string) => {
   else if (key === 'patterns') links = patternsSidebar.flatMap((g) => g.links);
   else if (key === 'documentation') links = documentationSidebar.flatMap((g) => g.links);
   else if (key === 'templates') links = templatesSidebar.flatMap((g) => g.links);
-  else if (key === 'changelog')
-    links = changelog.map((p) => ({ label: p.data.title, href: `/changelog/${p.id}/` }));
+  else if (key === 'design-log')
+    links = designLog.map((p) => ({ label: p.data.title, href: `/design-log/${p.id}/` }));
   return links
     .filter((l) => l.href !== href) // drop the section's own index link
     .filter(

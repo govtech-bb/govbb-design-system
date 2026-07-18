@@ -1,6 +1,7 @@
 ---
 title: Why we keep pages short
 date: 2026-07-15
+kind: decision
 author: GovBB Design System team
 summary: Nobody should have to scroll indefinitely to find an answer. If a page feels long on a desktop, it is far too long on a phone.
 ---
