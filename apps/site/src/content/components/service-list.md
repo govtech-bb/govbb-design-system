@@ -12,7 +12,7 @@ group: Navigation
   <li class="govbb-service-list__item">
     <div class="govbb-service-list__wrapper">
       <h3 class="govbb-service-list__heading">
-        <a class="govbb-link govbb-service-list__link" href="#">
+        <a class="govbb-link govbb-service-list__link" href="/services/family/">
           Family, birth and relationships
         </a>
       </h3>
@@ -25,7 +25,7 @@ group: Navigation
   <li class="govbb-service-list__item">
     <div class="govbb-service-list__wrapper">
       <h3 class="govbb-service-list__heading">
-        <a class="govbb-link govbb-service-list__link" href="#">
+        <a class="govbb-link govbb-service-list__link" href="/services/travel/">
           Travel and transport
         </a>
       </h3>
@@ -88,7 +88,10 @@ tags all work the same as the default look.
   <li class="govbb-service-list__item">
     <div class="govbb-service-list__wrapper">
       <h3 class="govbb-service-list__heading">
-        <a class="govbb-link govbb-service-list__link" href="#">
+        <a
+          class="govbb-link govbb-service-list__link"
+          href="/services/register-birth/"
+        >
           Register a birth
         </a>
       </h3>
@@ -113,20 +116,44 @@ import { ServiceList, ServiceListItem } from '@govtech-bb/react';
 </ServiceList>;
 ```
 
-## When to use this component
+## Usage
 
-Use a service list wherever users pick a destination from a set of services,
-categories or topics: the categories on a homepage with the default look, the
-services inside a category page with the signpost look, or an A to Z of
-services. Add a description when the link name alone does not say what users
-will find, and a tag when it helps users know what kind of service to expect.
+<div class="govbb-usage-guidance">
+  <section class="govbb-usage-guidance__item" aria-labelledby="service-list-when-to-use">
+    <h3 id="service-list-when-to-use">
+      <span class="govbb-usage-guidance__icon govbb-usage-guidance__icon--do" aria-hidden="true">✓</span>
+      When to use
+    </h3>
+    <ul>
+      <li>Use a service list when users choose a destination from related services, categories or topics.</li>
+      <li>Use a description or tag only when it helps users distinguish similar destinations.</li>
+    </ul>
+  </section>
+  <section class="govbb-usage-guidance__item" aria-labelledby="service-list-when-not-to-use">
+    <h3 id="service-list-when-not-to-use">
+      <span class="govbb-usage-guidance__icon govbb-usage-guidance__icon--dont" aria-hidden="true">×</span>
+      When not to use
+    </h3>
+    <ul>
+      <li>Do not use it for general prose or task steps; use a <a href="/components/list/">list</a>.</li>
+      <li>Do not use it to show the path to the current page; use <a href="/components/breadcrumbs/">breadcrumbs</a>.</li>
+    </ul>
+  </section>
+</div>
 
-## When not to use this component
+## Best practices
 
-Do not use a service list for general content lists; use the
-[list](/components/list/) component instead. Do not use it for the trail back
-up the page hierarchy; that is the job of
-[breadcrumbs](/components/breadcrumbs/).
+### Make each destination distinct
+
+Use a short, unique service name as the link. Add a one-sentence description
+when the name alone does not explain the task, and keep descriptions parallel
+across the list.
+
+### Keep one destination per item
+
+The whole item is a larger target for its single link. Do not add another link,
+button or interactive control inside it. Choose a heading level that fits the
+page outline.
 
 ## Heading level
 

@@ -2,22 +2,23 @@
 // The design-system footer component; only the crest asset is local
 // (SVGO-optimised copy of the package's govbb-crest.svg).
 import crest from '../assets/govbb-crest.svg?url';
-import { primaryNav, secondaryNav } from '../data/nav';
+import { secondaryNav } from '../data/nav';
 const year = new Date().getFullYear();
+const footerLinks = [
+  { label: 'Get started', href: '/documentation/' },
+  ...secondaryNav.map(({ label, href }) => ({ label, href })),
+  { label: 'Cookie policy', href: '/cookies/' },
+  { label: 'Terms and conditions', href: '/terms/' },
+  { label: 'Sitemap', href: '/sitemap/' },
+];
 ---
 
 <footer class="govbb-footer" data-pagefind-ignore>
   <div class="govbb-width-container govbb-footer__inner">
     <nav class="govbb-footer__nav" aria-label="Footer navigation">
-      <a class="govbb-footer__link" href="/">Home</a>
-      {
-        [...primaryNav, ...secondaryNav].map((item) => (
-          <a class="govbb-footer__link" href={item.href}>{item.label}</a>
-        ))
-      }
-      <a class="govbb-footer__link" href="/cookies/">Cookie Policy</a>
-      <a class="govbb-footer__link" href="/terms/">Terms &amp; Conditions</a>
-      <a class="govbb-footer__link" href="/sitemap/">Sitemap</a>
+      {footerLinks.map((item) => (
+        <a class="govbb-footer__link" href={item.href}>{item.label}</a>
+      ))}
     </nav>
     <hr class="govbb-footer__divider" aria-hidden="true" />
     <div class="govbb-footer__end">

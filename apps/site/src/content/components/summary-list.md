@@ -47,16 +47,40 @@ and a plain value), one row per pair. It is built on a description list
 key stacks above the value; from tablet widths up they sit side by side with
 the keys in a fixed-width column.
 
-## When to use this component
+## Usage
 
-Use a summary list to present information a user has already given, or facts
-about a person, application or service. It is the core of the
-_check your answers_ pattern: at the end of a form, show the user's answers as
-a summary list so they can confirm everything is correct before submitting,
-for example before submitting a passport renewal or an NIS claim.
+<div class="govbb-usage-guidance">
+  <section class="govbb-usage-guidance__item" aria-labelledby="summary-list-when-to-use">
+    <h3 id="summary-list-when-to-use">
+      <span class="govbb-usage-guidance__icon govbb-usage-guidance__icon--do" aria-hidden="true">✓</span>
+      When to use
+    </h3>
+    <ul>
+      <li>Use a summary list for key–value facts about one person, application, service or record.</li>
+      <li>Use it to let users review answers before submitting a service.</li>
+    </ul>
+  </section>
+  <section class="govbb-usage-guidance__item" aria-labelledby="summary-list-when-not-to-use">
+    <h3 id="summary-list-when-not-to-use">
+      <span class="govbb-usage-guidance__icon govbb-usage-guidance__icon--dont" aria-hidden="true">×</span>
+      When not to use
+    </h3>
+    <ul>
+      <li>Do not use it to compare the same fields across several records; use a <a href="/components/table/">table</a>.</li>
+      <li>Do not use it for a plain list of links, tasks or steps.</li>
+    </ul>
+  </section>
+</div>
 
-## When not to use this component
+## Best practices
 
-Do not use a summary list for data that users need to compare across several
-items. Use a table instead. Do not use it for simple lists of links or steps. Use a list
-instead.
+### Use clear keys and complete values
+
+Choose short labels such as “Date of birth” and show the value exactly as users
+need to verify it. Group multiple summary lists under meaningful headings.
+
+### Give every action context
+
+If a row includes a “Change” link, add visually hidden text such as “Change
+date of birth” so links remain distinct out of context. Return users to the
+review page after the change.

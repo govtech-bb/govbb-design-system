@@ -128,6 +128,12 @@ const maxPx = Math.max(...tokens.map(pxOf), 1);
     }
   </tbody>
 </table>
+<span
+  class="govbb-visually-hidden"
+  role="status"
+  aria-live="polite"
+  data-token-copy-status
+></span>
 </div>
 
 <style>
@@ -204,9 +210,10 @@ const maxPx = Math.max(...tokens.map(pxOf), 1);
   }
   .tokens__copy {
     font: inherit;
-    font-size: 0.75rem;
+    min-block-size: 2.75rem;
+    font-size: 0.875rem;
     line-height: 1;
-    padding: 4px 8px;
+    padding-inline: var(--govbb-space-2);
     color: var(--govbb-color-teal);
     background: transparent;
     border: 1px solid var(--govbb-color-border);
@@ -248,16 +255,24 @@ const maxPx = Math.max(...tokens.map(pxOf), 1);
         '[data-copy-token]',
       );
       if (!button) return;
+      const status = button
+        .closest<HTMLElement>('.tokens-scroll')
+        ?.querySelector<HTMLElement>('[data-token-copy-status]');
+      if (status) status.textContent = '';
       try {
         await navigator.clipboard.writeText(`var(${button.dataset.copyToken})`);
         button.textContent = 'Copied';
         button.setAttribute('data-copied', '');
+        if (status) status.textContent = `${button.dataset.copyToken} copied.`;
         window.setTimeout(() => {
           button.textContent = 'Copy';
           button.removeAttribute('data-copied');
         }, 1500);
       } catch {
-        button.textContent = 'Press Ctrl+C';
+        button.textContent = 'Copy failed';
+        if (status) {
+          status.textContent = 'Copy failed. Select the token and copy it manually.';
+        }
       }
     });
   }

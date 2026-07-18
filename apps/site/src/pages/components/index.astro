@@ -15,9 +15,9 @@ const groups = GROUP_ORDER.map((heading) => ({
 <ArticleLayout
   title="Components"
   section="components"
-  description="Reusable, accessible parts of the user interface, with live examples and code."
+  description="Reusable parts of the user interface, with live examples, code and practical guidance."
   pageTitle="Components"
-  pageSubtitle="Reusable parts of the user interface, with live examples and code."
+  pageSubtitle="Reusable parts of the user interface, with live examples, code and practical guidance."
   sidebarGroups={await getComponentsSidebar()}
   sidebarLabel="Components"
 >
@@ -43,7 +43,7 @@ const groups = GROUP_ORDER.map((heading) => ({
     </p>
   </div>
   <p class="govbb-catalog-empty" data-catalog-empty hidden>
-    No components match that search. Try a shorter term or browse a group below.
+    No components match this search. Check the spelling or try a shorter term.
   </p>
   <div id="component-catalog">
   {
@@ -52,7 +52,10 @@ const groups = GROUP_ORDER.map((heading) => ({
         <h2 class="govbb-compgroup__heading">{group.heading}</h2>
         <ul class="govbb-cardgrid">
           {group.entries.map((entry) => (
-            <li data-catalog-item data-search={`${entry.data.title} ${entry.data.lede} ${entry.data.group}`.toLowerCase()}>
+            <li
+              data-catalog-item
+              data-search={`${entry.data.title} ${entry.data.lede} ${entry.data.group}`.toLowerCase()}
+            >
               <a class="govbb-compcard" href={`/components/${entry.id}/`}>
                 <h3 class="govbb-compcard__title">{entry.data.title}</h3>
                 <p class="govbb-compcard__desc">{entry.data.lede}</p>
@@ -74,12 +77,13 @@ const groups = GROUP_ORDER.map((heading) => ({
   const groups = [...document.querySelectorAll<HTMLElement>('[data-catalog-group]')];
   const empty = document.querySelector<HTMLElement>('[data-catalog-empty]');
 
-  input?.addEventListener('input', () => {
-    const query = input.value.trim().toLocaleLowerCase();
+  const updateCatalog = () => {
+    const query = input?.value.trim().toLocaleLowerCase() ?? '';
     let visible = 0;
 
     for (const item of items) {
-      const matches = !query || item.dataset.search?.includes(query);
+      const matchesQuery = !query || item.dataset.search?.includes(query);
+      const matches = Boolean(matchesQuery);
       item.hidden = !matches;
       if (matches) visible++;
     }
@@ -90,9 +94,12 @@ const groups = GROUP_ORDER.map((heading) => ({
 
     if (empty) empty.hidden = visible !== 0;
     if (status) {
-      status.textContent = query
-        ? `${visible} component${visible === 1 ? '' : 's'} found.`
-        : `Showing all ${items.length} components.`;
+      status.textContent =
+        query
+          ? `${visible} component${visible === 1 ? '' : 's'} found.`
+          : `Showing all ${items.length} components.`;
     }
-  });
+  };
+
+  input?.addEventListener('input', updateCatalog);
 </script>

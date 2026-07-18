@@ -11,7 +11,7 @@ group: Authentication
 <main class="govbb-width-container" id="main-content">
   <h1 class="govbb-text-h1">Sign in</h1>
 
-  <form action="#" method="post" novalidate>
+  <form action="/account/sign-in/" method="post" novalidate>
     <div class="govbb-form-group">
       <label class="govbb-label" for="email">Email address</label>
       <input
@@ -39,10 +39,12 @@ group: Authentication
   </form>
 
   <p class="govbb-text-body">
-    <a class="govbb-link" href="#">Reset your password</a>
+    <a class="govbb-link" href="/account/reset-password/"
+      >Reset your password</a
+    >
   </p>
   <p class="govbb-text-body">
-    <a class="govbb-link" href="#">Create an account</a>
+    <a class="govbb-link" href="/account/create/">Create an account</a>
   </p>
 </main>
 ```

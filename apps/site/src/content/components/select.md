@@ -67,20 +67,43 @@ The Select component is a dropdown that lets users choose a single option from a
 long list, such as a parish or a country. It is a last resort for long lists:
 most questions are easier to answer with visible options.
 
-## When to use this component
+## Usage
 
-Use a select when there are more than about five options and the list is one
-users already know, such as a parish or a month. Selects work well when the
-options are long and predictable enough that hiding them behind a dropdown does
-not slow users down.
+<div class="govbb-usage-guidance">
+  <section class="govbb-usage-guidance__item" aria-labelledby="select-when-to-use">
+    <h3 id="select-when-to-use">
+      <span class="govbb-usage-guidance__icon govbb-usage-guidance__icon--do" aria-hidden="true">✓</span>
+      When to use
+    </h3>
+    <ul>
+      <li>Use a select for one choice from a familiar, predictable list when showing every option would crowd the page.</li>
+      <li>Use it for settings where a sensible current value is already known.</li>
+    </ul>
+  </section>
+  <section class="govbb-usage-guidance__item" aria-labelledby="select-when-not-to-use">
+    <h3 id="select-when-not-to-use">
+      <span class="govbb-usage-guidance__icon govbb-usage-guidance__icon--dont" aria-hidden="true">×</span>
+      When not to use
+    </h3>
+    <ul>
+      <li>Do not use a select for a short list when <a href="/components/radio/">radio buttons</a> let users compare choices directly.</li>
+      <li>Do not use it for multiple selection or a very long list users need to filter by typing.</li>
+    </ul>
+  </section>
+</div>
 
-## When not to use this component
+## Best practices
 
-Do not use a select for five or fewer options: radio buttons show every choice
-at once and are easier to scan and select. Do not use a select for data users
-would want to search for, such as a long list of countries, without also
-offering a typeahead. And do not use a select when more than one answer is
-allowed. Use checkboxes instead.
+### Do not preselect an answer to a question
+
+Start with a prompt such as “Select a parish” when no answer has been given.
+Preselection is appropriate for an existing setting, but can bias a new answer.
+
+### Make options easy to predict
+
+Use short, unique labels and order options alphabetically, numerically or by a
+clear domain convention. Keep a visible label and place validation feedback
+beside the select.
 
 ## Guidance
 

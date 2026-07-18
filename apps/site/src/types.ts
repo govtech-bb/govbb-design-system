@@ -6,5 +6,6 @@ export type Section =
   | 'components'
   | 'templates'
   | 'documentation'
+  | 'support'
   | 'ai-skills'
   | 'changelog';

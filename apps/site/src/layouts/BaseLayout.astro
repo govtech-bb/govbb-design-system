@@ -18,8 +18,14 @@ interface Props {
   title: string;
   description?: string;
   section?: Section;
+  skipTarget?: string;
 }
-const { title, description, section } = Astro.props;
+const {
+  title,
+  description,
+  section,
+  skipTarget = '#main-content',
+} = Astro.props;
 const fullTitle = `${title} - GovBB Design System`;
 ---
 <!doctype html>
@@ -47,12 +53,12 @@ const fullTitle = `${title} - GovBB Design System`;
     />
   </head>
   <body class="govbb-page">
-    <a class="govbb-skip-link" href="#main-content">Skip to main content</a>
+    <a class="govbb-skip-link" href={skipTarget}>Skip to main content</a>
     <div data-pagefind-ignore>
       <GovBanner />
       <Header section={section} />
     </div>
-    <main id="main-content" data-pagefind-body>
+    <main id="main-content" tabindex="-1" data-pagefind-body>
       <slot />
     </main>
     <Footer />

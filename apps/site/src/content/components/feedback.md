@@ -11,7 +11,7 @@ group: Feedback
 <aside class="govbb-feedback">
   <h3 class="govbb-feedback__heading">Was this helpful?</h3>
   <p>Give us your feedback about this page.</p>
-  <a class="govbb-link" href="#">Help us improve alpha.gov.bb</a>
+  <a class="govbb-link" href="/feedback/">Help us improve alpha.gov.bb</a>
 </aside>
 ```
 
@@ -36,18 +36,42 @@ the [Link](/components/link/) component (or a plain `a` with the `govbb-link`
 class) for the link; on the tinted surface it renders in ink and lifts to a
 white background on hover, the same as links in the status banner.
 
-## When to use this component
+## Usage
 
-Use the feedback box on content and service pages to give users a consistent
-route for telling you whether the page worked for them. Place it once, near
-the end of the main content, before the footer.
+<div class="govbb-usage-guidance">
+  <section class="govbb-usage-guidance__item" aria-labelledby="feedback-when-to-use">
+    <h3 id="feedback-when-to-use">
+      <span class="govbb-usage-guidance__icon govbb-usage-guidance__icon--do" aria-hidden="true">✓</span>
+      When to use
+    </h3>
+    <ul>
+      <li>Use the feedback box to give users a consistent route for commenting on a page or service.</li>
+      <li>Place it once, near the end of the main content and before the footer.</li>
+    </ul>
+  </section>
+  <section class="govbb-usage-guidance__item" aria-labelledby="feedback-when-not-to-use">
+    <h3 id="feedback-when-not-to-use">
+      <span class="govbb-usage-guidance__icon govbb-usage-guidance__icon--dont" aria-hidden="true">×</span>
+      When not to use
+    </h3>
+    <ul>
+      <li>Do not use it for lifecycle or service messages; use a <a href="/components/status-banner/">status banner</a>.</li>
+      <li>Do not place a complete survey or open text field inside the box; link to a focused feedback form.</li>
+    </ul>
+  </section>
+</div>
 
-## When not to use this component
+## Best practices
 
-Do not use the feedback box for messages about the page's status, such as a
-service being in Alpha or Beta. Use the
-[status banner](/components/status-banner/) instead. Do not use it to collect
-the feedback itself; link to a page with a form for that.
+### Ask about the page the user just used
+
+Keep the prompt short and specific. Carry the page URL or identifier into the
+feedback route so users do not have to explain where they were.
+
+### Set expectations before collecting feedback
+
+Make it clear whether feedback will receive a response. Provide a separate
+contact route for help with an individual case or urgent service problem.
 
 ## Custom heading
 
@@ -57,7 +81,7 @@ Replace the default heading when the prompt needs different wording.
 <aside class="govbb-feedback">
   <h3 class="govbb-feedback__heading">Rate this service</h3>
   <p>Tell us how your application went.</p>
-  <a class="govbb-link" href="#">Give feedback on this service</a>
+  <a class="govbb-link" href="/feedback/">Give feedback on this service</a>
 </aside>
 ```
 

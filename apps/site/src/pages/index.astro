@@ -1,28 +1,22 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import CardGrid from '../components/CardGrid.astro';
-import type { CardData } from '../components/CardGrid.astro';
-import { primaryNav } from '../data/nav';
 
-const cards: CardData[] = [
+const startPaths = [
   {
-    title: 'New to the design system',
+    title: 'Adopting the system',
     href: '/documentation/',
-    modifier: 'pink',
     desc: 'Understand the standards, packages and recommended way to adopt the system.',
     link: 'Get started',
   },
   {
     title: 'Designing a service',
     href: '/patterns/',
-    modifier: 'lavender',
     desc: 'Use patterns to solve common tasks, then start whole pages from templates.',
     link: 'Browse patterns',
   },
   {
     title: 'Building an interface',
     href: '/components/',
-    modifier: 'teal',
     desc: 'Find reusable components, live examples and HTML or React implementation guidance.',
     link: 'Browse components',
   },
@@ -33,38 +27,39 @@ const cards: CardData[] = [
   description="The design system for official Government of Barbados services."
 >
   <section class="govbb-width-container govbb-hero">
-    <h1 class="govbb-hero__title">design-system.gov.bb</h1>
+    <h1 class="govbb-hero__title">GovBB Design System</h1>
     <p class="govbb-hero__subtitle">
-      The design system for official digital services of the Government of Barbados.
+      A shared foundation for clear, accessible Government of Barbados digital services.
     </p>
     <div class="govbb-hero__cta">
       <a class="govbb-button" href="/documentation/">Get started</a>
-      <a class="govbb-button govbb-button--tertiary" href="/components/"
-        >Browse components</a
-      >
+      <a class="govbb-button govbb-button--tertiary" href="/components/">
+        Browse components
+      </a>
     </div>
   </section>
 
   <section class="govbb-band govbb-band--pink">
-    <div class="govbb-width-container">
-      <h2 class="govbb-section-title">Choose where to start</h2>
-      <CardGrid cards={cards} heading="h3" />
+    <div class="govbb-width-container govbb-start-guide">
+      <div class="govbb-start-guide__intro">
+        <h2 class="govbb-section-title">Choose where to start</h2>
+        <p>Follow the path that matches the decision your team needs to make.</p>
+      </div>
+      <ul class="govbb-start-list">
+        {
+          startPaths.map((path) => (
+            <li>
+              <a href={path.href}>
+                <div>
+                  <h3>{path.title}</h3>
+                  <p>{path.desc}</p>
+                </div>
+                <span>{path.link}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
     </div>
   </section>
-
-  <section class="govbb-width-container govbb-page-section govbb-reference-index">
-    <div>
-      <h2 class="govbb-section-title">Browse the system</h2>
-      <p>Use the section that matches the decision you need to make.</p>
-    </div>
-    <ul class="govbb-reference-list">
-      {primaryNav.slice(1).map((item) => (
-        <li>
-          <a href={item.href}>{item.label}</a>
-          <p>{item.description}</p>
-        </li>
-      ))}
-    </ul>
-  </section>
-
 </BaseLayout>

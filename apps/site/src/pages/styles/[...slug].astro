@@ -61,7 +61,6 @@ const parentLabel = entry.id.includes('/')
     { label: parentLabel },
   ]}
   meta={[
-    { label: 'Status', value: 'Published' },
     { label: 'Type', value: entry.body?.includes('```token-') ? 'Token reference' : 'Foundation guidance' },
   ]}
   previous={neighbors.previous}

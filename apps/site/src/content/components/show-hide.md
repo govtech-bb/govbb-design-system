@@ -1,5 +1,5 @@
 ---
-title: Show/Hide
+title: Show/hide
 description: Use show/hide to reveal secondary content on demand.
 lede: Reveal secondary content, such as help text, on demand.
 group: Content
@@ -30,16 +30,43 @@ The Show/Hide component is a disclosure that reveals secondary content when a
 user chooses to see it. It is useful for help text and other detail that not
 every user needs to read.
 
-## When to use this component
+## Usage
 
-Use show/hide for supporting information that the average user can skip, such as
-help text, worked examples, or extra detail that only some users need.
+<div class="govbb-usage-guidance">
+  <section class="govbb-usage-guidance__item" aria-labelledby="show-hide-when-to-use">
+    <h3 id="show-hide-when-to-use">
+      <span class="govbb-usage-guidance__icon govbb-usage-guidance__icon--do" aria-hidden="true">✓</span>
+      When to use
+    </h3>
+    <ul>
+      <li>Use show/hide for one section of supporting information that only some users need.</li>
+      <li>Use it for optional help, a worked example or additional explanation.</li>
+    </ul>
+  </section>
+  <section class="govbb-usage-guidance__item" aria-labelledby="show-hide-when-not-to-use">
+    <h3 id="show-hide-when-not-to-use">
+      <span class="govbb-usage-guidance__icon govbb-usage-guidance__icon--dont" aria-hidden="true">×</span>
+      When not to use
+    </h3>
+    <ul>
+      <li>Do not hide information most users need to understand or complete the task.</li>
+      <li>Do not use it for sequential steps, validation errors or the primary action.</li>
+    </ul>
+  </section>
+</div>
 
-## When not to use this component
+## Best practices
 
-Do not hide content that users need in order to complete the task. If most users
-need the information, show it on the page rather than hiding it behind a
-disclosure.
+### Make the closed summary meaningful
+
+Write a short summary that names what will be revealed, such as “Help with
+proof of address”. Avoid vague labels such as “More information”.
+
+### Keep disclosure content focused
+
+Use one show/hide for one secondary section. Avoid nesting disclosures, and
+show the content by default when most users need it or when hiding it would
+prevent completion.
 
 ## Writing the summary
 

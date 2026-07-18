@@ -1,5 +1,5 @@
 ---
-title: Error Summary
+title: Error summary
 description: Use an error summary to list every problem on a page after a failed form submission.
 lede: Lists every problem on a page and links straight to the field that caused it.
 group: Feedback
@@ -57,18 +57,43 @@ submission, with a link to each field that needs to be fixed. It gives users a
 single place to see what went wrong instead of hunting through the form for
 individual error messages.
 
-## When to use this component
+## Usage
 
-Use an error summary whenever a form submission fails validation, even when
-only one field has failed. Place it at the top of the page, above the form,
-so it is the first thing a user encounters when the page reloads. Always pair
-it with an error message next to each failed field.
+<div class="govbb-usage-guidance">
+  <section class="govbb-usage-guidance__item" aria-labelledby="error-summary-when-to-use">
+    <h3 id="error-summary-when-to-use">
+      <span class="govbb-usage-guidance__icon govbb-usage-guidance__icon--do" aria-hidden="true">✓</span>
+      When to use
+    </h3>
+    <ul>
+      <li>Use an error summary whenever a submitted form contains a validation error, even if there is only one.</li>
+      <li>Use it together with an error message beside every field that needs correction.</li>
+    </ul>
+  </section>
+  <section class="govbb-usage-guidance__item" aria-labelledby="error-summary-when-not-to-use">
+    <h3 id="error-summary-when-not-to-use">
+      <span class="govbb-usage-guidance__icon govbb-usage-guidance__icon--dont" aria-hidden="true">×</span>
+      When not to use
+    </h3>
+    <ul>
+      <li>Do not use an error summary for service notices, warnings or successful outcomes.</li>
+      <li>Do not show it before the user submits the form or has had a reasonable chance to answer.</li>
+    </ul>
+  </section>
+</div>
 
-## When not to use this component
+## Best practices
 
-Do not use an error summary for general page notices or success messages; it
-is only for validation errors that block submission. Do not show one before
-the user has submitted the form.
+### Help users reach each error
+
+Place the summary at the start of the form, move focus to it after an
+unsuccessful submission and link every message to the relevant field or group.
+
+### Keep messages consistent
+
+Use the heading “There is a problem”. Match each summary message to the inline
+message and prefix the document title with “Error:” so the state is announced
+as soon as the page loads.
 
 ## Placement and focus
 

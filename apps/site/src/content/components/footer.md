@@ -51,15 +51,43 @@ width the links and the coat of arms sit in two columns. The coat of arms image
 ships in the `@govtech-bb/frontend` package under `assets/images/`. Host it
 with your service and point `src` at your copy.
 
-## When to use this component
+## Usage
 
-Use the footer at the end of every page of a gov.bb service. Keep the same set
-of links across the whole service so users can find them wherever they are.
+<div class="govbb-usage-guidance">
+  <section class="govbb-usage-guidance__item" aria-labelledby="footer-when-to-use">
+    <h3 id="footer-when-to-use">
+      <span class="govbb-usage-guidance__icon govbb-usage-guidance__icon--do" aria-hidden="true">✓</span>
+      When to use
+    </h3>
+    <ul>
+      <li>Use the footer at the end of every page in a gov.bb website or service.</li>
+      <li>Use it for a small, consistent set of utility, contact and legal links.</li>
+    </ul>
+  </section>
+  <section class="govbb-usage-guidance__item" aria-labelledby="footer-when-not-to-use">
+    <h3 id="footer-when-not-to-use">
+      <span class="govbb-usage-guidance__icon govbb-usage-guidance__icon--dont" aria-hidden="true">×</span>
+      When not to use
+    </h3>
+    <ul>
+      <li>Do not place information users need to complete the current task only in the footer.</li>
+      <li>Do not duplicate the entire header navigation or turn the footer into a directory of every page.</li>
+    </ul>
+  </section>
+</div>
 
-## When not to use this component
+## Best practices
 
-Do not use the footer for content users need to complete their task. Put that
-in the body of the page. Do not use it for primary navigation.
+### Curate links around remaining user needs
+
+Include destinations such as contact, accessibility, privacy and terms when
+they are relevant. Keep labels short and remove stale or rarely useful links.
+
+### Keep the footer consistent
+
+Use the same ordering and content throughout a service. Mark footer navigation
+with a clear accessible label and make phone numbers and email addresses usable
+as links.
 
 ## Footer links
 

@@ -61,18 +61,43 @@ When the first column identifies each row, mark it up as a row header
 associate the row's cells with it. Always include a caption describing what
 the table shows, and use `scope="col"` on column headers.
 
-## When to use this component
+## Usage
 
-Use a table to present data that users need to scan, compare or look up, for
-example fees, processing times or opening hours across several government
-services.
+<div class="govbb-usage-guidance">
+  <section class="govbb-usage-guidance__item" aria-labelledby="table-when-to-use">
+    <h3 id="table-when-to-use">
+      <span class="govbb-usage-guidance__icon govbb-usage-guidance__icon--do" aria-hidden="true">✓</span>
+      When to use
+    </h3>
+    <ul>
+      <li>Use a table when users need to compare or look up structured data across rows and columns.</li>
+      <li>Use it when every record shares the same fields, such as fees, dates or service locations.</li>
+    </ul>
+  </section>
+  <section class="govbb-usage-guidance__item" aria-labelledby="table-when-not-to-use">
+    <h3 id="table-when-not-to-use">
+      <span class="govbb-usage-guidance__icon govbb-usage-guidance__icon--dont" aria-hidden="true">×</span>
+      When not to use
+    </h3>
+    <ul>
+      <li>Do not use a table for page layout, long prose or records with different structures.</li>
+      <li>Do not use it for one set of key–value facts; use a <a href="/components/summary-list/">summary list</a>.</li>
+    </ul>
+  </section>
+</div>
 
-## When not to use this component
+## Best practices
 
-Do not use a table for content that is not tabular, such as a list of steps or
-a set of links. Use a list instead. Do not use a table purely for visual
-layout. If you are showing a single set of key/value pairs, such as a user's
-answers, use the summary list component instead.
+### Make comparison effortless
+
+Use a descriptive caption, short headers and consistent formats within each
+column. Left-align text and right-align numbers that users compare as values.
+
+### Keep the structure semantic at every width
+
+Use header cells with the correct `scope` and never remove them in a responsive
+layout. Prefer horizontal scrolling for a genuinely wide table rather than
+turning rows into ambiguous blocks or shrinking text until it is hard to read.
 
 ## Wide tables
 

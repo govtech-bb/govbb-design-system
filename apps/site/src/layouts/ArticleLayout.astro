@@ -20,7 +20,7 @@ interface Props {
   /** "Get this page" links (GitHub source + raw markdown) under the title. */
   source?: PageSource;
   breadcrumbs?: { label: string; href?: string }[];
-  meta?: { label: string; value: string }[];
+  meta?: { label: string; value: string; href?: string }[];
   previous?: { label: string; href: string };
   next?: { label: string; href: string };
 }
@@ -39,12 +39,18 @@ const {
   previous,
   next,
 } = Astro.props;
+
 ---
-<BaseLayout title={title} description={description} section={section}>
+<BaseLayout
+  title={title}
+  description={description}
+  section={section}
+  skipTarget="#article-content"
+>
   <div class="govbb-width-container govbb-article">
     <Sidebar groups={sidebarGroups} ariaLabel={sidebarLabel} />
     <div class="govbb-article__main">
-      <div>
+      <div id="article-content" tabindex="-1">
         <div class="govbb-page-header">
           {breadcrumbs && breadcrumbs.length > 0 && (
             <nav class="govbb-breadcrumbs govbb-page-breadcrumbs" aria-label="Breadcrumb">
@@ -68,7 +74,9 @@ const {
               {meta.map((item) => (
                 <div>
                   <dt>{item.label}</dt>
-                  <dd>{item.value}</dd>
+                  <dd>
+                    {item.href ? <a href={item.href}>{item.value}</a> : item.value}
+                  </dd>
                 </div>
               ))}
             </dl>

@@ -19,7 +19,12 @@ group: Error pages
     </div>
     <div class="govbb-official-banner__text">
       <span>Official government website</span>
-      <a class="govbb-official-banner__link" href="#">Learn more</a>
+      <a
+        class="govbb-official-banner__link"
+        href="/government/website-information/"
+      >
+        Learn more
+      </a>
     </div>
   </div>
 </div>
@@ -49,10 +54,10 @@ group: Error pages
   </ul>
 
   <div class="govbb-button-group">
-    <a class="govbb-button govbb-button--secondary" href="#" role="button">
-      Contact us
-    </a>
-    <a class="govbb-button" href="#" role="button">Return to homepage</a>
+    <a class="govbb-button govbb-button--secondary" href="/contact/"
+      >Contact us</a
+    >
+    <a class="govbb-button" href="/">Return to homepage</a>
   </div>
 </main>
 <footer class="govbb-footer">

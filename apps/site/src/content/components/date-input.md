@@ -1,5 +1,5 @@
 ---
-title: Date Input
+title: Date input
 description: Use the date input component to let users enter a memorable date.
 lede: Lets users enter a memorable date, such as a date of birth.
 group: Form elements
@@ -67,19 +67,44 @@ birth or a document's expiry date, using three short text fields for day, month,
 and year. A shared `<fieldset>` and `<legend>` group the three fields under a
 single question.
 
-## When to use this component
+## Usage
 
-Use a date input for dates the user already knows and can recall unassisted,
-such as a date of birth, a passport expiry date, or an anniversary. Typing three
-short numbers is faster and more reliable than operating a calendar widget for
-dates like these.
+<div class="govbb-usage-guidance">
+  <section class="govbb-usage-guidance__item" aria-labelledby="date-input-when-to-use">
+    <h3 id="date-input-when-to-use">
+      <span class="govbb-usage-guidance__icon govbb-usage-guidance__icon--do" aria-hidden="true">✓</span>
+      When to use
+    </h3>
+    <ul>
+      <li>Use a date input for a date users already know or can look up without a calendar, such as a date of birth or passport expiry date.</li>
+      <li>Use separate day, month and year fields when the complete date is required.</li>
+    </ul>
+  </section>
+  <section class="govbb-usage-guidance__item" aria-labelledby="date-input-when-not-to-use">
+    <h3 id="date-input-when-not-to-use">
+      <span class="govbb-usage-guidance__icon govbb-usage-guidance__icon--dont" aria-hidden="true">×</span>
+      When not to use
+    </h3>
+    <ul>
+      <li>Do not use it when users need to browse available dates, such as booking an appointment; use a date picker.</li>
+      <li>Do not use dropdowns for the day or year because long option lists are difficult to scan.</li>
+    </ul>
+  </section>
+</div>
 
-## When not to use this component
+## Best practices
 
-Do not use a date input when the user needs to look up a date rather than recall
-it, for example choosing the next available appointment slot or selecting a date
-range. Use a date picker instead, so the user can browse a calendar and see which
-dates are available.
+### Make the expected format clear
+
+Label each field and give a Barbados-appropriate example such as “For example,
+27 3 1990”. Keep the order day, month, year and do not move focus automatically
+between fields.
+
+### Validate the date as a whole
+
+Accept reasonable month formats, then check that the date exists and meets the
+service rules. Explain whether the day, month, year or complete date needs
+correction.
 
 ## Labels and hint text
 

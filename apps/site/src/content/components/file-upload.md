@@ -1,5 +1,5 @@
 ---
-title: File Upload
+title: File upload
 description: Use the file upload component to let users attach a file, such as a supporting document.
 lede: Lets users attach a file, such as a supporting document.
 group: Form elements
@@ -80,17 +80,44 @@ or a photo of an ID. The whole dropzone acts as the label, so clicking anywhere
 inside it opens the file picker, and uploaded files stay visible in a list so
 users can confirm what they attached.
 
-## When to use this component
+## Usage
 
-Use file upload when you genuinely need a copy of a document that cannot be
-verified another way, such as evidence of address or a scanned certificate.
+<div class="govbb-usage-guidance">
+  <section class="govbb-usage-guidance__item" aria-labelledby="file-upload-when-to-use">
+    <h3 id="file-upload-when-to-use">
+      <span class="govbb-usage-guidance__icon govbb-usage-guidance__icon--do" aria-hidden="true">✓</span>
+      When to use
+    </h3>
+    <ul>
+      <li>Use file upload only when a document is necessary to complete the service.</li>
+      <li>Use it for evidence that cannot be entered, declared or verified another way.</li>
+    </ul>
+  </section>
+  <section class="govbb-usage-guidance__item" aria-labelledby="file-upload-when-not-to-use">
+    <h3 id="file-upload-when-not-to-use">
+      <span class="govbb-usage-guidance__icon govbb-usage-guidance__icon--dont" aria-hidden="true">×</span>
+      When not to use
+    </h3>
+    <ul>
+      <li>Do not request optional documents “just in case”.</li>
+      <li>Do not require a file format or size that creates unnecessary software, connectivity or data costs.</li>
+    </ul>
+  </section>
+</div>
 
-## When not to use this component
+## Best practices
 
-Do not ask users to upload a file when the information could instead be entered as
-text, looked up from another government system, or confirmed by a simple
-declaration. Every upload is extra work and a chance to fail. Only ask for one
-when it is strictly necessary.
+### Explain restrictions before users choose a file
+
+State the accepted file types, maximum size and whether more than one file is
+allowed in hint text. Use the `accept` attribute to narrow the system file
+picker, but validate the file again on the server.
+
+### Prefer one document per input
+
+One clearly labelled input per document is easier to understand than a single
+multi-file picker. Let users see what they selected, remove the wrong file and
+reuse an upload within the same journey where it is safe to do so.
 
 ## Guidance
 

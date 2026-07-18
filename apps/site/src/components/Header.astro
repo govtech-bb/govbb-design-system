@@ -14,7 +14,7 @@ const { section } = Astro.props;
     <a class="site-brand" href="/">GovBB Design System</a>
     <SearchBar compact id="header-search" label="Search the design system" />
   </div>
-  <nav class="site-nav" aria-label="Primary">
+  <nav class="site-nav site-nav--desktop" aria-label="Primary">
     <ul class="govbb-width-container">
       {
         primaryNav.map((link) => (
@@ -27,4 +27,20 @@ const { section } = Astro.props;
       }
     </ul>
   </nav>
+  <details class="govbb-width-container site-nav-mobile">
+    <summary>Menu</summary>
+    <nav aria-label="Primary mobile">
+      <ul>
+        {
+          primaryNav.map((link) => (
+            <li>
+              <a href={link.href} aria-current={section === link.key ? 'page' : undefined}>
+                {link.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </details>
 </header>

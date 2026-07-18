@@ -9,7 +9,7 @@ group: Forms
 
 ```html title="Single question page"
 <main class="govbb-width-container" id="main-content">
-  <a class="govbb-back-button" href="#">Back</a>
+  <a class="govbb-back-button" href="/service/previous-step/">Back</a>
 
   <div class="govbb-error-summary" role="alert" tabindex="-1">
     <h2 class="govbb-error-summary__title">There is a problem</h2>
@@ -22,7 +22,7 @@ group: Forms
     </ul>
   </div>
 
-  <form action="#" method="post" novalidate>
+  <form action="/service/answer/" method="post" novalidate>
     <div class="govbb-form-group">
       <label class="govbb-label" for="full-name">
         <h1 class="govbb-text-h1">What is your full name?</h1>

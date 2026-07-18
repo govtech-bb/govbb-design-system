@@ -28,7 +28,8 @@ export const primaryNav: PrimaryNavItem[] = [
     key: 'components',
     label: 'Components',
     href: '/components/',
-    description: 'Build interfaces from accessible, reusable parts.',
+    description:
+      'Build interfaces from reusable parts with recorded maturity and review status.',
   },
   {
     key: 'patterns',
@@ -47,6 +48,20 @@ export const primaryNav: PrimaryNavItem[] = [
 // Sections kept out of the header (GOV.UK-style: styles / components only)
 // but still linked from the footer and sitemap.
 export const secondaryNav: PrimaryNavItem[] = [
+  {
+    key: 'support',
+    label: 'Support',
+    href: '/support/',
+    description:
+      'Get help, report an issue and understand how the system is governed.',
+  },
+  {
+    key: 'ai-skills',
+    label: 'AI skills',
+    href: '/ai-skills/',
+    description:
+      'Apply the same design, accessibility and privacy standards to AI-assisted work.',
+  },
   {
     key: 'changelog',
     label: 'Changelog',

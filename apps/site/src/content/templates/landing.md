@@ -16,7 +16,7 @@ group: Service pages
   </p>
   <p class="govbb-text-body">It takes around 5 minutes.</p>
 
-  <a class="govbb-button" href="#" role="button">Start now</a>
+  <a class="govbb-button" href="/service/start/">Start now</a>
 
   <h2 class="govbb-text-h2">Before you start</h2>
   <p class="govbb-text-body">You will need:</p>

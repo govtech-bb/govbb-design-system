@@ -11,7 +11,7 @@ group: Authentication
 <main class="govbb-width-container" id="main-content">
   <h1 class="govbb-text-h1">Create an account</h1>
 
-  <form action="#" method="post" novalidate>
+  <form action="/account/create/" method="post" novalidate>
     <div class="govbb-form-group">
       <label class="govbb-label" for="email">Email address</label>
       <span class="govbb-hint" id="email-hint">
@@ -47,7 +47,8 @@ group: Authentication
   </form>
 
   <p class="govbb-text-body">
-    Already have an account? <a class="govbb-link" href="#">Sign in</a>
+    Already have an account?
+    <a class="govbb-link" href="/account/sign-in/">Sign in</a>
   </p>
 </main>
 ```

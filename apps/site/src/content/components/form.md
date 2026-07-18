@@ -41,19 +41,43 @@ text (`.govbb-hint`), optional error message (`.govbb-error-message`) and the
 control itself with consistent spacing. It holds no state: compose the pieces
 you need.
 
-## When to use this component
+## Usage
 
-Wrap every form control (input, select, textarea, date input and the rest)
-in a form group so the label, hint and error message sit in a consistent
-order. Use hint text to explain a format or give an example, such as "For
-example, 27 3 1990", and link it to the control with `aria-describedby` so
-screen readers announce it.
+<div class="govbb-usage-guidance">
+  <section class="govbb-usage-guidance__item" aria-labelledby="form-when-to-use">
+    <h3 id="form-when-to-use">
+      <span class="govbb-usage-guidance__icon govbb-usage-guidance__icon--do" aria-hidden="true">✓</span>
+      When to use
+    </h3>
+    <ul>
+      <li>Use a form group to keep one control with its label, hint and error message.</li>
+      <li>Use a fieldset and legend when several controls answer one question.</li>
+    </ul>
+  </section>
+  <section class="govbb-usage-guidance__item" aria-labelledby="form-when-not-to-use">
+    <h3 id="form-when-not-to-use">
+      <span class="govbb-usage-guidance__icon govbb-usage-guidance__icon--dont" aria-hidden="true">×</span>
+      When not to use
+    </h3>
+    <ul>
+      <li>Do not use a form group as a general page layout wrapper.</li>
+      <li>Do not put essential instructions in placeholder text or inside a label.</li>
+    </ul>
+  </section>
+</div>
 
-## When not to use this component
+## Best practices
 
-Do not use a form group for content that isn't a form field, such as headings
-or body text. Do not put hint text inside the label or use placeholder text as
-a hint: placeholder text disappears as soon as the user starts typing.
+### Keep supporting text in a predictable order
+
+Show the label first, then hint text, the control and any error message. Connect
+the hint and error to the control with `aria-describedby`.
+
+### Ask only what the service needs
+
+Prefer one clear question per page for complex services. Mark optional fields
+explicitly rather than relying on an unexplained asterisk, and preserve user
+answers when validation fails.
 
 ## Error messages
 

@@ -82,6 +82,9 @@ img:not([class]) {
 .site-nav {
   border-block: 1px solid var(--govbb-color-border);
 }
+.site-nav-mobile {
+  display: none;
+}
 .site-nav ul {
   display: flex;
   flex-wrap: wrap;
@@ -90,18 +93,75 @@ img:not([class]) {
   margin: 0;
   padding-block: var(--govbb-space-2);
 }
-.site-nav a {
+.site-nav a,
+.site-nav-mobile a {
   color: var(--govbb-color-text);
   text-decoration: none;
   font-size: 1rem;
 }
-.site-nav a:hover {
+.site-nav a:hover,
+.site-nav-mobile a:hover {
   color: var(--govbb-color-teal);
   text-decoration: underline;
 }
-.site-nav a[aria-current='page'] {
+.site-nav a[aria-current='page'],
+.site-nav-mobile a[aria-current='page'] {
   color: var(--govbb-color-teal);
   font-weight: 600;
+}
+
+@media (max-width: 50rem) {
+  .site-header__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--govbb-space-3);
+  }
+  .site-nav--desktop {
+    display: none;
+  }
+  .site-nav-mobile {
+    display: block;
+    border-block: 1px solid var(--govbb-color-border);
+  }
+  .site-nav-mobile summary {
+    display: flex;
+    align-items: center;
+    min-block-size: 2.75rem;
+    color: var(--govbb-color-teal);
+    font-weight: 700;
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+  .site-nav-mobile summary::marker {
+    content: '';
+  }
+  .site-nav-mobile summary::-webkit-details-marker {
+    display: none;
+  }
+  .site-nav-mobile summary::after {
+    content: '+';
+    margin-inline-start: auto;
+    font-size: 1.25rem;
+    line-height: 1;
+  }
+  .site-nav-mobile[open] summary::after {
+    content: '−';
+  }
+  .site-nav-mobile nav {
+    border-top: 1px solid var(--govbb-color-border);
+  }
+  .site-nav-mobile ul {
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    margin: 0;
+    padding: var(--govbb-space-2) 0;
+  }
+  .site-nav-mobile a {
+    display: flex;
+    align-items: center;
+    min-block-size: 2.75rem;
+  }
 }
 
 /* ── Buttons (CTAs reuse the component classes in button.css) ──── */
@@ -174,9 +234,74 @@ img:not([class]) {
   border-bottom: 1px solid var(--govbb-color-border);
 }
 .govbb-prose th {
-  background: #f8f9fa;
+  background: var(--govbb-color-example-surface);
   font-weight: 600;
   border-bottom-color: var(--govbb-mid-grey-00);
+}
+
+/* Usage guidance pairs direct do/don't language with the component itself.
+   The examples stay open and unboxed; only the preview canvas is framed. */
+.govbb-usage-guidance {
+  display: flex;
+  flex-direction: column;
+  gap: var(--govbb-space-4);
+  margin-block: var(--govbb-space-4) var(--govbb-space-6);
+}
+.govbb-usage-guidance__item h3 {
+  display: flex;
+  align-items: center;
+  gap: var(--govbb-space-2);
+  margin: 0 0 var(--govbb-space-2);
+  font-size: 1.5rem;
+}
+.govbb-usage-guidance__item ul {
+  margin: 0;
+}
+.govbb-usage-guidance__icon {
+  display: inline-grid;
+  flex: 0 0 auto;
+  place-items: center;
+  inline-size: 1.25rem;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  color: var(--govbb-color-white);
+  font-size: 0.875rem;
+  font-weight: 700;
+  line-height: 1;
+}
+.govbb-usage-guidance__icon--do {
+  background: var(--govbb-green-00);
+}
+.govbb-usage-guidance__icon--dont {
+  background: var(--govbb-color-error);
+}
+.govbb-practice-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+  gap: var(--govbb-space-4);
+  margin-block: var(--govbb-space-4) var(--govbb-space-6);
+}
+.govbb-practice__preview {
+  position: relative;
+  display: grid;
+  min-block-size: 13rem;
+  place-items: center;
+  padding: var(--govbb-space-4);
+  border-radius: var(--govbb-radius-lg);
+  background: var(--govbb-color-example-surface);
+}
+.govbb-practice__preview .govbb-usage-guidance__icon {
+  position: absolute;
+  inset-block-start: var(--govbb-space-3);
+  inset-inline-end: var(--govbb-space-3);
+}
+.govbb-practice h3 {
+  margin-block: var(--govbb-space-3) var(--govbb-space-1);
+  font-size: 1.125rem;
+}
+.govbb-practice p {
+  margin: 0;
+  color: var(--govbb-color-text-muted);
 }
 /* Article body (rendered markdown): keep the reading measure on text but let
    embedded example previews use the full column width. */
@@ -226,7 +351,6 @@ img:not([class]) {
   margin: 0;
   font-weight: 600;
 }
-
 /* "Get this page" links (GitHub source, raw markdown) under the title. */
 .govbb-page-source {
   display: flex;
@@ -276,7 +400,6 @@ img:not([class]) {
   gap: var(--govbb-space-3);
   margin-top: var(--govbb-space-5);
 }
-
 /* ── Full-width bands ─────────────────────────────────────────── */
 .govbb-band {
   padding-block: var(--govbb-space-8);
@@ -289,6 +412,73 @@ img:not([class]) {
   font-weight: 700;
   line-height: 1.25;
   margin: 0 0 var(--govbb-space-4);
+}
+
+/* ── Home start guide: an editorial path list, not another card grid ──── */
+.govbb-start-guide {
+  display: grid;
+  grid-template-columns: minmax(15rem, 0.65fr) minmax(0, 1fr);
+  gap: var(--govbb-space-8);
+  align-items: start;
+}
+.govbb-start-guide__intro .govbb-section-title {
+  margin-bottom: var(--govbb-space-2);
+}
+.govbb-start-guide__intro p {
+  max-width: 32ch;
+  margin: 0;
+  text-wrap: pretty;
+}
+.govbb-start-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--govbb-color-border);
+}
+.govbb-start-list li {
+  border-bottom: 1px solid var(--govbb-color-border);
+}
+.govbb-start-list a {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--govbb-space-5);
+  align-items: center;
+  padding-block: var(--govbb-space-4);
+  color: var(--govbb-color-text);
+  text-decoration: none;
+}
+.govbb-start-list h3 {
+  margin: 0;
+  color: var(--govbb-color-teal);
+  font-size: 1.5rem;
+  line-height: 1.25;
+  text-wrap: balance;
+}
+.govbb-start-list p {
+  max-width: 60ch;
+  margin: var(--govbb-space-1) 0 0;
+  color: var(--govbb-color-text-muted);
+  text-wrap: pretty;
+}
+.govbb-start-list span {
+  color: var(--govbb-color-teal);
+  font-weight: 700;
+  white-space: nowrap;
+}
+.govbb-start-list a:hover h3,
+.govbb-start-list a:hover span {
+  text-decoration: underline;
+}
+
+@media (max-width: 42rem) {
+  .govbb-start-guide {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--govbb-space-4);
+  }
+  .govbb-start-list a {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--govbb-space-2);
+  }
 }
 
 /* ── Colored cards (get started / foundations) ────────────────── */
@@ -410,8 +600,7 @@ img:not([class]) {
   text-wrap: balance;
 }
 .govbb-task-list,
-.govbb-template-grid,
-.govbb-reference-list {
+.govbb-template-grid {
   list-style: none;
   margin: 0;
   padding: 0;
@@ -425,14 +614,12 @@ img:not([class]) {
   border-bottom: 1px solid var(--govbb-color-border);
 }
 .govbb-task-list h3,
-.govbb-template-card__body h3,
-.govbb-reference-list a {
+.govbb-template-card__body h3 {
   margin: 0;
   font-size: 1.25rem;
 }
 .govbb-task-list p,
-.govbb-template-card__body p,
-.govbb-reference-list p {
+.govbb-template-card__body p {
   margin: var(--govbb-space-1) 0 0;
   max-width: 65ch;
   color: var(--govbb-color-text-muted);
@@ -445,26 +632,6 @@ img:not([class]) {
 }
 .govbb-template-card__body {
   padding-block: var(--govbb-space-3);
-}
-.govbb-reference-index {
-  display: grid;
-  grid-template-columns: minmax(14rem, 0.55fr) minmax(0, 1fr);
-  gap: var(--govbb-space-6);
-  align-items: start;
-}
-.govbb-reference-index .govbb-section-title {
-  margin-bottom: var(--govbb-space-2);
-}
-.govbb-reference-index > div > p {
-  max-width: 32ch;
-  margin: 0;
-}
-.govbb-reference-list li {
-  padding-block: var(--govbb-space-3);
-  border-top: 1px solid var(--govbb-color-border);
-}
-.govbb-reference-list li:last-child {
-  border-bottom: 1px solid var(--govbb-color-border);
 }
 .govbb-step-list {
   counter-reset: steps;
@@ -559,6 +726,8 @@ img:not([class]) {
 @media (max-width: 50rem) {
   .govbb-article {
     grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+    padding-block-start: var(--govbb-space-4);
   }
 }
 
@@ -584,7 +753,10 @@ img:not([class]) {
     border: 1px solid var(--govbb-color-border);
   }
   .govbb-sidebar-mobile summary {
-    padding: var(--govbb-space-3);
+    display: flex;
+    align-items: center;
+    min-block-size: 2.75rem;
+    padding-inline: var(--govbb-space-3);
     color: var(--govbb-color-teal);
     font-weight: 700;
     cursor: pointer;
@@ -633,6 +805,8 @@ img:not([class]) {
 }
 .govbb-sidebar__links a[aria-current='page'] {
   color: var(--govbb-color-teal);
+  font-weight: 700;
+  background: var(--govbb-color-panel);
   border-left-color: var(--govbb-color-teal);
 }
 
@@ -720,7 +894,6 @@ img:not([class]) {
 }
 
 @media (max-width: 42rem) {
-  .govbb-reference-index,
   .govbb-content-nav {
     grid-template-columns: minmax(0, 1fr);
   }
@@ -736,6 +909,19 @@ img:not([class]) {
   }
 }
 
+@media (pointer: coarse) {
+  :where(a, button, summary) {
+    touch-action: manipulation;
+  }
+  .govbb-page-source__link,
+  .govbb-onthispage a,
+  .govbb-sidebar__links a {
+    display: flex;
+    align-items: center;
+    min-block-size: 2.75rem;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .govbb-compcard {
     transition: none;
@@ -745,8 +931,7 @@ img:not([class]) {
 @media (prefers-contrast: more) {
   .govbb-page-subtitle,
   .govbb-task-list p,
-  .govbb-template-card__body p,
-  .govbb-reference-list p {
+  .govbb-template-card__body p {
     color: var(--govbb-color-text);
   }
 }

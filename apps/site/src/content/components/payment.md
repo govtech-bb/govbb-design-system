@@ -47,17 +47,44 @@ provider, and a note telling them where they are being sent. The itemised
 rows are a description list (`<dl>`), so screen readers announce each label
 with its value. There is no React wrapper yet, so use the HTML directly.
 
-## When to use this component
+## Usage
 
-Use the payment component at the payment step of a service, once the user has
-reviewed their application and the fee is fixed. Keep the note honest about
-what happens next: name the payment provider the user will be redirected to.
+<div class="govbb-usage-guidance">
+  <section class="govbb-usage-guidance__item" aria-labelledby="payment-when-to-use">
+    <h3 id="payment-when-to-use">
+      <span class="govbb-usage-guidance__icon govbb-usage-guidance__icon--do" aria-hidden="true">✓</span>
+      When to use
+    </h3>
+    <ul>
+      <li>Use the payment component when a user is ready to pay a confirmed fee for a service.</li>
+      <li>Use the outcome variants only after the payment provider returns a verified result.</li>
+    </ul>
+  </section>
+  <section class="govbb-usage-guidance__item" aria-labelledby="payment-when-not-to-use">
+    <h3 id="payment-when-not-to-use">
+      <span class="govbb-usage-guidance__icon govbb-usage-guidance__icon--dont" aria-hidden="true">×</span>
+      When not to use
+    </h3>
+    <ul>
+      <li>Do not use it to publish general fee information; use a <a href="/components/table/">table</a> or page content.</li>
+      <li>Do not use a payment outcome to represent an application, account or service status.</li>
+    </ul>
+  </section>
+</div>
 
-## When not to use this component
+## Best practices
 
-Do not use it to list fees the user is not about to pay. Use a table instead.
-Do not use the success or failed variants for anything other than the outcome
-of a payment. Use the status banner for page-level notices.
+### Confirm the amount before redirecting
+
+Show the service, quantity where relevant, total amount and currency. Name the
+payment provider and explain that the user will leave the service to complete
+payment.
+
+### Give a complete outcome
+
+On success, provide a reference, date and next step. On failure, state whether
+the user was charged and offer a safe route to try again without creating a
+duplicate payment.
 
 ## Success
 
