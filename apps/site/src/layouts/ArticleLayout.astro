@@ -19,6 +19,10 @@ interface Props {
   onThisPage?: TocItem[];
   /** "Get this page" links (GitHub source + raw markdown) under the title. */
   source?: PageSource;
+  breadcrumbs?: { label: string; href?: string }[];
+  meta?: { label: string; value: string }[];
+  previous?: { label: string; href: string };
+  next?: { label: string; href: string };
 }
 const {
   title,
@@ -30,6 +34,10 @@ const {
   sidebarLabel,
   onThisPage,
   source,
+  breadcrumbs,
+  meta,
+  previous,
+  next,
 } = Astro.props;
 ---
 <BaseLayout title={title} description={description} section={section}>
@@ -38,13 +46,55 @@ const {
     <div class="govbb-article__main">
       <div>
         <div class="govbb-page-header">
+          {breadcrumbs && breadcrumbs.length > 0 && (
+            <nav class="govbb-breadcrumbs govbb-page-breadcrumbs" aria-label="Breadcrumb">
+              <ol class="govbb-breadcrumbs__list">
+                {breadcrumbs.map((item) => (
+                  <li class="govbb-breadcrumbs__item">
+                    {item.href ? (
+                      <a class="govbb-breadcrumbs__link" href={item.href}>{item.label}</a>
+                    ) : (
+                      <span>{item.label}</span>
+                    )}
+                  </li>
+                ))}
+              </ol>
+            </nav>
+          )}
           <h1 class="govbb-page-title">{pageTitle}</h1>
           {pageSubtitle && <p class="govbb-page-subtitle">{pageSubtitle}</p>}
+          {meta && meta.length > 0 && (
+            <dl class="govbb-page-meta">
+              {meta.map((item) => (
+                <div>
+                  <dt>{item.label}</dt>
+                  <dd>{item.value}</dd>
+                </div>
+              ))}
+            </dl>
+          )}
           {source && <PageSourceLinks {...source} />}
         </div>
+        {onThisPage && onThisPage.length > 0 && <OnThisPage items={onThisPage} variant="inline" />}
         <slot />
+        {(previous || next) && (
+          <nav class="govbb-content-nav" aria-label="Related pages">
+            {previous ? (
+              <a class="govbb-content-nav__link govbb-content-nav__link--previous" href={previous.href}>
+                <span>Previous</span>
+                <strong>{previous.label}</strong>
+              </a>
+            ) : <span />}
+            {next && (
+              <a class="govbb-content-nav__link govbb-content-nav__link--next" href={next.href}>
+                <span>Next</span>
+                <strong>{next.label}</strong>
+              </a>
+            )}
+          </nav>
+        )}
       </div>
-      {onThisPage && onThisPage.length > 0 && <OnThisPage items={onThisPage} />}
+      {onThisPage && onThisPage.length > 0 && <OnThisPage items={onThisPage} variant="rail" />}
     </div>
   </div>
 </BaseLayout>

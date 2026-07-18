@@ -1,12 +1,5 @@
 ---
-/*
- * SearchBar — matches the alpha.gov.bb "Find a service" search field
- * (Figma: GOV.BB Pattern Library, node 6008:2920).
- *
- * A white input with a 2px black border joined to a teal "Search" submit
- * button, outer corners rounded 4px, max-width 600px. Submits as a GET so the
- * results page can read `?q=`. Real result indexing is tracked separately.
- */
+/* Thin Astro wrapper around the frontend package's Search component markup. */
 interface Props {
   /** Where the form submits. */
   action?: string;
@@ -19,6 +12,8 @@ interface Props {
   id?: string;
   /** Smaller variant for the header. */
   compact?: boolean;
+  /** Package modifier for use on a coloured container. */
+  borderless?: boolean;
 }
 const {
   action = '/search/',
@@ -28,17 +23,25 @@ const {
   value = '',
   id = 'search',
   compact = false,
+  borderless = false,
 } = Astro.props;
 ---
 <form
-  class:list={['govbb-searchbar', { 'govbb-searchbar--compact': compact }]}
+  class:list={[
+    'govbb-search',
+    'site-search',
+    {
+      'site-search--compact': compact,
+      'govbb-search--borderless': borderless,
+    },
+  ]}
   role="search"
   action={action}
   method="get"
 >
   <label class="govbb-visually-hidden" for={id}>{label}</label>
   <input
-    class="govbb-searchbar__input"
+    class="govbb-search__input"
     id={id}
     type="search"
     name="q"
@@ -46,78 +49,32 @@ const {
     placeholder={placeholder}
     autocomplete="off"
   />
-  <button class="govbb-searchbar__button" type="submit">{buttonText}</button>
+  <button class="govbb-search__button" type="submit">{buttonText}</button>
 </form>
 
 <style>
-  .govbb-searchbar {
-    display: flex;
-    align-items: stretch;
-    width: 100%;
-    max-width: 600px;
-  }
-  .govbb-searchbar__input {
-    flex: 1 0 0;
-    min-width: 0;
-    height: 62px;
-    padding: 0 var(--govbb-space-3);
-    font-family: var(--govbb-font-base);
-    font-size: 1.25rem; /* 20px */
-    color: var(--govbb-color-text);
-    background: var(--govbb-color-white);
-    border: 2px solid #000;
-    border-right: 0;
-    border-radius: var(--govbb-radius) 0 0 var(--govbb-radius);
-  }
-  .govbb-searchbar__input::placeholder {
-    color: var(--govbb-color-text-muted);
-  }
-  .govbb-searchbar__button {
-    flex: none;
-    padding: var(--govbb-space-2) var(--govbb-space-4);
-    font-family: var(--govbb-font-base);
-    font-size: 1.25rem; /* 20px */
-    line-height: 1.5;
-    color: var(--govbb-color-white);
-    background: var(--govbb-color-teal);
-    border: 2px solid var(--govbb-color-teal);
-    border-radius: 0 var(--govbb-radius) var(--govbb-radius) 0;
-    cursor: pointer;
-  }
-  .govbb-searchbar__button:hover {
-    background: var(--govbb-color-teal-dark);
-    border-color: var(--govbb-color-teal-dark);
+  .site-search {
+    max-inline-size: 37.5rem;
   }
 
-  /* Compact variant — header. Sized to content and pushed right rather than
-     filling the row (which would wrap it onto its own line). */
-  .govbb-searchbar--compact {
+  /* Layout-only docs-site variant. Visual and interaction states remain owned
+     by the frontend package's .govbb-search component. */
+  .site-search--compact {
     width: auto;
     max-width: none;
-    margin-left: auto;
+    margin-inline-start: auto;
   }
-  .govbb-searchbar--compact .govbb-searchbar__input {
+  .site-search--compact :global(.govbb-search__input) {
     flex: 0 1 auto;
-    width: 15rem;
-    max-width: 40vw;
-    height: 44px;
-    font-size: 1rem;
-    padding: 0 var(--govbb-space-2);
+    inline-size: 15rem;
+    max-inline-size: 40vw;
+    block-size: 2.75rem;
+    padding-inline: var(--govbb-space-xs);
+    font-size: var(--govbb-font-size-caption);
   }
-  .govbb-searchbar--compact .govbb-searchbar__button {
-    font-size: 1rem;
-    padding: var(--govbb-space-1) var(--govbb-space-3);
-  }
-  /* Keyboard focus: the design system's form-control ring (see the package's
-     focus.css) — a box-shadow ring that follows the corner radius, plus a
-     transparent outline so a ring still renders in forced-colors mode. The
-     focused half lifts above the adjoining one so the ring isn't cut. */
-  .govbb-searchbar__input:focus-visible,
-  .govbb-searchbar__button:focus-visible {
-    box-shadow: 0 0 0 4px var(--govbb-color-focus);
-    outline: 2px solid transparent;
-    outline-offset: 2px;
-    position: relative;
-    z-index: 1;
+  .site-search--compact :global(.govbb-search__button) {
+    block-size: 2.75rem;
+    padding-inline: var(--govbb-space-s);
+    font-size: var(--govbb-font-size-caption);
   }
 </style>

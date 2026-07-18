@@ -7,20 +7,52 @@ export interface PrimaryNavItem {
   key: Section;
   label: string;
   href: string;
+  description: string;
 }
 export const primaryNav: PrimaryNavItem[] = [
-  { key: 'styles', label: 'Styles', href: '/styles/' },
-  { key: 'patterns', label: 'Patterns', href: '/patterns/' },
-  { key: 'components', label: 'Components', href: '/components/' },
-  { key: 'templates', label: 'Templates', href: '/templates/' },
+  {
+    key: 'documentation',
+    label: 'Get started',
+    href: '/documentation/',
+    description:
+      'Adopt the design system and understand the standards every service follows.',
+  },
+  {
+    key: 'styles',
+    label: 'Styles',
+    href: '/styles/',
+    description:
+      'Use the shared visual foundations, tokens, typography and spacing.',
+  },
+  {
+    key: 'components',
+    label: 'Components',
+    href: '/components/',
+    description: 'Build interfaces from accessible, reusable parts.',
+  },
+  {
+    key: 'patterns',
+    label: 'Patterns',
+    href: '/patterns/',
+    description: 'Solve common government-service tasks in proven ways.',
+  },
+  {
+    key: 'templates',
+    label: 'Templates',
+    href: '/templates/',
+    description: 'Start from complete pages assembled from the system.',
+  },
 ];
 
 // Sections kept out of the header (GOV.UK-style: styles / components only)
 // but still linked from the footer and sitemap.
 export const secondaryNav: PrimaryNavItem[] = [
-  { key: 'documentation', label: 'Documentation', href: '/documentation/' },
-  { key: 'ai-skills', label: 'AI skills', href: '/ai-skills/' },
-  { key: 'changelog', label: 'Changelog', href: '/changelog/' },
+  {
+    key: 'changelog',
+    label: 'Changelog',
+    href: '/changelog/',
+    description: 'Read dated design decisions and changes to the system.',
+  },
 ];
 
 // Display order of the component groups (the values of the `group` frontmatter
@@ -159,7 +191,7 @@ export async function getDocumentationSidebar(): Promise<SidebarGroup[]> {
   entries.sort((a, b) => a.data.title.localeCompare(b.data.title));
   return [
     {
-      heading: 'Documentation',
+      heading: 'Get started',
       links: [
         { label: 'Overview', href: '/documentation/' },
         ...entries.map((e) => ({

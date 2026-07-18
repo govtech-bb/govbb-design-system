@@ -2,35 +2,29 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import CardGrid from '../components/CardGrid.astro';
 import type { CardData } from '../components/CardGrid.astro';
+import { primaryNav } from '../data/nav';
 
 const cards: CardData[] = [
   {
-    title: 'Components',
-    href: '/components/',
-    modifier: 'pink',
-    desc: 'Reusable, accessible parts of the user interface, with live examples and code.',
-    link: 'Browse components',
-  },
-  {
-    title: 'Documentation',
+    title: 'New to the design system',
     href: '/documentation/',
+    modifier: 'pink',
+    desc: 'Understand the standards, packages and recommended way to adopt the system.',
+    link: 'Get started',
+  },
+  {
+    title: 'Designing a service',
+    href: '/patterns/',
     modifier: 'lavender',
-    desc: 'Standards and guidelines for how and when to use the design system.',
-    link: 'Browse documentation',
+    desc: 'Use patterns to solve common tasks, then start whole pages from templates.',
+    link: 'Browse patterns',
   },
   {
-    title: 'AI skills',
-    href: '/ai-skills/',
+    title: 'Building an interface',
+    href: '/components/',
     modifier: 'teal',
-    desc: 'Guidance for designers working with AI tools. Coming soon.',
-    link: 'View AI skills',
-  },
-  {
-    title: 'Changelog',
-    href: '/changelog/',
-    modifier: 'yellow',
-    desc: 'Dated updates and the design decisions behind the system.',
-    link: 'View the changelog',
+    desc: 'Find reusable components, live examples and HTML or React implementation guidance.',
+    link: 'Browse components',
   },
 ];
 ---
@@ -53,9 +47,24 @@ const cards: CardData[] = [
 
   <section class="govbb-band govbb-band--pink">
     <div class="govbb-width-container">
-      <h2 class="govbb-section-title">Explore the design system</h2>
+      <h2 class="govbb-section-title">Choose where to start</h2>
       <CardGrid cards={cards} heading="h3" />
     </div>
+  </section>
+
+  <section class="govbb-width-container govbb-page-section govbb-reference-index">
+    <div>
+      <h2 class="govbb-section-title">Browse the system</h2>
+      <p>Use the section that matches the decision you need to make.</p>
+    </div>
+    <ul class="govbb-reference-list">
+      {primaryNav.slice(1).map((item) => (
+        <li>
+          <a href={item.href}>{item.label}</a>
+          <p>{item.description}</p>
+        </li>
+      ))}
+    </ul>
   </section>
 
 </BaseLayout>

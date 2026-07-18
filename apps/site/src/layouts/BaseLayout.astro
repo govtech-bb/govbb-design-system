@@ -28,7 +28,15 @@ const fullTitle = `${title} - GovBB Design System`;
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{fullTitle}</title>
-    {description && <meta name="description" content={description} />}
+    {
+      description && (
+        <meta
+          name="description"
+          content={description}
+          data-pagefind-meta="description[content]"
+        />
+      )
+    }
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link
       rel="preload"

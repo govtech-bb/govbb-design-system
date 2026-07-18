@@ -1,65 +1,225 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import SearchBar from '../../components/SearchBar.astro';
+import { primaryNav, secondaryNav } from '../../data/nav';
 ---
 <BaseLayout title="Search" description="Search the GovBB Design System.">
   {/* The search page itself shouldn't appear in its own results. */}
-  <section class="govbb-width-container govbb-page-section" data-pagefind-ignore>
+  <section
+    class="govbb-width-container govbb-page-section govbb-search-page"
+    data-pagefind-ignore
+  >
     <div class="govbb-page-header">
       <h1 class="govbb-page-title">Search</h1>
-      <p class="govbb-page-subtitle">Find components, guidance and standards.</p>
+      <p class="govbb-page-subtitle">
+        Find components, patterns, templates and implementation guidance.
+      </p>
     </div>
 
-    {/* Static build: the query lives in the URL and is read client-side. */}
-    <SearchBar placeholder="Search the design system" />
-
-    <div class="govbb-search-results">
-      <p id="search-status" class="govbb-search-status" role="status" aria-live="polite">
-        Enter a term above to search.
+    <div class="govbb-search-task">
+      <p class="govbb-search-task__label">Search the design system</p>
+      {/* Static build: the query lives in the URL and is read client-side. */}
+      <SearchBar
+        borderless
+        label="Search the design system"
+        placeholder="For example, button or typography"
+      />
+      <p class="govbb-search-task__hint">
+        Search by component name, user need or topic.
       </p>
-      <ul id="search-results" class="govbb-search-list"></ul>
+    </div>
 
-      <div id="search-browse" class="govbb-prose" style="margin-top: var(--govbb-space-5);">
-        <p>Or browse the sections:</p>
-        <ul>
-          <li><a href="/components/">Components</a></li>
-          <li><a href="/documentation/">Documentation</a></li>
-          <li><a href="/changelog/">Changelog</a></li>
-        </ul>
-      </div>
+    <div class="govbb-search-layout">
+      <section
+        id="search-results-region"
+        class="govbb-search-results"
+        aria-labelledby="search-results-heading"
+      >
+        <h2 id="search-results-heading" class="govbb-search-results__heading">
+          Search results
+        </h2>
+        <p
+          id="search-status"
+          class="govbb-search-status"
+          role="status"
+          aria-live="polite"
+        >
+          Enter a word or phrase to find guidance across the site.
+        </p>
+
+        <div id="search-empty" class="govbb-search-empty" hidden>
+          <h3>No matching pages</h3>
+          <p>Check the spelling or try a shorter, more general search term.</p>
+        </div>
+
+        <ul id="search-results" class="govbb-search-list" hidden></ul>
+      </section>
+
+      <aside class="govbb-search-browse" aria-labelledby="browse-heading">
+        <h2 id="browse-heading">Browse by section</h2>
+        <nav aria-label="Design system sections">
+          <ul>
+            {[...primaryNav, ...secondaryNav].map((item) => (
+              <li>
+                <a href={item.href}>
+                  <span>{item.label}</span>
+                  <small>{item.description}</small>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </aside>
     </div>
   </section>
 </BaseLayout>
 
 <style>
+  .govbb-search-page {
+    container-type: inline-size;
+  }
+  .govbb-search-task {
+    max-width: 50rem;
+    padding: var(--govbb-space-4);
+    background: var(--govbb-color-panel);
+    border-left: 4px solid var(--govbb-color-teal);
+  }
+  .govbb-search-task__label {
+    margin: 0 0 var(--govbb-space-2);
+    font-weight: 700;
+  }
+  .govbb-search-task__hint {
+    margin: var(--govbb-space-2) 0 0;
+    color: var(--govbb-color-text-muted);
+    font-size: 0.9375rem;
+  }
+  .govbb-search-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 46rem) minmax(15rem, 20rem);
+    gap: var(--govbb-space-8);
+    align-items: start;
+    margin-top: var(--govbb-space-6);
+  }
   .govbb-search-results {
-    margin-top: var(--govbb-space-5);
-    max-width: 44rem;
+    min-width: 0;
+  }
+  .govbb-search-results__heading,
+  .govbb-search-browse h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    line-height: 1.25;
   }
   .govbb-search-status {
+    min-height: 1.7em;
+    margin: var(--govbb-space-2) 0 var(--govbb-space-4);
+    color: var(--govbb-color-text-muted);
+  }
+  .govbb-search-empty {
+    margin-top: var(--govbb-space-4);
+    padding: var(--govbb-space-4);
+    border-left: 4px solid var(--govbb-color-border);
+    background: color-mix(
+      in oklab,
+      var(--govbb-color-panel),
+      var(--govbb-color-white) 45%
+    );
+  }
+  .govbb-search-empty h3,
+  .govbb-search-empty p {
+    margin: 0;
+  }
+  .govbb-search-empty p {
+    margin-top: var(--govbb-space-2);
     color: var(--govbb-color-text-muted);
   }
   .govbb-search-list {
     list-style: none;
     margin: 0;
     padding: 0;
+    border-top: 1px solid var(--govbb-color-border);
   }
   .govbb-search-list li {
-    padding-bottom: var(--govbb-space-4);
-    margin-bottom: var(--govbb-space-4);
+    padding-block: var(--govbb-space-4);
     border-bottom: 1px solid var(--govbb-color-border);
   }
+  .govbb-result__section {
+    margin: 0 0 var(--govbb-space-1);
+    color: var(--govbb-color-text-muted);
+    font-size: 0.8125rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
   .govbb-result__title {
-    font-size: 1.25rem;
-    font-weight: 600;
+    display: inline;
+    color: var(--govbb-color-link);
+    font-size: 1.375rem;
+    font-weight: 700;
+    line-height: 1.25;
+    text-decoration-thickness: 0.08em;
+    text-underline-offset: 0.15em;
+  }
+  .govbb-result__title:hover {
+    color: var(--govbb-color-link-hover);
+    text-decoration-thickness: 0.12em;
   }
   .govbb-result__excerpt {
-    margin: var(--govbb-space-1) 0 0;
+    max-width: 64ch;
+    margin: var(--govbb-space-2) 0 0;
     color: var(--govbb-color-text-muted);
+    text-wrap: pretty;
   }
-  .govbb-result__excerpt :global(mark) {
-    background: var(--govbb-card-yellow);
-    color: inherit;
+  .govbb-search-browse {
+    padding-top: var(--govbb-space-1);
+  }
+  .govbb-search-browse ul {
+    list-style: none;
+    margin: var(--govbb-space-3) 0 0;
+    padding: 0;
+    border-top: 1px solid var(--govbb-color-border);
+  }
+  .govbb-search-browse li {
+    border-bottom: 1px solid var(--govbb-color-border);
+  }
+  .govbb-search-browse a {
+    display: block;
+    padding-block: var(--govbb-space-3);
+    color: var(--govbb-color-text);
+    text-decoration: none;
+  }
+  .govbb-search-browse a:hover span {
+    color: var(--govbb-color-link-hover);
+    text-decoration: underline;
+    text-decoration-thickness: 0.1em;
+    text-underline-offset: 0.15em;
+  }
+  .govbb-search-browse span {
+    display: block;
+    color: var(--govbb-color-link);
+    font-weight: 700;
+  }
+  .govbb-search-browse small {
+    display: block;
+    margin-top: var(--govbb-space-1);
+    color: var(--govbb-color-text-muted);
+    font-size: 0.875rem;
+    line-height: 1.35;
+    text-wrap: pretty;
+  }
+  @container (width < 58rem) {
+    .govbb-search-layout {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--govbb-space-6);
+    }
+    .govbb-search-browse {
+      max-width: 46rem;
+    }
+  }
+  @container (width < 35rem) {
+    .govbb-search-task {
+      margin-inline: calc(-1 * var(--govbb-space-3));
+      padding-inline: var(--govbb-space-3);
+    }
   }
 </style>
 
@@ -70,7 +230,33 @@ import SearchBar from '../../components/SearchBar.astro';
   const input = document.getElementById('search') as HTMLInputElement | null;
   const status = document.getElementById('search-status');
   const list = document.getElementById('search-results');
-  const browse = document.getElementById('search-browse');
+  const empty = document.getElementById('search-empty');
+  const resultsRegion = document.getElementById('search-results-region');
+
+  const getSectionLabel = (url: string) => {
+    const section = new URL(url, window.location.origin).pathname
+      .split('/')
+      .filter(Boolean)[0];
+    const labels: Record<string, string> = {
+      documentation: 'Get started',
+      styles: 'Styles',
+      components: 'Components',
+      patterns: 'Patterns',
+      templates: 'Templates',
+      changelog: 'Changelog',
+    };
+    return section ? (labels[section] ?? 'Design system') : 'Design system';
+  };
+
+  const cleanExcerpt = (excerpt: string) => {
+    const wrapper = document.createElement('div');
+    wrapper.innerHTML = excerpt;
+    return (wrapper.textContent ?? '')
+      .replace(/<[^>]+>/g, ' ')
+      .replace(/\b(?:Preview|Code|View source|View as Markdown|Open in new)\b/gi, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+  };
 
   // Load Pagefind's runtime bundle (generated into /pagefind at build time)
   // without letting Vite try to resolve or preload it during the site build.
@@ -81,8 +267,8 @@ import SearchBar from '../../components/SearchBar.astro';
 
   if (query && input && status && list) {
     input.value = query;
-    if (browse) browse.hidden = true;
     status.textContent = `Searching for “${query}”…`;
+    resultsRegion?.setAttribute('aria-busy', 'true');
 
     (async () => {
       try {
@@ -90,34 +276,44 @@ import SearchBar from '../../components/SearchBar.astro';
         await pagefind.init?.();
         const search = await pagefind.search(query);
         const results = await Promise.all(
-          search.results.slice(0, 20).map((r: any) => r.data()),
+          search.results.slice(0, 12).map((r: any) => r.data()),
         );
 
         if (results.length === 0) {
           status.textContent = `No results found for “${query}”.`;
+          if (empty) empty.hidden = false;
           return;
         }
-        status.textContent = `${results.length} result${results.length === 1 ? '' : 's'} for “${query}”.`;
+        status.textContent = `${results.length} result${results.length === 1 ? '' : 's'} shown for “${query}”.`;
+        list.hidden = false;
 
-        // Title/url via textContent (never interpolated as HTML); the excerpt
-        // is pagefind-generated markup (<mark> highlights only), so it may be
-        // set as innerHTML.
         list.replaceChildren(
           ...results.map((d: any) => {
             const li = document.createElement('li');
+            const article = document.createElement('article');
+            const section = document.createElement('p');
+            section.className = 'govbb-result__section';
+            section.textContent = getSectionLabel(d.url);
             const a = document.createElement('a');
             a.className = 'govbb-result__title';
             a.href = d.url;
             a.textContent = d.meta?.title ?? d.url;
             const p = document.createElement('p');
             p.className = 'govbb-result__excerpt';
-            p.innerHTML = d.excerpt;
-            li.append(a, p);
+            p.textContent =
+              d.meta?.description ?? cleanExcerpt(d.excerpt ?? '');
+            article.append(section, a);
+            if (p.textContent) article.append(p);
+            li.append(article);
             return li;
           }),
         );
       } catch (e) {
-        status.textContent = 'Search error: ' + ((e as Error)?.message ?? e);
+        status.textContent =
+          'Search is temporarily unavailable. Browse by section or try again.';
+        if (empty) empty.hidden = false;
+      } finally {
+        resultsRegion?.removeAttribute('aria-busy');
       }
     })();
   }

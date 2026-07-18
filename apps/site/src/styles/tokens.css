@@ -27,10 +27,9 @@
   --govbb-color-band: var(--govbb-pink-10); /* "Get started" band */
   --govbb-color-border: var(--govbb-grey-00);
 
-  /* Interaction */
+  /* Interaction — states are defined by @govtech-bb/frontend. */
   --govbb-color-link: var(--govbb-color-teal);
   --govbb-color-link-hover: var(--govbb-color-teal-dark);
-  --govbb-color-focus-site: #ffdd00; /* site chrome keeps the GOV.UK focus yellow */
 
   /* Decorative card fills — aliases of the package ramp */
   --govbb-card-pink: var(--govbb-pink-40);
