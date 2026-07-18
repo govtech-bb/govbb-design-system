@@ -3,7 +3,7 @@ import ArticleLayout from '../../layouts/ArticleLayout.astro';
 import { getCollection } from 'astro:content';
 import { getPatternsSidebar } from '../../data/nav';
 
-const GROUP_ORDER = ['Ask users for', 'Help users to'] as const;
+const GROUP_ORDER = ['Build forms', 'Ask users for', 'Help users to'] as const;
 const entries = await getCollection('patterns');
 entries.sort((a, b) => a.data.title.localeCompare(b.data.title));
 ---
