@@ -1,40 +1,38 @@
-/* Cascade layers set the override order once, here — later layers win, so a
-   consumer's own unlayered CSS beats everything below without specificity wars.
-   breakpoints (@custom-media) is layer-agnostic and imported first. */
-@layer tokens, base, components, utilities;
-
+/* The published stylesheet is intentionally unlayered so a consumer's generic
+   reset cannot silently outrank component classes. Source order still defines
+   the internal cascade: tokens, base, components, focus, then utilities.
+   Consumers who want a layer can wrap the package at import time. */
 @import url('./breakpoints.css');
 @import url('./fonts.css');
-@import url('./tokens.css') layer(tokens);
-@import url('./base.css') layer(base);
-@import url('./layout.css') layer(components);
-@import url('./components/back-button/back-button.css') layer(components);
-@import url('./components/breadcrumbs/breadcrumbs.css') layer(components);
-@import url('./components/button/button.css') layer(components);
-@import url('./components/checkbox-radio/checkbox-radio.css') layer(components);
-@import url('./components/date-input/date-input.css') layer(components);
-@import url('./components/error-summary/error-summary.css') layer(components);
-@import url('./components/feedback/feedback.css') layer(components);
-@import url('./components/file-upload/file-upload.css') layer(components);
-@import url('./components/footer/footer.css') layer(components);
-@import url('./components/form/form.css') layer(components);
-@import url('./components/header/header.css') layer(components);
-@import url('./components/input/input.css') layer(components);
-@import url('./components/link/link.css') layer(components);
-@import url('./components/list/list.css') layer(components);
-@import url('./components/number-input/number-input.css') layer(components);
-@import url('./components/official-banner/official-banner.css')
-layer(components);
-@import url('./components/payment/payment.css') layer(components);
-@import url('./components/search/search.css') layer(components);
-@import url('./components/select/select.css') layer(components);
-@import url('./components/service-list/service-list.css') layer(components);
-@import url('./components/show-hide/show-hide.css') layer(components);
-@import url('./components/status-banner/status-banner.css') layer(components);
-@import url('./components/summary-list/summary-list.css') layer(components);
-@import url('./components/table/table.css') layer(components);
+@import url('./tokens.css');
+@import url('./base.css');
+@import url('./layout.css');
+@import url('./components/back-button/back-button.css');
+@import url('./components/breadcrumbs/breadcrumbs.css');
+@import url('./components/button/button.css');
+@import url('./components/checkbox-radio/checkbox-radio.css');
+@import url('./components/date-input/date-input.css');
+@import url('./components/error-summary/error-summary.css');
+@import url('./components/feedback/feedback.css');
+@import url('./components/file-upload/file-upload.css');
+@import url('./components/footer/footer.css');
+@import url('./components/form/form.css');
+@import url('./components/header/header.css');
+@import url('./components/input/input.css');
+@import url('./components/link/link.css');
+@import url('./components/list/list.css');
+@import url('./components/number-input/number-input.css');
+@import url('./components/official-banner/official-banner.css');
+@import url('./components/payment/payment.css');
+@import url('./components/search/search.css');
+@import url('./components/select/select.css');
+@import url('./components/service-list/service-list.css');
+@import url('./components/show-hide/show-hide.css');
+@import url('./components/status-banner/status-banner.css');
+@import url('./components/summary-list/summary-list.css');
+@import url('./components/table/table.css');
 
-/* Shared focus ring last within the components layer, so it wins specificity
-   ties against the components' own :hover shadows. */
-@import url('./focus.css') layer(components);
-@import url('./utilities.css') layer(utilities);
+/* Shared focus ring follows component state rules so it wins specificity ties
+   against the components' own :hover shadows. */
+@import url('./focus.css');
+@import url('./utilities.css');
