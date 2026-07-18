@@ -5,6 +5,7 @@ import {
   type ComponentPropsWithRef,
   type ReactNode,
 } from 'react';
+import { FormGroup } from '../form/form';
 
 /*
  * Day / month / year fieldset. Field labels and structure are fixed; pass
@@ -47,46 +48,48 @@ export const DateInput = forwardRef<HTMLFieldSetElement, DateInputProps>(
       },
     ];
     return (
-      <fieldset
-        ref={ref}
-        className="govbb-fieldset"
-        role="group"
-        aria-describedby={
-          [hintId, errorId].filter(Boolean).join(' ') || undefined
-        }
-      >
-        <legend className="govbb-fieldset__legend">{legend}</legend>
-        {hint != null && (
-          <span className="govbb-hint" id={hintId}>
-            {hint}
-          </span>
-        )}
-        {error != null && (
-          <span className="govbb-error-message" id={errorId} role="alert">
-            {error}
-          </span>
-        )}
-        <div className="govbb-date-input">
-          {parts.map(({ label, partId, props, year }) => (
-            <div className="govbb-date-input__part" key={partId}>
-              <label className="govbb-label" htmlFor={partId}>
-                {label}
-              </label>
-              <input
-                type="text"
-                inputMode="numeric"
-                {...props}
-                className={cx(
-                  'govbb-input govbb-date-input__field',
-                  year && 'govbb-date-input__field--year',
-                  props?.className,
-                )}
-                id={partId}
-              />
-            </div>
-          ))}
-        </div>
-      </fieldset>
+      <FormGroup>
+        <fieldset
+          ref={ref}
+          className="govbb-fieldset"
+          role="group"
+          aria-describedby={
+            [hintId, errorId].filter(Boolean).join(' ') || undefined
+          }
+        >
+          <legend className="govbb-fieldset__legend">{legend}</legend>
+          {hint != null && (
+            <span className="govbb-hint" id={hintId}>
+              {hint}
+            </span>
+          )}
+          {error != null && (
+            <span className="govbb-error-message" id={errorId} role="alert">
+              {error}
+            </span>
+          )}
+          <div className="govbb-date-input">
+            {parts.map(({ label, partId, props, year }) => (
+              <div className="govbb-date-input__part" key={partId}>
+                <label className="govbb-label" htmlFor={partId}>
+                  {label}
+                </label>
+                <input
+                  type="text"
+                  inputMode="numeric"
+                  {...props}
+                  className={cx(
+                    'govbb-input govbb-date-input__field',
+                    year && 'govbb-date-input__field--year',
+                    props?.className,
+                  )}
+                  id={partId}
+                />
+              </div>
+            ))}
+          </div>
+        </fieldset>
+      </FormGroup>
     );
   },
 );

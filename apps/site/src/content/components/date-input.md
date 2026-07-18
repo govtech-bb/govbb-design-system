@@ -49,17 +49,15 @@ group: Form elements
 ```
 
 ```tsx
-import { DateInput, FormGroup } from '@govtech-bb/react';
+import { DateInput } from '@govtech-bb/react';
 
-<FormGroup>
-  <DateInput
-    legend="Date of birth"
-    hint="For example, 27 3 1990"
-    dayProps={{ name: 'dob[day]' }}
-    monthProps={{ name: 'dob[month]' }}
-    yearProps={{ name: 'dob[year]' }}
-  />
-</FormGroup>;
+<DateInput
+  legend="Date of birth"
+  hint="For example, 27 3 1990"
+  dayProps={{ name: 'dob[day]' }}
+  monthProps={{ name: 'dob[month]' }}
+  yearProps={{ name: 'dob[year]' }}
+/>;
 ```
 
 The Date Input component lets users enter a memorable date, such as a date of
@@ -175,13 +173,11 @@ of it.
 ```
 
 ```tsx
-import { DateInput, FormGroup } from '@govtech-bb/react';
+import { DateInput } from '@govtech-bb/react';
 
-<FormGroup>
-  <DateInput
-    legend="Date of birth"
-    hint="For example, 27 3 1990"
-    error="Date of birth must be a real date"
-  />
-</FormGroup>;
+<DateInput
+  legend="Date of birth"
+  hint="For example, 27 3 1990"
+  error="Date of birth must be a real date"
+/>;
 ```

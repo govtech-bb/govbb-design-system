@@ -37,7 +37,7 @@ describe('Checkbox', () => {
 
 describe('CheckboxGroup', () => {
   it('wraps children in a fieldset with legend, hint and error', () => {
-    render(
+    const { container } = render(
       <CheckboxGroup
         legend="Select all that apply"
         hint="Leave blank any that do not"
@@ -48,6 +48,9 @@ describe('CheckboxGroup', () => {
       </CheckboxGroup>,
     );
     const group = screen.getByRole('group', { name: /select all that apply/i });
+    expect(group.parentElement).toBe(
+      container.querySelector('.govbb-form-group'),
+    );
     const error = screen.getByText('Choose at least one');
     const hint = screen.getByText('Leave blank any that do not');
     expect(error.className).toBe('govbb-error-message');

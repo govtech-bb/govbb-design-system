@@ -8,29 +8,33 @@ group: Ask users for
 ## Preview
 
 ```html title="Endorsement"
-<fieldset class="govbb-fieldset">
-  <legend class="govbb-fieldset__legend">Do you have any endorsements?</legend>
-  <div class="govbb-radio-item">
-    <input
-      class="govbb-radio"
-      id="endorsement-yes"
-      type="radio"
-      name="endorsement"
-      value="yes"
-    />
-    <label class="govbb-radio-item__label" for="endorsement-yes">Yes</label>
-  </div>
-  <div class="govbb-radio-item">
-    <input
-      class="govbb-radio"
-      id="endorsement-no"
-      type="radio"
-      name="endorsement"
-      value="no"
-    />
-    <label class="govbb-radio-item__label" for="endorsement-no">No</label>
-  </div>
-</fieldset>
+<div class="govbb-form-group">
+  <fieldset class="govbb-fieldset">
+    <legend class="govbb-fieldset__legend">
+      Do you have any endorsements?
+    </legend>
+    <div class="govbb-radio-item">
+      <input
+        class="govbb-radio"
+        id="endorsement-yes"
+        type="radio"
+        name="endorsement"
+        value="yes"
+      />
+      <label class="govbb-radio-item__label" for="endorsement-yes">Yes</label>
+    </div>
+    <div class="govbb-radio-item">
+      <input
+        class="govbb-radio"
+        id="endorsement-no"
+        type="radio"
+        name="endorsement"
+        value="no"
+      />
+      <label class="govbb-radio-item__label" for="endorsement-no">No</label>
+    </div>
+  </fieldset>
+</div>
 
 <div class="govbb-form-group">
   <label class="govbb-label" for="licence-type">Type of licence</label>

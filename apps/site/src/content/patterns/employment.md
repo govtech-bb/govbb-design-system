@@ -8,69 +8,71 @@ group: Ask users for
 ## Preview
 
 ```html title="Employment"
-<fieldset class="govbb-fieldset">
-  <legend class="govbb-fieldset__legend">
-    What is your employment status?
-  </legend>
-  <div class="govbb-radio-item">
-    <input
-      class="govbb-radio"
-      id="status-studying"
-      type="radio"
-      name="status"
-      value="studying"
-    />
-    <label class="govbb-radio-item__label" for="status-studying"
-      >Studying</label
-    >
-  </div>
-  <div class="govbb-radio-item">
-    <input
-      class="govbb-radio"
-      id="status-employed"
-      type="radio"
-      name="status"
-      value="employed"
-    />
-    <label class="govbb-radio-item__label" for="status-employed"
-      >Employed</label
-    >
-  </div>
-  <div class="govbb-radio-item">
-    <input
-      class="govbb-radio"
-      id="status-self-employed"
-      type="radio"
-      name="status"
-      value="self-employed"
-    />
-    <label class="govbb-radio-item__label" for="status-self-employed"
-      >Self-employed</label
-    >
-  </div>
-  <div class="govbb-radio-item">
-    <input
-      class="govbb-radio"
-      id="status-unemployed"
-      type="radio"
-      name="status"
-      value="unemployed"
-    />
-    <label class="govbb-radio-item__label" for="status-unemployed"
-      >Unemployed</label
-    >
-  </div>
-  <div class="govbb-radio-item">
-    <input
-      class="govbb-radio"
-      id="status-other"
-      type="radio"
-      name="status"
-      value="other"
-    />
-    <label class="govbb-radio-item__label" for="status-other">Other</label>
-  </div>
-</fieldset>
+<div class="govbb-form-group">
+  <fieldset class="govbb-fieldset">
+    <legend class="govbb-fieldset__legend">
+      What is your employment status?
+    </legend>
+    <div class="govbb-radio-item">
+      <input
+        class="govbb-radio"
+        id="status-studying"
+        type="radio"
+        name="status"
+        value="studying"
+      />
+      <label class="govbb-radio-item__label" for="status-studying"
+        >Studying</label
+      >
+    </div>
+    <div class="govbb-radio-item">
+      <input
+        class="govbb-radio"
+        id="status-employed"
+        type="radio"
+        name="status"
+        value="employed"
+      />
+      <label class="govbb-radio-item__label" for="status-employed"
+        >Employed</label
+      >
+    </div>
+    <div class="govbb-radio-item">
+      <input
+        class="govbb-radio"
+        id="status-self-employed"
+        type="radio"
+        name="status"
+        value="self-employed"
+      />
+      <label class="govbb-radio-item__label" for="status-self-employed"
+        >Self-employed</label
+      >
+    </div>
+    <div class="govbb-radio-item">
+      <input
+        class="govbb-radio"
+        id="status-unemployed"
+        type="radio"
+        name="status"
+        value="unemployed"
+      />
+      <label class="govbb-radio-item__label" for="status-unemployed"
+        >Unemployed</label
+      >
+    </div>
+    <div class="govbb-radio-item">
+      <input
+        class="govbb-radio"
+        id="status-other"
+        type="radio"
+        name="status"
+        value="other"
+      />
+      <label class="govbb-radio-item__label" for="status-other">Other</label>
+    </div>
+  </fieldset>
+</div>
 
 <div class="govbb-form-group">
   <label class="govbb-label" for="employer"

@@ -5,7 +5,7 @@ import { DateInput } from './date-input';
 
 describe('DateInput', () => {
   it('renders labelled day/month/year fields and wires the hint', () => {
-    render(
+    const { container } = render(
       <DateInput
         legend="Date of birth"
         hint="For example, 27 3 1990"
@@ -13,6 +13,9 @@ describe('DateInput', () => {
       />,
     );
     const group = screen.getByRole('group', { name: 'Date of birth' });
+    expect(group.parentElement).toBe(
+      container.querySelector('.govbb-form-group'),
+    );
     const hint = screen.getByText('For example, 27 3 1990');
     expect(group.getAttribute('aria-describedby')).toBe(hint.id);
     const day = screen.getByLabelText('Day') as HTMLInputElement;

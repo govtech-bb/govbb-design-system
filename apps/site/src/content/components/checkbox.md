@@ -9,42 +9,48 @@ css: checkbox-radio
 ## Preview
 
 ```html title="Checkbox group"
-<fieldset class="govbb-fieldset">
-  <legend class="govbb-fieldset__legend">
-    How would you like to be contacted?
-  </legend>
-  <span class="govbb-hint">Select all that apply</span>
-  <div class="govbb-checkbox-item">
-    <input
-      class="govbb-checkbox"
-      id="contact-email"
-      type="checkbox"
-      name="contact"
-      value="email"
-    />
-    <label class="govbb-checkbox-item__label" for="contact-email">Email</label>
-  </div>
-  <div class="govbb-checkbox-item">
-    <input
-      class="govbb-checkbox"
-      id="contact-phone"
-      type="checkbox"
-      name="contact"
-      value="phone"
-    />
-    <label class="govbb-checkbox-item__label" for="contact-phone">Phone</label>
-  </div>
-  <div class="govbb-checkbox-item">
-    <input
-      class="govbb-checkbox"
-      id="contact-post"
-      type="checkbox"
-      name="contact"
-      value="post"
-    />
-    <label class="govbb-checkbox-item__label" for="contact-post">Post</label>
-  </div>
-</fieldset>
+<div class="govbb-form-group">
+  <fieldset class="govbb-fieldset">
+    <legend class="govbb-fieldset__legend">
+      How would you like to be contacted?
+    </legend>
+    <span class="govbb-hint">Select all that apply</span>
+    <div class="govbb-checkbox-item">
+      <input
+        class="govbb-checkbox"
+        id="contact-email"
+        type="checkbox"
+        name="contact"
+        value="email"
+      />
+      <label class="govbb-checkbox-item__label" for="contact-email"
+        >Email</label
+      >
+    </div>
+    <div class="govbb-checkbox-item">
+      <input
+        class="govbb-checkbox"
+        id="contact-phone"
+        type="checkbox"
+        name="contact"
+        value="phone"
+      />
+      <label class="govbb-checkbox-item__label" for="contact-phone"
+        >Phone</label
+      >
+    </div>
+    <div class="govbb-checkbox-item">
+      <input
+        class="govbb-checkbox"
+        id="contact-post"
+        type="checkbox"
+        name="contact"
+        value="post"
+      />
+      <label class="govbb-checkbox-item__label" for="contact-post">Post</label>
+    </div>
+  </fieldset>
+</div>
 ```
 
 ```tsx
