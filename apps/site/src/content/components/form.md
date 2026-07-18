@@ -41,6 +41,9 @@ text (`.govbb-hint`), optional error message (`.govbb-error-message`) and the
 control itself with consistent spacing. It holds no state: compose the pieces
 you need.
 
+For rules shared by every kind of control, including labels, hint text, width,
+states and validation, see the [Form fields foundation](/styles/form-fields/).
+
 ## Usage
 
 <div class="govbb-usage-guidance">

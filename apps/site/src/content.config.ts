@@ -73,7 +73,7 @@ const patterns = defineCollection({
     title: z.string(),
     description: z.string(),
     lede: z.string(),
-    group: z.enum(['Ask users for', 'Help users to']),
+    group: z.enum(['Build forms', 'Ask users for', 'Help users to']),
   }),
 });
 
