@@ -5,6 +5,7 @@ import Example from '../../components/Example.astro';
 import { getTemplatesSidebar } from '../../data/nav';
 import { buildExampleBlocks } from '../../lib/example-blocks';
 import { pageSource } from '../../lib/page-source';
+import { getContentNeighbors } from '../../lib/content-navigation';
 
 export async function getStaticPaths() {
   const entries = await getCollection('templates');
@@ -19,7 +20,10 @@ const onThisPage = headings
   .filter((h) => h.depth === 2)
   .map((h) => ({ label: h.text, href: `#${h.slug}` }));
 
-const blocks = buildExampleBlocks(entry);
+const blocks = buildExampleBlocks(entry, { introBeforeFirstExample: true });
+const entries = await getCollection('templates');
+entries.sort((a, b) => a.data.title.localeCompare(b.data.title));
+const neighbors = getContentNeighbors(entries, entry.id, '/templates/');
 ---
 
 <ArticleLayout
@@ -32,6 +36,17 @@ const blocks = buildExampleBlocks(entry);
   sidebarLabel="Templates"
   source={pageSource('templates', entry.id)}
   onThisPage={onThisPage}
+  breadcrumbs={[
+    { label: 'Templates', href: '/templates/' },
+    { label: entry.data.group },
+  ]}
+  meta={[
+    { label: 'Status', value: 'Published' },
+    { label: 'Page type', value: entry.data.group },
+    { label: 'Example', value: 'Copy-ready HTML' },
+  ]}
+  previous={neighbors.previous}
+  next={neighbors.next}
 >
   <div class="govbb-prose govbb-prose--article">
     {

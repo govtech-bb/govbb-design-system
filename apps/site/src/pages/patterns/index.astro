@@ -22,22 +22,22 @@ entries.sort((a, b) => a.data.title.localeCompare(b.data.title));
       whole task, such as asking for an address or letting people check their
       answers before submitting.
     </p>
-    {
-      GROUP_ORDER.map((group) => (
-        <>
-          <h2>{group}&hellip;</h2>
-          <ul>
-            {entries
-              .filter((e) => e.data.group === group)
-              .map((entry) => (
-                <li>
-                  <a href={`/patterns/${entry.id}/`}>{entry.data.title}</a> -{' '}
-                  {entry.data.lede}
-                </li>
-              ))}
-          </ul>
-        </>
-      ))
-    }
   </div>
+  {
+    GROUP_ORDER.map((group) => (
+      <section class="govbb-task-group">
+        <h2>{group}&hellip;</h2>
+        <ul class="govbb-task-list">
+          {entries
+            .filter((e) => e.data.group === group)
+            .map((entry) => (
+              <li>
+                <h3><a href={`/patterns/${entry.id}/`}>{entry.data.title}</a></h3>
+                <p>{entry.data.lede}</p>
+              </li>
+            ))}
+        </ul>
+      </section>
+    ))
+  }
 </ArticleLayout>

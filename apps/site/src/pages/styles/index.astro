@@ -1,8 +1,9 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
 import CardGrid from '../../components/CardGrid.astro';
 import type { CardData } from '../../components/CardGrid.astro';
 import { getCollection } from 'astro:content';
+import { getStylesSidebar } from '../../data/nav';
 
 const modifiers = ['teal', 'pink', 'lavender'] as const;
 // Cards show top-level pages only; nested pages (e.g. typography/lists)
@@ -23,20 +24,20 @@ const cards: CardData[] = entries.map((entry, i) => ({
 }));
 ---
 
-<BaseLayout
+<ArticleLayout
   title="Styles"
   section="styles"
   description="The visual language underneath the components: layout, colour, typography and spacing."
+  pageTitle="Styles"
+  pageSubtitle="The visual language underneath the components: layout, colour, typography and spacing."
+  sidebarGroups={await getStylesSidebar()}
+  sidebarLabel="Styles"
 >
-  <section class="govbb-width-container govbb-page-section">
-    <div class="govbb-page-header">
-      <h1 class="govbb-page-title">Styles</h1>
-      <p class="govbb-page-subtitle">
-        The visual language underneath the components: layout, colour,
-        typography and spacing.
-      </p>
-    </div>
-
-    <CardGrid cards={cards} />
-  </section>
-</BaseLayout>
+  <div class="govbb-prose">
+    <p>
+      Start with semantic tokens and shared rules before choosing individual values.
+      Each foundation page pairs the design principle with implementation details.
+    </p>
+  </div>
+  <CardGrid cards={cards} />
+</ArticleLayout>

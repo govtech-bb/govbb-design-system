@@ -9,6 +9,7 @@ import { buildExampleBlocks } from '../../lib/example-blocks';
 import { buildTokenBlocks } from '../../lib/token-blocks';
 import { pageSource } from '../../lib/page-source';
 import { select, withAliasNotes } from '../../lib/tokens';
+import { getContentNeighbors } from '../../lib/content-navigation';
 
 export async function getStaticPaths() {
   const entries = await getCollection('styles');
@@ -34,6 +35,15 @@ const tokenBlocks =
     : null;
 const blocks =
   !tokenBlocks && entry.data.examples ? buildExampleBlocks(entry) : null;
+const entries = await getCollection('styles');
+entries.sort(
+  (a, b) =>
+    a.data.order - b.data.order || a.data.title.localeCompare(b.data.title),
+);
+const neighbors = getContentNeighbors(entries, entry.id, '/styles/');
+const parentLabel = entry.id.includes('/')
+  ? entry.id.split('/')[0].replace(/^./, (character) => character.toUpperCase())
+  : 'Foundations';
 ---
 
 <ArticleLayout
@@ -46,6 +56,16 @@ const blocks =
   sidebarLabel="Styles"
   source={pageSource('styles', entry.id)}
   onThisPage={onThisPage}
+  breadcrumbs={[
+    { label: 'Styles', href: '/styles/' },
+    { label: parentLabel },
+  ]}
+  meta={[
+    { label: 'Status', value: 'Published' },
+    { label: 'Type', value: entry.body?.includes('```token-') ? 'Token reference' : 'Foundation guidance' },
+  ]}
+  previous={neighbors.previous}
+  next={neighbors.next}
 >
   <div class="govbb-prose govbb-prose--article">
     {

@@ -6,27 +6,48 @@ export interface TocItem {
 }
 interface Props {
   items: TocItem[];
+  variant?: 'rail' | 'inline';
 }
-const { items } = Astro.props;
+const { items, variant = 'rail' } = Astro.props;
 ---
-<aside class="govbb-onthispage" aria-label="On this page">
-  <p class="govbb-onthispage__title">On this page</p>
-  <ul>
-    {
-      items.map((item) => (
-        <li>
-          <a href={item.href}>{item.label}</a>
-          {item.children && item.children.length > 0 && (
-            <ul>
-              {item.children.map((child) => (
-                <li>
-                  <a href={child.href}>{child.label}</a>
-                </li>
-              ))}
-            </ul>
-          )}
-        </li>
-      ))
-    }
-  </ul>
-</aside>
+{
+  variant === 'inline' ? (
+    <details class="govbb-onthispage govbb-onthispage--inline">
+      <summary>On this page</summary>
+      <nav aria-label="On this page">
+        <ul>
+          {items.map((item) => (
+            <li>
+              <a href={item.href}>{item.label}</a>
+              {item.children && item.children.length > 0 && (
+                <ul>
+                  {item.children.map((child) => (
+                    <li><a href={child.href}>{child.label}</a></li>
+                  ))}
+                </ul>
+              )}
+            </li>
+          ))}
+        </ul>
+      </nav>
+    </details>
+  ) : (
+    <aside class="govbb-onthispage govbb-onthispage--rail" aria-label="On this page">
+      <p class="govbb-onthispage__title">On this page</p>
+      <ul>
+        {items.map((item) => (
+          <li>
+            <a href={item.href}>{item.label}</a>
+            {item.children && item.children.length > 0 && (
+              <ul>
+                {item.children.map((child) => (
+                  <li><a href={child.href}>{child.label}</a></li>
+                ))}
+              </ul>
+            )}
+          </li>
+        ))}
+      </ul>
+    </aside>
+  )
+}

@@ -14,21 +14,45 @@ interface Props {
 const { groups, ariaLabel = 'Section' } = Astro.props;
 const current = Astro.url.pathname;
 ---
-<nav class="govbb-sidebar" aria-label={ariaLabel}>
-  {
-    groups.map((group) => (
-      <div class="govbb-sidebar__section">
-        {group.heading && <p class="govbb-sidebar__heading">{group.heading}</p>}
-        <ul class="govbb-sidebar__links">
-          {group.links.map((link) => (
-            <li>
-              <a href={link.href} aria-current={current === link.href ? 'page' : undefined}>
-                {link.label}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </div>
-    ))
-  }
-</nav>
+<aside class="govbb-sidebar-shell">
+  <nav class="govbb-sidebar govbb-sidebar--desktop" aria-label={ariaLabel}>
+    {
+      groups.map((group) => (
+        <div class="govbb-sidebar__section">
+          {group.heading && <p class="govbb-sidebar__heading">{group.heading}</p>}
+          <ul class="govbb-sidebar__links">
+            {group.links.map((link) => (
+              <li>
+                <a href={link.href} aria-current={current === link.href ? 'page' : undefined}>
+                  {link.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))
+    }
+  </nav>
+
+  <details class="govbb-sidebar-mobile">
+    <summary>Browse {ariaLabel.toLowerCase()}</summary>
+    <nav aria-label={`${ariaLabel} navigation`}>
+      {
+        groups.map((group) => (
+          <div class="govbb-sidebar__section">
+            {group.heading && <p class="govbb-sidebar__heading">{group.heading}</p>}
+            <ul class="govbb-sidebar__links">
+              {group.links.map((link) => (
+                <li>
+                  <a href={link.href} aria-current={current === link.href ? 'page' : undefined}>
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </nav>
+  </details>
+</aside>

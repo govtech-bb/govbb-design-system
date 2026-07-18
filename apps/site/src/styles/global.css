@@ -24,21 +24,7 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Base link colour applies to unclassed (content) links only, so it doesn't
-   override component classes like .govbb-button that carry their own colour
-   from the design-system package (whose rules sit in a lower @layer). */
-a:not([class]) {
-  color: var(--govbb-color-link);
-}
-a:not([class]):hover {
-  color: var(--govbb-color-link-hover);
-}
-a:focus-visible,
-button:focus-visible,
-input:focus-visible {
-  outline: 3px solid var(--govbb-color-focus-site);
-  outline-offset: 2px;
-}
+/* Link and keyboard-focus states come from @govtech-bb/frontend. */
 
 /* Content images only — component images (e.g. the banner crest) are sized
    by the design-system package. */
@@ -132,6 +118,13 @@ img:not([class]) {
   line-height: 1.25;
   margin-block: var(--govbb-space-6) var(--govbb-space-3);
 }
+.govbb-prose :is(h2, h3),
+.govbb-page-title,
+.govbb-section-title,
+.govbb-colorcard__title,
+.govbb-compcard__title {
+  text-wrap: balance;
+}
 .govbb-prose h3 {
   font-size: 1.3rem;
   margin-block: var(--govbb-space-5) var(--govbb-space-2);
@@ -142,6 +135,7 @@ img:not([class]) {
 }
 .govbb-prose p {
   margin-block: var(--govbb-space-3);
+  text-wrap: pretty;
 }
 .govbb-prose ul,
 .govbb-prose ol {
@@ -164,6 +158,9 @@ img:not([class]) {
   margin-block: var(--govbb-space-3) var(--govbb-space-4);
 }
 .govbb-prose table {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
   width: 100%;
   border-collapse: collapse;
   margin-block: var(--govbb-space-3) var(--govbb-space-4);
@@ -194,6 +191,10 @@ img:not([class]) {
 .govbb-page-header {
   margin-bottom: var(--govbb-space-6);
 }
+.govbb-page-breadcrumbs {
+  margin-bottom: var(--govbb-space-3);
+  font-size: 1rem;
+}
 .govbb-page-title {
   font-size: var(--govbb-font-size-page-title);
   font-weight: 700;
@@ -204,6 +205,26 @@ img:not([class]) {
   font-size: 1.25rem;
   color: var(--govbb-color-text-muted);
   margin: var(--govbb-space-3) 0 0;
+  max-width: 65ch;
+  text-wrap: pretty;
+}
+.govbb-page-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--govbb-space-2) var(--govbb-space-5);
+  margin: var(--govbb-space-4) 0 0;
+  font-size: 0.9375rem;
+}
+.govbb-page-meta div {
+  display: flex;
+  gap: var(--govbb-space-2);
+}
+.govbb-page-meta dt {
+  color: var(--govbb-color-text-muted);
+}
+.govbb-page-meta dd {
+  margin: 0;
+  font-weight: 600;
 }
 
 /* "Get this page" links (GitHub source, raw markdown) under the title. */
@@ -236,10 +257,12 @@ img:not([class]) {
   padding-block: var(--govbb-space-8) var(--govbb-space-8);
 }
 .govbb-hero__title {
-  font-size: clamp(3rem, 8vw, var(--govbb-font-size-hero));
+  font-size: clamp(2.25rem, 8vw, var(--govbb-font-size-hero));
   font-weight: 700;
   line-height: 1;
   margin: 0;
+  overflow-wrap: anywhere;
+  text-wrap: balance;
 }
 .govbb-hero__subtitle {
   font-size: clamp(1.5rem, 4vw, var(--govbb-font-size-col-title));
@@ -358,6 +381,125 @@ img:not([class]) {
   font-size: 1rem;
   margin: 0;
 }
+.govbb-catalog-filter {
+  max-width: 38rem;
+  margin-block: var(--govbb-space-5) var(--govbb-space-6);
+  padding: var(--govbb-space-4);
+  background: var(--govbb-color-panel);
+}
+.govbb-catalog-filter__input {
+  width: min(100%, 32rem);
+}
+.govbb-catalog-filter__status {
+  margin: var(--govbb-space-3) 0 0;
+  font-weight: 600;
+}
+.govbb-catalog-empty {
+  max-width: 44rem;
+  padding: var(--govbb-space-4);
+  background: var(--govbb-card-yellow);
+}
+.govbb-task-group,
+.govbb-template-group {
+  margin-block: var(--govbb-space-6);
+}
+.govbb-task-group > h2,
+.govbb-template-group > h2 {
+  margin-block: 0 var(--govbb-space-4);
+  font-size: 1.75rem;
+  text-wrap: balance;
+}
+.govbb-task-list,
+.govbb-template-grid,
+.govbb-reference-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.govbb-task-list li {
+  max-width: 50rem;
+  padding-block: var(--govbb-space-4);
+  border-top: 1px solid var(--govbb-color-border);
+}
+.govbb-task-list li:last-child {
+  border-bottom: 1px solid var(--govbb-color-border);
+}
+.govbb-task-list h3,
+.govbb-template-card__body h3,
+.govbb-reference-list a {
+  margin: 0;
+  font-size: 1.25rem;
+}
+.govbb-task-list p,
+.govbb-template-card__body p,
+.govbb-reference-list p {
+  margin: var(--govbb-space-1) 0 0;
+  max-width: 65ch;
+  color: var(--govbb-color-text-muted);
+  text-wrap: pretty;
+}
+.govbb-template-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr));
+  gap: var(--govbb-space-5) var(--govbb-space-4);
+}
+.govbb-template-card__body {
+  padding-block: var(--govbb-space-3);
+}
+.govbb-reference-index {
+  display: grid;
+  grid-template-columns: minmax(14rem, 0.55fr) minmax(0, 1fr);
+  gap: var(--govbb-space-6);
+  align-items: start;
+}
+.govbb-reference-index .govbb-section-title {
+  margin-bottom: var(--govbb-space-2);
+}
+.govbb-reference-index > div > p {
+  max-width: 32ch;
+  margin: 0;
+}
+.govbb-reference-list li {
+  padding-block: var(--govbb-space-3);
+  border-top: 1px solid var(--govbb-color-border);
+}
+.govbb-reference-list li:last-child {
+  border-bottom: 1px solid var(--govbb-color-border);
+}
+.govbb-step-list {
+  counter-reset: steps;
+  list-style: none;
+  padding: 0;
+  margin-block: var(--govbb-space-5);
+}
+.govbb-step-list li {
+  counter-increment: steps;
+  position: relative;
+  padding: 0 0 var(--govbb-space-6) 4rem;
+}
+.govbb-step-list li::before {
+  content: counter(steps);
+  position: absolute;
+  inset: 0 auto auto 0;
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  aspect-ratio: 1;
+  border: 2px solid var(--govbb-color-teal);
+  border-radius: 50%;
+  color: var(--govbb-color-teal);
+  font-weight: 700;
+}
+.govbb-step-list li:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  inset: 2.5rem auto 0 1.2rem;
+  width: 2px;
+  background: var(--govbb-color-border);
+}
+.govbb-step-list h2 {
+  margin-top: 0;
+}
 .govbb-colorcard--yellow {
   background: var(--govbb-card-yellow);
 }
@@ -410,7 +552,7 @@ img:not([class]) {
   .govbb-article__main {
     grid-template-columns: minmax(0, 1fr);
   }
-  .govbb-onthispage {
+  .govbb-onthispage--rail {
     display: none;
   }
 }
@@ -418,26 +560,37 @@ img:not([class]) {
   .govbb-article {
     grid-template-columns: minmax(0, 1fr);
   }
-
-  /* Content first on phones — otherwise the full component nav stacks above
-     the article. DOM order is unchanged (skip link + nav-first tab order). */
-  .govbb-article > .govbb-sidebar {
-    order: 1;
-  }
 }
 
 /* ── Sidebar nav ──────────────────────────────────────────────── */
+.govbb-sidebar-shell {
+  min-width: 0;
+}
 .govbb-sidebar {
   position: sticky;
   top: var(--govbb-space-4);
   min-width: 200px;
 }
-/* Single column: a sticky sidebar rides down the page over the content
-   (the grid container is its sticky range), so pin it back into the flow.
-   Must come after the sticky rule — same specificity, cascade decides. */
+.govbb-sidebar-mobile {
+  display: none;
+}
 @media (max-width: 50rem) {
-  .govbb-sidebar {
-    position: static;
+  .govbb-sidebar--desktop {
+    display: none;
+  }
+  .govbb-sidebar-mobile {
+    display: block;
+    margin-bottom: var(--govbb-space-4);
+    border: 1px solid var(--govbb-color-border);
+  }
+  .govbb-sidebar-mobile summary {
+    padding: var(--govbb-space-3);
+    color: var(--govbb-color-teal);
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .govbb-sidebar-mobile nav {
+    padding: 0 var(--govbb-space-3) var(--govbb-space-3);
   }
 }
 .govbb-sidebar__section + .govbb-sidebar__section {
@@ -489,6 +642,26 @@ img:not([class]) {
   top: var(--govbb-space-4);
   font-size: 0.9rem;
 }
+.govbb-onthispage--inline {
+  display: none;
+  position: static;
+  margin-bottom: var(--govbb-space-5);
+  padding: var(--govbb-space-3);
+  border: 1px solid var(--govbb-color-border);
+}
+.govbb-onthispage--inline summary {
+  color: var(--govbb-color-teal);
+  font-weight: 700;
+  cursor: pointer;
+}
+.govbb-onthispage--inline nav {
+  margin-top: var(--govbb-space-3);
+}
+@media (max-width: 68.75rem) {
+  .govbb-onthispage--inline {
+    display: block;
+  }
+}
 .govbb-onthispage__title {
   font-weight: 700;
   font-size: 1rem;
@@ -512,6 +685,76 @@ img:not([class]) {
 .govbb-onthispage ul ul {
   padding-left: var(--govbb-space-3);
   margin-top: var(--govbb-space-1);
+}
+
+/* ── Previous / next navigation ──────────────────────────────── */
+.govbb-content-nav {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--govbb-space-4);
+  margin-top: var(--govbb-space-8);
+  padding-top: var(--govbb-space-5);
+  border-top: 1px solid var(--govbb-color-border);
+}
+.govbb-content-nav__link {
+  display: flex;
+  flex-direction: column;
+  gap: var(--govbb-space-1);
+  min-width: 0;
+  text-decoration: none;
+}
+.govbb-content-nav__link span {
+  color: var(--govbb-color-text-muted);
+  font-size: 0.9375rem;
+}
+.govbb-content-nav__link strong {
+  color: var(--govbb-color-teal);
+  font-size: 1.125rem;
+}
+.govbb-content-nav__link:hover strong {
+  text-decoration: underline;
+}
+.govbb-content-nav__link--next {
+  text-align: right;
+  grid-column: 2;
+}
+
+@media (max-width: 42rem) {
+  .govbb-reference-index,
+  .govbb-content-nav {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .govbb-content-nav__link--next {
+    grid-column: 1;
+    text-align: left;
+  }
+}
+
+@media (hover: hover) {
+  .govbb-compcard {
+    transition: border-color 160ms cubic-bezier(0.23, 1, 0.32, 1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .govbb-compcard {
+    transition: none;
+  }
+}
+
+@media (prefers-contrast: more) {
+  .govbb-page-subtitle,
+  .govbb-task-list p,
+  .govbb-template-card__body p,
+  .govbb-reference-list p {
+    color: var(--govbb-color-text);
+  }
+}
+
+@media (scripting: none) {
+  .govbb-catalog-filter {
+    display: none;
+  }
 }
 
 /* ── Empty state (AI skills) ──────────────────────────────────── */

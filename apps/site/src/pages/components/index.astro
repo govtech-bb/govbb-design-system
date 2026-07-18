@@ -23,21 +23,36 @@ const groups = GROUP_ORDER.map((heading) => ({
 >
   <div class="govbb-prose">
     <p>
-      Components are reusable parts of the user interface. Each component page shows a
-      live preview and the code you can copy.
-    </p>
-    <p>
-      More components are being migrated into the system. Each example shows its HTML,
-      and a React version where a wrapper exists in <code>@govtech-bb/react</code>.
+      Browse reusable parts of the interface. Every page includes a live HTML example,
+      with React code when a wrapper exists in <code>@govtech-bb/react</code>.
     </p>
   </div>
+  <div class="govbb-catalog-filter" data-catalog-filter>
+    <label class="govbb-label" for="component-filter">Filter components</label>
+    <p class="govbb-hint" id="component-filter-hint">Search by component name, purpose or group.</p>
+    <input
+      class="govbb-input govbb-catalog-filter__input"
+      id="component-filter"
+      type="search"
+      autocomplete="off"
+      aria-describedby="component-filter-hint component-filter-status"
+      data-catalog-input
+    />
+    <p class="govbb-catalog-filter__status" id="component-filter-status" role="status" aria-live="polite" data-catalog-status>
+      Showing all {entries.length} components.
+    </p>
+  </div>
+  <p class="govbb-catalog-empty" data-catalog-empty hidden>
+    No components match that search. Try a shorter term or browse a group below.
+  </p>
+  <div id="component-catalog">
   {
     groups.map((group) => (
-      <section class="govbb-compgroup">
+      <section class="govbb-compgroup" data-catalog-group>
         <h2 class="govbb-compgroup__heading">{group.heading}</h2>
         <ul class="govbb-cardgrid">
           {group.entries.map((entry) => (
-            <li>
+            <li data-catalog-item data-search={`${entry.data.title} ${entry.data.lede} ${entry.data.group}`.toLowerCase()}>
               <a class="govbb-compcard" href={`/components/${entry.id}/`}>
                 <h3 class="govbb-compcard__title">{entry.data.title}</h3>
                 <p class="govbb-compcard__desc">{entry.data.lede}</p>
@@ -48,4 +63,36 @@ const groups = GROUP_ORDER.map((heading) => ({
       </section>
     ))
   }
+  </div>
 </ArticleLayout>
+
+<script>
+  const catalog = document.querySelector<HTMLElement>('[data-catalog-filter]');
+  const input = catalog?.querySelector<HTMLInputElement>('[data-catalog-input]');
+  const status = catalog?.querySelector<HTMLElement>('[data-catalog-status]');
+  const items = [...document.querySelectorAll<HTMLElement>('[data-catalog-item]')];
+  const groups = [...document.querySelectorAll<HTMLElement>('[data-catalog-group]')];
+  const empty = document.querySelector<HTMLElement>('[data-catalog-empty]');
+
+  input?.addEventListener('input', () => {
+    const query = input.value.trim().toLocaleLowerCase();
+    let visible = 0;
+
+    for (const item of items) {
+      const matches = !query || item.dataset.search?.includes(query);
+      item.hidden = !matches;
+      if (matches) visible++;
+    }
+
+    for (const group of groups) {
+      group.hidden = !group.querySelector('[data-catalog-item]:not([hidden])');
+    }
+
+    if (empty) empty.hidden = visible !== 0;
+    if (status) {
+      status.textContent = query
+        ? `${visible} component${visible === 1 ? '' : 's'} found.`
+        : `Showing all ${items.length} components.`;
+    }
+  });
+</script>

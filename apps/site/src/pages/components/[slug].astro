@@ -5,6 +5,7 @@ import Example from '../../components/Example.astro';
 import { getComponentsSidebar } from '../../data/nav';
 import { buildExampleBlocks } from '../../lib/example-blocks';
 import { pageSource } from '../../lib/page-source';
+import { getContentNeighbors } from '../../lib/content-navigation';
 
 export async function getStaticPaths() {
   const entries = await getCollection('components');
@@ -20,6 +21,9 @@ const onThisPage = headings
   .map((h) => ({ label: h.text, href: `#${h.slug}` }));
 
 const blocks = buildExampleBlocks(entry);
+const entries = await getCollection('components');
+entries.sort((a, b) => a.data.title.localeCompare(b.data.title));
+const neighbors = getContentNeighbors(entries, entry.id, '/components/');
 ---
 
 <ArticleLayout
@@ -32,6 +36,17 @@ const blocks = buildExampleBlocks(entry);
   sidebarLabel="Components"
   source={pageSource('components', entry.id)}
   onThisPage={onThisPage}
+  breadcrumbs={[
+    { label: 'Components', href: '/components/' },
+    { label: entry.data.group },
+  ]}
+  meta={[
+    { label: 'Status', value: 'Published' },
+    { label: 'Examples', value: entry.body?.includes('```tsx') ? 'HTML and React' : 'HTML' },
+    { label: 'Group', value: entry.data.group },
+  ]}
+  previous={neighbors.previous}
+  next={neighbors.next}
 >
   <div class="govbb-prose govbb-prose--article">
     {

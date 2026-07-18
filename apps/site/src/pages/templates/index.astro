@@ -2,6 +2,7 @@
 import ArticleLayout from '../../layouts/ArticleLayout.astro';
 import { getCollection } from 'astro:content';
 import { getTemplatesSidebar } from '../../data/nav';
+import TemplateThumbnail from '../../components/TemplateThumbnail.astro';
 
 const GROUP_ORDER = [
   'Service pages',
@@ -27,22 +28,28 @@ entries.sort((a, b) => a.data.title.localeCompare(b.data.title));
       one as the starting point for a page every service needs — an error page, a
       start page, a sign-in page or a question page — then fill in your content.
     </p>
-    {
-      GROUP_ORDER.map((group) => (
-        <>
-          <h2>{group}</h2>
-          <ul>
-            {entries
-              .filter((e) => e.data.group === group)
-              .map((entry) => (
-                <li>
-                  <a href={`/templates/${entry.id}/`}>{entry.data.title}</a> -{' '}
-                  {entry.data.lede}
-                </li>
-              ))}
-          </ul>
-        </>
-      ))
-    }
   </div>
+  {
+    GROUP_ORDER.map((group) => (
+      <section class="govbb-template-group">
+        <h2>{group}</h2>
+        <ul class="govbb-template-grid">
+          {entries
+            .filter((e) => e.data.group === group)
+            .map((entry) => {
+              const html = /```html[^\n]*\n([\s\S]*?)^```/m.exec(entry.body ?? '')?.[1]?.trim() ?? '';
+              return (
+                <li>
+                  <TemplateThumbnail html={html} title={entry.data.title} />
+                  <div class="govbb-template-card__body">
+                    <h3><a href={`/templates/${entry.id}/`}>{entry.data.title}</a></h3>
+                    <p>{entry.data.lede}</p>
+                  </div>
+                </li>
+              );
+            })}
+        </ul>
+      </section>
+    ))
+  }
 </ArticleLayout>

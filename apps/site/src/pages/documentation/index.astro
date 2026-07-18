@@ -1,48 +1,37 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import CardGrid from '../../components/CardGrid.astro';
-import type { CardData } from '../../components/CardGrid.astro';
-
-const cards: CardData[] = [
-  {
-    title: 'Using the design system',
-    href: '/documentation/using-the-design-system/',
-    modifier: 'pink',
-    desc: 'How to adopt the design system in a new or existing service.',
-    link: 'Read the guide',
-  },
-  {
-    title: 'Standards',
-    href: '/documentation/using-the-design-system/#standards',
-    modifier: 'lavender',
-    desc: 'What official Government of Barbados services must do.',
-    link: 'View standards',
-  },
-  {
-    title: 'Guidelines',
-    href: '/documentation/using-the-design-system/#guidelines',
-    modifier: 'teal',
-    desc: 'How and when to use the parts of the design system.',
-    link: 'View guidelines',
-  },
-];
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import { getDocumentationSidebar } from '../../data/nav';
 ---
-<BaseLayout
+<ArticleLayout
   title="Documentation"
   section="documentation"
   description="Standards and guidelines for how and when to use the design system."
+  pageTitle="Get started"
+  pageSubtitle="Adopt the GovBB Design System in a new or existing government service."
+  sidebarGroups={await getDocumentationSidebar()}
+  sidebarLabel="Get started"
 >
-  <section class="govbb-width-container govbb-page-section">
-    <div class="govbb-page-header">
-      <h1 class="govbb-page-title">Documentation</h1>
-      <p class="govbb-page-subtitle">
-        The standards and guidelines that govern official Government of Barbados
-        services: how and when to use the design system. The system is for everyone:
-        we welcome proposals for new components and patterns from all government
-        agencies.
-      </p>
-    </div>
-
-    <CardGrid cards={cards} />
-  </section>
-</BaseLayout>
+  <div class="govbb-prose">
+    <p>
+      The system is for designers, developers and service teams across government.
+      Follow these steps to use a shared foundation without losing sight of the user task.
+    </p>
+    <ol class="govbb-step-list">
+      <li>
+        <h2>Understand the standards</h2>
+        <p>Start with the accessibility, token and component requirements every service follows.</p>
+        <a href="/documentation/using-the-design-system/#standards">Read the standards</a>
+      </li>
+      <li>
+        <h2>Choose the right level</h2>
+        <p>Use styles for foundations, components for interface parts, patterns for tasks and templates for whole pages.</p>
+        <a href="/documentation/using-the-design-system/#guidelines">Understand the guidance</a>
+      </li>
+      <li>
+        <h2>Install and build</h2>
+        <p>Use the frontend package for CSS and tokens, or the React package when your service uses React.</p>
+        <a href="/documentation/using-the-design-system/">Use the design system</a>
+      </li>
+    </ol>
+  </div>
+</ArticleLayout>

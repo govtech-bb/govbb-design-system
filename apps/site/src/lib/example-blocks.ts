@@ -25,7 +25,15 @@ interface EntryLike {
   rendered?: { html?: string };
 }
 
-export function buildExampleBlocks(entry: EntryLike): Block[] {
+interface BuildOptions {
+  /** Put the first explanatory paragraph before the first Preview heading. */
+  introBeforeFirstExample?: boolean;
+}
+
+export function buildExampleBlocks(
+  entry: EntryLike,
+  options: BuildOptions = {},
+): Block[] {
   const fences = [
     ...(entry.body ?? '').matchAll(/^```(html|tsx)([^\n]*)\n([\s\S]*?)^```/gm),
   ].map((m) => ({
@@ -62,5 +70,23 @@ export function buildExampleBlocks(entry: EntryLike): Block[] {
     }
     blocks.push({ example }, { prose: parts[i + 1] });
   }
+  if (
+    options.introBeforeFirstExample &&
+    blocks[0]?.prose &&
+    blocks[1]?.example &&
+    blocks[2]?.prose
+  ) {
+    const match = /^\s*(<p>[\s\S]*?<\/p>)/.exec(blocks[2].prose);
+    if (match) {
+      return [
+        { prose: match[1] },
+        blocks[0],
+        blocks[1],
+        { prose: blocks[2].prose.slice(match[0].length) },
+        ...blocks.slice(3),
+      ];
+    }
+  }
+
   return blocks;
 }

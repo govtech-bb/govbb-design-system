@@ -38,7 +38,8 @@ const pxOf = (t: Token) => parseFloat(remToPx(t.resolved) ?? '0');
 const maxPx = Math.max(...tokens.map(pxOf), 1);
 ---
 
-<table class="tokens" aria-label={label}>
+<div class="tokens-scroll" role="region" aria-label={label} tabindex="0">
+<table class="tokens">
   <thead>
     <tr>
       {kind !== 'plain' && <th scope="col" class="tokens__preview-col">Preview</th>}
@@ -127,6 +128,7 @@ const maxPx = Math.max(...tokens.map(pxOf), 1);
     }
   </tbody>
 </table>
+</div>
 
 <style>
   .tokens {
@@ -134,6 +136,14 @@ const maxPx = Math.max(...tokens.map(pxOf), 1);
     border-collapse: collapse;
     margin-block: var(--govbb-space-3) var(--govbb-space-5);
     font-size: 1rem;
+  }
+  .tokens-scroll {
+    max-width: 100%;
+    overflow-x: auto;
+    margin-block: var(--govbb-space-3) var(--govbb-space-5);
+  }
+  .tokens-scroll .tokens {
+    margin-block: 0;
   }
   .tokens th,
   .tokens td {
