@@ -41,6 +41,8 @@ An ordinary field contains a form group, label, optional hint, optional error
 and the control. Keep this order consistent so people can scan and recover from
 errors quickly.
 
+![Anatomy of a GovBB form field showing the form group, label, hint, error message and input.](/assets/images/form-field-anatomy.svg)
+
 ```html title="Anatomy of a form field"
 <div class="govbb-form-group">
   <label class="govbb-label" for="email">Email address</label>

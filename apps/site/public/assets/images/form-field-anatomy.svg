@@ -1,0 +1,74 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 1000 560"
+  role="img"
+  aria-labelledby="title description"
+>
+  <title id="title">Anatomy of a GovBB form field</title>
+  <desc id="description">
+    A form group containing a label, hint text, error message and text input,
+    with callout lines naming each part.
+  </desc>
+
+  <rect width="1000" height="560" fill="#e5e9f2" />
+
+  <rect
+    x="205"
+    y="70"
+    width="620"
+    height="420"
+    rx="12"
+    fill="#fff"
+    stroke="#99a8cc"
+    stroke-width="2"
+    stroke-dasharray="8 8"
+  />
+
+  <g font-family="Figtree, system-ui, sans-serif">
+    <text x="250" y="150" fill="#000" font-size="28" font-weight="700">
+      Email address
+    </text>
+    <text x="250" y="194" fill="#595959" font-size="22">
+      We will send your receipt to this address
+    </text>
+    <text x="250" y="238" fill="#a42c2c" font-size="22" font-weight="700">
+      Enter an email address in the correct format
+    </text>
+
+    <rect
+      x="250"
+      y="280"
+      width="530"
+      height="92"
+      rx="4"
+      fill="#fff"
+      stroke="#a42c2c"
+      stroke-width="4"
+    />
+    <text x="278" y="338" fill="#000" font-size="28">alex@</text>
+
+    <g fill="#00267f" font-size="22" font-weight="700">
+      <text x="38" y="68">Form group</text>
+      <text x="52" y="152">Label</text>
+      <text x="842" y="186">Hint</text>
+      <text x="824" y="250">Error message</text>
+      <text x="72" y="336">Input</text>
+    </g>
+
+    <g fill="none" stroke="#00267f" stroke-linecap="round" stroke-width="4">
+      <path d="M164 62h20c14 0 21 8 21 22v16" />
+      <path d="M112 145h104" />
+      <path d="M836 179h-85c-12 0-18 4-18 12" />
+      <path d="M818 243h-62c-12 0-18-4-18-12" />
+      <path d="M130 329h76" />
+    </g>
+
+    <g fill="#00267f">
+      <circle cx="205" cy="100" r="7" />
+      <circle cx="216" cy="145" r="7" />
+      <circle cx="733" cy="191" r="7" />
+      <circle cx="738" cy="231" r="7" />
+      <circle cx="206" cy="329" r="7" />
+    </g>
+  </g>
+</svg>
