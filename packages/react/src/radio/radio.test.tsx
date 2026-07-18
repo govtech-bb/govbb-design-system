@@ -44,7 +44,7 @@ it('has no axe violations', async () => {
 describe('RadioGroup', () => {
   it('controls its children: name, checked from value, onValueChange', () => {
     const onValueChange = vi.fn();
-    render(
+    const { container } = render(
       <RadioGroup
         legend="Are you self-employed?"
         name="employment"
@@ -56,6 +56,9 @@ describe('RadioGroup', () => {
       </RadioGroup>,
     );
     const [yes, no] = screen.getAllByRole('radio') as HTMLInputElement[];
+    expect(yes.closest('.govbb-fieldset')?.parentElement).toBe(
+      container.querySelector('.govbb-form-group'),
+    );
     expect(yes.name).toBe('employment');
     expect(no.checked).toBe(true);
     expect(yes.checked).toBe(false);

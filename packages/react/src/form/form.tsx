@@ -63,16 +63,18 @@ export interface FieldsetProps extends FieldsetHTMLAttributes<HTMLFieldSetElemen
 export const Fieldset = forwardRef<HTMLFieldSetElement, FieldsetProps>(
   function Fieldset({ legend, className, children, ...props }, ref) {
     return (
-      <fieldset
-        ref={ref}
-        className={cx('govbb-fieldset', className)}
-        {...props}
-      >
-        {legend != null && (
-          <legend className="govbb-fieldset__legend">{legend}</legend>
-        )}
-        {children}
-      </fieldset>
+      <FormGroup>
+        <fieldset
+          ref={ref}
+          className={cx('govbb-fieldset', className)}
+          {...props}
+        >
+          {legend != null && (
+            <legend className="govbb-fieldset__legend">{legend}</legend>
+          )}
+          {children}
+        </fieldset>
+      </FormGroup>
     );
   },
 );

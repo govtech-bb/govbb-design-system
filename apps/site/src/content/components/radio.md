@@ -9,45 +9,47 @@ css: checkbox-radio
 ## Preview
 
 ```html title="Radio group"
-<fieldset class="govbb-fieldset">
-  <legend class="govbb-fieldset__legend">Where do you live?</legend>
-  <div class="govbb-radio-item">
-    <input
-      class="govbb-radio"
-      id="parish-st-michael"
-      type="radio"
-      name="parish"
-      value="st-michael"
-    />
-    <label class="govbb-radio-item__label" for="parish-st-michael"
-      >Saint Michael</label
-    >
-  </div>
-  <div class="govbb-radio-item">
-    <input
-      class="govbb-radio"
-      id="parish-christ-church"
-      type="radio"
-      name="parish"
-      value="christ-church"
-    />
-    <label class="govbb-radio-item__label" for="parish-christ-church"
-      >Christ Church</label
-    >
-  </div>
-  <div class="govbb-radio-item">
-    <input
-      class="govbb-radio"
-      id="parish-st-james"
-      type="radio"
-      name="parish"
-      value="st-james"
-    />
-    <label class="govbb-radio-item__label" for="parish-st-james"
-      >Saint James</label
-    >
-  </div>
-</fieldset>
+<div class="govbb-form-group">
+  <fieldset class="govbb-fieldset">
+    <legend class="govbb-fieldset__legend">Where do you live?</legend>
+    <div class="govbb-radio-item">
+      <input
+        class="govbb-radio"
+        id="parish-st-michael"
+        type="radio"
+        name="parish"
+        value="st-michael"
+      />
+      <label class="govbb-radio-item__label" for="parish-st-michael"
+        >Saint Michael</label
+      >
+    </div>
+    <div class="govbb-radio-item">
+      <input
+        class="govbb-radio"
+        id="parish-christ-church"
+        type="radio"
+        name="parish"
+        value="christ-church"
+      />
+      <label class="govbb-radio-item__label" for="parish-christ-church"
+        >Christ Church</label
+      >
+    </div>
+    <div class="govbb-radio-item">
+      <input
+        class="govbb-radio"
+        id="parish-st-james"
+        type="radio"
+        name="parish"
+        value="st-james"
+      />
+      <label class="govbb-radio-item__label" for="parish-st-james"
+        >Saint James</label
+      >
+    </div>
+  </fieldset>
+</div>
 ```
 
 ```tsx
@@ -109,49 +111,51 @@ Add a hint to a single option to clarify its meaning. Use `aria-describedby` so
 screen readers announce it alongside the option's label.
 
 ```html title="Radio group with per-option hints"
-<fieldset class="govbb-fieldset">
-  <legend class="govbb-fieldset__legend">
-    How would you like to be contacted?
-  </legend>
-  <div class="govbb-radio-item">
-    <input
-      class="govbb-radio"
-      id="contact-email"
-      type="radio"
-      name="contact"
-      value="email"
-      aria-describedby="contact-email-hint"
-    />
-    <label class="govbb-radio-item__label" for="contact-email">Email</label>
-    <span class="govbb-hint" id="contact-email-hint">
-      We'll only use this to send updates about your application.
-    </span>
-  </div>
-  <div class="govbb-radio-item">
-    <input
-      class="govbb-radio"
-      id="contact-phone"
-      type="radio"
-      name="contact"
-      value="phone"
-      aria-describedby="contact-phone-hint"
-    />
-    <label class="govbb-radio-item__label" for="contact-phone">Phone</label>
-    <span class="govbb-hint" id="contact-phone-hint">
-      A government officer may call between 9am and 5pm.
-    </span>
-  </div>
-  <div class="govbb-radio-item">
-    <input
-      class="govbb-radio"
-      id="contact-post"
-      type="radio"
-      name="contact"
-      value="post"
-    />
-    <label class="govbb-radio-item__label" for="contact-post">Post</label>
-  </div>
-</fieldset>
+<div class="govbb-form-group">
+  <fieldset class="govbb-fieldset">
+    <legend class="govbb-fieldset__legend">
+      How would you like to be contacted?
+    </legend>
+    <div class="govbb-radio-item">
+      <input
+        class="govbb-radio"
+        id="contact-email"
+        type="radio"
+        name="contact"
+        value="email"
+        aria-describedby="contact-email-hint"
+      />
+      <label class="govbb-radio-item__label" for="contact-email">Email</label>
+      <span class="govbb-hint" id="contact-email-hint">
+        We'll only use this to send updates about your application.
+      </span>
+    </div>
+    <div class="govbb-radio-item">
+      <input
+        class="govbb-radio"
+        id="contact-phone"
+        type="radio"
+        name="contact"
+        value="phone"
+        aria-describedby="contact-phone-hint"
+      />
+      <label class="govbb-radio-item__label" for="contact-phone">Phone</label>
+      <span class="govbb-hint" id="contact-phone-hint">
+        A government officer may call between 9am and 5pm.
+      </span>
+    </div>
+    <div class="govbb-radio-item">
+      <input
+        class="govbb-radio"
+        id="contact-post"
+        type="radio"
+        name="contact"
+        value="post"
+      />
+      <label class="govbb-radio-item__label" for="contact-post">Post</label>
+    </div>
+  </fieldset>
+</div>
 ```
 
 ```tsx
@@ -180,53 +184,57 @@ Show follow-up content when a specific option is selected. The conditional block
 sits as a sibling of its radio item and appears only when that radio is checked.
 
 ```html title="Radio group with conditional reveal"
-<fieldset class="govbb-fieldset">
-  <legend class="govbb-fieldset__legend">Preferred contact method</legend>
-  <div class="govbb-radio-item">
-    <input
-      class="govbb-radio"
-      id="r-email"
-      type="radio"
-      name="contact2"
-      value="email"
-    />
-    <label class="govbb-radio-item__label" for="r-email">Email</label>
-  </div>
-  <div class="govbb-radio-item__conditional">
-    <div class="govbb-form-group">
-      <label class="govbb-label" for="r-email-addr">Email address</label>
-      <input class="govbb-input" id="r-email-addr" type="email" />
+<div class="govbb-form-group">
+  <fieldset class="govbb-fieldset">
+    <legend class="govbb-fieldset__legend">Preferred contact method</legend>
+    <div class="govbb-radio-item">
+      <input
+        class="govbb-radio"
+        id="r-email"
+        type="radio"
+        name="contact2"
+        value="email"
+      />
+      <label class="govbb-radio-item__label" for="r-email">Email</label>
     </div>
-  </div>
-  <div class="govbb-radio-item">
-    <input
-      class="govbb-radio"
-      id="r-phone"
-      type="radio"
-      name="contact2"
-      value="phone"
-      checked
-    />
-    <label class="govbb-radio-item__label" for="r-phone">Phone</label>
-  </div>
-  <div class="govbb-radio-item__conditional">
-    <div class="govbb-form-group">
-      <label class="govbb-label" for="r-phone-num">Phone number</label>
-      <input class="govbb-input" id="r-phone-num" type="tel" />
+    <div class="govbb-radio-item__conditional">
+      <div class="govbb-form-group">
+        <label class="govbb-label" for="r-email-addr">Email address</label>
+        <input class="govbb-input" id="r-email-addr" type="email" />
+      </div>
     </div>
-  </div>
-  <div class="govbb-radio-item">
-    <input
-      class="govbb-radio"
-      id="r-post"
-      type="radio"
-      name="contact2"
-      value="post"
-      disabled
-    />
-    <label class="govbb-radio-item__label" for="r-post">Post (disabled)</label>
-  </div>
-</fieldset>
+    <div class="govbb-radio-item">
+      <input
+        class="govbb-radio"
+        id="r-phone"
+        type="radio"
+        name="contact2"
+        value="phone"
+        checked
+      />
+      <label class="govbb-radio-item__label" for="r-phone">Phone</label>
+    </div>
+    <div class="govbb-radio-item__conditional">
+      <div class="govbb-form-group">
+        <label class="govbb-label" for="r-phone-num">Phone number</label>
+        <input class="govbb-input" id="r-phone-num" type="tel" />
+      </div>
+    </div>
+    <div class="govbb-radio-item">
+      <input
+        class="govbb-radio"
+        id="r-post"
+        type="radio"
+        name="contact2"
+        value="post"
+        disabled
+      />
+      <label class="govbb-radio-item__label" for="r-post"
+        >Post (disabled)</label
+      >
+    </div>
+  </fieldset>
+</div>
 ```
 
 ```tsx

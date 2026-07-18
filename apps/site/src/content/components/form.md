@@ -125,8 +125,9 @@ import { ErrorMessage, FormGroup, Input, Label } from '@govtech-bb/react';
 
 When several controls answer a single question (radios, checkboxes, or the
 parts of a date), wrap them in a fieldset (`.govbb-fieldset`) with a legend
-(`.govbb-fieldset__legend`) inside the form group. The legend acts as the
-question; each control keeps its own label.
+(`.govbb-fieldset__legend`) inside the form group. The React `Fieldset`
+component supplies the form-group wrapper. The legend acts as the question;
+each control keeps its own label.
 
 ```html title="Fieldset with legend and hint"
 <div class="govbb-form-group">
@@ -164,16 +165,14 @@ question; each control keeps its own label.
 ```
 
 ```tsx
-import { Fieldset, FormGroup, Hint, Radio } from '@govtech-bb/react';
+import { Fieldset, Hint, Radio } from '@govtech-bb/react';
 
-<FormGroup>
-  <Fieldset
-    legend="Where do you want to collect your passport?"
-    aria-describedby="collection-hint"
-  >
-    <Hint id="collection-hint">Choose the office closest to you</Hint>
-    <Radio id="collect-bridgetown" name="collection" label="Bridgetown" />
-    <Radio id="collect-holetown" name="collection" label="Holetown" />
-  </Fieldset>
-</FormGroup>;
+<Fieldset
+  legend="Where do you want to collect your passport?"
+  aria-describedby="collection-hint"
+>
+  <Hint id="collection-hint">Choose the office closest to you</Hint>
+  <Radio id="collect-bridgetown" name="collection" label="Bridgetown" />
+  <Radio id="collect-holetown" name="collection" label="Holetown" />
+</Fieldset>;
 ```

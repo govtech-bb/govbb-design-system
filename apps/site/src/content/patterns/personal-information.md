@@ -65,29 +65,31 @@ group: Ask users for
   </select>
 </div>
 
-<fieldset class="govbb-fieldset">
-  <legend class="govbb-fieldset__legend">Sex</legend>
-  <div class="govbb-radio-item">
-    <input
-      class="govbb-radio"
-      id="sex-female"
-      type="radio"
-      name="sex"
-      value="female"
-    />
-    <label class="govbb-radio-item__label" for="sex-female">Female</label>
-  </div>
-  <div class="govbb-radio-item">
-    <input
-      class="govbb-radio"
-      id="sex-male"
-      type="radio"
-      name="sex"
-      value="male"
-    />
-    <label class="govbb-radio-item__label" for="sex-male">Male</label>
-  </div>
-</fieldset>
+<div class="govbb-form-group">
+  <fieldset class="govbb-fieldset">
+    <legend class="govbb-fieldset__legend">Sex</legend>
+    <div class="govbb-radio-item">
+      <input
+        class="govbb-radio"
+        id="sex-female"
+        type="radio"
+        name="sex"
+        value="female"
+      />
+      <label class="govbb-radio-item__label" for="sex-female">Female</label>
+    </div>
+    <div class="govbb-radio-item">
+      <input
+        class="govbb-radio"
+        id="sex-male"
+        type="radio"
+        name="sex"
+        value="male"
+      />
+      <label class="govbb-radio-item__label" for="sex-male">Male</label>
+    </div>
+  </fieldset>
+</div>
 
 <div class="govbb-form-group">
   <label class="govbb-label" for="marital-status">Marital status</label>

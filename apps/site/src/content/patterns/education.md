@@ -8,41 +8,47 @@ group: Ask users for
 ## Preview
 
 ```html title="Education"
-<fieldset class="govbb-fieldset">
-  <legend class="govbb-fieldset__legend">What is your education level?</legend>
-  <div class="govbb-radio-item">
-    <input
-      class="govbb-radio"
-      id="level-primary"
-      type="radio"
-      name="level"
-      value="primary"
-    />
-    <label class="govbb-radio-item__label" for="level-primary">Primary</label>
-  </div>
-  <div class="govbb-radio-item">
-    <input
-      class="govbb-radio"
-      id="level-secondary"
-      type="radio"
-      name="level"
-      value="secondary"
-    />
-    <label class="govbb-radio-item__label" for="level-secondary"
-      >Secondary</label
-    >
-  </div>
-  <div class="govbb-radio-item">
-    <input
-      class="govbb-radio"
-      id="level-tertiary"
-      type="radio"
-      name="level"
-      value="tertiary"
-    />
-    <label class="govbb-radio-item__label" for="level-tertiary">Tertiary</label>
-  </div>
-</fieldset>
+<div class="govbb-form-group">
+  <fieldset class="govbb-fieldset">
+    <legend class="govbb-fieldset__legend">
+      What is your education level?
+    </legend>
+    <div class="govbb-radio-item">
+      <input
+        class="govbb-radio"
+        id="level-primary"
+        type="radio"
+        name="level"
+        value="primary"
+      />
+      <label class="govbb-radio-item__label" for="level-primary">Primary</label>
+    </div>
+    <div class="govbb-radio-item">
+      <input
+        class="govbb-radio"
+        id="level-secondary"
+        type="radio"
+        name="level"
+        value="secondary"
+      />
+      <label class="govbb-radio-item__label" for="level-secondary"
+        >Secondary</label
+      >
+    </div>
+    <div class="govbb-radio-item">
+      <input
+        class="govbb-radio"
+        id="level-tertiary"
+        type="radio"
+        name="level"
+        value="tertiary"
+      />
+      <label class="govbb-radio-item__label" for="level-tertiary"
+        >Tertiary</label
+      >
+    </div>
+  </fieldset>
+</div>
 
 <div class="govbb-form-group">
   <label class="govbb-label" for="institution">Name of institution</label>

@@ -8,31 +8,33 @@ group: Ask users for
 ## Preview
 
 ```html title="Disqualification"
-<fieldset class="govbb-fieldset">
-  <legend class="govbb-fieldset__legend">
-    Have you ever been disqualified?
-  </legend>
-  <div class="govbb-radio-item">
-    <input
-      class="govbb-radio"
-      id="disqualified-yes"
-      type="radio"
-      name="disqualified"
-      value="yes"
-    />
-    <label class="govbb-radio-item__label" for="disqualified-yes">Yes</label>
-  </div>
-  <div class="govbb-radio-item">
-    <input
-      class="govbb-radio"
-      id="disqualified-no"
-      type="radio"
-      name="disqualified"
-      value="no"
-    />
-    <label class="govbb-radio-item__label" for="disqualified-no">No</label>
-  </div>
-</fieldset>
+<div class="govbb-form-group">
+  <fieldset class="govbb-fieldset">
+    <legend class="govbb-fieldset__legend">
+      Have you ever been disqualified?
+    </legend>
+    <div class="govbb-radio-item">
+      <input
+        class="govbb-radio"
+        id="disqualified-yes"
+        type="radio"
+        name="disqualified"
+        value="yes"
+      />
+      <label class="govbb-radio-item__label" for="disqualified-yes">Yes</label>
+    </div>
+    <div class="govbb-radio-item">
+      <input
+        class="govbb-radio"
+        id="disqualified-no"
+        type="radio"
+        name="disqualified"
+        value="no"
+      />
+      <label class="govbb-radio-item__label" for="disqualified-no">No</label>
+    </div>
+  </fieldset>
+</div>
 
 <div class="govbb-form-group">
   <label class="govbb-label" for="court-name">Court name</label>

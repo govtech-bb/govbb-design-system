@@ -24,9 +24,12 @@ describe('form scaffolding', () => {
   });
 
   it('Fieldset renders an optional legend', () => {
-    render(<Fieldset legend="Where do you live?" />);
+    const { container } = render(<Fieldset legend="Where do you live?" />);
     const fieldset = screen.getByRole('group', { name: 'Where do you live?' });
     expect(fieldset.className).toBe('govbb-fieldset');
+    expect(fieldset.parentElement).toBe(
+      container.querySelector('.govbb-form-group'),
+    );
     expect(fieldset.querySelector('.govbb-fieldset__legend')).not.toBeNull();
   });
 });

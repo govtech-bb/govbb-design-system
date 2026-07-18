@@ -89,33 +89,35 @@ group: Ask users for
   />
 </div>
 
-<fieldset class="govbb-fieldset">
-  <legend class="govbb-fieldset__legend">Account type</legend>
-  <div class="govbb-radio-item">
-    <input
-      class="govbb-radio"
-      id="account-type-savings"
-      type="radio"
-      name="account-type"
-      value="savings"
-    />
-    <label class="govbb-radio-item__label" for="account-type-savings">
-      Savings
-    </label>
-  </div>
-  <div class="govbb-radio-item">
-    <input
-      class="govbb-radio"
-      id="account-type-chequing"
-      type="radio"
-      name="account-type"
-      value="chequing"
-    />
-    <label class="govbb-radio-item__label" for="account-type-chequing">
-      Chequing
-    </label>
-  </div>
-</fieldset>
+<div class="govbb-form-group">
+  <fieldset class="govbb-fieldset">
+    <legend class="govbb-fieldset__legend">Account type</legend>
+    <div class="govbb-radio-item">
+      <input
+        class="govbb-radio"
+        id="account-type-savings"
+        type="radio"
+        name="account-type"
+        value="savings"
+      />
+      <label class="govbb-radio-item__label" for="account-type-savings">
+        Savings
+      </label>
+    </div>
+    <div class="govbb-radio-item">
+      <input
+        class="govbb-radio"
+        id="account-type-chequing"
+        type="radio"
+        name="account-type"
+        value="chequing"
+      />
+      <label class="govbb-radio-item__label" for="account-type-chequing">
+        Chequing
+      </label>
+    </div>
+  </fieldset>
+</div>
 
 <div class="govbb-form-group">
   <label class="govbb-label" for="swift">SWIFT/BIC code</label>
