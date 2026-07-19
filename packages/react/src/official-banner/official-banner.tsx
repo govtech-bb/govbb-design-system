@@ -1,11 +1,13 @@
 import { cx } from 'class-variance-authority';
 import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
+import type { LinkComponent } from '../link/link';
 
 export interface OfficialBannerProps extends HTMLAttributes<HTMLDivElement> {
   /** Coat-of-arms image URL — the consumer hosts the asset. */
   crestSrc: string;
   linkHref?: string;
   linkLabel?: ReactNode;
+  linkComponent?: LinkComponent;
   children?: ReactNode;
 }
 
@@ -15,6 +17,7 @@ export const OfficialBanner = forwardRef<HTMLDivElement, OfficialBannerProps>(
       crestSrc,
       linkHref,
       linkLabel = 'Learn more',
+      linkComponent: Anchor = 'a',
       children = 'Official government website',
       className,
       ...props
@@ -38,9 +41,9 @@ export const OfficialBanner = forwardRef<HTMLDivElement, OfficialBannerProps>(
           <div className="govbb-official-banner__text">
             <span>{children}</span>
             {linkHref != null && (
-              <a className="govbb-official-banner__link" href={linkHref}>
+              <Anchor className="govbb-official-banner__link" href={linkHref}>
                 {linkLabel}
-              </a>
+              </Anchor>
             )}
           </div>
         </div>
