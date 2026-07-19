@@ -47,10 +47,12 @@ component's own classes.
 
 ## Components
 
-Breadcrumbs · Button · Checkbox · DateInput · ErrorMessage · ErrorSummary ·
-Fieldset · FileUpload · Footer / FooterLink · FormGroup · Header · Hint ·
+BackButton · Breadcrumbs · Button / LinkButton · Checkbox · DateInput ·
+ErrorMessage · ErrorSummary · Feedback · Fieldset · FileUpload ·
+Footer / FooterLink · FormGroup · Header · Heading / Text · Hint ·
 Input / Textarea · Label · Link · List · NumberInput · OfficialBanner ·
-Radio · Search · Select · ShowHide · StatusBanner
+Payment · Radio · Search · Select · ServiceList · ShowHide · SkipLink ·
+StatusBanner · SummaryList · Table
 
 Each lives in `src/<name>/<name>.tsx` with its test alongside. `pnpm test`
 runs the vitest + testing-library suite; `pnpm typecheck` runs tsc.

@@ -298,9 +298,9 @@ text itself is `children` (defaults to "Official government website").
 ## New in this package
 
 Components with no alpha.17 equivalent, available immediately: `BackButton`,
-`Breadcrumbs`, `FileUpload`, `List`, `NumberInput`, `ShowHide`, `SummaryList`,
-`Table` (with `TableHeader`/`TableCell`), and the form primitives
-(`FormGroup`, `Label`, `Hint`, `ErrorMessage`, `Fieldset`).
+`Breadcrumbs`, `FileUpload`, `List`, `NumberInput`, `Payment`, `ShowHide`,
+`SkipLink`, `SummaryList`, `Table` (with `TableHeader`/`TableCell`), and the
+form primitives (`FormGroup`, `Label`, `Hint`, `ErrorMessage`, `Fieldset`).
 
 ## Versioning recommendation
 
