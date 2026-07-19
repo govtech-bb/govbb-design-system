@@ -27,6 +27,23 @@ describe('Breadcrumbs', () => {
     expect(home.hasAttribute('data-router')).toBe(false);
   });
 
+  it('marks the current page crumb with aria-current', () => {
+    render(
+      <Breadcrumbs
+        items={[
+          { href: '/', label: 'Home' },
+          { href: '/here/', label: 'Here', current: true },
+        ]}
+      />,
+    );
+    expect(
+      screen.getByRole('link', { name: 'Home' }).getAttribute('aria-current'),
+    ).toBeNull();
+    expect(
+      screen.getByRole('link', { name: 'Here' }).getAttribute('aria-current'),
+    ).toBe('page');
+  });
+
   it('renders each crumb with a custom link component', () => {
     render(
       <Breadcrumbs
