@@ -64,8 +64,27 @@ describe('CheckboxGroup', () => {
     );
     const error = screen.getByText('Choose at least one');
     expect(error.className).toBe('govbb-error-message');
+    expect(error.getAttribute('role')).toBe('alert');
     expect(group.getAttribute('aria-describedby')).toBe(error.id);
     expect(screen.getAllByRole('checkbox')).toHaveLength(2);
+  });
+
+  it('forwards a ref and extra attributes to the fieldset', () => {
+    const ref = { current: null as HTMLFieldSetElement | null };
+    render(
+      <CheckboxGroup
+        ref={(el) => {
+          ref.current = el;
+        }}
+        legend="Contact"
+        id="contact-group"
+        data-testid="group"
+      >
+        <Checkbox label="Email" value="email" />
+      </CheckboxGroup>,
+    );
+    expect(ref.current?.tagName).toBe('FIELDSET');
+    expect(ref.current?.id).toBe('contact-group');
   });
 
   it('shows the error and drops the group hint if both are passed', () => {

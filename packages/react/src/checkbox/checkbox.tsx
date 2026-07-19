@@ -2,6 +2,7 @@ import { cx } from 'class-variance-authority';
 import {
   forwardRef,
   useId,
+  type FieldsetHTMLAttributes,
   type InputHTMLAttributes,
   type ReactNode,
 } from 'react';
@@ -70,10 +71,9 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
   },
 );
 
-export type CheckboxGroupProps = {
+export type CheckboxGroupProps = FieldsetHTMLAttributes<HTMLFieldSetElement> & {
   /** Fieldset legend describing the whole group. */
   legend: ReactNode;
-  className?: string;
   children: ReactNode;
 } & HintOrError;
 
@@ -82,25 +82,30 @@ export type CheckboxGroupProps = {
  * error. Checkboxes are independent booleans, so — unlike RadioGroup — this
  * holds no state; each Checkbox stays controlled by the consumer.
  */
-export function CheckboxGroup({
-  legend,
-  hint,
-  error,
-  className,
-  children,
-}: CheckboxGroupProps) {
+export const CheckboxGroup = forwardRef<
+  HTMLFieldSetElement,
+  CheckboxGroupProps
+>(function CheckboxGroup(
+  { legend, hint, error, children, 'aria-describedby': describedBy, ...props },
+  ref,
+) {
   const id = useId();
   const hintId = hint != null && error == null ? `${id}-hint` : undefined;
   const errorId = error != null ? `${id}-error` : undefined;
   return (
     <Fieldset
+      ref={ref}
       legend={legend}
-      className={className}
-      aria-describedby={cx(hintId, errorId) || undefined}
+      aria-describedby={cx(hintId, errorId, describedBy) || undefined}
+      {...props}
     >
       {hint != null && error == null && <Hint id={hintId}>{hint}</Hint>}
-      {error != null && <ErrorMessage id={errorId}>{error}</ErrorMessage>}
+      {error != null && (
+        <ErrorMessage id={errorId} role="alert">
+          {error}
+        </ErrorMessage>
+      )}
       {children}
     </Fieldset>
   );
-}
+});
