@@ -20,7 +20,11 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
   },
   ref,
 ) {
-  const ids = useFieldIds(id, hint != null && error == null, error != null);
+  const ids = useFieldIds(
+    id ?? props.name,
+    hint != null && error == null,
+    error != null,
+  );
   const composed = label != null || hint != null || error != null;
   const input = (
     <input
@@ -52,7 +56,11 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
     },
     ref,
   ) {
-    const ids = useFieldIds(id, hint != null && error == null, error != null);
+    const ids = useFieldIds(
+      id ?? props.name,
+      hint != null && error == null,
+      error != null,
+    );
     const composed = label != null || hint != null || error != null;
     const textarea = (
       <textarea

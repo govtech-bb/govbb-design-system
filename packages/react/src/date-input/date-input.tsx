@@ -66,19 +66,19 @@ export const DateInput = forwardRef<HTMLFieldSetElement, DateInputProps>(
       {
         label: 'Day',
         part: 'day' as const,
-        partId: dayProps?.id ?? `${id}-day`,
+        partId: dayProps?.id ?? `${name ?? id}-day`,
         props: dayProps,
       },
       {
         label: 'Month',
         part: 'month' as const,
-        partId: monthProps?.id ?? `${id}-month`,
+        partId: monthProps?.id ?? `${name ?? id}-month`,
         props: monthProps,
       },
       {
         label: 'Year',
         part: 'year' as const,
-        partId: yearProps?.id ?? `${id}-year`,
+        partId: yearProps?.id ?? `${name ?? id}-year`,
         props: yearProps,
         year: true,
       },

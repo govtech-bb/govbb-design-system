@@ -30,6 +30,16 @@ describe('Input', () => {
     expect(input.getAttribute('aria-invalid')).toBeNull();
   });
 
+  it('derives the id from name, with an explicit id winning', () => {
+    render(<Input label="Email" name="email" error="Enter your email" />);
+    const input = screen.getByRole('textbox', { name: 'Email' });
+    expect(input.id).toBe('email');
+    expect(screen.getByText('Enter your email').id).toBe('email-error');
+
+    render(<Input label="Phone" name="phone" id="mobile" />);
+    expect(screen.getByRole('textbox', { name: 'Phone' }).id).toBe('mobile');
+  });
+
   it('self-composes label and error when given them', () => {
     render(<Input label="Average weekly pay" error="Enter your pay" />);
     const input = screen.getByRole('textbox', { name: 'Average weekly pay' });

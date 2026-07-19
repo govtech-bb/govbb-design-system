@@ -26,7 +26,11 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
     },
     ref,
   ) {
-    const ids = useFieldIds(id, hint != null && error == null, error != null);
+    const ids = useFieldIds(
+      id ?? props.name,
+      hint != null && error == null,
+      error != null,
+    );
     const composed = label != null || hint != null || error != null;
     const select = (
       <select

@@ -31,11 +31,13 @@ describe('DateInput', () => {
     expect(screen.getByLabelText('Month')).toBeDefined();
   });
 
-  it('derives part names from the name prefix, overridable per part', () => {
+  it('derives part names and ids from the name prefix, overridable per part', () => {
     render(
       <DateInput legend="Date of birth" name="dob" dayProps={{ name: 'dd' }} />,
     );
     expect((screen.getByLabelText('Day') as HTMLInputElement).name).toBe('dd');
+    expect(screen.getByLabelText('Day').id).toBe('dob-day');
+    expect(screen.getByLabelText('Year').id).toBe('dob-year');
     expect((screen.getByLabelText('Month') as HTMLInputElement).name).toBe(
       'dob-month',
     );

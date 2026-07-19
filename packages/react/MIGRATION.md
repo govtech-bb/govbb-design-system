@@ -182,9 +182,10 @@ helpers and hand-rolled `padStart` assembly).
 
 For per-field control (`autoComplete`, `aria-invalid`, explicit ids, refs),
 `dayProps`/`monthProps`/`yearProps` reach each `<input>` directly and override
-the derived props. Part ids are auto-generated unless you pass `id` per part;
-if an `ErrorSummary` links to a specific part (for example `#start-date-day`),
-pass explicit ids.
+the derived props. With `name` set, part ids follow it (`start-date-day`), so
+`ErrorSummary` links like `#start-date-day` work without explicit ids; without
+a `name`, ids are auto-generated. The same convention applies to `Input`,
+`Textarea` and `Select`: a composed field's `id` defaults to its `name`.
 
 ## ErrorSummary: `{ text, target }` becomes `{ href, label }`
 
