@@ -1,6 +1,7 @@
 import { cx } from 'class-variance-authority';
 import {
   forwardRef,
+  useId,
   type HTMLAttributes,
   type MouseEvent,
   type ReactNode,
@@ -46,17 +47,26 @@ export const ErrorSummary = forwardRef<HTMLDivElement, ErrorSummaryProps>(
       onErrorClick?.(item, event);
       if (event.defaultPrevented || !item.href.startsWith('#')) return;
       const target = document.getElementById(item.href.slice(1));
-      if (target != null) target.focus();
+      if (target == null) return;
+      target.focus();
+      if (document.activeElement !== target) {
+        target.setAttribute('tabindex', '-1');
+        target.focus();
+      }
     }
+    const titleId = useId();
     return (
       <div
         ref={ref}
         className={cx('govbb-error-summary', className)}
         role="alert"
+        aria-labelledby={titleId}
         tabIndex={-1}
         {...props}
       >
-        <h2 className="govbb-error-summary__title">{title}</h2>
+        <h2 className="govbb-error-summary__title" id={titleId}>
+          {title}
+        </h2>
         <ul className="govbb-error-summary__list">
           {errors.map((item) => (
             <li key={item.href}>
