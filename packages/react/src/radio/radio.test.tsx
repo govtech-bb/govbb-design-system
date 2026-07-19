@@ -75,7 +75,26 @@ describe('RadioGroup', () => {
     const group = screen.getByRole('group');
     const error = screen.getByText('Select yes or no');
     expect(error.className).toBe('govbb-error-message');
+    expect(error.getAttribute('role')).toBe('alert');
     expect(group.getAttribute('aria-describedby')).toBe(error.id);
+  });
+
+  it('forwards a ref and extra attributes to the fieldset', () => {
+    const ref = { current: null as HTMLFieldSetElement | null };
+    render(
+      <RadioGroup
+        ref={(el) => {
+          ref.current = el;
+        }}
+        legend="Choose one"
+        name="c"
+        id="choose-one"
+      >
+        <Radio label="Yes" value="yes" />
+      </RadioGroup>,
+    );
+    expect(ref.current?.tagName).toBe('FIELDSET');
+    expect(ref.current?.id).toBe('choose-one');
   });
 
   it('shows the error and drops the group hint if both are passed', () => {

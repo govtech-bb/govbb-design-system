@@ -6,6 +6,7 @@ import {
   isValidElement,
   useId,
   type ChangeEvent,
+  type FieldsetHTMLAttributes,
   type InputHTMLAttributes,
   type ReactElement,
   type ReactNode,
@@ -73,7 +74,7 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(function Radio(
   );
 });
 
-export type RadioGroupProps = {
+export type RadioGroupProps = FieldsetHTMLAttributes<HTMLFieldSetElement> & {
   /** Fieldset legend describing the whole group. */
   legend: ReactNode;
   /** Shared name for the radios. Required for a single-choice group. */
@@ -82,7 +83,6 @@ export type RadioGroupProps = {
   value?: string;
   /** Fires with the newly selected radio's `value`. */
   onValueChange?: (value: string) => void;
-  className?: string;
   children: ReactNode;
 } & HintOrError;
 
@@ -92,40 +92,51 @@ export type RadioGroupProps = {
  * onValueChange. Explicit props on a child still win. Non-<Radio> children
  * (dividers, "or" separators) pass through untouched.
  */
-export function RadioGroup({
-  legend,
-  hint,
-  error,
-  name,
-  value,
-  onValueChange,
-  className,
-  children,
-}: RadioGroupProps) {
-  const id = useId();
-  const hintId = hint != null && error == null ? `${id}-hint` : undefined;
-  const errorId = error != null ? `${id}-error` : undefined;
-  return (
-    <Fieldset
-      legend={legend}
-      className={className}
-      aria-describedby={cx(hintId, errorId) || undefined}
-    >
-      {hint != null && error == null && <Hint id={hintId}>{hint}</Hint>}
-      {error != null && <ErrorMessage id={errorId}>{error}</ErrorMessage>}
-      {Children.map(children, (child) => {
-        if (!isValidElement(child)) return child;
-        const radio = child as ReactElement<RadioProps>;
-        if (radio.props.value == null) return child;
-        return cloneElement(radio, {
-          name: radio.props.name ?? name,
-          checked: radio.props.checked ?? radio.props.value === value,
-          onChange: (event: ChangeEvent<HTMLInputElement>) => {
-            radio.props.onChange?.(event);
-            onValueChange?.(String(radio.props.value));
-          },
-        });
-      })}
-    </Fieldset>
-  );
-}
+export const RadioGroup = forwardRef<HTMLFieldSetElement, RadioGroupProps>(
+  function RadioGroup(
+    {
+      legend,
+      hint,
+      error,
+      name,
+      value,
+      onValueChange,
+      children,
+      'aria-describedby': describedBy,
+      ...props
+    },
+    ref,
+  ) {
+    const id = useId();
+    const hintId = hint != null && error == null ? `${id}-hint` : undefined;
+    const errorId = error != null ? `${id}-error` : undefined;
+    return (
+      <Fieldset
+        ref={ref}
+        legend={legend}
+        aria-describedby={cx(hintId, errorId, describedBy) || undefined}
+        {...props}
+      >
+        {hint != null && error == null && <Hint id={hintId}>{hint}</Hint>}
+        {error != null && (
+          <ErrorMessage id={errorId} role="alert">
+            {error}
+          </ErrorMessage>
+        )}
+        {Children.map(children, (child) => {
+          if (!isValidElement(child)) return child;
+          const radio = child as ReactElement<RadioProps>;
+          if (radio.props.value == null) return child;
+          return cloneElement(radio, {
+            name: radio.props.name ?? name,
+            checked: radio.props.checked ?? radio.props.value === value,
+            onChange: (event: ChangeEvent<HTMLInputElement>) => {
+              radio.props.onChange?.(event);
+              onValueChange?.(String(radio.props.value));
+            },
+          });
+        })}
+      </Fieldset>
+    );
+  },
+);
