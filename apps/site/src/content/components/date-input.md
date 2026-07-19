@@ -52,16 +52,30 @@ group: Form elements
 ```
 
 ```tsx
-import { DateInput } from '@govtech-bb/react';
+import { DateInput, type DateInputValue } from '@govtech-bb/react';
+
+const [dob, setDob] = useState<DateInputValue>({
+  day: '',
+  month: '',
+  year: '',
+});
 
 <DateInput
   legend="Date of birth"
   hint="For example, 27 3 1990"
-  dayProps={{ name: 'dob[day]', autoComplete: 'bday-day' }}
-  monthProps={{ name: 'dob[month]', autoComplete: 'bday-month' }}
-  yearProps={{ name: 'dob[year]', autoComplete: 'bday-year' }}
+  name="dob"
+  value={dob}
+  onChange={setDob}
+  dayProps={{ autoComplete: 'bday-day' }}
+  monthProps={{ autoComplete: 'bday-month' }}
+  yearProps={{ autoComplete: 'bday-year' }}
 />;
 ```
+
+`value` and `onChange` drive the three fields as one `{ day, month, year }`
+object, and `name="dob"` names the fields `dob-day`, `dob-month`, `dob-year`.
+`formatDateInput` and `parseDateInput` convert the value object to and from an
+ISO `YYYY-MM-DD` string when you need one, such as when submitting to an API.
 
 The Date Input component lets users enter a memorable date, such as a date of
 birth or a document's expiry date, using three short text fields for day, month,

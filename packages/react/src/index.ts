@@ -6,8 +6,12 @@ export { Button, LinkButton } from './button/button';
 export type { ButtonProps, LinkButtonProps } from './button/button';
 export { Checkbox, CheckboxGroup } from './checkbox/checkbox';
 export type { CheckboxProps, CheckboxGroupProps } from './checkbox/checkbox';
-export { DateInput } from './date-input/date-input';
-export type { DateInputProps } from './date-input/date-input';
+export {
+  DateInput,
+  formatDateInput,
+  parseDateInput,
+} from './date-input/date-input';
+export type { DateInputProps, DateInputValue } from './date-input/date-input';
 export { ErrorSummary } from './error-summary/error-summary';
 export type {
   ErrorSummaryProps,

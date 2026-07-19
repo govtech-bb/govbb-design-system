@@ -2,6 +2,7 @@ import { cx } from 'class-variance-authority';
 import {
   forwardRef,
   useId,
+  type ChangeEvent,
   type ComponentPropsWithRef,
   type ReactNode,
 } from 'react';
@@ -16,8 +17,30 @@ import type { HintOrError } from '../form/field';
 
 type FieldProps = ComponentPropsWithRef<'input'>;
 
+export interface DateInputValue {
+  day: string;
+  month: string;
+  year: string;
+}
+
+/** 'YYYY-MM-DD' with zero-padding, or '' while any part is empty. */
+export function formatDateInput(value: DateInputValue): string {
+  const { day, month, year } = value;
+  if (!day || !month || !year) return '';
+  return `${year.padStart(4, '0')}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+}
+
+export function parseDateInput(iso: string): DateInputValue {
+  const [year = '', month = '', day = ''] = iso.split('-');
+  return { day, month, year };
+}
+
 export type DateInputProps = {
   legend: ReactNode;
+  /** Prefix for the field names: `${name}-day`, `${name}-month`, `${name}-year`. */
+  name?: string;
+  value?: DateInputValue;
+  onChange?: (value: DateInputValue) => void;
   dayProps?: FieldProps;
   monthProps?: FieldProps;
   yearProps?: FieldProps;
@@ -25,21 +48,38 @@ export type DateInputProps = {
 
 export const DateInput = forwardRef<HTMLFieldSetElement, DateInputProps>(
   function DateInput(
-    { legend, hint, error, dayProps, monthProps, yearProps },
+    {
+      legend,
+      hint,
+      error,
+      name,
+      value,
+      onChange,
+      dayProps,
+      monthProps,
+      yearProps,
+    },
     ref,
   ) {
     const id = useId();
     const hintId = hint != null && error == null ? `${id}-hint` : undefined;
     const errorId = error != null ? `${id}-error` : undefined;
     const parts = [
-      { label: 'Day', partId: dayProps?.id ?? `${id}-day`, props: dayProps },
+      {
+        label: 'Day',
+        part: 'day' as const,
+        partId: dayProps?.id ?? `${id}-day`,
+        props: dayProps,
+      },
       {
         label: 'Month',
+        part: 'month' as const,
         partId: monthProps?.id ?? `${id}-month`,
         props: monthProps,
       },
       {
         label: 'Year',
+        part: 'year' as const,
         partId: yearProps?.id ?? `${id}-year`,
         props: yearProps,
         year: true,
@@ -67,7 +107,7 @@ export const DateInput = forwardRef<HTMLFieldSetElement, DateInputProps>(
             </span>
           )}
           <div className="govbb-date-input">
-            {parts.map(({ label, partId, props, year }) => (
+            {parts.map(({ label, part, partId, props, year }) => (
               <div className="govbb-date-input__part" key={partId}>
                 <label className="govbb-label" htmlFor={partId}>
                   {label}
@@ -75,6 +115,15 @@ export const DateInput = forwardRef<HTMLFieldSetElement, DateInputProps>(
                 <input
                   type="text"
                   inputMode="numeric"
+                  name={name != null ? `${name}-${part}` : undefined}
+                  {...(value !== undefined && {
+                    value: value[part],
+                    onChange: (event: ChangeEvent<HTMLInputElement>) =>
+                      onChange?.({
+                        ...value,
+                        [part]: event.currentTarget.value,
+                      }),
+                  })}
                   {...props}
                   className={cx(
                     'govbb-input govbb-date-input__field',

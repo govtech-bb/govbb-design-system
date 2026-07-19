@@ -150,14 +150,17 @@ as before. Per-option hints and conditional reveals are supported via the
 
 ## DateInput
 
-The `{ value: { day, month, year }, onChange }` object API is replaced by
-per-part passthrough props: `dayProps`, `monthProps`, `yearProps` each reach
-their `<input>` directly, and `label`/`description` become `legend`/`hint`.
+The `{ value: { day, month, year }, onChange }` object API carries over:
+`value`/`onChange` drive all three fields, and `name` prefixes the field names
+(`start-date-day`, `start-date-month`, `start-date-year` — dashes, where the
+alpha used `start-date[day]` brackets). `label`/`description` become
+`legend`/`hint`.
 
 ```tsx
 // Before
 <DateInput
   label="Start date"
+  description="For example, 27 3 1990"
   name="start-date"
   value={date}
   onChange={setDate}
@@ -166,19 +169,22 @@ their `<input>` directly, and `label`/`description` become `legend`/`hint`.
 // After
 <DateInput
   legend="Start date"
-  dayProps={{
-    id: 'start-date-day',
-    value: date.day,
-    onChange: (e) => setDate({ ...date, day: e.currentTarget.value }),
-  }}
-  monthProps={{ /* same shape */ }}
-  yearProps={{ /* same shape */ }}
+  hint="For example, 27 3 1990"
+  name="start-date"
+  value={date}
+  onChange={setDate}
 />
 ```
 
-Part ids are auto-generated unless you pass `id` per part. If an `ErrorSummary`
-links to a specific part (for example `#start-date-day`), pass explicit ids as
-above.
+`formatDateInput`/`parseDateInput` convert the value object to and from
+`'YYYY-MM-DD'` (replacing `DateInput.format`/`DateInput.deformat`-style
+helpers and hand-rolled `padStart` assembly).
+
+For per-field control (`autoComplete`, `aria-invalid`, explicit ids, refs),
+`dayProps`/`monthProps`/`yearProps` reach each `<input>` directly and override
+the derived props. Part ids are auto-generated unless you pass `id` per part;
+if an `ErrorSummary` links to a specific part (for example `#start-date-day`),
+pass explicit ids.
 
 ## ErrorSummary: `{ text, target }` becomes `{ href, label }`
 

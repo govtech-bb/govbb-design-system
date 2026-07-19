@@ -1,7 +1,12 @@
 import { expectNoAxeViolations } from '../testing/axe';
-import { render, screen } from '@testing-library/react';
-import { describe, expect, it } from 'vitest';
-import { DateInput } from './date-input';
+import { fireEvent, render, screen } from '@testing-library/react';
+import { describe, expect, it, vi } from 'vitest';
+import {
+  DateInput,
+  formatDateInput,
+  parseDateInput,
+  type DateInputValue,
+} from './date-input';
 
 describe('DateInput', () => {
   it('renders labelled day/month/year fields and wires the hint', () => {
@@ -26,6 +31,36 @@ describe('DateInput', () => {
     expect(screen.getByLabelText('Month')).toBeDefined();
   });
 
+  it('derives part names from the name prefix, overridable per part', () => {
+    render(
+      <DateInput legend="Date of birth" name="dob" dayProps={{ name: 'dd' }} />,
+    );
+    expect((screen.getByLabelText('Day') as HTMLInputElement).name).toBe('dd');
+    expect((screen.getByLabelText('Month') as HTMLInputElement).name).toBe(
+      'dob-month',
+    );
+    expect((screen.getByLabelText('Year') as HTMLInputElement).name).toBe(
+      'dob-year',
+    );
+  });
+
+  it('drives the fields from value and emits the merged object on change', () => {
+    const onChange = vi.fn();
+    const value: DateInputValue = { day: '27', month: '', year: '1990' };
+    render(
+      <DateInput legend="Date of birth" value={value} onChange={onChange} />,
+    );
+    expect((screen.getByLabelText('Day') as HTMLInputElement).value).toBe('27');
+    fireEvent.change(screen.getByLabelText('Month'), {
+      target: { value: '3' },
+    });
+    expect(onChange).toHaveBeenCalledWith({
+      day: '27',
+      month: '3',
+      year: '1990',
+    });
+  });
+
   it('respects consumer-provided ids on the part inputs', () => {
     render(
       <DateInput
@@ -39,6 +74,24 @@ describe('DateInput', () => {
     expect(screen.getByLabelText('Month').id).toBe('start-date-month');
     // Year gets the auto-generated fallback and stays labelled.
     expect(screen.getByLabelText('Year').id).not.toBe('');
+  });
+});
+
+describe('formatDateInput / parseDateInput', () => {
+  it('pads to YYYY-MM-DD and round-trips', () => {
+    expect(formatDateInput({ day: '5', month: '3', year: '2021' })).toBe(
+      '2021-03-05',
+    );
+    expect(parseDateInput('2021-03-05')).toEqual({
+      day: '05',
+      month: '03',
+      year: '2021',
+    });
+  });
+
+  it('returns empty values for incomplete input', () => {
+    expect(formatDateInput({ day: '5', month: '', year: '2021' })).toBe('');
+    expect(parseDateInput('')).toEqual({ day: '', month: '', year: '' });
   });
 });
 
