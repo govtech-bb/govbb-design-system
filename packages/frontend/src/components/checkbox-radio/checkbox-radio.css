@@ -126,3 +126,13 @@
 .govbb-radio-item:has(> .govbb-radio:checked) + .govbb-radio-item__conditional {
   display: block;
 }
+
+/* Forced colors strips background fills, which would make :checked
+   indistinguishable from unchecked — repaint the mark in the system ink. */
+@media (forced-colors: active) {
+  .govbb-checkbox::before,
+  .govbb-radio::before {
+    forced-color-adjust: none;
+    background: CanvasText;
+  }
+}
