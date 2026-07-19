@@ -9,6 +9,23 @@ import pagefind from 'astro-pagefind';
 export default defineConfig({
   site: 'https://design-system.gov.bb',
   integrations: [pagefind()],
+  markdown: {
+    shikiConfig: {
+      transformers: [
+        {
+          tokens(lines) {
+            for (const line of lines) {
+              for (const token of line) {
+                if (token.color?.toLowerCase() === '#6a737d') {
+                  token.color = '#8B949E';
+                }
+              }
+            }
+          },
+        },
+      ],
+    },
+  },
   redirects: {
     '/changelog': '/design-log',
     '/changelog/[...slug]': '/design-log/[...slug]',
