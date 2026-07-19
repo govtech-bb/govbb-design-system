@@ -1,0 +1,31 @@
+/* Summary section — one check-your-answers group, per the Figma Forms
+   confirmation comp: a heading with a section-level Change link, the answer
+   rows (a summary list), closed off by a rule. */
+
+.govbb-summary-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--govbb-space-s);
+  padding-bottom: var(--govbb-space-m);
+  font-size: var(--govbb-font-size-body);
+  line-height: var(--govbb-line-height-base);
+  border-bottom: 4px solid var(--govbb-color-neutral);
+}
+
+.govbb-summary-section + .govbb-summary-section {
+  margin-top: var(--govbb-space-m);
+}
+
+.govbb-summary-section__header {
+  display: flex;
+  gap: var(--govbb-space-m);
+  align-items: center;
+}
+
+.govbb-summary-section__title {
+  flex: 1;
+  margin: 0;
+  font-size: var(--govbb-font-size-h2);
+  font-weight: 700;
+  line-height: var(--govbb-line-height-h2);
+}

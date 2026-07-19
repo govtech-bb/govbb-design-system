@@ -67,6 +67,54 @@ describe('SummaryList', () => {
     expect(screen.getByRole('link', { name: 'Remove' })).toBeDefined();
   });
 
+  it('wraps itself in a headed section when given one', () => {
+    const { container } = render(
+      <SummaryList
+        rows={rows}
+        section={{
+          title: 'Tell us about yourself',
+          action: {
+            href: '/form/about-you/',
+            label: 'Change',
+            visuallyHiddenText: 'tell us about yourself',
+          },
+        }}
+      />,
+    );
+    expect(container.firstElementChild?.className).toBe(
+      'govbb-summary-section',
+    );
+    expect(
+      screen.getByRole('heading', {
+        level: 2,
+        name: 'Tell us about yourself',
+      }).className,
+    ).toBe('govbb-summary-section__title');
+    const link = screen.getByRole('link', {
+      name: 'Change tell us about yourself',
+    });
+    expect(link.getAttribute('href')).toBe('/form/about-you/');
+    expect(container.querySelector('dl')?.className).toBe('govbb-summary-list');
+  });
+
+  it('supports a section heading level and forwards the ref to the dl', () => {
+    const ref = { current: null as HTMLDListElement | null };
+    render(
+      <SummaryList
+        ref={(el) => {
+          ref.current = el;
+        }}
+        rows={rows}
+        section={{ title: 'Contact details', headingLevel: 'h3' }}
+      />,
+    );
+    expect(
+      screen.getByRole('heading', { level: 3, name: 'Contact details' }),
+    ).toBeDefined();
+    expect(ref.current?.tagName).toBe('DL');
+    expect(screen.queryByRole('link')).toBeNull();
+  });
+
   it('has no axe violations', async () => {
     const { container } = render(
       <SummaryList
@@ -81,6 +129,10 @@ describe('SummaryList', () => {
           },
           rows[1],
         ]}
+        section={{
+          title: 'Tell us about yourself',
+          action: { href: '/about-you/', label: 'Change' },
+        }}
       />,
     );
     await expectNoAxeViolations(container);

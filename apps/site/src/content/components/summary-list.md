@@ -47,13 +47,65 @@ and a plain value), one row per pair. It is built on a description list
 key stacks above the value; from tablet widths up they sit side by side with
 the keys in a fixed-width column.
 
+## Sections
+
+On a [check your answers](/patterns/check-answers/) page, wrap each page's
+answers in a summary section: a heading, one change link for the whole
+section, and a rule closing it off. The change link returns the user to the
+form page the section summarises; give it visually hidden text naming the
+section so screen reader users can tell the "Change" links apart.
+
+```html title="Summary section"
+<section class="govbb-summary-section">
+  <div class="govbb-summary-section__header">
+    <h2 class="govbb-summary-section__title">Tell us about yourself</h2>
+    <a class="govbb-link" href="/form/about-you/">
+      Change<span class="govbb-visually-hidden"> tell us about yourself</span>
+    </a>
+  </div>
+  <dl class="govbb-summary-list">
+    <div class="govbb-summary-list__row">
+      <dt class="govbb-summary-list__key">Title</dt>
+      <dd class="govbb-summary-list__value">Mr</dd>
+    </div>
+    <div class="govbb-summary-list__row">
+      <dt class="govbb-summary-list__key">First name</dt>
+      <dd class="govbb-summary-list__value">Alex</dd>
+    </div>
+  </dl>
+</section>
+```
+
+```tsx
+import { SummaryList } from '@govtech-bb/react';
+
+<SummaryList
+  section={{
+    title: 'Tell us about yourself',
+    action: {
+      href: '/form/about-you/',
+      label: 'Change',
+      visuallyHiddenText: 'tell us about yourself',
+    },
+  }}
+  rows={[
+    { key: 'Title', value: 'Mr' },
+    { key: 'First name', value: 'Alex' },
+  ]}
+/>;
+```
+
+The section heading defaults to an `<h2>`; set `section.headingLevel` when it
+sits under a different heading structure.
+
 ## Row actions
 
-Add a change link to a row when the user can revisit that answer, as on a
-[check your answers](/patterns/check-answers/) page. The link sits in its own
-`<dd>` at the end of the row; give each one visually hidden text naming the
-row so screen reader users hear "Change name", not three identical "Change"
-links.
+Add a change link to a row when an individual answer can be revisited on its
+own. The link sits in its own `<dd>` at the end of the row; give each one
+visually hidden text naming the row so screen reader users hear "Change name",
+not three identical "Change" links. On a
+[check your answers](/patterns/check-answers/) page, prefer one link per
+[summary section](#sections) instead.
 
 ```html title="Summary list with actions"
 <dl class="govbb-summary-list">

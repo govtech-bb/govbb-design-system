@@ -69,6 +69,7 @@ export type {
   SummaryListAction,
   SummaryListProps,
   SummaryListRow,
+  SummaryListSection,
 } from './summary-list/summary-list';
 export { Table, TableCell, TableHeader } from './table/table';
 export type {
