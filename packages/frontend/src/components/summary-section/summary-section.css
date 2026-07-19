@@ -6,12 +6,15 @@
   display: flex;
   flex-direction: column;
   gap: var(--govbb-space-s);
+  margin-bottom: var(--govbb-space-xm);
   padding-bottom: var(--govbb-space-m);
   font-size: var(--govbb-font-size-body);
   line-height: var(--govbb-line-height-base);
   border-bottom: 4px solid var(--govbb-color-neutral);
 }
 
+/* 32px between sections per the comp; collapses over the 24px bottom margin,
+   which stands alone before whatever follows the last section. */
 .govbb-summary-section + .govbb-summary-section {
   margin-top: var(--govbb-space-m);
 }
