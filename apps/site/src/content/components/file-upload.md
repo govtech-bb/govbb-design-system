@@ -144,9 +144,6 @@ _"Select a file"_ or _"The file must be smaller than 25MB"_.
   <label class="govbb-label" id="proof-of-address-label" for="proof-of-address"
     >Proof of address</label
   >
-  <span class="govbb-hint" id="proof-of-address-hint">
-    This could be a recent utility bill or bank statement
-  </span>
   <span class="govbb-error-message" id="proof-of-address-error" role="alert">
     Select a file
   </span>
@@ -165,7 +162,7 @@ _"Select a file"_ or _"The file must be smaller than 25MB"_.
         type="file"
         aria-invalid="true"
         aria-labelledby="proof-of-address-label"
-        aria-describedby="proof-of-address-hint proof-of-address-error"
+        aria-describedby="proof-of-address-error"
       />
       <span class="govbb-file-upload__action">
         <span class="govbb-button govbb-button--tertiary" aria-hidden="true"
@@ -189,9 +186,6 @@ import {
 
 <FormGroup>
   <Label htmlFor="proof-of-address">Proof of address</Label>
-  <Hint id="proof-of-address-hint">
-    This could be a recent utility bill or bank statement
-  </Hint>
   <ErrorMessage id="proof-of-address-error" role="alert">
     Select a file
   </ErrorMessage>
@@ -201,7 +195,7 @@ import {
     subtitle="Attach a .pdf, .docx, or .png file"
     maxSize="Maximum size: 25MB"
     aria-invalid
-    aria-describedby="proof-of-address-hint proof-of-address-error"
+    aria-describedby="proof-of-address-error"
   />
 </FormGroup>;
 ```
