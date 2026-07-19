@@ -36,6 +36,22 @@ describe('LinkButton', () => {
     expect(link.getAttribute('href')).toBe('/start');
     expect(link.className).toBe('govbb-button govbb-button--secondary');
   });
+
+  it('renders with a custom link component', () => {
+    render(
+      <LinkButton
+        href="/start"
+        linkComponent={(props) => <a data-router {...props} />}
+      >
+        Start now
+      </LinkButton>,
+    );
+    expect(
+      screen
+        .getByRole('link', { name: 'Start now' })
+        .getAttribute('data-router'),
+    ).not.toBeNull();
+  });
 });
 
 it('has no axe violations', async () => {

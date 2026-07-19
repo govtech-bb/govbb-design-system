@@ -3,7 +3,9 @@ import {
   forwardRef,
   type AnchorHTMLAttributes,
   type ButtonHTMLAttributes,
+  type ElementType,
 } from 'react';
+import type { LinkComponent } from '../link/link';
 
 /*
  * cva maps props to the govbb-button classes; the CSS owns how they look. This
@@ -48,9 +50,9 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 );
 
 export interface LinkButtonProps
-  extends
-    AnchorHTMLAttributes<HTMLAnchorElement>,
-    VariantProps<typeof button> {}
+  extends AnchorHTMLAttributes<HTMLAnchorElement>, VariantProps<typeof button> {
+  linkComponent?: LinkComponent;
+}
 
 /*
  * An <a> that looks like a Button — the GOV.UK "start button" pattern, for
@@ -59,11 +61,12 @@ export interface LinkButtonProps
  */
 export const LinkButton = forwardRef<HTMLAnchorElement, LinkButtonProps>(
   function LinkButton(
-    { variant, negative, inverse, className, ...props },
+    { variant, negative, inverse, linkComponent = 'a', className, ...props },
     ref,
   ) {
+    const Anchor: ElementType = linkComponent;
     return (
-      <a
+      <Anchor
         ref={ref}
         className={button({ variant, negative, inverse, className })}
         {...props}
