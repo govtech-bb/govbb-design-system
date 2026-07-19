@@ -35,18 +35,7 @@ img:not([class]) {
 
 /* .govbb-visually-hidden comes from the design-system package. */
 
-.govbb-skip-link {
-  position: absolute;
-  left: -9999px;
-  top: 0;
-  padding: var(--govbb-space-2) var(--govbb-space-3);
-  background: var(--govbb-color-text);
-  color: var(--govbb-color-white);
-  z-index: 100;
-}
-.govbb-skip-link:focus {
-  left: 0;
-}
+/* .govbb-skip-link comes from the design-system package. */
 
 /* Layout container: .govbb-width-container comes from the design-system
    package (fluid gutters, 1512px cap). */

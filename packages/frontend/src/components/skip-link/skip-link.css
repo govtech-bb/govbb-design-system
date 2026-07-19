@@ -1,0 +1,17 @@
+/* Skip link — the first focusable element on the page, letting keyboard and
+   screen-reader users jump straight to the main content. Parked off-screen
+   until focused, then pinned to the top-left corner. */
+
+.govbb-skip-link {
+  position: absolute;
+  top: 0;
+  left: -9999px;
+  z-index: 100;
+  padding: var(--govbb-space-2) var(--govbb-space-3);
+  color: var(--govbb-color-white);
+  background: var(--govbb-color-text);
+}
+
+.govbb-skip-link:focus {
+  left: 0;
+}
