@@ -45,13 +45,16 @@ export const Hint = forwardRef<HTMLSpanElement, HintProps>(function Hint(
 export interface ErrorMessageProps extends HTMLAttributes<HTMLSpanElement> {}
 
 export const ErrorMessage = forwardRef<HTMLSpanElement, ErrorMessageProps>(
-  function ErrorMessage({ className, ...props }, ref) {
+  function ErrorMessage({ className, children, ...props }, ref) {
     return (
       <span
         ref={ref}
         className={cx('govbb-error-message', className)}
         {...props}
-      />
+      >
+        <span className="govbb-visually-hidden">Error: </span>
+        {children}
+      </span>
     );
   },
 );
