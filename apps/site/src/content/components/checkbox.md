@@ -10,11 +10,11 @@ css: checkbox-radio
 
 ```html title="Checkbox group"
 <div class="govbb-form-group">
-  <fieldset class="govbb-fieldset">
+  <fieldset class="govbb-fieldset" aria-describedby="contact-hint">
     <legend class="govbb-fieldset__legend">
       How would you like to be contacted?
     </legend>
-    <span class="govbb-hint">Select all that apply</span>
+    <span class="govbb-hint" id="contact-hint">Select all that apply</span>
     <div class="govbb-checkbox-item">
       <input
         class="govbb-checkbox"
@@ -56,8 +56,11 @@ css: checkbox-radio
 ```tsx
 import { Checkbox, Fieldset, Hint } from '@govtech-bb/react';
 
-<Fieldset legend="How would you like to be contacted?">
-  <Hint>Select all that apply</Hint>
+<Fieldset
+  legend="How would you like to be contacted?"
+  aria-describedby="contact-hint"
+>
+  <Hint id="contact-hint">Select all that apply</Hint>
   <Checkbox name="contact" value="email" label="Email" />
   <Checkbox name="contact" value="phone" label="Phone" />
   <Checkbox name="contact" value="post" label="Post" />
