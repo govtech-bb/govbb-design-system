@@ -28,6 +28,9 @@ CSS + PE JS in one package, React wrapper separate for its peer dep):
 - `packages/react` (`@govtech-bb/react`) — thin React wrappers over the classes
   (cva-based; behaviour reused from `frontend`).
 - `apps/site` — the documentation site (bespoke Astro static site).
+- `.storybook` + `stories` — the React component workshop. It uses the
+  canonical frontend stylesheet and is published below the Astro site at
+  `/storybook/` as an interactive companion to the guidance.
 
 ## Prerequisites
 
@@ -45,7 +48,11 @@ pnpm install
 pnpm dev          # styles playground at http://localhost:5173
 pnpm build        # recursive build (styles → dist/govbb.css)
 pnpm site:dev     # documentation site at http://localhost:4321
-pnpm site:build   # static site → apps/site/dist/
+pnpm site:build   # Astro + Storybook static site → apps/site/dist/
+pnpm storybook    # React workshop at http://localhost:6006
+pnpm storybook:build # static workshop build → storybook-static/
+pnpm storybook:test  # story interactions + accessibility in Chromium
+pnpm storybook:typecheck # type-check Storybook configuration and stories
 pnpm lint         # oxlint + stylelint
 pnpm format       # prettier --write .
 ```
@@ -95,6 +102,10 @@ The docs site lives in [`apps/site`](apps/site) and is a bespoke
 branding. It has three sections — **Components**, **Documentation**, and
 **AI skills** — plus a **Changelog** of important design decisions.
 
+Every component page links to its matching React autodocs page beside the
+GitHub source link. `pnpm site:build` embeds that Storybook at `/storybook/`, so
+the link uses the same origin in previews and production.
+
 ## Contributing
 
 ### Design system
@@ -104,7 +115,9 @@ branding. It has three sections — **Components**, **Documentation**, and
   `packages/frontend/index.html`. Class names and custom properties must be
   `govbb-`-prefixed (Stylelint enforces this). For behavioural components,
   register a module in `packages/frontend/index.js`; for a React wrapper, follow
-  the cva pattern in `packages/react/src/button.tsx`.
+  the cva pattern in `packages/react/src/button.tsx`. Add or update a typed story
+  under `stories/components` when the component has a meaningful visual or
+  interactive state.
 - **Tokens** — edit `packages/frontend/src/tokens.css` (primitive ramp from the
   Figma variables, then the semantic tier).
 

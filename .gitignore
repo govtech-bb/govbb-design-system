@@ -1,4 +1,5 @@
 node_modules/
+.pnpm-store/
 dist/
 coverage/
 .astro/
@@ -6,3 +7,7 @@ coverage/
 .DS_Store
 test-results/
 playwright-report/
+
+*storybook.log
+storybook-static
+apps/site/public/storybook/

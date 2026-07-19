@@ -22,17 +22,40 @@
     "format:check": "prettier --check .",
     "changelog": "git-cliff --output CHANGELOG.md",
     "changelog:unreleased": "git-cliff --unreleased --tag unreleased --output CHANGELOG.md",
-    "test:visual": "playwright test -c ci/visual-regression/playwright.config.ts"
+    "test:visual": "playwright test -c ci/visual-regression/playwright.config.ts",
+    "storybook": "pnpm --filter @govtech-bb/frontend build && storybook dev -p 6006 --disable-telemetry",
+    "storybook:build": "pnpm --filter @govtech-bb/frontend build && storybook build --disable-telemetry",
+    "storybook:build:site": "pnpm --filter @govtech-bb/frontend build && storybook build --disable-telemetry --output-dir apps/site/public/storybook",
+    "storybook:test": "pnpm --filter @govtech-bb/frontend build && vitest --project=storybook --run",
+    "storybook:typecheck": "tsc --project tsconfig.storybook.json",
+    "build-storybook": "pnpm storybook:build"
   },
   "devDependencies": {
+    "@chromatic-com/storybook": "^5.2.1",
     "@commitlint/cli": "^21.1.0",
     "@commitlint/config-conventional": "^21.1.0",
+    "@govtech-bb/frontend": "workspace:*",
     "@playwright/test": "^1.61.1",
+    "@storybook/addon-a11y": "^10.5.2",
+    "@storybook/addon-docs": "^10.5.2",
+    "@storybook/addon-vitest": "^10.5.2",
+    "@storybook/react-vite": "^10.5.2",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "@vitest/browser-playwright": "4.1.9",
+    "@vitest/coverage-v8": "4.1.9",
     "git-cliff": "^2.13.1",
     "lefthook": "^2.1.9",
     "oxlint": "^1.71.0",
+    "playwright": "^1.61.1",
     "prettier": "^3.9.3",
+    "prop-types": "^15.8.1",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "storybook": "^10.5.2",
     "stylelint": "^17.14.0",
-    "stylelint-config-standard": "^40.0.0"
+    "stylelint-config-standard": "^40.0.0",
+    "typescript": "^5.7.0",
+    "vitest": "4.1.9"
   }
 }

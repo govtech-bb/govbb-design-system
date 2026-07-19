@@ -1,15 +1,48 @@
 ---
-// Understated icon+label links under the page title: view the page's markdown
-// source on GitHub, or fetch it as raw markdown (for pasting into an AI).
-// Icons are inline SVGs (GitHub octocat, Octicons markdown glyph) so the site
-// stays self-contained.
+// Understated icon+label links under the page title: open a component in
+// Storybook, view its source on GitHub, or fetch it as raw markdown.
+// Icons are inline SVGs so the site stays self-contained.
 interface Props {
   sourceUrl: string;
   markdownUrl: string;
+  storybookUrl?: string;
 }
-const { sourceUrl, markdownUrl } = Astro.props;
+const { sourceUrl, markdownUrl, storybookUrl } = Astro.props;
 ---
 <ul class="govbb-page-source">
+  {storybookUrl && (
+    <li class="govbb-page-source__item">
+      <a
+        class="govbb-page-source__link"
+        href={storybookUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <svg
+          class="govbb-page-source__icon"
+          width="16"
+          height="16"
+          viewBox="0 0 52 64"
+          fill="none"
+          aria-hidden="true"
+        >
+          <path
+            fill="#ff4785"
+            d="M51.273 3.923c.004.065.006.13.006.194v55.766C51.279 61.604 49.869 63 48.13 63l-.141-.003-42.04-1.869c-1.638-.073-2.945-1.376-3.006-2.997L1.002 6.955C.938 5.265 2.248 3.832 3.953 3.727L38.427 1.594l-.3 7.027a.468.468 0 0 0 .052.232l.043.068a.472.472 0 0 0 .658.09l2.758-2.071 2.329 1.816a.472.472 0 0 0 .307.1.47.47 0 0 0 .454-.481L44.467 1.22l3.466-.214a3.15 3.15 0 0 1 3.34 2.917Z"
+          ></path>
+          <path
+            fill="#fff"
+            d="M30.403 24.369c0 1.212 8.254.631 9.362-.221 0-8.258-4.478-12.598-12.676-12.598-8.2 0-12.793 4.407-12.793 11.018 0 11.514 15.7 11.735 15.7 18.015 0 1.763-.872 2.81-2.791 2.81-2.5 0-3.489-1.264-3.373-5.561 0-.932-9.536-1.223-9.827 0-.74 10.413 5.815 13.417 13.316 13.417 7.269 0 12.967-3.835 12.967-10.776 0-12.341-15.932-12.01-15.932-18.125 0-2.48 1.86-2.81 2.965-2.81 1.163 0 3.256.203 3.082 4.831Z"
+          ></path>
+          <path
+            fill="#fff"
+            d="m38.127 8.621.3-7.029 6.04-.374.26 7.157a.47.47 0 0 1-.453.48.472.472 0 0 1-.307-.1L41.638 6.94 38.88 9.01a.472.472 0 0 1-.658-.09.468.468 0 0 1-.095-.3Z"
+          ></path>
+        </svg>
+        View Storybook
+      </a>
+    </li>
+  )}
   <li class="govbb-page-source__item">
     <a
       class="govbb-page-source__link"

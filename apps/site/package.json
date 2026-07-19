@@ -6,7 +6,7 @@
   "description": "Documentation site for the GovBB Design System (design-system.gov.bb).",
   "scripts": {
     "dev": "cross-env ASTRO_TELEMETRY_DISABLED=1 astro dev",
-    "build": "cross-env ASTRO_TELEMETRY_DISABLED=1 astro build",
+    "build": "pnpm --dir ../.. storybook:build:site && cross-env ASTRO_TELEMETRY_DISABLED=1 astro build",
     "preview": "cross-env ASTRO_TELEMETRY_DISABLED=1 astro preview",
     "check": "cross-env ASTRO_TELEMETRY_DISABLED=1 astro check"
   },

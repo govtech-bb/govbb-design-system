@@ -1,7 +1,8 @@
 # 1. The documentation site is a bespoke Astro app, not Storybook
 
 **Date:** 2026-07-02
-**Status:** Accepted — supersedes the Storybook decision from #113.
+**Status:** Accepted for the public documentation site — the workshop portion
+is amended by [Decision 2](./0002-storybook-is-an-internal-react-workshop.md).
 
 ## Context
 
@@ -21,9 +22,10 @@ target site.
 The public design-system site is a **bespoke Astro static site** at `apps/site`
 (`@govbb/site`), modelled structurally on GOV.UK with GovBB branding.
 
-- **Storybook is not part of the stack.** `apps/docs` is removed. There is no
-  component-workshop Storybook (this also retires the `apps/components` workshop that
-  plan #20 proposed — its `packages/styles` half survives, its Storybook half does not).
+- **Storybook is not the public documentation stack.** `apps/docs` is removed.
+  Decision 2 later introduces a companion React workshop, published below the
+  Astro site; it does not replace Astro or revive the `apps/docs` information
+  architecture.
 - **Component documentation lives in the Astro site** as content pages, using the shared
   [`Example`](../../apps/site/src/components/Example.astro) component: a Preview / Code tab
   switch that renders the component live in an isolated iframe and shows its source. The
@@ -37,5 +39,5 @@ The public design-system site is a **bespoke Astro static site** at `apps/site`
   replacement tooling (axe in CI, or manual). Tracked separately.
 - The visual design and tokens are placeholders until the real tokens/font ship in
   `@govbb/styles` (#20) and are wired in under follow-up #124.
-- Any future "should this go in Storybook?" question is already answered: no. If a
-  component workshop is ever wanted, it is a separate tool, not the documentation site.
+- Component guidance belongs in Astro. Decision 2 later adopts Storybook as a
+  linked interactive development and testing companion.

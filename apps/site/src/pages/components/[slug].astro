@@ -4,7 +4,7 @@ import ArticleLayout from '../../layouts/ArticleLayout.astro';
 import Example from '../../components/Example.astro';
 import { getComponentsSidebar } from '../../data/nav';
 import { buildExampleBlocks } from '../../lib/example-blocks';
-import { pageSource } from '../../lib/page-source';
+import { componentPageSource } from '../../lib/page-source';
 import { getContentNeighbors } from '../../lib/content-navigation';
 
 export async function getStaticPaths() {
@@ -34,7 +34,7 @@ const neighbors = getContentNeighbors(entries, entry.id, '/components/');
   pageSubtitle={entry.data.lede}
   sidebarGroups={await getComponentsSidebar()}
   sidebarLabel="Components"
-  source={pageSource('components', entry.id)}
+  source={componentPageSource(entry.id)}
   onThisPage={onThisPage}
   breadcrumbs={[
     { label: 'Components', href: '/components/' },
