@@ -78,6 +78,19 @@ describe('RadioGroup', () => {
     expect(group.getAttribute('aria-describedby')).toBe(error.id);
   });
 
+  it('shows the error and drops the group hint if both are passed', () => {
+    render(
+      // @ts-expect-error hint/error are mutually exclusive
+      <RadioGroup legend="Choose one" name="c" hint="Pick one" error="Required">
+        <Radio label="Yes" value="yes" />
+      </RadioGroup>,
+    );
+    const group = screen.getByRole('group');
+    const error = screen.getByText('Required');
+    expect(screen.queryByText('Pick one')).toBeNull();
+    expect(group.getAttribute('aria-describedby')).toBe(error.id);
+  });
+
   it('has no axe violations', async () => {
     const { container } = render(
       <RadioGroup

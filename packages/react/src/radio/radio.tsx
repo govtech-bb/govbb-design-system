@@ -11,6 +11,7 @@ import {
   type ReactNode,
 } from 'react';
 import { ErrorMessage, Fieldset, Hint } from '../form/form';
+import type { HintOrError } from '../form/field';
 
 export interface RadioProps extends InputHTMLAttributes<HTMLInputElement> {
   /** Rendered in the item's label, wired to the input via htmlFor. */
@@ -72,13 +73,9 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(function Radio(
   );
 });
 
-export interface RadioGroupProps {
+export type RadioGroupProps = {
   /** Fieldset legend describing the whole group. */
   legend: ReactNode;
-  /** Group-level hint, announced via the fieldset's aria-describedby. */
-  hint?: ReactNode;
-  /** Group-level error; announced and marks the group invalid. */
-  error?: ReactNode;
   /** Shared name for the radios. Required for a single-choice group. */
   name: string;
   /** Controlled selected value. */
@@ -87,7 +84,7 @@ export interface RadioGroupProps {
   onValueChange?: (value: string) => void;
   className?: string;
   children: ReactNode;
-}
+} & HintOrError;
 
 /*
  * Wires a set of <Radio> children into a controlled single-choice group:
@@ -106,7 +103,7 @@ export function RadioGroup({
   children,
 }: RadioGroupProps) {
   const id = useId();
-  const hintId = hint != null ? `${id}-hint` : undefined;
+  const hintId = hint != null && error == null ? `${id}-hint` : undefined;
   const errorId = error != null ? `${id}-error` : undefined;
   return (
     <Fieldset
@@ -114,7 +111,7 @@ export function RadioGroup({
       className={className}
       aria-describedby={cx(hintId, errorId) || undefined}
     >
-      {hint != null && <Hint id={hintId}>{hint}</Hint>}
+      {hint != null && error == null && <Hint id={hintId}>{hint}</Hint>}
       {error != null && <ErrorMessage id={errorId}>{error}</ErrorMessage>}
       {Children.map(children, (child) => {
         if (!isValidElement(child)) return child;
