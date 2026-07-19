@@ -6,8 +6,7 @@ import {
 } from 'react';
 import { FieldShell, useFieldIds, type FieldExtras } from '../form/field';
 
-export interface InputProps
-  extends InputHTMLAttributes<HTMLInputElement>, FieldExtras {}
+export type InputProps = InputHTMLAttributes<HTMLInputElement> & FieldExtras;
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
   {
@@ -21,7 +20,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
   },
   ref,
 ) {
-  const ids = useFieldIds(id, hint != null, error != null);
+  const ids = useFieldIds(id, hint != null && error == null, error != null);
   const composed = label != null || hint != null || error != null;
   const input = (
     <input
@@ -37,8 +36,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
   return <FieldShell {...{ label, hint, error, ...ids }}>{input}</FieldShell>;
 });
 
-export interface TextareaProps
-  extends TextareaHTMLAttributes<HTMLTextAreaElement>, FieldExtras {}
+export type TextareaProps = TextareaHTMLAttributes<HTMLTextAreaElement> &
+  FieldExtras;
 
 export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
   function Textarea(
@@ -53,7 +52,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
     },
     ref,
   ) {
-    const ids = useFieldIds(id, hint != null, error != null);
+    const ids = useFieldIds(id, hint != null && error == null, error != null);
     const composed = label != null || hint != null || error != null;
     const textarea = (
       <textarea
