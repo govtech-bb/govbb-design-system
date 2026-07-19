@@ -63,6 +63,15 @@ describe('DateInput', () => {
     });
   });
 
+  it('spreads extra attributes onto the fieldset', () => {
+    render(
+      <DateInput legend="Start date" id="start-date" data-testid="date" />,
+    );
+    const group = screen.getByRole('group', { name: 'Start date' });
+    expect(group.id).toBe('start-date');
+    expect(group.getAttribute('data-testid')).toBe('date');
+  });
+
   it('respects consumer-provided ids on the part inputs', () => {
     render(
       <DateInput

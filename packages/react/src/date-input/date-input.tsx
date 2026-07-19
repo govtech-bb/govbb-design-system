@@ -4,6 +4,7 @@ import {
   useId,
   type ChangeEvent,
   type ComponentPropsWithRef,
+  type FieldsetHTMLAttributes,
   type ReactNode,
 } from 'react';
 import { FormGroup } from '../form/form';
@@ -34,7 +35,10 @@ export function parseDateInput(iso: string): DateInputValue {
   return { day, month, year };
 }
 
-export type DateInputProps = {
+export type DateInputProps = Omit<
+  FieldsetHTMLAttributes<HTMLFieldSetElement>,
+  'name' | 'onChange'
+> & {
   legend: ReactNode;
   name?: string;
   value?: DateInputValue;
@@ -56,6 +60,9 @@ export const DateInput = forwardRef<HTMLFieldSetElement, DateInputProps>(
       dayProps,
       monthProps,
       yearProps,
+      className,
+      'aria-describedby': describedBy,
+      ...props
     },
     ref,
   ) {
@@ -87,11 +94,10 @@ export const DateInput = forwardRef<HTMLFieldSetElement, DateInputProps>(
       <FormGroup>
         <fieldset
           ref={ref}
-          className="govbb-fieldset"
+          className={cx('govbb-fieldset', className)}
           role="group"
-          aria-describedby={
-            [hintId, errorId].filter(Boolean).join(' ') || undefined
-          }
+          aria-describedby={cx(hintId, errorId, describedBy) || undefined}
+          {...props}
         >
           <legend className="govbb-fieldset__legend">{legend}</legend>
           {hint != null && error == null && (
