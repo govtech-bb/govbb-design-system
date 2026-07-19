@@ -52,13 +52,6 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(function Radio(
           type="radio"
           aria-describedby={cx(hintId, ariaDescribedBy) || undefined}
           aria-controls={conditionalId}
-          // The reveal itself is pure CSS (:has), so expanded state can only
-          // be reported when the consumer controls `checked`.
-          aria-expanded={
-            conditionalId != null && props.checked != null
-              ? props.checked
-              : undefined
-          }
           {...props}
         />
         <label className="govbb-radio-item__label" htmlFor={inputId}>

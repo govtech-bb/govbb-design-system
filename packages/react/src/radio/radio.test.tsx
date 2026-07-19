@@ -94,6 +94,30 @@ describe('RadioGroup', () => {
   });
 });
 
+it('renders no aria-expanded on controlled conditional radios (invalid on the radio role)', async () => {
+  const { container } = render(
+    <Fieldset legend="Where do you live?">
+      <Radio
+        name="parish"
+        label="Saint Michael"
+        checked={false}
+        onChange={() => {}}
+      />
+      <Radio
+        name="parish"
+        label="Other"
+        checked
+        onChange={() => {}}
+        conditional={<p>Which parish?</p>}
+      />
+    </Fieldset>,
+  );
+  for (const radio of screen.getAllByRole('radio')) {
+    expect(radio.hasAttribute('aria-expanded')).toBe(false);
+  }
+  await expectNoAxeViolations(container);
+});
+
 it('wires a per-option hint via aria-describedby', () => {
   render(
     <Radio
