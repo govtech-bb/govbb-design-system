@@ -25,7 +25,10 @@
   border-color: var(--govbb-color-error);
 }
 
-.govbb-number-input-wrapper:has(:disabled, [aria-invalid='true']) {
+.govbb-number-input-wrapper:has(
+  .govbb-number-input:disabled,
+  [aria-invalid='true']
+) {
   box-shadow: none;
 }
 
@@ -33,7 +36,7 @@
    imported after this file, it also restores the ring that the
    box-shadow:none above clears for invalid fields (WCAG 2.4.7). */
 
-.govbb-number-input-wrapper:has(:disabled) {
+.govbb-number-input-wrapper:has(.govbb-number-input:disabled) {
   opacity: var(--govbb-opacity-disabled);
   cursor: not-allowed;
 }
@@ -119,6 +122,12 @@
 }
 
 .govbb-number-input__step:disabled {
+  color: color-mix(
+    in srgb,
+    var(--govbb-color-ink) 35%,
+    var(--govbb-color-surface)
+  );
+  background: color-mix(in srgb, var(--govbb-color-neutral) 35%, transparent);
   cursor: not-allowed;
 }
 

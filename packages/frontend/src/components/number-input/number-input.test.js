@@ -19,6 +19,23 @@ function mount() {
 }
 
 describe('number-input module', () => {
+  it('steps controls rendered in another document', () => {
+    const frame = document.createElement('iframe');
+    document.body.replaceChildren(frame);
+    const frameDocument = frame.contentDocument;
+    frameDocument.body.innerHTML = `
+      <div class="govbb-number-input-wrapper" data-govbb-module="number-input">
+        <input class="govbb-number-input" type="number" value="1" />
+        <button class="govbb-number-input__step" type="button" aria-label="Increment"></button>
+      </div>`;
+
+    initAll(frameDocument);
+    const input = frameDocument.querySelector('input');
+    frameDocument.querySelector('button').click();
+
+    expect(input.value).toBe('2');
+  });
+
   it('steps up and down and emits input and change', () => {
     const { input, up, down } = mount();
     const onChange = vi.fn();
@@ -31,6 +48,24 @@ describe('number-input module', () => {
     expect(input.value).toBe('1');
     expect(onChange).toHaveBeenCalledTimes(2);
     expect(onInput).toHaveBeenCalledTimes(2);
+  });
+
+  it('disables each stepper when its limit is reached', () => {
+    const { input, up, down } = mount();
+
+    expect(up.disabled).toBe(false);
+    expect(down.disabled).toBe(true);
+
+    up.click();
+    up.click();
+    expect(input.value).toBe('3');
+    expect(up.disabled).toBe(true);
+    expect(down.disabled).toBe(false);
+
+    input.value = '1';
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+    expect(up.disabled).toBe(false);
+    expect(down.disabled).toBe(true);
   });
 
   it('clamps at max', () => {

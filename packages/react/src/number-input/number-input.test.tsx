@@ -29,6 +29,33 @@ describe('NumberInput', () => {
     expect(input.value).toBe('1');
   });
 
+  it('disables each stepper when its limit is reached', () => {
+    render(
+      <NumberInput aria-label="Quantity" min={1} max={2} defaultValue={1} />,
+    );
+    const input = screen.getByRole('spinbutton', {
+      name: 'Quantity',
+    }) as HTMLInputElement;
+    const up = screen.getByRole('button', {
+      name: 'Increment',
+    }) as HTMLButtonElement;
+    const down = screen.getByRole('button', {
+      name: 'Decrement',
+    }) as HTMLButtonElement;
+
+    expect(up.disabled).toBe(false);
+    expect(down.disabled).toBe(true);
+
+    fireEvent.click(up);
+    expect(input.value).toBe('2');
+    expect(up.disabled).toBe(true);
+    expect(down.disabled).toBe(false);
+
+    fireEvent.input(input, { target: { value: '1' } });
+    expect(up.disabled).toBe(false);
+    expect(down.disabled).toBe(true);
+  });
+
   it('does nothing when disabled', () => {
     const onChange = vi.fn();
     render(
