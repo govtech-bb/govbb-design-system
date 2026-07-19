@@ -6,6 +6,7 @@ import {
   type ReactNode,
 } from 'react';
 import { ErrorMessage, Fieldset, Hint } from '../form/form';
+import type { HintOrError } from '../form/field';
 
 export interface CheckboxProps extends InputHTMLAttributes<HTMLInputElement> {
   /** Rendered in the item's label, wired to the input via htmlFor. */
@@ -53,16 +54,12 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
   },
 );
 
-export interface CheckboxGroupProps {
+export type CheckboxGroupProps = {
   /** Fieldset legend describing the whole group. */
   legend: ReactNode;
-  /** Group-level hint, announced via the fieldset's aria-describedby. */
-  hint?: ReactNode;
-  /** Group-level error; announced and marks the group invalid. */
-  error?: ReactNode;
   className?: string;
   children: ReactNode;
-}
+} & HintOrError;
 
 /*
  * Fieldset scaffolding for a set of <Checkbox> children: legend, hint and
@@ -77,7 +74,7 @@ export function CheckboxGroup({
   children,
 }: CheckboxGroupProps) {
   const id = useId();
-  const hintId = hint != null ? `${id}-hint` : undefined;
+  const hintId = hint != null && error == null ? `${id}-hint` : undefined;
   const errorId = error != null ? `${id}-error` : undefined;
   return (
     <Fieldset
@@ -85,7 +82,7 @@ export function CheckboxGroup({
       className={className}
       aria-describedby={cx(hintId, errorId) || undefined}
     >
-      {hint != null && <Hint id={hintId}>{hint}</Hint>}
+      {hint != null && error == null && <Hint id={hintId}>{hint}</Hint>}
       {error != null && <ErrorMessage id={errorId}>{error}</ErrorMessage>}
       {children}
     </Fieldset>

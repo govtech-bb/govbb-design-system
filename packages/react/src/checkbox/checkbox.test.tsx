@@ -36,13 +36,9 @@ describe('Checkbox', () => {
 });
 
 describe('CheckboxGroup', () => {
-  it('wraps children in a fieldset with legend, hint and error', () => {
+  it('wraps children in a fieldset with legend and error', () => {
     const { container } = render(
-      <CheckboxGroup
-        legend="Select all that apply"
-        hint="Leave blank any that do not"
-        error="Choose at least one"
-      >
+      <CheckboxGroup legend="Select all that apply" error="Choose at least one">
         <Checkbox label="Email" value="email" />
         <Checkbox label="Phone" value="phone" />
       </CheckboxGroup>,
@@ -52,12 +48,26 @@ describe('CheckboxGroup', () => {
       container.querySelector('.govbb-form-group'),
     );
     const error = screen.getByText('Choose at least one');
-    const hint = screen.getByText('Leave blank any that do not');
     expect(error.className).toBe('govbb-error-message');
-    expect(group.getAttribute('aria-describedby')).toBe(
-      `${hint.id} ${error.id}`,
-    );
+    expect(group.getAttribute('aria-describedby')).toBe(error.id);
     expect(screen.getAllByRole('checkbox')).toHaveLength(2);
+  });
+
+  it('shows the error and drops the group hint if both are passed', () => {
+    render(
+      // @ts-expect-error hint/error are mutually exclusive
+      <CheckboxGroup
+        legend="Select all that apply"
+        hint="Leave blank any that do not"
+        error="Choose at least one"
+      >
+        <Checkbox label="Email" value="email" />
+      </CheckboxGroup>,
+    );
+    const group = screen.getByRole('group', { name: /select all that apply/i });
+    const error = screen.getByText('Choose at least one');
+    expect(screen.queryByText('Leave blank any that do not')).toBeNull();
+    expect(group.getAttribute('aria-describedby')).toBe(error.id);
   });
 
   it('has no axe violations', async () => {
