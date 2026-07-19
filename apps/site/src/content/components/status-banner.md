@@ -70,9 +70,11 @@ message to one or two sentences and link to detail only when it helps users act.
 
 ### Match urgency to semantics
 
-Do not rely on colour alone to communicate the variant. Use an assertive live
-role only for an urgent change that must interrupt the user; use ordinary
-content for information already present when the page loads.
+Do not rely on colour alone to communicate the variant. The banner is plain
+static content: screen readers announce it in reading order when it is present
+at page load. If a script injects the banner after the page has loaded, add
+`role="status"` so the change is announced, and reserve an assertive live role
+for an urgent change that must interrupt the user.
 
 ## Page-level use
 
