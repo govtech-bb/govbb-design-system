@@ -326,7 +326,6 @@ const codeBlocks = [
 
 <script>
   import { initAll } from '@govtech-bb/frontend';
-  import libraryCssUrl from '@govtech-bb/frontend/css?url';
 
   const examples = document.querySelectorAll<HTMLElement>('[data-example]');
 
@@ -396,17 +395,19 @@ const codeBlocks = [
   examples.forEach((example) => {
     // "Open in new tab" — the preview srcdoc is a complete document, so a
     // blob: URL of the same string opens it as a real full-width page. One
-    // fix-up: a blob: document has an opaque base URL, so the root-relative
-    // stylesheet href would never resolve — absolutize it. The blob URLs are
-    // deliberately never revoked: they must survive repeat clicks, and the
-    // browser frees them when the page unloads.
+    // fix-up: a blob: document has an opaque base URL, so its root-relative
+    // stylesheet href would never resolve — a <base> pointing back at this
+    // page makes every relative URL resolve as it does here (the exact href
+    // differs between dev and build, so it can't be string-matched). The blob
+    // URLs are deliberately never revoked: they must survive repeat clicks,
+    // and the browser frees them when the page unloads.
     const openLink = example.querySelector<HTMLAnchorElement>('[data-example-open]');
     const frame = example.querySelector<HTMLIFrameElement>('[data-example-frame]');
     const srcdocString = frame?.getAttribute('srcdoc');
     if (openLink && srcdocString) {
       const popupDoc = srcdocString.replace(
-        `href="${libraryCssUrl}"`,
-        () => `href="${new URL(libraryCssUrl, location.href).href}"`,
+        '<head>',
+        () => `<head><base href="${location.href}">`,
       );
       openLink.href = URL.createObjectURL(
         new Blob([popupDoc], { type: 'text/html' }),
