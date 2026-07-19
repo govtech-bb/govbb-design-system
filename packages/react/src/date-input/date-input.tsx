@@ -23,7 +23,6 @@ export interface DateInputValue {
   year: string;
 }
 
-/** 'YYYY-MM-DD' with zero-padding, or '' while any part is empty. */
 export function formatDateInput(value: DateInputValue): string {
   const { day, month, year } = value;
   if (!day || !month || !year) return '';
@@ -37,7 +36,6 @@ export function parseDateInput(iso: string): DateInputValue {
 
 export type DateInputProps = {
   legend: ReactNode;
-  /** Prefix for the field names: `${name}-day`, `${name}-month`, `${name}-year`. */
   name?: string;
   value?: DateInputValue;
   onChange?: (value: DateInputValue) => void;

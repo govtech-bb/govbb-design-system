@@ -126,3 +126,15 @@ full-width action stacks, such as accept and reject choices on mobile.
   </button>
 </div>
 ```
+
+```tsx
+import { Button, ButtonGroup } from '@govtech-bb/react';
+
+<ButtonGroup>
+  <Button>Save and continue</Button>
+  <Button variant="secondary">Save as draft</Button>
+  <a className="govbb-link" href="/service/">
+    Cancel
+  </a>
+</ButtonGroup>;
+```

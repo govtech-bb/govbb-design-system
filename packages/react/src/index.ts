@@ -4,6 +4,8 @@ export { Breadcrumbs } from './breadcrumbs/breadcrumbs';
 export type { BreadcrumbsProps } from './breadcrumbs/breadcrumbs';
 export { Button, LinkButton } from './button/button';
 export type { ButtonProps, LinkButtonProps } from './button/button';
+export { ButtonGroup } from './button-group/button-group';
+export type { ButtonGroupProps } from './button-group/button-group';
 export { Checkbox, CheckboxGroup } from './checkbox/checkbox';
 export type { CheckboxProps, CheckboxGroupProps } from './checkbox/checkbox';
 export {

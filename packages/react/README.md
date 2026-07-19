@@ -47,7 +47,8 @@ component's own classes.
 
 ## Components
 
-BackButton · Breadcrumbs · Button / LinkButton · Checkbox · DateInput ·
+BackButton · Breadcrumbs · Button / LinkButton · ButtonGroup · Checkbox ·
+DateInput ·
 ErrorMessage · ErrorSummary · Feedback · Fieldset · FileUpload ·
 Footer / FooterLink · FormGroup · Header · Heading / Text · Hint ·
 Input / Textarea · Label · Link · List · NumberInput · OfficialBanner ·
