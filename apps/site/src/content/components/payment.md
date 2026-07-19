@@ -86,6 +86,12 @@ On success, provide a reference, date and next step. On failure, state whether
 the user was charged and offer a safe route to try again without creating a
 duplicate payment.
 
+Always keep the outcome heading: it is what tells screen reader users the
+result, since the green or red styling alone cannot. Show the outcome on a
+fresh page whose title and heading state the result. If the outcome must
+render on the same page after the provider redirect, move focus to the block
+or give it `role="status"` so the result is announced.
+
 ## Success
 
 Show the **success** variant once the payment provider confirms payment. Give
