@@ -18,6 +18,26 @@ describe('FileUpload', () => {
     expect(onRemove).toHaveBeenCalledOnce();
   });
 
+  it('announces removal and parks focus on the input', () => {
+    const { container } = render(
+      <FileUpload
+        aria-label="Proof of address"
+        files={[{ name: 'proof.pdf', onRemove: () => {} }]}
+      />,
+    );
+    fireEvent.click(screen.getByRole('button', { name: 'Remove proof.pdf' }));
+    expect(screen.getByRole('status').textContent).toBe('proof.pdf removed');
+    expect(document.activeElement).toBe(
+      container.querySelector('input[type="file"]'),
+    );
+  });
+
+  it('hides the decorative picker button from the accessible name', () => {
+    render(<FileUpload aria-label="Upload" maxSize="Maximum size: 25MB" />);
+    const fake = document.querySelector('.govbb-button--tertiary')!;
+    expect(fake.getAttribute('aria-hidden')).toBe('true');
+  });
+
   it('forwards the ref to the file input', () => {
     const ref = createRef<HTMLInputElement>();
     render(<FileUpload ref={ref} aria-label="Upload" />);

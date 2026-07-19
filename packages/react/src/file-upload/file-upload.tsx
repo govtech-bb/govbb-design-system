@@ -2,6 +2,8 @@ import { cx } from 'class-variance-authority';
 import {
   forwardRef,
   useId,
+  useRef,
+  useState,
   type InputHTMLAttributes,
   type ReactNode,
 } from 'react';
@@ -42,6 +44,13 @@ export const FileUpload = forwardRef<HTMLInputElement, FileUploadProps>(
   ) {
     const autoId = useId();
     const inputId = id ?? autoId;
+    const inputRef = useRef<HTMLInputElement | null>(null);
+    const [announcement, setAnnouncement] = useState('');
+    function handleRemove(name: string, onRemove: () => void) {
+      inputRef.current?.focus();
+      setAnnouncement(`${name} removed`);
+      onRemove();
+    }
     return (
       <div className="govbb-file-upload">
         <label className="govbb-file-upload__dropzone" htmlFor={inputId}>
@@ -52,7 +61,11 @@ export const FileUpload = forwardRef<HTMLInputElement, FileUploadProps>(
             )}
           </span>
           <input
-            ref={ref}
+            ref={(node) => {
+              inputRef.current = node;
+              if (typeof ref === 'function') ref(node);
+              else if (ref != null) ref.current = node;
+            }}
             className={cx(
               'govbb-file-upload__input govbb-visually-hidden',
               className,
@@ -62,7 +75,10 @@ export const FileUpload = forwardRef<HTMLInputElement, FileUploadProps>(
             {...props}
           />
           <span className="govbb-file-upload__action">
-            <span className="govbb-button govbb-button--tertiary">
+            <span
+              className="govbb-button govbb-button--tertiary"
+              aria-hidden="true"
+            >
               {buttonLabel}
             </span>
             {maxSize != null && (
@@ -86,7 +102,7 @@ export const FileUpload = forwardRef<HTMLInputElement, FileUploadProps>(
                         ? `${removeLabel} ${name}`
                         : undefined
                     }
-                    onClick={onRemove}
+                    onClick={() => handleRemove(name, onRemove)}
                   >
                     {removeLabel}
                   </button>
@@ -95,6 +111,9 @@ export const FileUpload = forwardRef<HTMLInputElement, FileUploadProps>(
             ))}
           </ul>
         )}
+        <span className="govbb-visually-hidden" role="status">
+          {announcement}
+        </span>
       </div>
     );
   },

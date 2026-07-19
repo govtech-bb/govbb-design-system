@@ -69,6 +69,7 @@ import { FileUpload, FormGroup, Hint, Label } from '@govtech-bb/react';
     name="proof-of-address"
     subtitle="Attach a .pdf, .docx, or .png file"
     maxSize="Maximum size: 25MB"
+    aria-labelledby="proof-of-address-label"
     aria-describedby="proof-of-address-hint"
     files={[{ name: 'proof-of-address.pdf', onRemove: () => remove(0) }]}
   />
