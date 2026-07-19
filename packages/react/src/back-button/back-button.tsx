@@ -1,7 +1,10 @@
 import { cx } from 'class-variance-authority';
-import { forwardRef, type AnchorHTMLAttributes } from 'react';
+import { forwardRef, type AnchorHTMLAttributes, type ElementType } from 'react';
+import type { LinkComponent } from '../link/link';
 
-export interface BackButtonProps extends AnchorHTMLAttributes<HTMLAnchorElement> {}
+export interface BackButtonProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
+  linkComponent?: LinkComponent;
+}
 
 /**
  * Composes with the link component (govbb-link govbb-back-button) so the
@@ -9,15 +12,19 @@ export interface BackButtonProps extends AnchorHTMLAttributes<HTMLAnchorElement>
  * the previous page in the journey so it works without JavaScript.
  */
 export const BackButton = forwardRef<HTMLAnchorElement, BackButtonProps>(
-  function BackButton({ className, children = 'Back', ...props }, ref) {
+  function BackButton(
+    { linkComponent = 'a', className, children = 'Back', ...props },
+    ref,
+  ) {
+    const Anchor: ElementType = linkComponent;
     return (
-      <a
+      <Anchor
         ref={ref}
         className={cx('govbb-link', 'govbb-back-button', className)}
         {...props}
       >
         {children}
-      </a>
+      </Anchor>
     );
   },
 );

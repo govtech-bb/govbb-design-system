@@ -18,6 +18,18 @@ describe('BackButton', () => {
     ).toBeDefined();
   });
 
+  it('renders with a custom link component', () => {
+    render(
+      <BackButton
+        href="/previous/"
+        linkComponent={(props) => <a data-router {...props} />}
+      />,
+    );
+    expect(
+      screen.getByRole('link', { name: 'Back' }).getAttribute('data-router'),
+    ).not.toBeNull();
+  });
+
   it('has no axe violations', async () => {
     const { container } = render(<BackButton href="/previous" />);
     await expectNoAxeViolations(container);
