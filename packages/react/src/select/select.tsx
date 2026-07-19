@@ -2,8 +2,7 @@ import { cx } from 'class-variance-authority';
 import { forwardRef, type SelectHTMLAttributes } from 'react';
 import { FieldShell, useFieldIds, type FieldExtras } from '../form/field';
 
-export interface SelectProps
-  extends SelectHTMLAttributes<HTMLSelectElement>, FieldExtras {}
+export type SelectProps = SelectHTMLAttributes<HTMLSelectElement> & FieldExtras;
 
 export const Select = forwardRef<HTMLSelectElement, SelectProps>(
   function Select(
@@ -18,7 +17,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
     },
     ref,
   ) {
-    const ids = useFieldIds(id, hint != null, error != null);
+    const ids = useFieldIds(id, hint != null && error == null, error != null);
     const composed = label != null || hint != null || error != null;
     const select = (
       <select
