@@ -50,7 +50,16 @@ it('has no axe violations', async () => {
 });
 
 it('renders an error message wired into the group description', () => {
+  render(<DateInput legend="Date of birth" error="Enter a valid date" />);
+  const group = screen.getByRole('group', { name: 'Date of birth' });
+  const error = screen.getByText('Enter a valid date');
+  expect(error.className).toBe('govbb-error-message');
+  expect(group.getAttribute('aria-describedby')).toBe(error.id);
+});
+
+it('shows the error and drops the hint if both are passed', () => {
   render(
+    // @ts-expect-error hint/error are mutually exclusive
     <DateInput
       legend="Date of birth"
       hint="For example, 27 3 1990"
@@ -59,6 +68,6 @@ it('renders an error message wired into the group description', () => {
   );
   const group = screen.getByRole('group', { name: 'Date of birth' });
   const error = screen.getByText('Enter a valid date');
-  expect(error.className).toBe('govbb-error-message');
-  expect(group.getAttribute('aria-describedby')).toContain(error.id);
+  expect(screen.queryByText('For example, 27 3 1990')).toBeNull();
+  expect(group.getAttribute('aria-describedby')).toBe(error.id);
 });

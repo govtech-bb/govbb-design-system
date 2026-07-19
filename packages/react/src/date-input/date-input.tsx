@@ -6,6 +6,7 @@ import {
   type ReactNode,
 } from 'react';
 import { FormGroup } from '../form/form';
+import type { HintOrError } from '../form/field';
 
 /*
  * Day / month / year fieldset. Field labels and structure are fixed; pass
@@ -15,15 +16,12 @@ import { FormGroup } from '../form/form';
 
 type FieldProps = ComponentPropsWithRef<'input'>;
 
-export interface DateInputProps {
+export type DateInputProps = {
   legend: ReactNode;
-  hint?: ReactNode;
-  /** Validation error shown between the hint and the fields. */
-  error?: ReactNode;
   dayProps?: FieldProps;
   monthProps?: FieldProps;
   yearProps?: FieldProps;
-}
+} & HintOrError;
 
 export const DateInput = forwardRef<HTMLFieldSetElement, DateInputProps>(
   function DateInput(
@@ -31,7 +29,7 @@ export const DateInput = forwardRef<HTMLFieldSetElement, DateInputProps>(
     ref,
   ) {
     const id = useId();
-    const hintId = hint != null ? `${id}-hint` : undefined;
+    const hintId = hint != null && error == null ? `${id}-hint` : undefined;
     const errorId = error != null ? `${id}-error` : undefined;
     const parts = [
       { label: 'Day', partId: dayProps?.id ?? `${id}-day`, props: dayProps },
@@ -58,7 +56,7 @@ export const DateInput = forwardRef<HTMLFieldSetElement, DateInputProps>(
           }
         >
           <legend className="govbb-fieldset__legend">{legend}</legend>
-          {hint != null && (
+          {hint != null && error == null && (
             <span className="govbb-hint" id={hintId}>
               {hint}
             </span>

@@ -133,13 +133,8 @@ of it.
 
 ```html title="Date of birth with error"
 <div class="govbb-form-group">
-  <fieldset
-    class="govbb-fieldset"
-    role="group"
-    aria-describedby="dob2-hint dob2-error"
-  >
+  <fieldset class="govbb-fieldset" role="group" aria-describedby="dob2-error">
     <legend class="govbb-fieldset__legend">Date of birth</legend>
-    <span class="govbb-hint" id="dob2-hint">For example, 27 3 1990</span>
     <span class="govbb-error-message" id="dob2-error" role="alert">
       Date of birth must be a real date
     </span>
@@ -185,9 +180,5 @@ of it.
 ```tsx
 import { DateInput } from '@govtech-bb/react';
 
-<DateInput
-  legend="Date of birth"
-  hint="For example, 27 3 1990"
-  error="Date of birth must be a real date"
-/>;
+<DateInput legend="Date of birth" error="Date of birth must be a real date" />;
 ```
