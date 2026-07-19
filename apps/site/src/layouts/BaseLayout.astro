@@ -9,6 +9,9 @@ import '../styles/global.css';
 // the CSS parses — avoids a guaranteed FOUT on cold loads. Vite resolves this
 // to the same hashed URL the bundled @font-face points at.
 import figtreeLatinUrl from '@govtech-bb/frontend/assets/fonts/figtree-latin.woff2?url';
+import faviconIco from '@govtech-bb/frontend/assets/images/favicon.ico?url';
+import faviconSvg from '@govtech-bb/frontend/assets/images/favicon.svg?url';
+import appleIcon from '@govtech-bb/frontend/assets/images/govbb-icon-180.png?url';
 import GovBanner from '../components/GovBanner.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
@@ -43,7 +46,10 @@ const fullTitle = `${title} - GovBB Design System`;
         />
       )
     }
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" sizes="48x48" href={faviconIco} />
+    <link rel="icon" sizes="any" href={faviconSvg} type="image/svg+xml" />
+    <link rel="apple-touch-icon" href={appleIcon} />
+    <link rel="manifest" href="/manifest.webmanifest" />
     <link
       rel="preload"
       href={figtreeLatinUrl}

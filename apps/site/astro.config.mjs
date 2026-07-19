@@ -9,6 +9,7 @@ import pagefind from 'astro-pagefind';
 export default defineConfig({
   site: 'https://design-system.gov.bb',
   integrations: [pagefind()],
+  vite: { build: { assetsInlineLimit: 0 } },
   markdown: {
     shikiConfig: {
       transformers: [
