@@ -21,6 +21,7 @@ group: Form elements
           name="dob[day]"
           type="text"
           inputmode="numeric"
+          autocomplete="bday-day"
         />
       </div>
       <div class="govbb-date-input__part">
@@ -31,6 +32,7 @@ group: Form elements
           name="dob[month]"
           type="text"
           inputmode="numeric"
+          autocomplete="bday-month"
         />
       </div>
       <div class="govbb-date-input__part">
@@ -41,6 +43,7 @@ group: Form elements
           name="dob[year]"
           type="text"
           inputmode="numeric"
+          autocomplete="bday-year"
         />
       </div>
     </div>
@@ -54,9 +57,9 @@ import { DateInput } from '@govtech-bb/react';
 <DateInput
   legend="Date of birth"
   hint="For example, 27 3 1990"
-  dayProps={{ name: 'dob[day]' }}
-  monthProps={{ name: 'dob[month]' }}
-  yearProps={{ name: 'dob[year]' }}
+  dayProps={{ name: 'dob[day]', autoComplete: 'bday-day' }}
+  monthProps={{ name: 'dob[month]', autoComplete: 'bday-month' }}
+  yearProps={{ name: 'dob[year]', autoComplete: 'bday-year' }}
 />;
 ```
 
@@ -97,6 +100,13 @@ single question.
 Label each field and give a Barbados-appropriate example such as “For example,
 27 3 1990”. Keep the order day, month, year and do not move focus automatically
 between fields.
+
+### Help browsers fill in known dates
+
+When asking for a date the user's browser may already know, set the matching
+`autocomplete` tokens — `bday-day`, `bday-month` and `bday-year` for a date of
+birth — so the fields can be filled automatically (WCAG 1.3.5). Skip it for
+dates the browser cannot know, such as a planned travel date.
 
 ### Validate the date as a whole
 
