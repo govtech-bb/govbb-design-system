@@ -13,6 +13,11 @@ export interface CheckboxProps extends InputHTMLAttributes<HTMLInputElement> {
   label: ReactNode;
   /** Per-option hint, announced with the label via aria-describedby. */
   hint?: ReactNode;
+  /**
+   * Revealed below the item while this checkbox is checked (pure CSS, via
+   * :has() on the sibling). Rendered even when hidden — keep it light.
+   */
+  conditional?: ReactNode;
 }
 
 /** Ref goes to the <input>, not the wrapping item div. */
@@ -21,6 +26,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
     {
       label,
       hint,
+      conditional,
       id,
       className,
       'aria-describedby': ariaDescribedBy,
@@ -31,25 +37,35 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
     const autoId = useId();
     const inputId = id ?? autoId;
     const hintId = hint != null ? `${inputId}-hint` : undefined;
+    const conditionalId =
+      conditional != null ? `${inputId}-conditional` : undefined;
     return (
-      <div className="govbb-checkbox-item">
-        <input
-          ref={ref}
-          className={cx('govbb-checkbox', className)}
-          id={inputId}
-          type="checkbox"
-          aria-describedby={cx(hintId, ariaDescribedBy) || undefined}
-          {...props}
-        />
-        <label className="govbb-checkbox-item__label" htmlFor={inputId}>
-          {label}
-        </label>
-        {hint != null && (
-          <span className="govbb-hint" id={hintId}>
-            {hint}
-          </span>
+      <>
+        <div className="govbb-checkbox-item">
+          <input
+            ref={ref}
+            className={cx('govbb-checkbox', className)}
+            id={inputId}
+            type="checkbox"
+            aria-describedby={cx(hintId, ariaDescribedBy) || undefined}
+            aria-controls={conditionalId}
+            {...props}
+          />
+          <label className="govbb-checkbox-item__label" htmlFor={inputId}>
+            {label}
+          </label>
+          {hint != null && (
+            <span className="govbb-hint" id={hintId}>
+              {hint}
+            </span>
+          )}
+        </div>
+        {conditional != null && (
+          <div className="govbb-checkbox-item__conditional" id={conditionalId}>
+            {conditional}
+          </div>
         )}
-      </div>
+      </>
     );
   },
 );

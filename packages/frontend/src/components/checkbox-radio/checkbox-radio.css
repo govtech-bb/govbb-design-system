@@ -1,8 +1,8 @@
 /*
  * Checkbox + radio — custom-styled native inputs. The two controls are the
  * same 3rem bordered box with the same states, so they share one recipe; the
- * radio differs only in shape (round box, round dot) and its optional
- * conditional reveal.
+ * radio differs only in shape (round box, round dot). Both support an
+ * optional conditional reveal.
  *
  * Markup: <input class="govbb-checkbox"> (or .govbb-radio) beside a
  * .govbb-checkbox-item__label (or .govbb-radio-item__label), wrapped in
@@ -112,7 +112,8 @@
   cursor: not-allowed;
 }
 
-/* Conditional reveal — shown only when the preceding radio is checked. */
+/* Conditional reveal — shown only when the preceding control is checked. */
+.govbb-checkbox-item__conditional,
 .govbb-radio-item__conditional {
   display: none;
   margin-top: var(--govbb-space-xs);
@@ -123,6 +124,8 @@
   border-left: 8px solid var(--govbb-color-highlight);
 }
 
+.govbb-checkbox-item:has(> .govbb-checkbox:checked)
+  + .govbb-checkbox-item__conditional,
 .govbb-radio-item:has(> .govbb-radio:checked) + .govbb-radio-item__conditional {
   display: block;
 }

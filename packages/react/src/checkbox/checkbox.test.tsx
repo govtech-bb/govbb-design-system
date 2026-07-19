@@ -19,6 +19,21 @@ describe('Checkbox', () => {
     expect(screen.getByRole('checkbox', { name: 'Terms' }).id).toBe('terms');
   });
 
+  it('renders the conditional as a sibling of the item', () => {
+    const { container } = render(
+      <Checkbox name="contact" label="Email" conditional={<p>Address?</p>} />,
+    );
+    const item = container.querySelector('.govbb-checkbox-item');
+    expect(item?.nextElementSibling?.className).toBe(
+      'govbb-checkbox-item__conditional',
+    );
+    expect(
+      screen
+        .getByRole('checkbox', { name: 'Email' })
+        .getAttribute('aria-controls'),
+    ).toBe(item?.nextElementSibling?.id);
+  });
+
   it('wires a per-option hint via aria-describedby', () => {
     render(
       <Checkbox
@@ -73,7 +88,7 @@ describe('CheckboxGroup', () => {
   it('has no axe violations', async () => {
     const { container } = render(
       <CheckboxGroup legend="Select all that apply">
-        <Checkbox label="Email" value="email" />
+        <Checkbox label="Email" value="email" conditional={<p>Address?</p>} />
         <Checkbox label="Phone" value="phone" />
       </CheckboxGroup>,
     );

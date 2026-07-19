@@ -187,6 +187,82 @@ import { Checkbox } from '@govtech-bb/react';
 <Checkbox name="terms" value="yes" label="I agree to the terms of service" />;
 ```
 
+## Conditional reveal
+
+Show follow-up content when an option is ticked. The conditional block sits as
+a sibling of its checkbox item and appears only while that checkbox is checked.
+
+```html title="Checkbox with conditional reveal"
+<div class="govbb-form-group">
+  <fieldset class="govbb-fieldset">
+    <legend class="govbb-fieldset__legend">
+      How would you like to be contacted?
+    </legend>
+    <div class="govbb-checkbox-item">
+      <input
+        class="govbb-checkbox"
+        id="c-email"
+        type="checkbox"
+        name="contact"
+        value="email"
+      />
+      <label class="govbb-checkbox-item__label" for="c-email">Email</label>
+    </div>
+    <div class="govbb-checkbox-item__conditional">
+      <div class="govbb-form-group">
+        <label class="govbb-label" for="c-email-addr">Email address</label>
+        <input class="govbb-input" id="c-email-addr" type="email" />
+      </div>
+    </div>
+    <div class="govbb-checkbox-item">
+      <input
+        class="govbb-checkbox"
+        id="c-phone"
+        type="checkbox"
+        name="contact"
+        value="phone"
+      />
+      <label class="govbb-checkbox-item__label" for="c-phone">Phone</label>
+    </div>
+    <div class="govbb-checkbox-item__conditional">
+      <div class="govbb-form-group">
+        <label class="govbb-label" for="c-phone-num">Phone number</label>
+        <input class="govbb-input" id="c-phone-num" type="tel" />
+      </div>
+    </div>
+  </fieldset>
+</div>
+```
+
+```tsx
+import { Checkbox, Fieldset, FormGroup, Input, Label } from '@govtech-bb/react';
+
+<Fieldset legend="How would you like to be contacted?">
+  <Checkbox
+    name="contact"
+    value="email"
+    label="Email"
+    conditional={
+      <FormGroup>
+        <Label htmlFor="c-email-addr">Email address</Label>
+        <Input id="c-email-addr" type="email" />
+      </FormGroup>
+    }
+  />
+  <Checkbox
+    name="contact"
+    value="phone"
+    label="Phone"
+    conditional={
+      <FormGroup>
+        <Label htmlFor="c-phone-num">Phone number</Label>
+        <Input id="c-phone-num" type="tel" />
+      </FormGroup>
+    }
+  />
+</Fieldset>;
+```
+
 ## Disabled checkboxes
 
 Disable a checkbox only when an option is genuinely unavailable to the user, and
