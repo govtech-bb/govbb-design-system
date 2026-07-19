@@ -45,7 +45,8 @@ The Payment component summarises a fee before the user pays it (the service,
 unit price, quantity and total), with a button that takes them to the payment
 provider, and a note telling them where they are being sent. The itemised
 rows are a description list (`<dl>`), so screen readers announce each label
-with its value. There is no React wrapper yet, so use the HTML directly.
+with its value. React apps can use the `Payment` wrapper from
+`@govtech-bb/react`.
 
 ## Usage
 

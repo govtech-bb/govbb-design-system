@@ -39,6 +39,8 @@ export { NumberInput } from './number-input/number-input';
 export type { NumberInputProps } from './number-input/number-input';
 export { OfficialBanner } from './official-banner/official-banner';
 export type { OfficialBannerProps } from './official-banner/official-banner';
+export { Payment } from './payment/payment';
+export type { PaymentProps, PaymentRow } from './payment/payment';
 export { Radio, RadioGroup } from './radio/radio';
 export type { RadioProps, RadioGroupProps } from './radio/radio';
 export { Search } from './search/search';
@@ -52,6 +54,8 @@ export type {
 } from './service-list/service-list';
 export { ShowHide } from './show-hide/show-hide';
 export type { ShowHideProps } from './show-hide/show-hide';
+export { SkipLink } from './skip-link/skip-link';
+export type { SkipLinkProps } from './skip-link/skip-link';
 export { StatusBanner } from './status-banner/status-banner';
 export type { StatusBannerProps } from './status-banner/status-banner';
 export { SummaryList } from './summary-list/summary-list';
