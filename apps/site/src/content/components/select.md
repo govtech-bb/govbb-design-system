@@ -34,34 +34,32 @@ group: Form elements
 ```
 
 ```tsx
-import { FormGroup, Hint, Label, Select } from '@govtech-bb/react';
+import { Select } from '@govtech-bb/react';
 
-<FormGroup>
-  <Label htmlFor="parish">Parish</Label>
-  <Hint id="parish-hint">Where you currently live</Hint>
-  <Select
-    id="parish"
-    name="parish"
-    defaultValue=""
-    aria-describedby="parish-hint"
-  >
-    <option value="" disabled>
-      Select a parish
-    </option>
-    <option value="christ-church">Christ Church</option>
-    <option value="st-andrew">Saint Andrew</option>
-    <option value="st-george">Saint George</option>
-    <option value="st-james">Saint James</option>
-    <option value="st-john">Saint John</option>
-    <option value="st-joseph">Saint Joseph</option>
-    <option value="st-lucy">Saint Lucy</option>
-    <option value="st-michael">Saint Michael</option>
-    <option value="st-peter">Saint Peter</option>
-    <option value="st-philip">Saint Philip</option>
-    <option value="st-thomas">Saint Thomas</option>
-  </Select>
-</FormGroup>;
+<Select
+  label="Parish"
+  hint="Where you currently live"
+  name="parish"
+  defaultValue=""
+  options={[
+    { value: '', label: 'Select a parish', disabled: true },
+    { value: 'christ-church', label: 'Christ Church' },
+    { value: 'st-andrew', label: 'Saint Andrew' },
+    { value: 'st-george', label: 'Saint George' },
+    { value: 'st-james', label: 'Saint James' },
+    { value: 'st-john', label: 'Saint John' },
+    { value: 'st-joseph', label: 'Saint Joseph' },
+    { value: 'st-lucy', label: 'Saint Lucy' },
+    { value: 'st-michael', label: 'Saint Michael' },
+    { value: 'st-peter', label: 'Saint Peter' },
+    { value: 'st-philip', label: 'Saint Philip' },
+    { value: 'st-thomas', label: 'Saint Thomas' },
+  ]}
+/>;
 ```
+
+`options` maps to `<option>` elements; `<option>` children work too when you
+need option groups or full control.
 
 The Select component is a dropdown that lets users choose a single option from a
 long list, such as a parish or a country. It is a last resort for long lists:

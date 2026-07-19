@@ -52,7 +52,7 @@ export type { RadioProps, RadioGroupProps } from './radio/radio';
 export { Search } from './search/search';
 export type { SearchProps } from './search/search';
 export { Select } from './select/select';
-export type { SelectProps } from './select/select';
+export type { SelectOption, SelectProps } from './select/select';
 export { ServiceList, ServiceListItem } from './service-list/service-list';
 export type {
   ServiceListProps,

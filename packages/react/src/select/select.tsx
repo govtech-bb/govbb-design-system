@@ -2,7 +2,14 @@ import { cx } from 'class-variance-authority';
 import { forwardRef, type SelectHTMLAttributes } from 'react';
 import { FieldShell, useFieldIds, type FieldExtras } from '../form/field';
 
-export type SelectProps = SelectHTMLAttributes<HTMLSelectElement> & FieldExtras;
+export interface SelectOption {
+  value: string;
+  label: string;
+  disabled?: boolean;
+}
+
+export type SelectProps = SelectHTMLAttributes<HTMLSelectElement> &
+  FieldExtras & { options?: SelectOption[] };
 
 export const Select = forwardRef<HTMLSelectElement, SelectProps>(
   function Select(
@@ -10,8 +17,10 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
       label,
       hint,
       error,
+      options,
       id,
       className,
+      children,
       'aria-describedby': describedBy,
       ...props
     },
@@ -27,7 +36,17 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
         aria-describedby={cx(ids.describedBy, describedBy) || undefined}
         aria-invalid={error != null || undefined}
         {...props}
-      />
+      >
+        {options?.map((option) => (
+          <option
+            key={option.value}
+            value={option.value}
+            disabled={option.disabled}
+          >
+            {option.label}
+          </option>
+        )) ?? children}
+      </select>
     );
     if (!composed) return select;
     return (

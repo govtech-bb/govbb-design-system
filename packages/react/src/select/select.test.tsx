@@ -16,6 +16,33 @@ describe('Select', () => {
     expect(ref.current).toBe(screen.getByRole('combobox', { name: 'Parish' }));
     expect(ref.current!.className).toBe('govbb-select');
   });
+
+  it('renders options from the options prop', () => {
+    render(
+      <Select
+        label="Parish"
+        options={[
+          { value: '', label: 'Select a parish', disabled: true },
+          { value: 'st-michael', label: 'Saint Michael' },
+        ]}
+      />,
+    );
+    const options = screen.getAllByRole('option');
+    expect(options).toHaveLength(2);
+    expect((options[0] as HTMLOptionElement).disabled).toBe(true);
+    expect((options[1] as HTMLOptionElement).value).toBe('st-michael');
+    expect(options[1].textContent).toBe('Saint Michael');
+  });
+
+  it('prefers options over children when both are given', () => {
+    render(
+      <Select aria-label="Parish" options={[{ value: 'a', label: 'A' }]}>
+        <option value="b">B</option>
+      </Select>,
+    );
+    expect(screen.getAllByRole('option')).toHaveLength(1);
+    expect(screen.getByRole('option', { name: 'A' })).toBeDefined();
+  });
 });
 
 it('has no axe violations', async () => {
