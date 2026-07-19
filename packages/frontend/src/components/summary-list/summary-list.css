@@ -23,8 +23,14 @@
 }
 
 /* <dd> carries a default indent — remove it. */
-.govbb-summary-list__value {
+.govbb-summary-list__value,
+.govbb-summary-list__actions {
   margin: 0;
+}
+
+.govbb-summary-list__actions {
+  display: flex;
+  gap: var(--govbb-space-s);
 }
 
 @media (--tablet) {
@@ -36,5 +42,10 @@
     grid-template-columns: 15.125rem 1fr;
     gap: var(--govbb-space-s);
     align-items: start;
+  }
+
+  /* Rows with actions gain a third column, links pushed to the right edge. */
+  .govbb-summary-list__row:has(> .govbb-summary-list__actions) {
+    grid-template-columns: 15.125rem 1fr auto;
   }
 }

@@ -47,6 +47,67 @@ and a plain value), one row per pair. It is built on a description list
 key stacks above the value; from tablet widths up they sit side by side with
 the keys in a fixed-width column.
 
+## Row actions
+
+Add a change link to a row when the user can revisit that answer, as on a
+[check your answers](/patterns/check-answers/) page. The link sits in its own
+`<dd>` at the end of the row; give each one visually hidden text naming the
+row so screen reader users hear "Change name", not three identical "Change"
+links.
+
+```html title="Summary list with actions"
+<dl class="govbb-summary-list">
+  <div class="govbb-summary-list__row">
+    <dt class="govbb-summary-list__key">Name</dt>
+    <dd class="govbb-summary-list__value">Alex Nurse</dd>
+    <dd class="govbb-summary-list__actions">
+      <a class="govbb-link" href="/service/name/">
+        Change<span class="govbb-visually-hidden"> name</span>
+      </a>
+    </dd>
+  </div>
+  <div class="govbb-summary-list__row">
+    <dt class="govbb-summary-list__key">Date of birth</dt>
+    <dd class="govbb-summary-list__value">14 March 1990</dd>
+    <dd class="govbb-summary-list__actions">
+      <a class="govbb-link" href="/service/date-of-birth/">
+        Change<span class="govbb-visually-hidden"> date of birth</span>
+      </a>
+    </dd>
+  </div>
+</dl>
+```
+
+```tsx
+import { SummaryList } from '@govtech-bb/react';
+
+<SummaryList
+  rows={[
+    {
+      key: 'Name',
+      value: 'Alex Nurse',
+      actions: {
+        href: '/service/name/',
+        label: 'Change',
+        visuallyHiddenText: 'name',
+      },
+    },
+    {
+      key: 'Date of birth',
+      value: '14 March 1990',
+      actions: {
+        href: '/service/date-of-birth/',
+        label: 'Change',
+        visuallyHiddenText: 'date of birth',
+      },
+    },
+  ]}
+/>;
+```
+
+`actions` takes one link or an array; pass `linkComponent` to render them with
+a router link.
+
 ## Usage
 
 <div class="govbb-usage-guidance">

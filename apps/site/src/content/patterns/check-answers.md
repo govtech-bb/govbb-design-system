@@ -11,8 +11,8 @@ group: Help users to
 <dl class="govbb-summary-list">
   <div class="govbb-summary-list__row">
     <dt class="govbb-summary-list__key">Name</dt>
-    <dd class="govbb-summary-list__value">
-      Alex Nurse
+    <dd class="govbb-summary-list__value">Alex Nurse</dd>
+    <dd class="govbb-summary-list__actions">
       <a class="govbb-link" href="/service/name/">
         Change<span class="govbb-visually-hidden"> name</span>
       </a>
@@ -20,8 +20,8 @@ group: Help users to
   </div>
   <div class="govbb-summary-list__row">
     <dt class="govbb-summary-list__key">Date of birth</dt>
-    <dd class="govbb-summary-list__value">
-      14 March 1990
+    <dd class="govbb-summary-list__value">14 March 1990</dd>
+    <dd class="govbb-summary-list__actions">
       <a class="govbb-link" href="/service/date-of-birth/">
         Change<span class="govbb-visually-hidden"> date of birth</span>
       </a>
@@ -29,8 +29,8 @@ group: Help users to
   </div>
   <div class="govbb-summary-list__row">
     <dt class="govbb-summary-list__key">Email address</dt>
-    <dd class="govbb-summary-list__value">
-      alex.nurse@example.com
+    <dd class="govbb-summary-list__value">alex.nurse@example.com</dd>
+    <dd class="govbb-summary-list__actions">
       <a class="govbb-link" href="/service/email-address/">
         Change<span class="govbb-visually-hidden"> email address</span>
       </a>

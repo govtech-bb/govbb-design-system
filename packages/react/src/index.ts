@@ -66,6 +66,7 @@ export { StatusBanner } from './status-banner/status-banner';
 export type { StatusBannerProps } from './status-banner/status-banner';
 export { SummaryList } from './summary-list/summary-list';
 export type {
+  SummaryListAction,
   SummaryListProps,
   SummaryListRow,
 } from './summary-list/summary-list';
