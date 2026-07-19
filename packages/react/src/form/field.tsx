@@ -10,14 +10,13 @@ import { ErrorMessage, FormGroup, Hint, Label } from './form';
  * anything this doesn't cover.
  */
 
-export interface FieldExtras {
+export type HintOrError =
+  { hint?: ReactNode; error?: never } | { error?: ReactNode; hint?: never };
+
+export type FieldExtras = {
   /** Field label. Provide it to switch the control into self-composing mode. */
   label?: ReactNode;
-  /** Hint text, announced via aria-describedby. */
-  hint?: ReactNode;
-  /** Error message; also sets aria-invalid on the control. */
-  error?: ReactNode;
-}
+} & HintOrError;
 
 /** Stable ids for the control and its hint/error, wired for aria-describedby. */
 export function useFieldIds(
@@ -45,7 +44,10 @@ export function FieldShell({
   hintId,
   errorId,
   children,
-}: FieldExtras & {
+}: {
+  label?: ReactNode;
+  hint?: ReactNode;
+  error?: ReactNode;
   fieldId: string;
   hintId?: string;
   errorId?: string;
@@ -54,7 +56,7 @@ export function FieldShell({
   return (
     <FormGroup>
       {label != null && <Label htmlFor={fieldId}>{label}</Label>}
-      {hint != null && <Hint id={hintId}>{hint}</Hint>}
+      {hint != null && error == null && <Hint id={hintId}>{hint}</Hint>}
       {error != null && (
         <ErrorMessage id={errorId} role="alert">
           {error}
