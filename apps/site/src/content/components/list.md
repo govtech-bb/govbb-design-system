@@ -8,7 +8,7 @@ group: Content
 ## Preview
 
 ```html title="List variants"
-<ul class="govbb-list">
+<ul class="govbb-list" role="list">
   <li>
     <a class="govbb-link" href="/services/passports/">Apply for a passport</a>
   </li>

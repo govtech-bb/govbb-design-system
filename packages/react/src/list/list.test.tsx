@@ -14,6 +14,22 @@ describe('List', () => {
   });
 });
 
+it('keeps list semantics on the plain variant', async () => {
+  const { container, rerender } = render(
+    <List>
+      <li>Apply for a passport</li>
+    </List>,
+  );
+  expect(container.firstElementChild!.getAttribute('role')).toBe('list');
+  rerender(
+    <List variant="bullet">
+      <li>Apply for a passport</li>
+    </List>,
+  );
+  expect(container.firstElementChild!.hasAttribute('role')).toBe(false);
+  await expectNoAxeViolations(container);
+});
+
 it('has no axe violations', async () => {
   const { container } = render(
     <List variant="bullet">

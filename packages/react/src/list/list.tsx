@@ -25,6 +25,7 @@ export const List = forwardRef<HTMLUListElement | HTMLOListElement, ListProps>(
         // one ref type per tag at runtime; the union confuses JSX's per-tag props
         ref={ref as never}
         className={list({ variant, className })}
+        role={variant == null || variant === 'plain' ? 'list' : undefined}
         {...props}
       />
     );
