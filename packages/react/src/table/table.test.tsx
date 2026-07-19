@@ -48,6 +48,21 @@ describe('Table', () => {
     ).toBe('row');
   });
 
+  it('wraps in a keyboard-reachable scroll region when scrollable', () => {
+    render(
+      <Table caption="Passport fees" scrollable>
+        <tbody>
+          <tr>
+            <TableCell>Standard</TableCell>
+          </tr>
+        </tbody>
+      </Table>,
+    );
+    const region = screen.getByRole('region', { name: 'Passport fees' });
+    expect(region.className).toBe('govbb-table-container');
+    expect(region.getAttribute('tabindex')).toBe('0');
+  });
+
   it('has no axe violations', async () => {
     const { container } = renderTable();
     await expectNoAxeViolations(container);

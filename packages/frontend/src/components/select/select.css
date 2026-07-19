@@ -75,3 +75,12 @@
   opacity: var(--govbb-opacity-disabled);
   cursor: not-allowed;
 }
+
+/* Forced colors: the black data-URI chevron can vanish on dark system
+   themes — fall back to the native picker arrow, drawn in system colors. */
+@media (forced-colors: active) {
+  .govbb-select {
+    appearance: auto;
+    background-image: none;
+  }
+}

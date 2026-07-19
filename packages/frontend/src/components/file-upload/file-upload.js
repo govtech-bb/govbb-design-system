@@ -15,6 +15,10 @@ export class FileUpload {
       el.append(this.list);
     }
     this.removeLabel = el.dataset.removeLabel ?? 'Remove';
+    this.status = document.createElement('span');
+    this.status.className = 'govbb-visually-hidden';
+    this.status.setAttribute('role', 'status');
+    el.append(this.status);
     this.onChange = this.render.bind(this);
     this.onClick = this.onClick.bind(this);
     this.input?.addEventListener('change', this.onChange);
@@ -49,6 +53,7 @@ export class FileUpload {
     const button = event.target.closest('button[data-index]');
     if (!button || !this.input) return;
     const index = Number(button.dataset.index);
+    const removed = this.input.files?.[index]?.name;
     const transfer = new DataTransfer();
     for (const [i, file] of Array.from(this.input.files ?? []).entries()) {
       if (i !== index) transfer.items.add(file);
@@ -56,10 +61,13 @@ export class FileUpload {
     this.input.files = transfer.files;
     // our own change listener re-renders the list
     this.input.dispatchEvent(new Event('change', { bubbles: true }));
+    this.input.focus();
+    if (removed != null) this.status.textContent = `${removed} removed`;
   }
 
   destroy() {
     this.input?.removeEventListener('change', this.onChange);
     this.list.removeEventListener('click', this.onClick);
+    this.status.remove();
   }
 }

@@ -34,6 +34,14 @@ describe('form scaffolding', () => {
   });
 });
 
+it('prefixes error messages with a hidden "Error:" for screen readers', () => {
+  render(<ErrorMessage>Enter your full name</ErrorMessage>);
+  const error = screen.getByText('Enter your full name');
+  const prefix = error.closest('.govbb-error-message')!.firstElementChild!;
+  expect(prefix.className).toBe('govbb-visually-hidden');
+  expect(prefix.textContent).toBe('Error: ');
+});
+
 it('has no axe violations', async () => {
   const { container } = render(
     <FormGroup>

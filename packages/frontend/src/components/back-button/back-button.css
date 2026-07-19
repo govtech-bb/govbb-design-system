@@ -25,3 +25,12 @@
     transform: rotate(180deg);
   }
 }
+
+/* Forced colors strips the currentcolor background behind the mask, which
+   would erase the arrow — repaint it in the system link color. */
+@media (forced-colors: active) {
+  .govbb-back-button::before {
+    forced-color-adjust: none;
+    background: LinkText;
+  }
+}

@@ -23,6 +23,32 @@ describe('ErrorSummary', () => {
     expect(document.activeElement).toBe(alert);
   });
 
+  it('falls back to tabindex="-1" when the target is not focusable', () => {
+    render(
+      <>
+        <ErrorSummary
+          errors={[{ href: '#dob', label: 'Enter your date of birth' }]}
+        />
+        <fieldset id="dob">
+          <legend>Date of birth</legend>
+        </fieldset>
+      </>,
+    );
+    fireEvent.click(
+      screen.getByRole('link', { name: 'Enter your date of birth' }),
+    );
+    const target = document.getElementById('dob')!;
+    expect(target.getAttribute('tabindex')).toBe('-1');
+    expect(document.activeElement).toBe(target);
+  });
+
+  it('labels the alert with its title', () => {
+    render(<ErrorSummary errors={[]} />);
+    const alert = screen.getByRole('alert');
+    const title = screen.getByText('There is a problem');
+    expect(alert.getAttribute('aria-labelledby')).toBe(title.id);
+  });
+
   it('focuses the targeted field on link click and fires onErrorClick', () => {
     const onErrorClick = vi.fn();
     render(

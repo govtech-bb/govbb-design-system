@@ -53,6 +53,17 @@ describe('file-upload module', () => {
     expect(names.map((n) => n.textContent)).toEqual(['id.png']);
   });
 
+  it('announces removal and parks focus on the input', () => {
+    const input = mount();
+    setFiles(input, [{ name: 'proof.pdf' }, { name: 'id.png' }]);
+    input.dispatchEvent(new Event('change', { bubbles: true }));
+    document.querySelector('button[data-index="0"]').click();
+    const status = document.querySelector('[role="status"]');
+    expect(status.className).toBe('govbb-visually-hidden');
+    expect(status.textContent).toBe('proof.pdf removed');
+    expect(document.activeElement).toBe(input);
+  });
+
   it('honours a custom remove label', () => {
     document.body.innerHTML = `
       <div class="govbb-file-upload" data-govbb-module="file-upload" data-remove-label="Delete">
