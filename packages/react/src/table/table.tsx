@@ -10,24 +10,45 @@ import {
 export interface TableProps extends TableHTMLAttributes<HTMLTableElement> {
   /** Rendered as the <caption>; always describe what the table shows. */
   caption?: ReactNode;
+  /**
+   * Wide tables: wraps the table in the govbb-table-container scroll region
+   * (tabindex 0 + role region) so keyboard users can reach and scroll it.
+   * Labelled by `scrollLabel`, falling back to a string `caption`.
+   */
+  scrollable?: boolean;
+  /** Accessible name for the scroll region; required if `caption` isn't a string. */
+  scrollLabel?: string;
 }
 
 /**
  * Compose the body with native <thead>/<tbody>/<tr> and the TableHeader /
- * TableCell primitives. Wide tables: wrap in <div class="govbb-table-container"
- * tabindex="0" role="region" aria-label="…"> so they scroll on small screens.
+ * TableCell primitives. Wide tables: set `scrollable` so they scroll on
+ * small screens without trapping keyboard users.
  */
 export const Table = forwardRef<HTMLTableElement, TableProps>(function Table(
-  { caption, className, children, ...props },
+  { caption, scrollable, scrollLabel, className, children, ...props },
   ref,
 ) {
-  return (
+  const table = (
     <table ref={ref} className={cx('govbb-table', className)} {...props}>
       {caption != null && (
         <caption className="govbb-table__caption">{caption}</caption>
       )}
       {children}
     </table>
+  );
+  if (!scrollable) return table;
+  return (
+    <div
+      className="govbb-table-container"
+      tabIndex={0}
+      role="region"
+      aria-label={
+        scrollLabel ?? (typeof caption === 'string' ? caption : undefined)
+      }
+    >
+      {table}
+    </div>
   );
 });
 
