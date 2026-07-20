@@ -14,7 +14,10 @@ import {
 import { ErrorMessage, Fieldset, Hint } from '../form/form';
 import type { HintOrError } from '../form/field';
 
-export interface RadioProps extends InputHTMLAttributes<HTMLInputElement> {
+export interface RadioProps extends Omit<
+  InputHTMLAttributes<HTMLInputElement>,
+  'type'
+> {
   /** Rendered in the item's label, wired to the input via htmlFor. */
   label: ReactNode;
   /** Per-option hint, announced with the label via aria-describedby. */
@@ -51,10 +54,10 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(function Radio(
           ref={ref}
           className={cx('govbb-radio', className)}
           id={inputId}
-          type="radio"
           aria-describedby={cx(hintId, ariaDescribedBy) || undefined}
           aria-controls={conditionalId}
           {...props}
+          type="radio"
         />
         <label className="govbb-radio-item__label" htmlFor={inputId}>
           {label}

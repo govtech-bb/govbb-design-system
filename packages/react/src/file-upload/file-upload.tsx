@@ -15,7 +15,7 @@ import {
 
 export interface FileUploadProps extends Omit<
   InputHTMLAttributes<HTMLInputElement>,
-  'title'
+  'title' | 'type'
 > {
   title?: ReactNode;
   subtitle?: ReactNode;
@@ -71,8 +71,8 @@ export const FileUpload = forwardRef<HTMLInputElement, FileUploadProps>(
               className,
             )}
             id={inputId}
-            type="file"
             {...props}
+            type="file"
           />
           <span className="govbb-file-upload__action">
             <span

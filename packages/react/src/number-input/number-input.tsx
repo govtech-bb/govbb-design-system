@@ -8,7 +8,10 @@ import {
   type InputEvent,
 } from 'react';
 
-export interface NumberInputProps extends InputHTMLAttributes<HTMLInputElement> {
+export interface NumberInputProps extends Omit<
+  InputHTMLAttributes<HTMLInputElement>,
+  'type'
+> {
   /** id of the field's <Label>, announced for the whole group. */
   labelId?: string;
 }
@@ -80,7 +83,6 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
         <input
           className={cx('govbb-number-input', className)}
           ref={inputRef}
-          type="number"
           value={value}
           defaultValue={defaultValue}
           min={min}
@@ -89,6 +91,7 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
           readOnly={readOnly}
           onInput={handleInput}
           {...props}
+          type="number"
         />
         <div className="govbb-number-input__steppers">
           <button

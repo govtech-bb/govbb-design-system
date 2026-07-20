@@ -9,7 +9,10 @@ import {
 import { ErrorMessage, Fieldset, Hint } from '../form/form';
 import type { HintOrError } from '../form/field';
 
-export interface CheckboxProps extends InputHTMLAttributes<HTMLInputElement> {
+export interface CheckboxProps extends Omit<
+  InputHTMLAttributes<HTMLInputElement>,
+  'type'
+> {
   /** Rendered in the item's label, wired to the input via htmlFor. */
   label: ReactNode;
   /** Per-option hint, announced with the label via aria-describedby. */
@@ -47,10 +50,10 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
             ref={ref}
             className={cx('govbb-checkbox', className)}
             id={inputId}
-            type="checkbox"
             aria-describedby={cx(hintId, ariaDescribedBy) || undefined}
             aria-controls={conditionalId}
             {...props}
+            type="checkbox"
           />
           <label className="govbb-checkbox-item__label" htmlFor={inputId}>
             {label}

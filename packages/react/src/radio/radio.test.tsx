@@ -20,6 +20,12 @@ describe('Radio', () => {
     expect(radios[0].checked).toBe(false);
   });
 
+  it('keeps its native input type fixed', () => {
+    // @ts-expect-error Radio intentionally does not expose the native type prop.
+    render(<Radio name="answer" label="Yes" type="text" />);
+    expect(screen.getByRole('radio', { name: 'Yes' })).toBeDefined();
+  });
+
   it('renders the conditional as a sibling of the item', () => {
     const { container } = render(
       <Radio name="p" label="Other" conditional={<p>Which one?</p>} />,

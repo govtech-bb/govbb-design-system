@@ -19,6 +19,12 @@ describe('Checkbox', () => {
     expect(screen.getByRole('checkbox', { name: 'Terms' }).id).toBe('terms');
   });
 
+  it('keeps its native input type fixed', () => {
+    // @ts-expect-error Checkbox intentionally does not expose the native type prop.
+    render(<Checkbox label="Terms" type="text" />);
+    expect(screen.getByRole('checkbox', { name: 'Terms' })).toBeDefined();
+  });
+
   it('renders the conditional as a sibling of the item', () => {
     const { container } = render(
       <Checkbox name="contact" label="Email" conditional={<p>Address?</p>} />,

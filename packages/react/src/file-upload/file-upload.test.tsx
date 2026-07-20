@@ -43,6 +43,12 @@ describe('FileUpload', () => {
     render(<FileUpload ref={ref} aria-label="Upload" />);
     expect(ref.current?.type).toBe('file');
   });
+
+  it('keeps its native input type fixed', () => {
+    // @ts-expect-error FileUpload intentionally does not expose the native type prop.
+    render(<FileUpload aria-label="Upload" type="text" />);
+    expect(screen.getByLabelText('Upload').getAttribute('type')).toBe('file');
+  });
 });
 
 it('has no axe violations', async () => {

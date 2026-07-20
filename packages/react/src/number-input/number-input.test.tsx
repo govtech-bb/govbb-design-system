@@ -75,6 +75,12 @@ describe('NumberInput', () => {
     render(<NumberInput ref={ref} aria-label="Qty" />);
     expect(ref.current).toBe(screen.getByRole('spinbutton', { name: 'Qty' }));
   });
+
+  it('keeps its native input type fixed', () => {
+    // @ts-expect-error NumberInput intentionally does not expose the native type prop.
+    render(<NumberInput aria-label="Qty" type="text" />);
+    expect(screen.getByRole('spinbutton', { name: 'Qty' })).toBeDefined();
+  });
 });
 
 it('has no axe violations', async () => {
