@@ -50,15 +50,15 @@ jobs:
         env:
           RELEASE_VERSION: ${{ inputs.version }}
         run: |
-          if [[ ! "$RELEASE_VERSION" =~ ^2\.[0-9]+\.[0-9]+(-[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*)?(\+[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*)?$ ]]; then
-            echo "Version must be a valid 2.x semver without a leading v" >&2
+          if [[ ! "$RELEASE_VERSION" =~ ^1\.[0-9]+\.[0-9]+(-[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*)?(\+[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*)?$ ]]; then
+            echo "Version must be a valid 1.x semver without a leading v" >&2
             exit 1
           fi
 
           npm_tag=latest
           version_without_build="${RELEASE_VERSION%%+*}"
           if [[ "$version_without_build" == *-* ]]; then
-            npm_tag=next
+            npm_tag=alpha
           fi
 
           echo "version=$RELEASE_VERSION" >> "$GITHUB_OUTPUT"
@@ -86,11 +86,23 @@ jobs:
           git tag "v$RELEASE_VERSION"
           git push origin main --follow-tags
 
-      - name: Publish to npm
+      - name: Publish to npm (OIDC)
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          RELEASE_VERSION: ${{ steps.release.outputs.version }}
           NPM_TAG: ${{ steps.release.outputs.npm_tag }}
-        run: pnpm publish -r --no-git-checks --tag "$NPM_TAG"
+        run: |
+          set -euo pipefail
+          npm install -g npm@latest
+          mkdir -p /tmp/pkgs
+          for pkg in frontend react; do
+            name="@govtech-bb/$pkg"
+            if npm view "$name@$RELEASE_VERSION" version > /dev/null 2>&1; then
+              echo "$name@$RELEASE_VERSION already published — skipping"
+              continue
+            fi
+            pnpm --filter "$name" pack --pack-destination /tmp/pkgs
+            npm publish "/tmp/pkgs/govtech-bb-$pkg-$RELEASE_VERSION.tgz" --provenance --access public --tag "$NPM_TAG"
+          done
 
       - name: Create GitHub release
         env:
