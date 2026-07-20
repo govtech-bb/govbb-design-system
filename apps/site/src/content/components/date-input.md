@@ -52,6 +52,7 @@ group: Form elements
 ```
 
 ```tsx
+import { useState } from 'react';
 import { DateInput, type DateInputValue } from '@govtech-bb/react';
 
 const [dob, setDob] = useState<DateInputValue>({

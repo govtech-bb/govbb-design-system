@@ -2,6 +2,13 @@
   "name": "@govtech-bb/frontend",
   "version": "0.0.0",
   "description": "GovBB Design System — CSS, tokens and progressive-enhancement JS. Framework-agnostic.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/govtech-bb/govbb-design-system.git",
+    "directory": "packages/frontend"
+  },
+  "homepage": "https://design-system.gov.bb/",
+  "bugs": "https://github.com/govtech-bb/govbb-design-system/issues",
   "type": "module",
   "main": "index.js",
   "types": "index.d.ts",

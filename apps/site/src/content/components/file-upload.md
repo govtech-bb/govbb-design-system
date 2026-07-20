@@ -55,7 +55,10 @@ group: Form elements
 ```
 
 ```tsx
+import { useState } from 'react';
 import { FileUpload, FormGroup, Hint, Label } from '@govtech-bb/react';
+
+const [files, setFiles] = useState<File[]>([]);
 
 <FormGroup>
   <Label id="proof-of-address-label" htmlFor="proof-of-address">
@@ -71,7 +74,14 @@ import { FileUpload, FormGroup, Hint, Label } from '@govtech-bb/react';
     maxSize="Maximum size: 25MB"
     aria-labelledby="proof-of-address-label"
     aria-describedby="proof-of-address-hint"
-    files={[{ name: 'proof-of-address.pdf', onRemove: () => remove(0) }]}
+    onChange={(event) => setFiles(Array.from(event.currentTarget.files ?? []))}
+    files={files.map((file, index) => ({
+      name: file.name,
+      onRemove: () =>
+        setFiles((current) =>
+          current.filter((_, itemIndex) => itemIndex !== index),
+        ),
+    }))}
   />
 </FormGroup>;
 ```

@@ -25,11 +25,10 @@ That's it — `pnpm install` also installs the git hooks (via Lefthook), so comm
    (Stylelint enforces this).
 4. Open a PR into `main`.
 
-Every component ships CSS in `packages/frontend` and, usually, a thin wrapper
-in `packages/react` (plus a docs page in `apps/site`). The deliberate
-exception: **payment** is documented as a pattern, not a component, and has no
-React wrapper. If you add a component to one package, add (or file an issue
-for) the other two pieces.
+Every component ships CSS in `packages/frontend`, usually a thin wrapper in
+`packages/react`, a typed Storybook story, and a guidance page in `apps/site`.
+If a surface intentionally omits one of those pieces, document and test the
+exception.
 
 ## Commit messages
 
@@ -101,7 +100,7 @@ source of truth.
 
 | Tool               | Purpose                                                            |
 | ------------------ | ------------------------------------------------------------------ |
-| pnpm               | single package (no workspace yet)                                  |
+| pnpm               | workspace package management                                       |
 | Vite               | playground dev server (`pnpm dev`)                                 |
 | Lightning CSS      | bundles/minifies `src/index.css` → `dist/govbb.css` (`pnpm build`) |
 | oxlint + Stylelint | linting; Stylelint enforces the `govbb-` prefix (`pnpm lint`)      |

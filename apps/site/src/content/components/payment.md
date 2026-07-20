@@ -41,6 +41,24 @@ group: Feedback
 </div>
 ```
 
+```tsx
+import { Button, Payment } from '@govtech-bb/react';
+
+<Payment
+  title="Complete your payment"
+  description="Check the details below, then continue to payment."
+  rows={[
+    { key: 'Service:', value: 'Application fee' },
+    { key: 'Unit price:', value: '$10' },
+    { key: 'Quantity:', value: '2' },
+    { key: 'Amount:', value: '$20' },
+  ]}
+  note="You will be redirected to EZ Pay to securely complete your payment."
+>
+  <Button>Continue to payment</Button>
+</Payment>;
+```
+
 The Payment component summarises a fee before the user pays it (the service,
 unit price, quantity and total), with a button that takes them to the payment
 provider, and a note telling them where they are being sent. The itemised

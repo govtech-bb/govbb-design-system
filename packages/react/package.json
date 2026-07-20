@@ -2,6 +2,13 @@
   "name": "@govtech-bb/react",
   "version": "0.0.0",
   "description": "GovBB Design System — React wrappers over the CSS. Thin, own-the-code.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/govtech-bb/govbb-design-system.git",
+    "directory": "packages/react"
+  },
+  "homepage": "https://design-system.gov.bb/",
+  "bugs": "https://github.com/govtech-bb/govbb-design-system/issues",
   "type": "module",
   "exports": {
     ".": {
@@ -11,6 +18,7 @@
   },
   "files": [
     "dist",
+    "MIGRATION.md",
     "src",
     "!src/**/*.test.tsx",
     "!src/testing"

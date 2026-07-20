@@ -137,11 +137,8 @@ the link uses the same origin in previews and production.
 - **Changelog** — add a Markdown file under `apps/site/src/content/changelog/`
   with `title`, `date`, and optional `author` / `summary` frontmatter. The
   latest entries also surface in the homepage "What's new" block.
-- **Styling** — the site uses **placeholder** GovBB tokens in
-  `apps/site/src/styles/placeholder-tokens.css`, the **Figtree** web font
-  (bundled temporarily via `@fontsource-variable/figtree`), and a placeholder
-  coat of arms / crest. The real tokens get wired in from the root package
-  (follow-up #124).
+- **Styling** — the site imports the published frontend stylesheet and assets,
+  then adds site-only layout tokens in `apps/site/src/styles/tokens.css`.
 
 ## CI & deployment
 

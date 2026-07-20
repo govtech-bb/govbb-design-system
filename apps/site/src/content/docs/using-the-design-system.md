@@ -7,8 +7,58 @@ lede: How to adopt the design system and the standards every service follows.
 The design system gives every Government of Barbados service a shared set of
 [styles](/styles/), [components](/components/) and [patterns](/patterns/), so
 services look and behave consistently and teams do not solve the same problems
-twice. Import `@govtech-bb/frontend` for the CSS and tokens, or
-`@govtech-bb/react` if your service is built in React.
+twice. Use `@govtech-bb/frontend` for framework-agnostic HTML, or add the thin
+`@govtech-bb/react` wrappers when your service is built in React.
+
+## Install for HTML or server-rendered services
+
+```sh
+pnpm add @govtech-bb/frontend
+```
+
+Import the complete stylesheet once:
+
+```js
+import '@govtech-bb/frontend/css';
+```
+
+Header, file upload and number input markup use progressive enhancement. Add
+the matching `data-govbb-module` attribute shown in the component example and
+initialise those modules after the document exists:
+
+```js
+import { initAll } from '@govtech-bb/frontend';
+
+initAll();
+```
+
+## Install for React services
+
+```sh
+pnpm add @govtech-bb/frontend @govtech-bb/react
+```
+
+Import the stylesheet once at the application root, then import components from
+the React package. React components include their own behaviour, so do not run
+`initAll()` over them.
+
+```tsx
+import '@govtech-bb/frontend/css';
+import { Button } from '@govtech-bb/react';
+
+<Button type="submit">Continue</Button>;
+```
+
+## Assets and tokens
+
+Images and fonts ship below `@govtech-bb/frontend/assets/*`. Host the image
+assets through your bundler or public directory and pass their resulting URLs
+to components such as Header, Footer and OfficialBanner.
+
+Use semantic tokens such as `--govbb-color-brand` and `--govbb-space-s` in
+service CSS. Tailwind applications can reference them directly with arbitrary
+values such as `bg-[var(--govbb-color-brand)]`; the design-system core does not
+require Tailwind.
 
 ## Standards
 

@@ -21,6 +21,9 @@ import '@govtech-bb/frontend/css';
 The package ships compiled ESM + type declarations (`dist/`), so it works in
 any bundler without extra config. Source stays in the tarball for source maps.
 
+Existing `1.0.0-alpha.*` consumers must follow the breaking-change guide in
+[MIGRATION.md](./MIGRATION.md); the rewrite is intended for a new major version.
+
 ## Usage
 
 ```tsx

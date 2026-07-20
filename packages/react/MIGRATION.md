@@ -21,9 +21,12 @@ progressive-enhancement JS. `@govtech-bb/react` depends on it and re-exposes
 nothing from the old packages.
 
 ```sh
-npm remove @govtech-bb/styles @govtech-bb/design
+npm remove @govtech-bb/styles
 npm install @govtech-bb/react @govtech-bb/frontend
 ```
+
+Non-Tailwind consumers can remove `@govtech-bb/design` at the same time.
+Tailwind consumers should follow the additional migration note below first.
 
 Import the stylesheet once at the app root:
 
@@ -35,25 +38,47 @@ Static assets (coat of arms, crest, logo) are no longer bundled. Host them
 yourself and pass URLs via props (`coatSrc`, `crestSrc`, `logoSrc`), or copy
 them from `@govtech-bb/frontend/assets/*`.
 
-## Typography: `Heading` and `Text` are CSS utilities now
+### Tailwind consumers
 
-`Heading`, `Text`, `textVariants` and `linkVariants` are gone. Use plain
-elements with the `govbb-text-*` utility classes: `govbb-text-display`,
-`govbb-text-h1` to `govbb-text-h4`, `govbb-text-body-lg`, `govbb-text-body`,
-`govbb-text-caption`, `govbb-text-caption-sm`.
+`@govtech-bb/design` also supplied a Tailwind theme, including utilities such
+as `bg-blue-100`, `text-body` and `p-s`. The new frontend package is
+framework-agnostic and does not recreate those utility names. Do not remove the
+old design package from an existing Tailwind application until those classes
+and unprefixed variables have been migrated.
+
+The new tokens are deliberately prefixed (`--govbb-*`). Use them directly in
+application CSS or Tailwind arbitrary values, for example
+`bg-[var(--govbb-color-brand)]`. A large application can temporarily own a
+Tailwind `@theme inline` compatibility mapping, but that mapping must cover the
+utilities the application actually uses and should be removed after migration.
+Once no old theme utilities or variables remain, remove `@govtech-bb/design`.
+
+## Typography: variant helpers are CSS utilities now
+
+`Heading` and `Text` remain as convenience components. The lower-level
+`textVariants` and `linkVariants` helpers are gone; use the React components or
+plain elements with the `govbb-text-*` and `govbb-link` classes.
 
 ```tsx
 // Before
 <Heading as="h1" size="display">Services</Heading>
 <Text size="body-lg">Find government services.</Text>
 
-// After
+// After, using the convenience components
+<Heading as="h1" size="display">Services</Heading>
+<Text size="body-lg">Find government services.</Text>
+
+// After, using plain HTML
 <h1 className="govbb-text-display">Services</h1>
 <p className="govbb-text-body-lg">Find government services.</p>
 ```
 
 Headings pick up their size from base styles; add a class only to decouple
 visual size from heading level.
+
+The alpha package also re-exported `cn`. That utility is no longer part of the
+design-system API; use your application's existing class-name utility or
+`class-variance-authority` directly.
 
 ## Button: `link` variant renamed to `text`
 
