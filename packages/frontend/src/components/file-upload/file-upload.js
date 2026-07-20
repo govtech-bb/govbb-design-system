@@ -7,15 +7,16 @@ export class FileUpload {
   /** @param {HTMLElement} el */
   constructor(el) {
     this.el = el;
+    this.document = el.ownerDocument;
     this.input = el.querySelector('input[type="file"]');
     this.list = el.querySelector('.govbb-file-upload__list');
     if (!this.list) {
-      this.list = document.createElement('ul');
+      this.list = this.document.createElement('ul');
       this.list.className = 'govbb-file-upload__list';
       el.append(this.list);
     }
     this.removeLabel = el.dataset.removeLabel ?? 'Remove';
-    this.status = document.createElement('span');
+    this.status = this.document.createElement('span');
     this.status.className = 'govbb-visually-hidden';
     this.status.setAttribute('role', 'status');
     el.append(this.status);
@@ -28,12 +29,12 @@ export class FileUpload {
 
   render() {
     const items = Array.from(this.input?.files ?? [], (file, index) => {
-      const item = document.createElement('li');
+      const item = this.document.createElement('li');
       item.className = 'govbb-file-upload__item';
-      const name = document.createElement('span');
+      const name = this.document.createElement('span');
       name.className = 'govbb-file-upload__name';
       name.textContent = file.name;
-      const remove = document.createElement('button');
+      const remove = this.document.createElement('button');
       remove.className =
         'govbb-button govbb-button--text govbb-button--negative';
       remove.type = 'button';
@@ -49,18 +50,21 @@ export class FileUpload {
 
   /** @param {MouseEvent} event */
   onClick(event) {
-    if (!(event.target instanceof Element)) return;
+    const view = this.document.defaultView;
+    const ElementClass = view?.Element;
+    if (!ElementClass || !(event.target instanceof ElementClass)) return;
     const button = event.target.closest('button[data-index]');
     if (!button || !this.input) return;
     const index = Number(button.dataset.index);
     const removed = this.input.files?.[index]?.name;
-    const transfer = new DataTransfer();
+    const DataTransferClass = view.DataTransfer ?? globalThis.DataTransfer;
+    const transfer = new DataTransferClass();
     for (const [i, file] of Array.from(this.input.files ?? []).entries()) {
       if (i !== index) transfer.items.add(file);
     }
     this.input.files = transfer.files;
     // our own change listener re-renders the list
-    this.input.dispatchEvent(new Event('change', { bubbles: true }));
+    this.input.dispatchEvent(new view.Event('change', { bubbles: true }));
     this.input.focus();
     if (removed != null) this.status.textContent = `${removed} removed`;
   }

@@ -7,9 +7,9 @@
   top: 0;
   left: -9999px;
   z-index: 100;
-  padding: var(--govbb-space-2) var(--govbb-space-3);
-  color: var(--govbb-color-white);
-  background: var(--govbb-color-text);
+  padding: var(--govbb-space-xs) var(--govbb-space-s);
+  color: var(--govbb-color-surface);
+  background: var(--govbb-color-ink);
 }
 
 .govbb-skip-link:focus {

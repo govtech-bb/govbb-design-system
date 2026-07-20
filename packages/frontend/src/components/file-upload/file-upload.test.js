@@ -75,4 +75,28 @@ describe('file-upload module', () => {
     input.dispatchEvent(new Event('change', { bubbles: true }));
     expect(document.querySelector('button').textContent).toBe('Delete');
   });
+
+  it('removes files from controls rendered in another document', () => {
+    const frame = document.createElement('iframe');
+    document.body.replaceChildren(frame);
+    const frameDocument = frame.contentDocument;
+    frameDocument.body.innerHTML = `
+      <div class="govbb-file-upload" data-govbb-module="file-upload">
+        <input type="file" />
+        <ul class="govbb-file-upload__list"></ul>
+      </div>`;
+
+    initAll(frameDocument);
+    const input = frameDocument.querySelector('input');
+    setFiles(input, [{ name: 'proof.pdf' }, { name: 'id.png' }]);
+    input.dispatchEvent(
+      new frame.contentWindow.Event('change', { bubbles: true }),
+    );
+    frameDocument.querySelector('button[data-index="0"]').click();
+
+    const names = [
+      ...frameDocument.querySelectorAll('.govbb-file-upload__name'),
+    ];
+    expect(names.map((name) => name.textContent)).toEqual(['id.png']);
+  });
 });
