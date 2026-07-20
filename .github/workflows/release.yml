@@ -36,6 +36,7 @@ jobs:
 
       # same gate as ci.yml — never release a red tree
       - run: pnpm lint
+      - run: pnpm format:check
       - run: pnpm -r typecheck
       - run: pnpm test
       - run: pnpm build
@@ -44,31 +45,57 @@ jobs:
       - run: pnpm storybook:test
       - run: pnpm storybook:build
 
+      - name: Validate release version and npm tag
+        id: release
+        env:
+          RELEASE_VERSION: ${{ inputs.version }}
+        run: |
+          if [[ ! "$RELEASE_VERSION" =~ ^2\.[0-9]+\.[0-9]+(-[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*)?(\+[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*)?$ ]]; then
+            echo "Version must be a valid 2.x semver without a leading v" >&2
+            exit 1
+          fi
+
+          npm_tag=latest
+          version_without_build="${RELEASE_VERSION%%+*}"
+          if [[ "$version_without_build" == *-* ]]; then
+            npm_tag=next
+          fi
+
+          echo "version=$RELEASE_VERSION" >> "$GITHUB_OUTPUT"
+          echo "npm_tag=$npm_tag" >> "$GITHUB_OUTPUT"
+
       - name: Bump package versions
-        run: pnpm --filter "./packages/*" exec npm pkg set version=${{ inputs.version }}
+        env:
+          RELEASE_VERSION: ${{ steps.release.outputs.version }}
+        run: pnpm --filter "./packages/*" exec npm pkg set "version=$RELEASE_VERSION"
 
       - name: Regenerate changelog
-        run: pnpm exec git-cliff --tag v${{ inputs.version }} --output CHANGELOG.md
+        env:
+          RELEASE_VERSION: ${{ steps.release.outputs.version }}
+        run: pnpm exec git-cliff --tag "v$RELEASE_VERSION" --output CHANGELOG.md
 
       - name: Commit and tag
         env:
           LEFTHOOK: '0' # checks already ran above
+          RELEASE_VERSION: ${{ steps.release.outputs.version }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add packages/frontend/package.json packages/react/package.json CHANGELOG.md
-          git commit -m "chore: release v${{ inputs.version }}"
-          git tag "v${{ inputs.version }}"
+          git commit -m "chore: release v$RELEASE_VERSION"
+          git tag "v$RELEASE_VERSION"
           git push origin main --follow-tags
 
       - name: Publish to npm
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: pnpm publish -r --no-git-checks
+          NPM_TAG: ${{ steps.release.outputs.npm_tag }}
+        run: pnpm publish -r --no-git-checks --tag "$NPM_TAG"
 
       - name: Create GitHub release
         env:
           GH_TOKEN: ${{ github.token }}
+          RELEASE_VERSION: ${{ steps.release.outputs.version }}
         run: |
           pnpm exec git-cliff --latest --strip header > release-notes.md
-          gh release create "v${{ inputs.version }}" --title "v${{ inputs.version }}" --notes-file release-notes.md
+          gh release create "v$RELEASE_VERSION" --title "v$RELEASE_VERSION" --notes-file release-notes.md
