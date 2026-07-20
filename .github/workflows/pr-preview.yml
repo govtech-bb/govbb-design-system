@@ -1,0 +1,202 @@
+name: PR Preview
+
+# Per-PR Amplify preview for the docs/showcase site. On a non-draft PR
+# (or draft -> ready_for_review), an ephemeral Amplify branch is created on the
+# sandbox app and a RELEASE build is triggered; a sticky comment posts the
+# preview URL. On PR close, the branch is deleted.
+#
+# This is the custom-workflow pattern (drives the Amplify branch API directly),
+# not Amplify's native PR previews. Single static app, so it's much simpler than
+# gov-bb's multi-app version. The IAM role behind AWS_ROLE_ARN is defined in
+# alpha-infra: environments/sandbox/modular-forms-sandbox/amplify-design-system-pr-previews.tf
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review, closed]
+
+permissions:
+  id-token: write # OIDC for the AWS role
+  contents: read # checkout
+  pull-requests: write # sticky preview comment
+
+# Latest-commit-wins for ephemeral previews: cancel an in-flight run when a new
+# commit lands on the same PR.
+concurrency:
+  group: pr-preview-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+env:
+  AWS_REGION: ca-central-1
+  # Sandbox design-system app (govbb-design-system). Console-managed; connected
+  # to this repo so create-branch + start-job build the PR head branch.
+  AMPLIFY_APP_ID: dipdjkz5fn9ae
+
+jobs:
+  preview:
+    name: Build preview
+    if: github.event.action != 'closed' && github.event.pull_request.draft == false
+    runs-on: ubuntu-latest
+    steps:
+      # Reject branch names that can't produce a reachable preview:
+      #  - names that collide with a real Amplify environment;
+      #  - names containing '.', which yield a multi-label subdomain the
+      #    *.<appId>.amplifyapp.com wildcard cert can't cover (the preview would
+      #    fail TLS with ERR_CERT_COMMON_NAME_INVALID).
+      - name: Guard branch name
+        env:
+          BRANCH_NAME: ${{ github.event.pull_request.head.ref }}
+        run: |
+          case "$BRANCH_NAME" in
+            main|staging|prod|production|sandbox|dev)
+              echo "❌ Refusing preview for protected branch name '$BRANCH_NAME'."
+              exit 1 ;;
+          esac
+          case "$BRANCH_NAME" in
+            *.*)
+              echo "❌ Refusing preview for branch name '$BRANCH_NAME' — it contains a '.'."
+              echo "   Amplify's default-domain wildcard cert covers a single subdomain label,"
+              echo "   so a dotted preview URL fails TLS. Rename using '-' (e.g. 'feature-v1-3-0')."
+              exit 1 ;;
+          esac
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Create branch and trigger preview build
+        id: build
+        env:
+          BRANCH_NAME: ${{ github.event.pull_request.head.ref }}
+        run: |
+          # Idempotent: only create the Amplify branch if it doesn't exist yet
+          # (handles PR open + subsequent pushes).
+          if ! aws amplify get-branch \
+                --app-id "$AMPLIFY_APP_ID" \
+                --branch-name "$BRANCH_NAME" \
+                --region "$AWS_REGION" >/dev/null 2>&1; then
+            echo "Creating Amplify branch $BRANCH_NAME"
+            aws amplify create-branch \
+              --app-id "$AMPLIFY_APP_ID" \
+              --branch-name "$BRANCH_NAME" \
+              --region "$AWS_REGION" >/dev/null
+          else
+            echo "Amplify branch $BRANCH_NAME already exists"
+          fi
+
+          SUBDOMAIN="${BRANCH_NAME//\//-}"
+          URL="https://${SUBDOMAIN}.${AMPLIFY_APP_ID}.amplifyapp.com"
+          echo "url=$URL" >> "$GITHUB_OUTPUT"
+          echo "Preview URL: $URL"
+
+          # start-job 400s with LimitExceededException if a non-terminal job is
+          # already queued for this branch. Latest-commit-wins: cancel any
+          # in-flight job first. Scoped per branch, so it can't touch main.
+          IN_FLIGHT=$(aws amplify list-jobs \
+            --app-id "$AMPLIFY_APP_ID" \
+            --branch-name "$BRANCH_NAME" \
+            --region "$AWS_REGION" \
+            --query "jobSummaries[?status=='CREATED' || status=='PENDING' || status=='PROVISIONING' || status=='RUNNING'].jobId" \
+            --output text)
+          for J in $IN_FLIGHT; do
+            echo "Cancelling in-flight job $J"
+            aws amplify stop-job \
+              --app-id "$AMPLIFY_APP_ID" \
+              --branch-name "$BRANCH_NAME" \
+              --job-id "$J" \
+              --region "$AWS_REGION" >/dev/null \
+              || echo "stop-job failed for $J (continuing)"
+          done
+          [ -n "$IN_FLIGHT" ] && sleep 5
+
+          JOB_ID=$(aws amplify start-job \
+            --app-id "$AMPLIFY_APP_ID" \
+            --branch-name "$BRANCH_NAME" \
+            --job-type RELEASE \
+            --region "$AWS_REGION" \
+            --query jobSummary.jobId \
+            --output text 2>&1) || {
+            echo "❌ start-job failed: $JOB_ID"
+            echo "status=START_FAILED" >> "$GITHUB_OUTPUT"
+            exit 1
+          }
+          echo "Amplify job started: $JOB_ID"
+
+          for i in $(seq 1 30); do
+            STATUS=$(aws amplify get-job \
+              --app-id "$AMPLIFY_APP_ID" \
+              --branch-name "$BRANCH_NAME" \
+              --job-id "$JOB_ID" \
+              --region "$AWS_REGION" \
+              --query job.summary.status \
+              --output text)
+            echo "[$i/30] status: $STATUS"
+            if [ "$STATUS" = "SUCCEED" ]; then
+              echo "✅ preview build succeeded"
+              echo "status=SUCCEED" >> "$GITHUB_OUTPUT"
+              exit 0
+            elif [ "$STATUS" = "FAILED" ] || [ "$STATUS" = "CANCELLED" ]; then
+              echo "❌ preview build $STATUS"
+              echo "status=$STATUS" >> "$GITHUB_OUTPUT"
+              exit 1
+            fi
+            sleep 30
+          done
+          echo "❌ preview build did not finish within 15 minutes"
+          echo "status=TIMED_OUT" >> "$GITHUB_OUTPUT"
+          exit 1
+
+      - name: Post preview comment
+        if: always() && steps.build.outputs.url != ''
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: pr-preview
+          message: |
+            ### 🎨 Design system preview
+
+            | | |
+            |---|---|
+            | **Status** | ${{ steps.build.outputs.status || 'FAILED' }} |
+            | **URL** | ${{ steps.build.outputs.url }} |
+
+            Built from `${{ github.event.pull_request.head.sha }}`. Updates on every push to this PR.
+
+  teardown:
+    name: Tear down preview
+    if: github.event.action == 'closed'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Delete preview branch
+        env:
+          BRANCH_NAME: ${{ github.event.pull_request.head.ref }}
+        run: |
+          # Idempotent: only delete if the branch exists (a PR that never built,
+          # e.g. draft-only or guard-rejected, has no Amplify branch).
+          if aws amplify get-branch \
+                --app-id "$AMPLIFY_APP_ID" \
+                --branch-name "$BRANCH_NAME" \
+                --region "$AWS_REGION" >/dev/null 2>&1; then
+            echo "Deleting Amplify branch $BRANCH_NAME"
+            aws amplify delete-branch \
+              --app-id "$AMPLIFY_APP_ID" \
+              --branch-name "$BRANCH_NAME" \
+              --region "$AWS_REGION" >/dev/null
+          else
+            echo "No Amplify branch $BRANCH_NAME to delete"
+          fi
+
+      - name: Update comment
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: pr-preview
+          message: |
+            ### 🎨 Design system preview
+
+            Preview torn down (PR closed).
