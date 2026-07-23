@@ -120,7 +120,7 @@ For each invalid answer:
 1. preserve the answer
 2. show an [error summary](/components/error-summary/) at the top of the form
 3. link the summary item to the invalid control
-4. repeat a specific error beside the field
+4. replace the hint with a specific error beside the field
 5. set `aria-invalid="true"` and connect the message with `aria-describedby`
 
 Write messages that state the correction, such as “Enter a date in the past”.

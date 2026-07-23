@@ -56,34 +56,25 @@ group: Form elements
 
 ```tsx
 import { useState } from 'react';
-import { FileUpload, FormGroup, Hint, Label } from '@govtech-bb/react';
+import { FileUpload } from '@govtech-bb/react';
 
 const [files, setFiles] = useState<File[]>([]);
 
-<FormGroup>
-  <Label id="proof-of-address-label" htmlFor="proof-of-address">
-    Proof of address
-  </Label>
-  <Hint id="proof-of-address-hint">
-    This could be a recent utility bill or bank statement
-  </Hint>
-  <FileUpload
-    id="proof-of-address"
-    name="proof-of-address"
-    subtitle="Attach a .pdf, .docx, or .png file"
-    maxSize="Maximum size: 25MB"
-    aria-labelledby="proof-of-address-label"
-    aria-describedby="proof-of-address-hint"
-    onChange={(event) => setFiles(Array.from(event.currentTarget.files ?? []))}
-    files={files.map((file, index) => ({
-      name: file.name,
-      onRemove: () =>
-        setFiles((current) =>
-          current.filter((_, itemIndex) => itemIndex !== index),
-        ),
-    }))}
-  />
-</FormGroup>;
+<FileUpload
+  label="Proof of address"
+  hint="This could be a recent utility bill or bank statement"
+  name="proof-of-address"
+  subtitle="Attach a .pdf, .docx, or .png file"
+  maxSize="Maximum size: 25MB"
+  onChange={(event) => setFiles(Array.from(event.currentTarget.files ?? []))}
+  files={files.map((file, index) => ({
+    name: file.name,
+    onRemove: () =>
+      setFiles((current) =>
+        current.filter((_, itemIndex) => itemIndex !== index),
+      ),
+  }))}
+/>;
 ```
 
 The File Upload component lets users attach a file, such as a supporting document
@@ -186,26 +177,13 @@ _"Select a file"_ or _"The file must be smaller than 25MB"_.
 ```
 
 ```tsx
-import {
-  ErrorMessage,
-  FileUpload,
-  FormGroup,
-  Hint,
-  Label,
-} from '@govtech-bb/react';
+import { FileUpload } from '@govtech-bb/react';
 
-<FormGroup>
-  <Label htmlFor="proof-of-address">Proof of address</Label>
-  <ErrorMessage id="proof-of-address-error" role="alert">
-    Select a file
-  </ErrorMessage>
-  <FileUpload
-    id="proof-of-address"
-    name="proof-of-address"
-    subtitle="Attach a .pdf, .docx, or .png file"
-    maxSize="Maximum size: 25MB"
-    aria-invalid
-    aria-describedby="proof-of-address-error"
-  />
-</FormGroup>;
+<FileUpload
+  label="Proof of address"
+  error="Select a file"
+  name="proof-of-address"
+  subtitle="Attach a .pdf, .docx, or .png file"
+  maxSize="Maximum size: 25MB"
+/>;
 ```

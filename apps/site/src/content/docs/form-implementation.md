@@ -100,8 +100,8 @@ requirements have been met.
 
 ## Render field errors
 
-An error must be visible and programmatically connected to its control. Keep
-any hint in `aria-describedby` and append the error ID.
+An error must be visible and programmatically connected to its control. Replace
+the hint with the actionable error and point `aria-describedby` at the error ID.
 
 ```html
 <div class="govbb-form-group">

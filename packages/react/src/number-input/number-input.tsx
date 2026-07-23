@@ -7,14 +7,16 @@ import {
   type InputHTMLAttributes,
   type InputEvent,
 } from 'react';
+import { FieldShell, useFieldIds, type FieldExtras } from '../form/field';
 
-export interface NumberInputProps extends Omit<
+export type NumberInputProps = Omit<
   InputHTMLAttributes<HTMLInputElement>,
   'type'
-> {
-  /** id of the field's <Label>, announced for the whole group. */
-  labelId?: string;
-}
+> &
+  FieldExtras & {
+    /** id of the field's <Label>, announced for the whole group. */
+    labelId?: string;
+  };
 
 type NumericValue = string | number | readonly string[] | undefined;
 
@@ -28,7 +30,12 @@ function parseNumericValue(value: NumericValue) {
 export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
   function NumberInput(
     {
+      label,
+      hint,
+      error,
       labelId,
+      id,
+      name,
       className,
       value,
       defaultValue,
@@ -37,11 +44,22 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
       disabled,
       readOnly,
       onInput,
+      'aria-describedby': describedBy,
+      'aria-invalid': ariaInvalid,
       ...props
     },
     ref,
   ) {
     const inputRef = useRef<HTMLInputElement>(null);
+    const ids = useFieldIds(
+      id ?? name,
+      hint != null && error == null,
+      error != null,
+    );
+    const composed = label != null || hint != null || error != null;
+    const inputId = composed ? ids.fieldId : (id ?? name);
+    const resolvedLabelId =
+      labelId ?? (label != null ? `${ids.fieldId}-label` : undefined);
     const [uncontrolledValue, setUncontrolledValue] =
       useState<NumericValue>(defaultValue);
     useImperativeHandle(ref, () => inputRef.current!, []);
@@ -74,15 +92,17 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
       el.dispatchEvent(new Event('input', { bubbles: true }));
       el.dispatchEvent(new Event('change', { bubbles: true }));
     };
-    return (
+    const control = (
       <div
         className="govbb-number-input-wrapper"
         role="group"
-        aria-labelledby={labelId}
+        aria-labelledby={resolvedLabelId}
       >
         <input
           className={cx('govbb-number-input', className)}
           ref={inputRef}
+          id={inputId}
+          name={name}
           value={value}
           defaultValue={defaultValue}
           min={min}
@@ -90,6 +110,8 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
           disabled={disabled}
           readOnly={readOnly}
           onInput={handleInput}
+          aria-describedby={cx(ids.describedBy, describedBy) || undefined}
+          aria-invalid={error != null ? true : ariaInvalid}
           {...props}
           type="number"
         />
@@ -99,7 +121,7 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
             type="button"
             tabIndex={-1}
             aria-label="Increment"
-            aria-controls={props.id}
+            aria-controls={inputId}
             disabled={unavailable || atMax}
             onClick={() => step(1)}
           ></button>
@@ -112,12 +134,18 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
             type="button"
             tabIndex={-1}
             aria-label="Decrement"
-            aria-controls={props.id}
+            aria-controls={inputId}
             disabled={unavailable || atMin}
             onClick={() => step(-1)}
           ></button>
         </div>
       </div>
+    );
+    if (!composed) return control;
+    return (
+      <FieldShell {...{ label, hint, error, labelId: resolvedLabelId, ...ids }}>
+        {control}
+      </FieldShell>
     );
   },
 );

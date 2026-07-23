@@ -8,7 +8,10 @@ export interface SelectOption {
   disabled?: boolean;
 }
 
-export type SelectProps = SelectHTMLAttributes<HTMLSelectElement> &
+export type SelectProps = Omit<
+  SelectHTMLAttributes<HTMLSelectElement>,
+  'multiple'
+> &
   FieldExtras & { options?: SelectOption[] };
 
 export const Select = forwardRef<HTMLSelectElement, SelectProps>(
@@ -40,6 +43,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
         aria-describedby={cx(ids.describedBy, describedBy) || undefined}
         aria-invalid={error != null || undefined}
         {...props}
+        multiple={false}
       >
         {options?.map((option) => (
           <option

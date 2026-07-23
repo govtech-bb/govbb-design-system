@@ -5,6 +5,35 @@ import { describe, expect, it, vi } from 'vitest';
 import { FileUpload } from './file-upload';
 
 describe('FileUpload', () => {
+  it('self-composes a labelled field with hint text', () => {
+    const { container } = render(
+      <FileUpload
+        label="Proof of address"
+        hint="Upload a recent utility bill"
+        name="proof"
+      />,
+    );
+    const input = screen.getByLabelText('Proof of address');
+    const hint = screen.getByText('Upload a recent utility bill');
+    expect(input.id).toBe('proof');
+    expect(input.getAttribute('aria-describedby')).toBe(hint.id);
+    expect(container.querySelector('.govbb-form-group')).not.toBeNull();
+  });
+
+  it('self-composes an error and marks the input invalid', () => {
+    render(
+      <FileUpload
+        label="Proof of address"
+        error="Select a file"
+        name="proof"
+      />,
+    );
+    const input = screen.getByLabelText('Proof of address');
+    const error = screen.getByText('Select a file');
+    expect(input.getAttribute('aria-describedby')).toBe(error.id);
+    expect(input.getAttribute('aria-invalid')).toBe('true');
+  });
+
   it('lists files and calls onRemove', () => {
     const onRemove = vi.fn();
     render(
@@ -54,6 +83,8 @@ describe('FileUpload', () => {
 it('has no axe violations', async () => {
   const { container } = render(
     <FileUpload
+      label="Proof of address"
+      hint="Attach a .pdf file"
       subtitle="Attach a .pdf file"
       maxSize="Maximum size: 25MB"
       files={[{ name: 'proof.pdf', onRemove: () => {} }]}

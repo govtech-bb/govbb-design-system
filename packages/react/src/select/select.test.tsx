@@ -43,6 +43,18 @@ describe('Select', () => {
     expect(screen.getAllByRole('option')).toHaveLength(1);
     expect(screen.getByRole('option', { name: 'A' })).toBeDefined();
   });
+
+  it('does not allow multiple selection', () => {
+    render(
+      // @ts-expect-error multiple-choice answers use CheckboxGroup.
+      <Select aria-label="Roles" multiple>
+        <option value="admin">Admin</option>
+      </Select>,
+    );
+    expect((screen.getByRole('combobox') as HTMLSelectElement).multiple).toBe(
+      false,
+    );
+  });
 });
 
 it('has no axe violations', async () => {

@@ -6,6 +6,28 @@ import { describe, expect, it, vi } from 'vitest';
 import { NumberInput } from './number-input';
 
 describe('NumberInput', () => {
+  it('self-composes a labelled field with hint text', () => {
+    const { container } = render(
+      <NumberInput label="Quantity" hint="Between 1 and 10" name="quantity" />,
+    );
+    const input = screen.getByRole('spinbutton', { name: 'Quantity' });
+    const hint = screen.getByText('Between 1 and 10');
+    expect(input.id).toBe('quantity');
+    expect(input.getAttribute('aria-describedby')).toBe(hint.id);
+    expect(container.querySelector('.govbb-form-group')).not.toBeNull();
+    expect(screen.getByRole('group', { name: 'Quantity' })).toBeDefined();
+  });
+
+  it('self-composes an error and marks the input invalid', () => {
+    render(
+      <NumberInput label="Quantity" error="Enter a quantity" name="quantity" />,
+    );
+    const input = screen.getByRole('spinbutton', { name: 'Quantity' });
+    const error = screen.getByText('Enter a quantity');
+    expect(input.getAttribute('aria-describedby')).toBe(error.id);
+    expect(input.getAttribute('aria-invalid')).toBe('true');
+  });
+
   it('steps and fires onChange from the stepper buttons', () => {
     function Qty() {
       const [value, setValue] = useState('1');

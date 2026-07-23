@@ -51,24 +51,17 @@ group: Form elements
 ```
 
 ```tsx
-import { FormGroup, Hint, Label, NumberInput } from '@govtech-bb/react';
+import { NumberInput } from '@govtech-bb/react';
 
-<FormGroup>
-  <Label id="quantity-label" htmlFor="quantity">
-    Quantity
-  </Label>
-  <Hint id="quantity-hint">Between 1 and 10</Hint>
-  <NumberInput
-    id="quantity"
-    name="quantity"
-    labelId="quantity-label"
-    min={1}
-    max={10}
-    step={1}
-    defaultValue={1}
-    aria-describedby="quantity-hint"
-  />
-</FormGroup>;
+<NumberInput
+  label="Quantity"
+  hint="Between 1 and 10"
+  name="quantity"
+  min={1}
+  max={10}
+  step={1}
+  defaultValue={1}
+/>;
 ```
 
 The Number Input component lets users enter a small whole number, such as a
@@ -186,24 +179,14 @@ quantity between 1 and 10".
 ```
 
 ```tsx
-import { ErrorMessage, FormGroup, Label, NumberInput } from '@govtech-bb/react';
+import { NumberInput } from '@govtech-bb/react';
 
-<FormGroup>
-  <Label id="quantity-label" htmlFor="quantity">
-    Quantity
-  </Label>
-  <ErrorMessage id="quantity-error" role="alert">
-    Enter a quantity between 1 and 10
-  </ErrorMessage>
-  <NumberInput
-    id="quantity"
-    name="quantity"
-    labelId="quantity-label"
-    min={1}
-    max={10}
-    step={1}
-    aria-invalid
-    aria-describedby="quantity-error"
-  />
-</FormGroup>;
+<NumberInput
+  label="Quantity"
+  error="Enter a quantity between 1 and 10"
+  name="quantity"
+  min={1}
+  max={10}
+  step={1}
+/>;
 ```

@@ -41,6 +41,7 @@ export function FieldShell({
   hint,
   error,
   fieldId,
+  labelId,
   hintId,
   errorId,
   children,
@@ -49,13 +50,18 @@ export function FieldShell({
   hint?: ReactNode;
   error?: ReactNode;
   fieldId: string;
+  labelId?: string;
   hintId?: string;
   errorId?: string;
   children: ReactNode;
 }) {
   return (
     <FormGroup>
-      {label != null && <Label htmlFor={fieldId}>{label}</Label>}
+      {label != null && (
+        <Label id={labelId} htmlFor={fieldId}>
+          {label}
+        </Label>
+      )}
       {hint != null && error == null && <Hint id={hintId}>{hint}</Hint>}
       {error != null && (
         <ErrorMessage id={errorId} role="alert">

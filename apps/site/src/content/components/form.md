@@ -73,8 +73,9 @@ states and validation, see the [Form fields foundation](/styles/form-fields/).
 
 ### Keep supporting text in a predictable order
 
-Show the label first, then hint text, the control and any error message. Connect
-the hint and error to the control with `aria-describedby`.
+Show the label first, then either hint text or an error message, followed by the
+control. When invalid, the error replaces the hint and `aria-describedby`
+points at the error.
 
 ### Ask only what the service needs
 

@@ -1,35 +1,39 @@
 import { cx } from 'class-variance-authority';
 import {
   forwardRef,
-  useId,
   useRef,
   useState,
   type InputHTMLAttributes,
   type ReactNode,
 } from 'react';
+import { FieldShell, useFieldIds, type FieldExtras } from '../form/field';
 
 /*
  * Dropzone + chosen-file list. Stateless: the consumer owns the file list
  * (from the input's onChange) and passes it back via `files`.
  */
 
-export interface FileUploadProps extends Omit<
+export type FileUploadProps = Omit<
   InputHTMLAttributes<HTMLInputElement>,
   'title' | 'type'
-> {
-  title?: ReactNode;
-  subtitle?: ReactNode;
-  buttonLabel?: ReactNode;
-  /** e.g. "Maximum size: 25MB". */
-  maxSize?: ReactNode;
-  files?: Array<{ name: string; onRemove?: () => void }>;
-  removeLabel?: ReactNode;
-}
+> &
+  FieldExtras & {
+    title?: ReactNode;
+    subtitle?: ReactNode;
+    buttonLabel?: ReactNode;
+    /** e.g. "Maximum size: 25MB". */
+    maxSize?: ReactNode;
+    files?: Array<{ name: string; onRemove?: () => void }>;
+    removeLabel?: ReactNode;
+  };
 
 /** Ref goes to the <input type="file">, not the wrapping div. */
 export const FileUpload = forwardRef<HTMLInputElement, FileUploadProps>(
   function FileUpload(
     {
+      label,
+      hint,
+      error,
       title = 'Upload a file',
       subtitle,
       buttonLabel = 'Choose file',
@@ -37,13 +41,23 @@ export const FileUpload = forwardRef<HTMLInputElement, FileUploadProps>(
       files,
       removeLabel = 'Remove',
       id,
+      name,
       className,
+      'aria-describedby': describedBy,
+      'aria-labelledby': labelledBy,
+      'aria-invalid': ariaInvalid,
       ...props
     },
     ref,
   ) {
-    const autoId = useId();
-    const inputId = id ?? autoId;
+    const ids = useFieldIds(
+      id ?? name,
+      hint != null && error == null,
+      error != null,
+    );
+    const composed = label != null || hint != null || error != null;
+    const inputId = ids.fieldId;
+    const labelId = label != null ? `${ids.fieldId}-label` : undefined;
     const inputRef = useRef<HTMLInputElement | null>(null);
     const [announcement, setAnnouncement] = useState('');
     function handleRemove(name: string, onRemove: () => void) {
@@ -51,7 +65,7 @@ export const FileUpload = forwardRef<HTMLInputElement, FileUploadProps>(
       setAnnouncement(`${name} removed`);
       onRemove();
     }
-    return (
+    const upload = (
       <div className="govbb-file-upload">
         <label className="govbb-file-upload__dropzone" htmlFor={inputId}>
           <span className="govbb-file-upload__info">
@@ -71,6 +85,10 @@ export const FileUpload = forwardRef<HTMLInputElement, FileUploadProps>(
               className,
             )}
             id={inputId}
+            name={name}
+            aria-describedby={cx(ids.describedBy, describedBy) || undefined}
+            aria-labelledby={cx(labelId, labelledBy) || undefined}
+            aria-invalid={error != null ? true : ariaInvalid}
             {...props}
             type="file"
           />
@@ -115,6 +133,12 @@ export const FileUpload = forwardRef<HTMLInputElement, FileUploadProps>(
           {announcement}
         </span>
       </div>
+    );
+    if (!composed) return upload;
+    return (
+      <FieldShell {...{ label, hint, error, labelId, ...ids }}>
+        {upload}
+      </FieldShell>
     );
   },
 );
