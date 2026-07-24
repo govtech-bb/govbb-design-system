@@ -78,7 +78,9 @@ knows.
 
 Never use placeholder text instead of a label. It disappears after typing,
 looks like a prefilled answer, and is commonly rendered with weak contrast. If
-an example is important, put it in persistent hint text.
+an example is important, put it in persistent hint text. See
+[why we don't use placeholder text](/design-log/placeholder-text/) for the full
+reasoning.
 
 ## Width and layout
 
