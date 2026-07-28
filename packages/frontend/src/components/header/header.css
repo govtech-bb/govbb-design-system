@@ -1,72 +1,62 @@
 /* Header — the gold site header holding the gov.bb logo (the link home),
    optional consumer-provided controls, and the site menu. Renders on every
-   page, directly below the official banner. Markup:
-   <header class="govbb-header"> wrapping
-   <div class="govbb-width-container govbb-header__inner"> (logo link first,
-   then optional children and a hidden Menu control inside __controls), followed
-   by <nav class="govbb-header__nav"> holding consumer-provided content in a
-   <div class="govbb-width-container govbb-header__nav-inner">.
-   The header module (data-govbb-module="header") reveals the toggle after
-   enhancement. CSS collapses the nav behind it on mobile; from tablet widths
-   up the navigation remains visible as an inline row. */
+   page, directly below the official banner. The logo, controls, and nav share
+   one width container so they form one row when space permits. On narrower
+   containers the nav becomes a full-width tinted panel below the logo/Menu
+   row. The header module (data-govbb-module="header") reveals the toggle after
+   enhancement; without JavaScript, the navigation remains available. */
 
 .govbb-header {
   color: var(--govbb-color-ink);
   background: var(--govbb-color-brand-accent);
+  container-type: inline-size;
 }
 
 .govbb-header__inner {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
-  justify-content: space-between; /* logo left, menu/controls right (Figma) */
-  gap: var(--govbb-space-s);
+  column-gap: var(--govbb-space-s);
   padding-block: var(--govbb-space-s);
 }
 
 .govbb-header__home {
-  flex: none;
+  min-inline-size: 0;
+  justify-self: start;
 }
 
 .govbb-header__logo {
   display: block;
+  max-inline-size: 100%;
   width: auto;
   height: 1.5rem; /* 24px */
 }
 
 .govbb-header__controls {
   display: flex;
-  flex: 1 1 auto;
+  grid-column: 2;
+  grid-row: 1;
   gap: var(--govbb-space-s);
   align-items: center;
   justify-content: flex-end;
   min-width: 0;
 }
 
-/* Menu toggle — the disclosure control for the __nav (the Figma collapsed
-   state: semibold ink "Menu" at the right of the gold band). Ships [hidden]
-   for the no-JS baseline, where the nav panel simply stays open; JS reveals
-   it. No display is set here, so the hidden attribute alone controls it. */
+/* Layout only — visual styling and interaction colours come from the
+   govbb-button--text variant. */
 .govbb-header__toggle {
   flex: none;
-  padding: 0;
-  border: 0;
-  font-family: inherit;
-  font-size: var(--govbb-font-size-caption);
-  font-weight: 600;
-  line-height: var(--govbb-line-height-base);
-  color: var(--govbb-color-ink);
-  cursor: pointer;
-  background: none;
+  min-block-size: 2.75rem;
 }
 
-.govbb-header__toggle:focus-visible {
-  outline: 4px solid var(--govbb-color-focus);
-  outline-offset: 2px;
-}
-
-/* Nav — a full-width blue-tint band below the gold bar. The width container
-   keeps its content aligned with the logo above. */
+/* The mobile panel bleeds through the width-container gutter while its content
+   remains aligned with the logo. The negative block-end margin consumes the
+   container's bottom padding so the tint ends flush with the header. */
 .govbb-header__nav {
+  grid-column: 1 / -1;
+  margin-block: var(--govbb-space-s) calc(-1 * var(--govbb-space-s));
+  margin-inline: calc(-1 * var(--govbb-page-gutter));
+  padding-inline: var(--govbb-page-gutter);
   font-size: var(--govbb-font-size-body);
   background: var(--govbb-blue-10);
 }
@@ -76,26 +66,30 @@
 }
 
 .govbb-header__nav .govbb-button {
+  align-self: stretch;
+  order: -1;
   font-weight: 400;
 }
 
 .govbb-header__nav-inner {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: stretch;
   gap: var(--govbb-space-s);
   padding-block: var(--govbb-space-s);
 }
 
-@media (--mobile) {
+@container (width < 50rem) {
   .govbb-header[data-govbb-header-enhanced]
     .govbb-header__nav[data-expanded='false'] {
     display: none;
   }
 }
 
-@media (--tablet) {
+@container (width >= 50rem) {
   .govbb-header__inner {
+    display: flex;
+    gap: var(--govbb-space-xm);
     padding-block: var(--govbb-space-xm);
   }
 
@@ -103,13 +97,36 @@
     height: 2.1875rem; /* 35px */
   }
 
+  .govbb-header__controls {
+    margin-inline-start: auto;
+  }
+
   .govbb-header__toggle {
     display: none;
+  }
+
+  .govbb-header__nav {
+    margin: 0;
+    padding: 0;
+    background: transparent;
   }
 
   .govbb-header__nav-inner {
     flex-direction: row;
     align-items: center;
     gap: var(--govbb-space-l);
+    padding-block: 0;
+  }
+
+  /* Desktop nav links read as menu items, not body links: ink, no underline
+     until interaction (same treatment as the GOV.UK header's nav links). */
+  .govbb-header__nav .govbb-link:not(:hover, :active, :focus-visible) {
+    color: var(--govbb-color-ink);
+    text-decoration: none;
+  }
+
+  .govbb-header__nav .govbb-button {
+    align-self: auto;
+    order: 0;
   }
 }

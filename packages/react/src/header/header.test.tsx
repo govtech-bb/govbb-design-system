@@ -58,6 +58,9 @@ describe('Header', () => {
       name: 'Primary navigation',
     });
     expect(nav.classList.contains('govbb-header__nav')).toBe(true);
+    expect(nav.parentElement?.classList.contains('govbb-header__inner')).toBe(
+      true,
+    );
     const link = screen.getByRole('link', { name: 'Services' });
     expect(link.getAttribute('href')).toBe('/services');
   });
@@ -90,6 +93,8 @@ describe('Header', () => {
     const toggle = screen.getByRole('button', { name: 'Menu' });
     // The mount effect has run, so the toggle is revealed. CSS uses the
     // enhanced and expanded data attributes to collapse the nav only on mobile.
+    expect(toggle.classList.contains('govbb-button')).toBe(true);
+    expect(toggle.classList.contains('govbb-button--text')).toBe(true);
     expect(toggle.hasAttribute('hidden')).toBe(false);
     expect(toggle.getAttribute('aria-expanded')).toBe('false');
     const nav = container.querySelector('.govbb-header__nav')!;

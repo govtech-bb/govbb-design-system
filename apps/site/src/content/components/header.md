@@ -1,7 +1,7 @@
 ---
 title: Header
 description: Use the header to show users they are on gov.bb and give them a route back to the homepage.
-lede: The gold band at the top of every page, holding the gov.bb logo.
+lede: The gold band at the top of every page, holding the gov.bb logo and primary navigation.
 group: Page furniture
 ---
 
@@ -18,17 +18,23 @@ group: Page furniture
       />
     </a>
     <div class="govbb-header__controls">
-      <button class="govbb-header__toggle" type="button" hidden>Menu</button>
+      <button
+        class="govbb-button govbb-button--text govbb-header__toggle"
+        type="button"
+        hidden
+      >
+        Menu
+      </button>
     </div>
+    <nav class="govbb-header__nav" aria-label="Primary navigation">
+      <div class="govbb-header__nav-inner">
+        <a class="govbb-link govbb-link--no-visited" href="/services">
+          Services
+        </a>
+        <a class="govbb-button" href="/assistant">Ask Assistant</a>
+      </div>
+    </nav>
   </div>
-  <nav class="govbb-header__nav" aria-label="Primary navigation">
-    <div class="govbb-width-container govbb-header__nav-inner">
-      <a class="govbb-link govbb-link--no-visited" href="/services">
-        Services
-      </a>
-      <a class="govbb-button" href="/assistant">Ask Assistant</a>
-    </div>
-  </nav>
 </header>
 ```
 
@@ -56,9 +62,12 @@ image ships in the `@govtech-bb/frontend` package under `assets/images/`. Host
 it with your service and point `src` at your copy.
 
 Pass consumer-owned navigation content through `nav`. At tablet and desktop
-widths the navigation is visible in a horizontal row. On mobile, the Header
-places it behind a Menu disclosure after JavaScript loads. Without JavaScript,
-the navigation remains visible so its links are always available.
+widths the logo and navigation share one horizontal row. On mobile, the
+Header places the navigation in a tinted panel behind a Menu disclosure after
+JavaScript loads. A button in the navigation stretches across the mobile panel
+and appears before regular links while retaining its supplied order on larger
+screens. Without JavaScript, the navigation remains visible so its links are
+always available.
 
 The Header owns the navigation landmark, responsive disclosure state and
 accessibility wiring, but does not prescribe the links or controls inside it.

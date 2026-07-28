@@ -8,6 +8,7 @@ import {
   useId,
   useState,
 } from 'react';
+import { Button } from '../button/button';
 import type { LinkComponent } from '../link/link';
 
 export interface HeaderProps extends HTMLAttributes<HTMLElement> {
@@ -72,8 +73,9 @@ export const Header = forwardRef<HTMLElement, HeaderProps>(function Header(
           <div className="govbb-header__controls">
             {content}
             {hasNavigation ? (
-              <button
+              <Button
                 className="govbb-header__toggle"
+                variant="text"
                 type="button"
                 hidden={!enhanced}
                 aria-expanded={expanded}
@@ -81,23 +83,21 @@ export const Header = forwardRef<HTMLElement, HeaderProps>(function Header(
                 onClick={() => setExpanded((open) => !open)}
               >
                 {expanded ? closeMenuLabel : menuLabel}
-              </button>
+              </Button>
             ) : null}
           </div>
         ) : null}
+        {hasNavigation ? (
+          <nav
+            id={navId}
+            className="govbb-header__nav"
+            aria-label={navAriaLabel}
+            data-expanded={expanded}
+          >
+            <div className="govbb-header__nav-inner">{navigation}</div>
+          </nav>
+        ) : null}
       </div>
-      {hasNavigation ? (
-        <nav
-          id={navId}
-          className="govbb-header__nav"
-          aria-label={navAriaLabel}
-          data-expanded={expanded}
-        >
-          <div className="govbb-width-container govbb-header__nav-inner">
-            {navigation}
-          </div>
-        </nav>
-      ) : null}
     </header>
   );
 });
