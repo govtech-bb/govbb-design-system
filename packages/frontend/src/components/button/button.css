@@ -109,6 +109,13 @@
   }
 }
 
+/* forced-colors drops box-shadow, so the inset outline needs a real border */
+@media (forced-colors: active) {
+  .govbb-button--tertiary {
+    border: 2px solid ButtonBorder;
+  }
+}
+
 /* Negative (danger) — only primary and text use it */
 .govbb-button--negative {
   color: var(--govbb-color-surface);
