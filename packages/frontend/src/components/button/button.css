@@ -102,14 +102,8 @@
   text-decoration: underline;
   text-underline-offset: 2px;
 
-  &:hover {
-    color: var(--govbb-color-brand-accent);
-    background: transparent;
-    box-shadow: none;
-  }
-
-  &:active {
-    color: var(--govbb-yellow-00);
+  &:is(:hover, :active) {
+    color: var(--govbb-color-tertiary);
     background: transparent;
     box-shadow: none;
   }
@@ -138,13 +132,7 @@
     color: var(--govbb-color-error);
     background: transparent;
 
-    &:hover {
-      color: var(--govbb-red-100);
-      background: transparent;
-      box-shadow: none;
-    }
-
-    &:active {
+    &:is(:hover, :active) {
       color: var(--govbb-color-error);
       background: transparent;
       box-shadow: none;
