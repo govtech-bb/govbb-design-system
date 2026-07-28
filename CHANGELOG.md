@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.0-alpha.20 (2026-07-28)
+
+### header
+- Restore responsive navigation by @AaronHarris
 ## 1.0.0-alpha.19 (2026-07-28)
 
 ### format
@@ -8,6 +12,7 @@
 ### General
 - Push annotated release tags and mark alpha releases as prereleases by @AaronHarris
 - **Breaking:** Align component APIs with existing consumers by @AaronHarris
+- Release v1.0.0-alpha.19 by @github-actions[bot]
 ## 1.0.0-alpha.18 (2026-07-28)
 
 ### back-button
