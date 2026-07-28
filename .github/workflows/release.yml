@@ -83,7 +83,7 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add packages/frontend/package.json packages/react/package.json CHANGELOG.md
           git commit -m "chore: release v$RELEASE_VERSION"
-          git tag "v$RELEASE_VERSION"
+          git tag -a "v$RELEASE_VERSION" -m "v$RELEASE_VERSION"
           git push origin main --follow-tags
 
       - name: Publish to npm (OIDC)
@@ -108,6 +108,9 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           RELEASE_VERSION: ${{ steps.release.outputs.version }}
+          NPM_TAG: ${{ steps.release.outputs.npm_tag }}
         run: |
           pnpm exec git-cliff --latest --strip header > release-notes.md
-          gh release create "v$RELEASE_VERSION" --title "v$RELEASE_VERSION" --notes-file release-notes.md
+          args=(--title "v$RELEASE_VERSION" --notes-file release-notes.md)
+          if [[ "$NPM_TAG" == alpha ]]; then args+=(--prerelease); fi
+          gh release create "v$RELEASE_VERSION" "${args[@]}"
