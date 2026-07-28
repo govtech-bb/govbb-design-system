@@ -6,6 +6,10 @@ import {
   type ElementType,
 } from 'react';
 import type { LinkComponent } from '../link/link';
+import {
+  resolveExternalLinkProps,
+  type ExternalLinkOptions,
+} from '../link/external';
 
 /*
  * cva maps props to the govbb-button classes; the CSS owns how they look. This
@@ -50,7 +54,10 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 );
 
 export interface LinkButtonProps
-  extends AnchorHTMLAttributes<HTMLAnchorElement>, VariantProps<typeof button> {
+  extends
+    AnchorHTMLAttributes<HTMLAnchorElement>,
+    VariantProps<typeof button>,
+    ExternalLinkOptions {
   linkComponent?: LinkComponent;
 }
 
@@ -61,14 +68,30 @@ export interface LinkButtonProps
  */
 export const LinkButton = forwardRef<HTMLAnchorElement, LinkButtonProps>(
   function LinkButton(
-    { variant, negative, inverse, linkComponent = 'a', className, ...props },
+    {
+      variant,
+      negative,
+      inverse,
+      external,
+      linkComponent = 'a',
+      className,
+      rel,
+      target,
+      ...props
+    },
     ref,
   ) {
     const Anchor: ElementType = linkComponent;
+    const externalProps = resolveExternalLinkProps({
+      external,
+      rel,
+      target,
+    });
     return (
       <Anchor
         ref={ref}
         className={button({ variant, negative, inverse, className })}
+        {...externalProps}
         {...props}
       />
     );

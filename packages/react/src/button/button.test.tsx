@@ -52,6 +52,17 @@ describe('LinkButton', () => {
         .getAttribute('data-router'),
     ).not.toBeNull();
   });
+
+  it('adds safe defaults for an external destination', () => {
+    render(
+      <LinkButton href="https://example.org/start" external>
+        Start externally
+      </LinkButton>,
+    );
+    const link = screen.getByRole('link', { name: 'Start externally' });
+    expect(link.getAttribute('target')).toBe('_blank');
+    expect(link.getAttribute('rel')).toBe('noopener noreferrer');
+  });
 });
 
 it('has no axe violations', async () => {

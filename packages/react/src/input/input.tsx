@@ -11,70 +11,72 @@ export type InputProps = InputHTMLAttributes<HTMLInputElement> & FieldExtras;
 export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
   {
     label,
-    hint,
+    description,
     error,
     id,
     className,
     'aria-describedby': describedBy,
+    'aria-invalid': ariaInvalid,
     ...props
   },
   ref,
 ) {
-  const ids = useFieldIds(
-    id ?? props.name,
-    hint != null && error == null,
-    error != null,
-  );
-  const composed = label != null || hint != null || error != null;
+  const ids = useFieldIds(id ?? props.name, description != null, error != null);
+  const composed = label != null || description != null || error != null;
   const input = (
     <input
       ref={ref}
       id={composed ? ids.fieldId : id}
       className={cx('govbb-input', className)}
       aria-describedby={cx(ids.describedBy, describedBy) || undefined}
-      aria-invalid={error != null || undefined}
+      aria-invalid={error != null ? true : ariaInvalid}
       {...props}
     />
   );
   if (!composed) return input;
-  return <FieldShell {...{ label, hint, error, ...ids }}>{input}</FieldShell>;
+  return (
+    <FieldShell {...{ label, description, error, ...ids }}>{input}</FieldShell>
+  );
 });
 
-export type TextareaProps = TextareaHTMLAttributes<HTMLTextAreaElement> &
+export type TextAreaProps = TextareaHTMLAttributes<HTMLTextAreaElement> &
   FieldExtras;
 
-export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
-  function Textarea(
+export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
+  function TextArea(
     {
       label,
-      hint,
+      description,
       error,
       id,
       className,
       'aria-describedby': describedBy,
+      'aria-invalid': ariaInvalid,
       ...props
     },
     ref,
   ) {
     const ids = useFieldIds(
       id ?? props.name,
-      hint != null && error == null,
+      description != null,
       error != null,
     );
-    const composed = label != null || hint != null || error != null;
+    const composed = label != null || description != null || error != null;
     const textarea = (
       <textarea
         ref={ref}
         id={composed ? ids.fieldId : id}
         className={cx('govbb-textarea', className)}
         aria-describedby={cx(ids.describedBy, describedBy) || undefined}
-        aria-invalid={error != null || undefined}
+        aria-invalid={error != null ? true : ariaInvalid}
         {...props}
       />
     );
     if (!composed) return textarea;
     return (
-      <FieldShell {...{ label, hint, error, ...ids }}>{textarea}</FieldShell>
+      <FieldShell {...{ label, description, error, ...ids }}>
+        {textarea}
+      </FieldShell>
     );
   },
 );

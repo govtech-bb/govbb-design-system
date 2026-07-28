@@ -50,6 +50,14 @@ export const Link: Story = {
   render: () => <LinkButton href="#start">Start now</LinkButton>,
 };
 
+export const ExternalLink: Story = {
+  render: () => (
+    <LinkButton href="https://www.gov.bb" external>
+      Start on an external service
+    </LinkButton>
+  ),
+};
+
 export const Clicked: Story = {
   play: async ({ args, canvas, userEvent }) => {
     await userEvent.click(canvas.getByRole('button', { name: 'Continue' }));

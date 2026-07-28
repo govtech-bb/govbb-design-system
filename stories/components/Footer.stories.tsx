@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { Footer, FooterLink } from '../../packages/react/src/footer/footer';
+import { Footer } from '../../packages/react/src/footer/footer';
 
 const meta = {
   title: 'Components/Footer',
@@ -9,14 +9,12 @@ const meta = {
   args: {
     coatSrc: '/assets/images/govbb-crest.svg',
     copy: '© 2026 Government of Barbados',
+    links: [
+      { href: '#privacy', label: 'Privacy' },
+      { href: '#cookies', label: 'Cookies' },
+      { href: '#accessibility', label: 'Accessibility' },
+    ],
   },
-  render: (args) => (
-    <Footer {...args}>
-      <FooterLink href="#privacy">Privacy</FooterLink>
-      <FooterLink href="#cookies">Cookies</FooterLink>
-      <FooterLink href="#accessibility">Accessibility</FooterLink>
-    </Footer>
-  ),
 } satisfies Meta<typeof Footer>;
 export default meta;
 type Story = StoryObj<typeof meta>;

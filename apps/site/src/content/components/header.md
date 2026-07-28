@@ -8,23 +8,41 @@ group: Page furniture
 ## Preview
 
 ```html title="Header"
-<header class="govbb-header" style="width: 100%">
+<header class="govbb-header" data-govbb-module="header" style="width: 100%">
   <div class="govbb-width-container govbb-header__inner">
-    <a href="/">
+    <a class="govbb-header__home" href="/">
       <img
         class="govbb-header__logo"
         src="/assets/images/govbb-logo.svg"
         alt="gov.bb"
       />
     </a>
+    <div class="govbb-header__controls">
+      <button class="govbb-header__toggle" type="button" hidden>Menu</button>
+    </div>
   </div>
+  <nav class="govbb-header__nav" aria-label="Primary navigation">
+    <div class="govbb-width-container govbb-header__nav-inner">
+      <a class="govbb-link govbb-link--no-visited" href="/services">
+        Services
+      </a>
+    </div>
+  </nav>
 </header>
 ```
 
 ```tsx
-import { Header } from '@govtech-bb/react';
+import { Header, Link } from '@govtech-bb/react';
 
-<Header logoSrc="/assets/images/govbb-logo.svg" />;
+<Header
+  logoSrc="/assets/images/govbb-logo.svg"
+  navAriaLabel="Primary navigation"
+  nav={
+    <Link href="/services" noVisited>
+      Services
+    </Link>
+  }
+/>;
 ```
 
 The Header sits at the top of every page, directly below the
@@ -32,6 +50,12 @@ The Header sits at the top of every page, directly below the
 links back to the homepage so users always have a way to start again. The logo
 image ships in the `@govtech-bb/frontend` package under `assets/images/`. Host
 it with your service and point `src` at your copy.
+
+Pass consumer-owned menu content through `nav`. The Header owns the navigation
+landmark, menu disclosure state and accessibility wiring, but does not
+prescribe the links or controls inside it. It omits the menu control and
+navigation landmark when `nav` is empty. Use `children` for optional custom
+content in the gold top row.
 
 ## Usage
 
@@ -43,7 +67,7 @@ it with your service and point `src` at your copy.
     </h3>
     <ul>
       <li>Use the header at the top of every page in a gov.bb website or service.</li>
-      <li>Use it to identify the service and provide access to its most important sections.</li>
+      <li>Use it to identify gov.bb and provide access to the site's most important sections.</li>
     </ul>
   </section>
   <section class="govbb-usage-guidance__item" aria-labelledby="header-when-not-to-use">
@@ -68,43 +92,39 @@ the content it controls.
 
 ### Preserve the same identity at every width
 
-Keep the service name visible and make the mobile menu operable by keyboard and
-assistive technology. Do not use the logo as the page's `h1` except where it is
-the genuine homepage heading.
+Keep the gov.bb identity visible and make the menu operable by keyboard and
+assistive technology. Do not use the logo as the page's `h1`.
 
-## Adding a search
+## Client-side routing
 
-The header can hold a site-wide search. Use the borderless variant of the
-search component so it sits flush on the gold band.
+An href-compatible router component can render the logo's home link. Render
+the same router's links directly inside `nav`:
 
-```html title="Header with search"
-<header class="govbb-header" style="width: 100%">
-  <div class="govbb-width-container govbb-header__inner">
-    <a href="/">
-      <img
-        class="govbb-header__logo"
-        src="/assets/images/govbb-logo.svg"
-        alt="gov.bb"
-      />
-    </a>
-    <form class="govbb-search govbb-search--borderless" action="/search">
-      <label class="govbb-visually-hidden" for="site-search">Search</label>
-      <input
-        class="govbb-search__input"
-        id="site-search"
-        name="q"
-        type="search"
-      />
-      <button class="govbb-search__button" type="submit">Search</button>
-    </form>
-  </div>
-</header>
+```html title="Header links rendered by a client-side router"
+<a class="govbb-header__home" href="/">
+  <img
+    class="govbb-header__logo"
+    src="/assets/images/govbb-logo.svg"
+    alt="gov.bb"
+  />
+</a>
+<a class="govbb-link govbb-link--no-visited" href="/services"> Services </a>
 ```
 
 ```tsx
-import { Header, Search } from '@govtech-bb/react';
+import NextLink from 'next/link';
 
-<Header logoSrc="/assets/images/govbb-logo.svg">
-  <Search borderless action="/search" />
-</Header>;
+<Header
+  logoSrc="/assets/images/govbb-logo.svg"
+  linkComponent={NextLink}
+  nav={
+    <NextLink className="govbb-link govbb-link--no-visited" href="/services">
+      Services
+    </NextLink>
+  }
+/>;
 ```
+
+If a router uses a destination prop other than `href`, provide a small
+href-compatible adapter for the logo's `linkComponent`. Menu content can use
+that router's components directly.

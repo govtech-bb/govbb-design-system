@@ -80,6 +80,29 @@ describes the action it performs.
 Use the **secondary** button for actions that sit alongside the primary one but
 are less important. Use the **tertiary** button for the least prominent actions.
 
+Use `LinkButton` when navigation is the primary call to action. It remains a
+semantic link and also supports `external` when a separate service must open
+in a new tab.
+
+```html title="External link styled as a button"
+<a
+  class="govbb-button"
+  href="https://www.gov.bb/"
+  target="_blank"
+  rel="noopener noreferrer"
+>
+  Start on an external service
+</a>
+```
+
+```tsx
+import { LinkButton } from '@govtech-bb/react';
+
+<LinkButton href="https://www.gov.bb/" external>
+  Start on an external service
+</LinkButton>;
+```
+
 ## Disabled buttons
 
 Avoid disabling buttons wherever possible. A disabled button gives the user no

@@ -5,6 +5,7 @@ import {
   type ElementType,
   type ReactNode,
 } from 'react';
+import { resolveExternalLinkProps, type ExternalLinkOptions } from './external';
 
 const link = cva('govbb-link', {
   variants: {
@@ -29,21 +30,39 @@ export type LinkComponent = ElementType<{
 }>;
 
 export interface LinkProps
-  extends AnchorHTMLAttributes<HTMLAnchorElement>, VariantProps<typeof link> {
+  extends
+    AnchorHTMLAttributes<HTMLAnchorElement>,
+    VariantProps<typeof link>,
+    ExternalLinkOptions {
   /** Swap the underlying `<a>` for a router link component. */
   linkComponent?: LinkComponent;
 }
 
 export const Link = forwardRef<HTMLAnchorElement, LinkProps>(function Link(
-  { noUnderline, noVisited, linkComponent = 'a', className, ...props },
+  {
+    noUnderline,
+    noVisited,
+    external,
+    linkComponent = 'a',
+    className,
+    rel,
+    target,
+    ...props
+  },
   ref,
 ) {
   // Widened so the optional `href` from AnchorHTMLAttributes can spread.
   const Anchor: ElementType = linkComponent;
+  const externalProps = resolveExternalLinkProps({
+    external,
+    rel,
+    target,
+  });
   return (
     <Anchor
       ref={ref}
       className={link({ noUnderline, noVisited, className })}
+      {...externalProps}
       {...props}
     />
   );

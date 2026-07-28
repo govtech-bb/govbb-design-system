@@ -18,30 +18,31 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
   function Select(
     {
       label,
-      hint,
+      description,
       error,
       options,
       id,
       className,
       children,
       'aria-describedby': describedBy,
+      'aria-invalid': ariaInvalid,
       ...props
     },
     ref,
   ) {
     const ids = useFieldIds(
       id ?? props.name,
-      hint != null && error == null,
+      description != null,
       error != null,
     );
-    const composed = label != null || hint != null || error != null;
+    const composed = label != null || description != null || error != null;
     const select = (
       <select
         ref={ref}
         id={composed ? ids.fieldId : id}
         className={cx('govbb-select', className)}
         aria-describedby={cx(ids.describedBy, describedBy) || undefined}
-        aria-invalid={error != null || undefined}
+        aria-invalid={error != null ? true : ariaInvalid}
         {...props}
         multiple={false}
       >
@@ -58,7 +59,9 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
     );
     if (!composed) return select;
     return (
-      <FieldShell {...{ label, hint, error, ...ids }}>{select}</FieldShell>
+      <FieldShell {...{ label, description, error, ...ids }}>
+        {select}
+      </FieldShell>
     );
   },
 );

@@ -23,7 +23,7 @@ group: Ask users for
 
 <div class="govbb-form-group">
   <label class="govbb-label" for="telephone">Telephone number</label>
-  <span class="govbb-hint" id="telephone-hint">
+  <span class="govbb-hint" id="telephone-description">
     For a Barbados number, include the area code, like 246 123 4567
   </span>
   <input
@@ -32,7 +32,7 @@ group: Ask users for
     name="telephone"
     type="tel"
     autocomplete="tel"
-    aria-describedby="telephone-hint"
+    aria-describedby="telephone-description"
   />
 </div>
 ```

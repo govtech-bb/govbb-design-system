@@ -32,7 +32,7 @@ export const FileUpload = forwardRef<HTMLInputElement, FileUploadProps>(
   function FileUpload(
     {
       label,
-      hint,
+      description,
       error,
       title = 'Upload a file',
       subtitle,
@@ -50,12 +50,8 @@ export const FileUpload = forwardRef<HTMLInputElement, FileUploadProps>(
     },
     ref,
   ) {
-    const ids = useFieldIds(
-      id ?? name,
-      hint != null && error == null,
-      error != null,
-    );
-    const composed = label != null || hint != null || error != null;
+    const ids = useFieldIds(id ?? name, description != null, error != null);
+    const composed = label != null || description != null || error != null;
     const inputId = ids.fieldId;
     const labelId = label != null ? `${ids.fieldId}-label` : undefined;
     const inputRef = useRef<HTMLInputElement | null>(null);
@@ -136,7 +132,7 @@ export const FileUpload = forwardRef<HTMLInputElement, FileUploadProps>(
     );
     if (!composed) return upload;
     return (
-      <FieldShell {...{ label, hint, error, labelId, ...ids }}>
+      <FieldShell {...{ label, description, error, labelId, ...ids }}>
         {upload}
       </FieldShell>
     );

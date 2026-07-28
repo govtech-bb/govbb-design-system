@@ -34,8 +34,10 @@ group: Page furniture
 import { OfficialBanner } from '@govtech-bb/react';
 
 <OfficialBanner
-  crestSrc="/assets/images/govbb-crest.svg"
-  linkHref="/government/website-information/"
+  imageSrc="/assets/images/govbb-crest.svg"
+  imageAlt=""
+  showLearnMore
+  learnMoreHref="/government/website-information/"
 />;
 ```
 

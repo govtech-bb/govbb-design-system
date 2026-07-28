@@ -35,7 +35,7 @@ import '@govtech-bb/frontend/css';
 ```
 
 Static assets (coat of arms, crest, logo) are no longer bundled. Host them
-yourself and pass URLs via props (`coatSrc`, `crestSrc`, `logoSrc`), or copy
+yourself and pass URLs via props (`coatSrc`, `imageSrc`, `logoSrc`), or copy
 them from `@govtech-bb/frontend/assets/*`.
 
 ### Tailwind consumers
@@ -98,7 +98,7 @@ submit buttons.
 ## Link and LinkButton
 
 `Link` no longer doubles as a button. A `Link` with a button `variant` becomes
-`LinkButton`; the `external` prop is gone, set `target`/`rel` yourself.
+`LinkButton`; the `external` prop remains available on both components.
 
 ```tsx
 // Before
@@ -107,32 +107,33 @@ submit buttons.
 
 // After
 <LinkButton href="/start">Start now</LinkButton>
-<Link href="https://example.org" target="_blank" rel="noopener noreferrer">
+<Link href="https://example.org" external>
   Example
 </Link>
 ```
 
+`external` defaults `target` to `_blank` and `rel` to
+`noopener noreferrer`; explicit `target` or `rel` values still win. It is
+available on `Link`, `LinkButton`, `FooterLink`, and typed Footer link items.
 `noUnderline` and `noVisited` on `Link` are unchanged.
 
-## Form fields: `description` renamed to `hint`, `TextArea` to `Textarea`
+## Form fields: `description` is unchanged
 
-`Input`, `Select` and `Textarea` still compose a label, hint and error around
-the control, but the hint prop is named `hint`. The `TextArea` casing is now
-`Textarea`.
+`Input`, `Select` and `TextArea` continue to compose a label, description and
+error around the control. The help-text prop remains `description`, and the
+component name remains `TextArea`.
 
 ```tsx
-// Before
 <Input label="Email" description="We only use this to reply" error={err} />
 <TextArea label="Details" description="Optional" />
-
-// After
-<Input label="Email" hint="We only use this to reply" error={err} />
-<Textarea label="Details" hint="Optional" />
 ```
 
-With none of `label`/`hint`/`error` set, each renders the bare control, so they
-also work inside your own `FormGroup`/`Label` composition (those primitives are
-exported too: `FormGroup`, `Label`, `Hint`, `ErrorMessage`, `Fieldset`).
+With none of `label`/`description`/`error` set, each renders the bare control,
+so they also work inside your own `FormGroup`/`Label` composition (those
+primitives are exported too: `FormGroup`, `Label`, `Hint`, `ErrorMessage`,
+`Fieldset`). Descriptions remain visible when an error is present, and both
+the description and error are included in the control's `aria-describedby`
+value.
 
 ## Checkbox and CheckboxGroup
 
@@ -146,7 +147,7 @@ exported too: `FormGroup`, `Label`, `Hint`, `ErrorMessage`, `Fieldset`).
 <Checkbox label="Remember me" onChange={(e) => set(e.currentTarget.checked)} />
 ```
 
-`CheckboxGroup` renames `label` to `legend` and `description` to `hint`, and
+`CheckboxGroup` renames `label` to `legend`; `description` is unchanged. It
 holds no state: each `Checkbox` child stays individually controlled (there is
 no group `value`/`onValueChange`).
 
@@ -155,15 +156,15 @@ no group `value`/`onValueChange`).
 <CheckboxGroup label="Contact methods" description="Pick all that apply">
 
 // After
-<CheckboxGroup legend="Contact methods" hint="Pick all that apply">
+<CheckboxGroup legend="Contact methods" description="Pick all that apply">
 ```
 
 ## RadioGroup
 
-Same renames (`label` to `legend`, `description` to `hint`), and `name` is now
+`label` becomes `legend`, while `description` is unchanged. `name` is now
 required; the group no longer auto-generates one. `value`/`onValueChange` work
-as before. Per-option hints and conditional reveals are supported via the
-`Radio` props `hint` and `conditional`.
+as before. Per-option descriptions and conditional reveals are supported via
+the `Radio` props `description` and `conditional`.
 
 ```tsx
 // Before
@@ -178,8 +179,8 @@ as before. Per-option hints and conditional reveals are supported via the
 The `{ value: { day, month, year }, onChange }` object API carries over:
 `value`/`onChange` drive all three fields, and `name` prefixes the field names
 (`start-date-day`, `start-date-month`, `start-date-year` — dashes, where the
-alpha used `start-date[day]` brackets). `label`/`description` become
-`legend`/`hint`.
+alpha used `start-date[day]` brackets). `label` becomes `legend`;
+`description` is unchanged.
 
 ```tsx
 // Before
@@ -194,7 +195,7 @@ alpha used `start-date[day]` brackets). `label`/`description` become
 // After
 <DateInput
   legend="Start date"
-  hint="For example, 27 3 1990"
+  description="For example, 27 3 1990"
   name="start-date"
   value={date}
   onChange={setDate}
@@ -210,7 +211,7 @@ For per-field control (`autoComplete`, `aria-invalid`, explicit ids, refs),
 the derived props. With `name` set, part ids follow it (`start-date-day`), so
 `ErrorSummary` links like `#start-date-day` work without explicit ids; without
 a `name`, ids are auto-generated. The same convention applies to `Input`,
-`Textarea` and `Select`: a composed field's `id` defaults to its `name`.
+`TextArea` and `Select`: a composed field's `id` defaults to its `name`.
 
 ## ErrorSummary: `{ text, target }` becomes `{ href, label }`
 
@@ -268,10 +269,10 @@ is unchanged.
 
 `alpha`, `beta`, `migrated` and `rounded` are unchanged.
 
-## Footer: children instead of a `links` array
+## Footer: typed links with a custom-child escape hatch
 
-`links`, `logoSrc` and `copyrightText` are replaced by `FooterLink` children,
-`coatSrc` and `copy`:
+`logoSrc` and `copyrightText` become `coatSrc` and `copy`. The `links` array
+remains the preferred API, with `label` replacing custom child content:
 
 ```tsx
 // Before
@@ -282,19 +283,33 @@ is unchanged.
 />
 
 // After
-<Footer coatSrc="/coat-of-arms.png" copy="© 2026 Government of Barbados">
-  <FooterLink href="/privacy">Privacy</FooterLink>
-</Footer>
+<Footer
+  links={[{ label: 'Privacy', href: '/privacy' }]}
+  coatSrc="/coat-of-arms.png"
+  copy="© 2026 Government of Barbados"
+/>
 ```
 
-Because links are real children, framework link components (Next `Link` etc.)
-can be used directly instead of a `linkComponent` prop.
+Use `linkComponent` for an href-compatible router adapter, or `renderLink` when
+the router uses a different destination prop:
 
-## Header: children instead of `navItems`/`linkComponent`
+```tsx
+<Footer
+  links={[{ label: 'Privacy', href: '/privacy' }]}
+  renderLink={({ href, ...props }) => <RouterLink to={href} {...props} />}
+/>
+```
 
-The new `Header` renders a logo link plus arbitrary children. `navItems` and
-`linkComponent` are gone; `homeLabel` maps to `logoAlt`. `logoSrc` is required
-and consumer-hosted.
+For custom entries, `FooterLink` children remain available as an escape hatch.
+Typed and custom links may be used together; the Footer places both in one
+semantic list. With neither `links` nor children, it omits the navigation
+landmark entirely.
+
+## Header: custom `nav` and `children`
+
+The Header owns the logo, menu disclosure and navigation landmark while the
+consumer owns its content. `homeLabel` maps to `logoAlt`, and `logoSrc` is
+required and consumer-hosted. `linkComponent` renders the logo's home link.
 
 ```tsx
 // Before
@@ -305,26 +320,40 @@ and consumer-hosted.
 />
 
 // After
-<Header logoSrc="/gov-bb-logo.svg" logoAlt="gov.bb" homeHref="/">
-  <nav aria-label="Menu">
-    <NextLink className="govbb-link" href="/services">Services</NextLink>
-  </nav>
-</Header>
+<Header
+  logoSrc="/gov-bb-logo.svg"
+  logoAlt="gov.bb"
+  homeHref="/"
+  linkComponent={NextLink}
+  nav={
+    <NextLink className="govbb-link" href="/services">
+      Services
+    </NextLink>
+  }
+/>
 ```
 
-## OfficialBanner: `imageSrc` becomes `crestSrc`
+Use `nav` for the menu-panel contents and `children` for optional custom
+top-row content. The Header does not prescribe either region's controls or
+links. Routers that use a destination prop other than `href` need a small
+adapter only for the logo's `linkComponent`; navigation can use the router's
+link component directly.
 
-`imageSrc` is renamed to `crestSrc` (required, consumer-hosted). `imageAlt` is
-dropped (the crest is decorative; the adjacent text carries the meaning).
-`showLearnMore` is replaced by an explicit `linkHref`/`linkLabel`; the banner
-text itself is `children` (defaults to "Official government website").
+## OfficialBanner
+
+`imageSrc`, `imageAlt`, `showLearnMore` and `learnMoreHref` remain supported.
+Keep `imageAlt=""` when the adjacent banner text already conveys the image's
+meaning. The banner text itself can now be customised with `children`, and
+`linkLabel` customises the learn-more link text.
 
 ```tsx
-// Before
-<OfficialBanner imageSrc="/crest.png" imageAlt="Barbados crest" showLearnMore />
-
-// After
-<OfficialBanner crestSrc="/crest.png" linkHref="/about" linkLabel="Learn more" />
+<OfficialBanner
+  imageSrc="/crest.png"
+  imageAlt=""
+  showLearnMore
+  learnMoreHref="/about"
+  linkLabel="Learn more"
+/>
 ```
 
 ## New in this package

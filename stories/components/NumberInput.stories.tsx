@@ -18,14 +18,14 @@ const meta = {
     max: 10,
     step: 1,
     defaultValue: 1,
-    'aria-describedby': 'quantity-hint',
+    'aria-describedby': 'quantity-description',
   },
   render: (args) => (
     <FormGroup>
       <Label id="quantity-label" htmlFor="quantity">
         Quantity
       </Label>
-      <Hint id="quantity-hint">Between 1 and 10</Hint>
+      <Hint id="quantity-description">Between 1 and 10</Hint>
       <NumberInput {...args} />
     </FormGroup>
   ),

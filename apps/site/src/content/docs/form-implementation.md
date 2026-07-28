@@ -100,12 +100,16 @@ requirements have been met.
 
 ## Render field errors
 
-An error must be visible and programmatically connected to its control. Replace
-the hint with the actionable error and point `aria-describedby` at the error ID.
+An error must be visible and programmatically connected to its control. Keep
+useful hint text in place, add the actionable error after it, and point
+`aria-describedby` at both IDs.
 
 ```html
 <div class="govbb-form-group">
   <label class="govbb-label" for="email">Email address</label>
+  <span class="govbb-hint" id="email-description"
+    >We only use this to reply</span
+  >
   <span class="govbb-error-message" id="email-error" role="alert">
     Enter an email address in the correct format
   </span>
@@ -116,15 +120,15 @@ the hint with the actionable error and point `aria-describedby` at the error ID.
     type="email"
     value="alex@"
     aria-invalid="true"
-    aria-describedby="email-error"
+    aria-describedby="email-description email-error"
   />
 </div>
 ```
 
-The React `Input`, `Textarea` and `Select` components accept `label`, `hint`
-and `error` props and wire the generated IDs automatically. Use the lower-level
-`FormGroup`, `Label`, `Hint` and `ErrorMessage` primitives when custom
-composition is necessary.
+The React `Input`, `TextArea` and `Select` components accept `label`,
+`description` and `error` props and wire the generated IDs automatically. Use
+the lower-level `FormGroup`, `Label`, `Hint` and `ErrorMessage` primitives when
+custom composition is necessary.
 
 ## Add an error summary
 

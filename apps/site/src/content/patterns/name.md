@@ -34,7 +34,7 @@ group: Ask users for
 
 <div class="govbb-form-group">
   <label class="govbb-label" for="middle-name">Middle name(s)</label>
-  <span class="govbb-hint" id="middle-name-hint">
+  <span class="govbb-hint" id="middle-name-description">
     If you have more than one, add them in order
   </span>
   <input
@@ -44,7 +44,7 @@ group: Ask users for
     type="text"
     autocomplete="additional-name"
     spellcheck="false"
-    aria-describedby="middle-name-hint"
+    aria-describedby="middle-name-description"
   />
 </div>
 

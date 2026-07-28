@@ -12,7 +12,7 @@ group: Ask users for
   <label class="govbb-label" for="national-id">
     National Identification (ID) number
   </label>
-  <span class="govbb-hint" id="national-id-hint">
+  <span class="govbb-hint" id="national-id-description">
     This is on your National Registration card. For example, 900314-0052
   </span>
   <input
@@ -23,7 +23,7 @@ group: Ask users for
     inputmode="numeric"
     autocomplete="off"
     spellcheck="false"
-    aria-describedby="national-id-hint"
+    aria-describedby="national-id-description"
   />
   <p>
     <a class="govbb-link" href="/service/passport-number/">

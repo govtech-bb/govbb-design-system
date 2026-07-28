@@ -1,11 +1,11 @@
-/* Header — the gold site header holding the gov.bb logo (the link home), an
-   optional search or sign-out control, and the site menu. Renders on every
+/* Header — the gold site header holding the gov.bb logo (the link home),
+   optional consumer-provided controls, and the site menu. Renders on every
    page, directly below the official banner. Markup:
    <header class="govbb-header"> wrapping
    <div class="govbb-width-container govbb-header__inner"> (logo link first,
-   then a <button class="govbb-header__toggle" hidden> Menu control) followed
-   by <nav class="govbb-header__nav"> holding a
-   <div class="govbb-width-container govbb-header__nav-inner"> of links.
+   then optional children and a hidden Menu control inside __controls), followed
+   by <nav class="govbb-header__nav"> holding consumer-provided content in a
+   <div class="govbb-width-container govbb-header__nav-inner">.
    The header module (data-govbb-module="header") reveals the toggle and
    collapses the nav behind it via the hidden attribute, at every width —
    the menu is always a disclosure, never an inline row (Figma). */
@@ -23,10 +23,23 @@
   padding-block: var(--govbb-space-s);
 }
 
+.govbb-header__home {
+  flex: none;
+}
+
 .govbb-header__logo {
   display: block;
   width: auto;
   height: 1.5rem; /* 24px */
+}
+
+.govbb-header__controls {
+  display: flex;
+  flex: 1 1 auto;
+  gap: var(--govbb-space-s);
+  align-items: center;
+  justify-content: flex-end;
+  min-width: 0;
 }
 
 /* Menu toggle — the disclosure control for the __nav (the Figma collapsed
@@ -34,6 +47,7 @@
    for the no-JS baseline, where the nav panel simply stays open; JS reveals
    it. No display is set here, so the hidden attribute alone controls it. */
 .govbb-header__toggle {
+  flex: none;
   padding: 0;
   border: 0;
   font-family: inherit;

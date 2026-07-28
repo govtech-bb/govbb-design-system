@@ -24,7 +24,13 @@ export type { FeedbackProps } from './feedback/feedback';
 export { FileUpload } from './file-upload/file-upload';
 export type { FileUploadProps } from './file-upload/file-upload';
 export { Footer, FooterLink } from './footer/footer';
-export type { FooterProps, FooterLinkProps } from './footer/footer';
+export type {
+  FooterLinkItem,
+  FooterLinkProps,
+  FooterLinkRenderer,
+  FooterLinkRenderProps,
+  FooterProps,
+} from './footer/footer';
 export { ErrorMessage, Fieldset, FormGroup, Hint, Label } from './form/form';
 export type {
   ErrorMessageProps,
@@ -35,8 +41,8 @@ export type {
 } from './form/form';
 export { Header } from './header/header';
 export type { HeaderProps } from './header/header';
-export { Input, Textarea } from './input/input';
-export type { InputProps, TextareaProps } from './input/input';
+export { Input, TextArea } from './input/input';
+export type { InputProps, TextAreaProps } from './input/input';
 export { Link } from './link/link';
 export type { LinkComponent, LinkProps } from './link/link';
 export { List } from './list/list';

@@ -83,19 +83,19 @@ group: Ask users for
 
 <div class="govbb-form-group">
   <label class="govbb-label" for="occupation">Occupation</label>
-  <span class="govbb-hint" id="occupation-hint">Your job title</span>
+  <span class="govbb-hint" id="occupation-description">Your job title</span>
   <input
     class="govbb-input"
     id="occupation"
     name="occupation"
     type="text"
-    aria-describedby="occupation-hint"
+    aria-describedby="occupation-description"
   />
 </div>
 
 <div class="govbb-form-group">
   <label class="govbb-label" for="salary">Salary</label>
-  <span class="govbb-hint" id="salary-hint">
+  <span class="govbb-hint" id="salary-description">
     Enter the amount in Barbados dollars (BBD)
   </span>
   <input
@@ -104,13 +104,13 @@ group: Ask users for
     name="salary"
     type="text"
     inputmode="numeric"
-    aria-describedby="salary-hint"
+    aria-describedby="salary-description"
   />
 </div>
 
 <div class="govbb-form-group">
   <label class="govbb-label" for="main-tasks">Your main tasks</label>
-  <span class="govbb-hint" id="main-tasks-hint">
+  <span class="govbb-hint" id="main-tasks-description">
     Provide a brief description of what you did in your role
   </span>
   <textarea
@@ -118,7 +118,7 @@ group: Ask users for
     id="main-tasks"
     name="main-tasks"
     rows="4"
-    aria-describedby="main-tasks-hint"
+    aria-describedby="main-tasks-description"
   ></textarea>
 </div>
 ```

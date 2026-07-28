@@ -24,7 +24,7 @@ const meta = {
   args: {
     legend: 'Are you a Barbados citizen?',
     name: 'citizen',
-    hint: 'Choose one option',
+    description: 'Choose one option',
     children: null,
   },
 } satisfies Meta<typeof RadioGroup>;
@@ -44,7 +44,7 @@ export const Error: Story = {
     legend: 'Are you a Barbados citizen?',
     name: 'citizen',
     children: null,
-    hint: undefined,
+    description: undefined,
     error: 'Select yes or no',
   },
 };

@@ -10,7 +10,7 @@ const meta = {
   tags: ['autodocs'],
   args: {
     legend: 'How would you like to be contacted?',
-    hint: 'Select all that apply',
+    description: 'Select all that apply',
     children: null,
   },
   render: (args) => (
@@ -34,7 +34,7 @@ export const Error: Story = {
   args: {
     legend: 'How would you like to be contacted?',
     children: null,
-    hint: undefined,
+    description: undefined,
     error: 'Select at least one option',
   },
 };

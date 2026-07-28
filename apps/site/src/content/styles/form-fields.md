@@ -41,7 +41,7 @@ An ordinary field contains a form group, label, optional hint, optional error
 and the control. Keep this order consistent so people can scan and recover from
 errors quickly.
 
-![Anatomy of a form field: callout lines point to the label "Email address", the hint text or error message below it, and the input beneath both.](/assets/images/form-field-anatomy.png)
+![Anatomy of a form field: callout lines point to the label "Email address", hint and error messages below it, and the input beneath them.](/assets/images/form-field-anatomy.png)
 
 | Part            | Purpose                                                                      |
 | --------------- | ---------------------------------------------------------------------------- |
@@ -120,8 +120,8 @@ For each invalid answer:
 1. preserve the answer
 2. show an [error summary](/components/error-summary/) at the top of the form
 3. link the summary item to the invalid control
-4. replace the hint with a specific error beside the field
-5. set `aria-invalid="true"` and connect the message with `aria-describedby`
+4. show a specific error beside the field without removing useful hint text
+5. set `aria-invalid="true"` and connect the hint and error with `aria-describedby`
 
 Write messages that state the correction, such as “Enter a date in the past”.
 Do not blame the person, apologize, or use vague text such as “Invalid value”.

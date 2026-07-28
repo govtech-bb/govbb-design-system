@@ -10,7 +10,7 @@ group: Form elements
 ```html title="Form group with hint text"
 <div class="govbb-form-group">
   <label class="govbb-label" for="nis-number">NIS number</label>
-  <span class="govbb-hint" id="nis-number-hint">
+  <span class="govbb-hint" id="nis-number-description">
     Your National Insurance number, for example 123456
   </span>
   <input
@@ -18,7 +18,7 @@ group: Form elements
     id="nis-number"
     name="nis-number"
     type="text"
-    aria-describedby="nis-number-hint"
+    aria-describedby="nis-number-description"
   />
 </div>
 ```
@@ -28,10 +28,14 @@ import { FormGroup, Hint, Input, Label } from '@govtech-bb/react';
 
 <FormGroup>
   <Label htmlFor="nis-number">NIS number</Label>
-  <Hint id="nis-number-hint">
+  <Hint id="nis-number-description">
     Your National Insurance number, for example 123456
   </Hint>
-  <Input id="nis-number" name="nis-number" aria-describedby="nis-number-hint" />
+  <Input
+    id="nis-number"
+    name="nis-number"
+    aria-describedby="nis-number-description"
+  />
 </FormGroup>;
 ```
 
@@ -135,11 +139,11 @@ each control keeps its own label.
 
 ```html title="Fieldset with legend and hint"
 <div class="govbb-form-group">
-  <fieldset class="govbb-fieldset" aria-describedby="collection-hint">
+  <fieldset class="govbb-fieldset" aria-describedby="collection-description">
     <legend class="govbb-fieldset__legend">
       Where do you want to collect your passport?
     </legend>
-    <span class="govbb-hint" id="collection-hint">
+    <span class="govbb-hint" id="collection-description">
       Choose the office closest to you
     </span>
     <div class="govbb-radio-item">
@@ -173,9 +177,9 @@ import { Fieldset, Hint, Radio } from '@govtech-bb/react';
 
 <Fieldset
   legend="Where do you want to collect your passport?"
-  aria-describedby="collection-hint"
+  aria-describedby="collection-description"
 >
-  <Hint id="collection-hint">Choose the office closest to you</Hint>
+  <Hint id="collection-description">Choose the office closest to you</Hint>
   <Radio id="collect-bridgetown" name="collection" label="Bridgetown" />
   <Radio id="collect-holetown" name="collection" label="Holetown" />
 </Fieldset>;

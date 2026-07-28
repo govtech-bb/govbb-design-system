@@ -2,7 +2,6 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect } from 'storybook/test';
 import { Header } from '../../packages/react/src/header/header';
 import { Link } from '../../packages/react/src/link/link';
-import { Search } from '../../packages/react/src/search/search';
 
 const meta = {
   title: 'Components/Header',
@@ -22,11 +21,6 @@ const meta = {
       </>
     ),
   },
-  render: (args) => (
-    <Header {...args}>
-      <Search borderless />
-    </Header>
-  ),
 } satisfies Meta<typeof Header>;
 export default meta;
 type Story = StoryObj<typeof meta>;

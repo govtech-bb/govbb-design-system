@@ -123,10 +123,10 @@ screen readers announce it alongside the option's label.
         type="radio"
         name="contact"
         value="email"
-        aria-describedby="contact-email-hint"
+        aria-describedby="contact-email-description"
       />
       <label class="govbb-radio-item__label" for="contact-email">Email</label>
-      <span class="govbb-hint" id="contact-email-hint">
+      <span class="govbb-hint" id="contact-email-description">
         We'll only use this to send updates about your application.
       </span>
     </div>
@@ -137,10 +137,10 @@ screen readers announce it alongside the option's label.
         type="radio"
         name="contact"
         value="phone"
-        aria-describedby="contact-phone-hint"
+        aria-describedby="contact-phone-description"
       />
       <label class="govbb-radio-item__label" for="contact-phone">Phone</label>
-      <span class="govbb-hint" id="contact-phone-hint">
+      <span class="govbb-hint" id="contact-phone-description">
         A government officer may call between 9am and 5pm.
       </span>
     </div>
@@ -166,13 +166,13 @@ import { Fieldset, Radio } from '@govtech-bb/react';
     name="contact"
     value="email"
     label="Email"
-    hint="We'll only use this to send updates about your application."
+    description="We'll only use this to send updates about your application."
   />
   <Radio
     name="contact"
     value="phone"
     label="Phone"
-    hint="A government officer may call between 9am and 5pm."
+    description="A government officer may call between 9am and 5pm."
   />
   <Radio name="contact" value="post" label="Post" />
 </Fieldset>;

@@ -10,11 +10,13 @@ css: checkbox-radio
 
 ```html title="Checkbox group"
 <div class="govbb-form-group">
-  <fieldset class="govbb-fieldset" aria-describedby="contact-hint">
+  <fieldset class="govbb-fieldset" aria-describedby="contact-description">
     <legend class="govbb-fieldset__legend">
       How would you like to be contacted?
     </legend>
-    <span class="govbb-hint" id="contact-hint">Select all that apply</span>
+    <span class="govbb-hint" id="contact-description"
+      >Select all that apply</span
+    >
     <div class="govbb-checkbox-item">
       <input
         class="govbb-checkbox"
@@ -58,9 +60,9 @@ import { Checkbox, Fieldset, Hint } from '@govtech-bb/react';
 
 <Fieldset
   legend="How would you like to be contacted?"
-  aria-describedby="contact-hint"
+  aria-describedby="contact-description"
 >
-  <Hint id="contact-hint">Select all that apply</Hint>
+  <Hint id="contact-description">Select all that apply</Hint>
   <Checkbox name="contact" value="email" label="Email" />
   <Checkbox name="contact" value="phone" label="Phone" />
   <Checkbox name="contact" value="post" label="Post" />
@@ -139,12 +141,12 @@ hint to the checkbox with `aria-describedby`.
     type="checkbox"
     name="nationality"
     value="british"
-    aria-describedby="nationality-british-hint"
+    aria-describedby="nationality-british-description"
   />
   <label class="govbb-checkbox-item__label" for="nationality-british">
     British
   </label>
-  <span class="govbb-hint" id="nationality-british-hint">
+  <span class="govbb-hint" id="nationality-british-description">
     Including English, Scottish, Welsh and Northern Irish
   </span>
 </div>
@@ -157,7 +159,7 @@ import { Checkbox } from '@govtech-bb/react';
   name="nationality"
   value="british"
   label="British"
-  hint="Including English, Scottish, Welsh and Northern Irish"
+  description="Including English, Scottish, Welsh and Northern Irish"
 />;
 ```
 

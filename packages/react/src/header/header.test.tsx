@@ -26,21 +26,56 @@ describe('Header', () => {
         linkComponent={RouterLink}
       />,
     );
-    const anchor = screen.getByRole('img', { name: 'gov.bb' }).closest('a')!;
-    expect(anchor.getAttribute('data-router')).toBe('true');
-    expect(anchor.getAttribute('href')).toBe('/home');
+    const home = screen.getByRole('img', { name: 'gov.bb' }).closest('a')!;
+    expect(home.getAttribute('data-router')).toBe('true');
+    expect(home.getAttribute('href')).toBe('/home');
   });
 
-  it('renders nav links in a labelled nav landmark once expanded', () => {
+  it('renders custom content in the header top row', () => {
+    const { container } = render(
+      <Header logoSrc="/logo.svg">
+        <a href="/account">Account</a>
+      </Header>,
+    );
+
+    expect(screen.getByRole('link', { name: 'Account' })).toBeDefined();
+    expect(
+      container
+        .querySelector('.govbb-header__controls')
+        ?.contains(screen.getByRole('link', { name: 'Account' })),
+    ).toBe(true);
+  });
+
+  it('renders custom nav content in a labelled landmark once expanded', () => {
     render(
-      <Header logoSrc="/logo.svg" nav={<a href="/services">Services</a>} />,
+      <Header
+        logoSrc="/logo.svg"
+        nav={<a href="/services">Services</a>}
+        navAriaLabel="Primary navigation"
+      />,
     );
     fireEvent.click(screen.getByRole('button', { name: 'Menu' }));
-    const nav = screen.getByRole('navigation', { name: 'Menu' });
+    const nav = screen.getByRole('navigation', {
+      name: 'Primary navigation',
+    });
     expect(nav.classList.contains('govbb-header__nav')).toBe(true);
+    const link = screen.getByRole('link', { name: 'Services' });
+    expect(link.getAttribute('href')).toBe('/services');
+  });
+
+  it('supports custom collapsed and expanded menu labels', () => {
+    render(
+      <Header
+        logoSrc="/logo.svg"
+        nav={<a href="/services">Services</a>}
+        menuLabel="Navigation"
+        closeMenuLabel="Close navigation"
+      />,
+    );
+    fireEvent.click(screen.getByRole('button', { name: 'Navigation' }));
     expect(
-      screen.getByRole('link', { name: 'Services' }).getAttribute('href'),
-    ).toBe('/services');
+      screen.getByRole('button', { name: 'Close navigation' }),
+    ).toBeDefined();
   });
 
   it('omits the nav landmark and toggle when no nav is given', () => {

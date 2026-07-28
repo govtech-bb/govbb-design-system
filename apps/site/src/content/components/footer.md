@@ -11,12 +11,24 @@ group: Page furniture
 <footer class="govbb-footer" style="width: 100%">
   <div class="govbb-width-container govbb-footer__inner">
     <nav class="govbb-footer__nav" aria-label="Footer navigation">
-      <a class="govbb-link govbb-footer__link" href="/">Home</a>
-      <a class="govbb-link govbb-footer__link" href="/cookies">Cookie policy</a>
-      <a class="govbb-link govbb-footer__link" href="/terms"
-        >Terms &amp; conditions</a
-      >
-      <a class="govbb-link govbb-footer__link" href="/sitemap">Sitemap</a>
+      <ul class="govbb-footer__list">
+        <li class="govbb-footer__item">
+          <a class="govbb-link govbb-footer__link" href="/">Home</a>
+        </li>
+        <li class="govbb-footer__item">
+          <a class="govbb-link govbb-footer__link" href="/cookies">
+            Cookie policy
+          </a>
+        </li>
+        <li class="govbb-footer__item">
+          <a class="govbb-link govbb-footer__link" href="/terms">
+            Terms &amp; conditions
+          </a>
+        </li>
+        <li class="govbb-footer__item">
+          <a class="govbb-link govbb-footer__link" href="/sitemap"> Sitemap </a>
+        </li>
+      </ul>
     </nav>
     <hr class="govbb-footer__divider" aria-hidden="true" />
     <div class="govbb-footer__end">
@@ -32,17 +44,18 @@ group: Page furniture
 ```
 
 ```tsx
-import { Footer, FooterLink } from '@govtech-bb/react';
+import { Footer } from '@govtech-bb/react';
 
 <Footer
   coatSrc="/assets/images/govbb-crest.svg"
   copy="© 2026 Government of Barbados"
->
-  <FooterLink href="/">Home</FooterLink>
-  <FooterLink href="/cookies">Cookie policy</FooterLink>
-  <FooterLink href="/terms">Terms &amp; conditions</FooterLink>
-  <FooterLink href="/sitemap">Sitemap</FooterLink>
-</Footer>;
+  links={[
+    { href: '/', label: 'Home' },
+    { href: '/cookies', label: 'Cookie policy' },
+    { href: '/terms', label: 'Terms & conditions' },
+    { href: '/sitemap', label: 'Sitemap' },
+  ]}
+/>;
 ```
 
 The Footer ends every page with supporting links, the coat of arms and a
