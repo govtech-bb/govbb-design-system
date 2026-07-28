@@ -46,7 +46,7 @@ describe('Header', () => {
     ).toBe(true);
   });
 
-  it('renders custom nav content in a labelled landmark once expanded', () => {
+  it('renders custom nav content in a labelled landmark', () => {
     render(
       <Header
         logoSrc="/logo.svg"
@@ -54,7 +54,6 @@ describe('Header', () => {
         navAriaLabel="Primary navigation"
       />,
     );
-    fireEvent.click(screen.getByRole('button', { name: 'Menu' }));
     const nav = screen.getByRole('navigation', {
       name: 'Primary navigation',
     });
@@ -89,12 +88,18 @@ describe('Header', () => {
       <Header logoSrc="/logo.svg" nav={<a href="/services">Services</a>} />,
     );
     const toggle = screen.getByRole('button', { name: 'Menu' });
-    // the mount effect has run, so the toggle is revealed (JS enhancement)
-    // and the nav starts collapsed (hidden, hence queried by class)
+    // The mount effect has run, so the toggle is revealed. CSS uses the
+    // enhanced and expanded data attributes to collapse the nav only on mobile.
     expect(toggle.hasAttribute('hidden')).toBe(false);
     expect(toggle.getAttribute('aria-expanded')).toBe('false');
     const nav = container.querySelector('.govbb-header__nav')!;
-    expect(nav.hasAttribute('hidden')).toBe(true);
+    expect(
+      container
+        .querySelector('.govbb-header')
+        ?.hasAttribute('data-govbb-header-enhanced'),
+    ).toBe(true);
+    expect(nav.hasAttribute('hidden')).toBe(false);
+    expect(nav.getAttribute('data-expanded')).toBe('false');
     expect(toggle.getAttribute('aria-controls')).toBe(nav.id);
   });
 
@@ -106,10 +111,10 @@ describe('Header', () => {
     const nav = container.querySelector('.govbb-header__nav')!;
     fireEvent.click(toggle);
     expect(toggle.getAttribute('aria-expanded')).toBe('true');
-    expect(nav.hasAttribute('hidden')).toBe(false);
+    expect(nav.getAttribute('data-expanded')).toBe('true');
     fireEvent.click(toggle);
     expect(toggle.getAttribute('aria-expanded')).toBe('false');
-    expect(nav.hasAttribute('hidden')).toBe(true);
+    expect(nav.getAttribute('data-expanded')).toBe('false');
   });
 });
 

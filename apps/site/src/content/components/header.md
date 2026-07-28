@@ -26,21 +26,25 @@ group: Page furniture
       <a class="govbb-link govbb-link--no-visited" href="/services">
         Services
       </a>
+      <a class="govbb-button" href="/assistant">Ask Assistant</a>
     </div>
   </nav>
 </header>
 ```
 
 ```tsx
-import { Header, Link } from '@govtech-bb/react';
+import { Header, Link, LinkButton } from '@govtech-bb/react';
 
 <Header
   logoSrc="/assets/images/govbb-logo.svg"
   navAriaLabel="Primary navigation"
   nav={
-    <Link href="/services" noVisited>
-      Services
-    </Link>
+    <>
+      <Link href="/services" noVisited>
+        Services
+      </Link>
+      <LinkButton href="/assistant">Ask Assistant</LinkButton>
+    </>
   }
 />;
 ```
@@ -51,11 +55,15 @@ links back to the homepage so users always have a way to start again. The logo
 image ships in the `@govtech-bb/frontend` package under `assets/images/`. Host
 it with your service and point `src` at your copy.
 
-Pass consumer-owned menu content through `nav`. The Header owns the navigation
-landmark, menu disclosure state and accessibility wiring, but does not
-prescribe the links or controls inside it. It omits the menu control and
-navigation landmark when `nav` is empty. Use `children` for optional custom
-content in the gold top row.
+Pass consumer-owned navigation content through `nav`. At tablet and desktop
+widths the navigation is visible in a horizontal row. On mobile, the Header
+places it behind a Menu disclosure after JavaScript loads. Without JavaScript,
+the navigation remains visible so its links are always available.
+
+The Header owns the navigation landmark, responsive disclosure state and
+accessibility wiring, but does not prescribe the links or controls inside it.
+It omits the menu control and navigation landmark when `nav` is empty. Use
+`children` for optional custom content in the gold top row.
 
 ## Usage
 

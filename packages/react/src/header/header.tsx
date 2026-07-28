@@ -17,7 +17,7 @@ export interface HeaderProps extends HTMLAttributes<HTMLElement> {
   homeHref?: string;
   /** Render the logo's home link with an href-compatible router component. */
   linkComponent?: LinkComponent;
-  /** Consumer-owned content for the menu panel. */
+  /** Consumer-owned navigation content: visible on desktop, disclosed on mobile. */
   nav?: ReactNode;
   /** Accessible name for the nav landmark. */
   navAriaLabel?: string;
@@ -52,13 +52,18 @@ export const Header = forwardRef<HTMLElement, HeaderProps>(function Header(
   const hasContent = content.length > 0;
   const [expanded, setExpanded] = useState(false);
   // The Menu toggle is a JS enhancement (same as the frontend header module):
-  // it renders [hidden] and the nav panel open, so server-rendered pages
-  // without JS keep the open panel; mounting reveals the toggle collapsed.
+  // it renders [hidden] with the nav open, so pages without JS keep their
+  // navigation. Once mounted, CSS collapses the nav only at mobile widths.
   const [enhanced, setEnhanced] = useState(false);
   useEffect(() => setEnhanced(true), []);
 
   return (
-    <header ref={ref} className={cx('govbb-header', className)} {...props}>
+    <header
+      ref={ref}
+      className={cx('govbb-header', className)}
+      data-govbb-header-enhanced={enhanced || undefined}
+      {...props}
+    >
       <div className="govbb-width-container govbb-header__inner">
         <HomeLink className="govbb-header__home" href={homeHref}>
           <img className="govbb-header__logo" src={logoSrc} alt={logoAlt} />
@@ -86,7 +91,7 @@ export const Header = forwardRef<HTMLElement, HeaderProps>(function Header(
           id={navId}
           className="govbb-header__nav"
           aria-label={navAriaLabel}
-          hidden={enhanced && !expanded}
+          data-expanded={expanded}
         >
           <div className="govbb-width-container govbb-header__nav-inner">
             {navigation}

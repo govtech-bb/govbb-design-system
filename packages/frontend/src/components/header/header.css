@@ -6,9 +6,9 @@
    then optional children and a hidden Menu control inside __controls), followed
    by <nav class="govbb-header__nav"> holding consumer-provided content in a
    <div class="govbb-width-container govbb-header__nav-inner">.
-   The header module (data-govbb-module="header") reveals the toggle and
-   collapses the nav behind it via the hidden attribute, at every width —
-   the menu is always a disclosure, never an inline row (Figma). */
+   The header module (data-govbb-module="header") reveals the toggle after
+   enhancement. CSS collapses the nav behind it on mobile; from tablet widths
+   up the navigation remains visible as an inline row. */
 
 .govbb-header {
   color: var(--govbb-color-ink);
@@ -64,16 +64,19 @@
   outline-offset: 2px;
 }
 
-/* Nav — the expanded-menu panel from the Figma header: a full-width blue-tint
-   band below the gold bar with stacked bold teal links (the default link
-   colour), the same at every breakpoint. JS collapses it with the hidden
-   attribute; no display is set on the <nav> itself so hidden just works,
-   while the __nav-inner width container keeps the links aligned with the
-   logo above. */
+/* Nav — a full-width blue-tint band below the gold bar. The width container
+   keeps its content aligned with the logo above. */
 .govbb-header__nav {
-  font-size: var(--govbb-font-size-caption);
-  font-weight: 700;
+  font-size: var(--govbb-font-size-body);
   background: var(--govbb-blue-10);
+}
+
+.govbb-header__nav .govbb-link {
+  font-weight: 700;
+}
+
+.govbb-header__nav .govbb-button {
+  font-weight: 400;
 }
 
 .govbb-header__nav-inner {
@@ -84,12 +87,29 @@
   padding-block: var(--govbb-space-s);
 }
 
+@media (--mobile) {
+  .govbb-header[data-govbb-header-enhanced]
+    .govbb-header__nav[data-expanded='false'] {
+    display: none;
+  }
+}
+
 @media (--tablet) {
   .govbb-header__inner {
-    padding-block: var(--govbb-space-m);
+    padding-block: var(--govbb-space-xm);
   }
 
   .govbb-header__logo {
     height: 2.1875rem; /* 35px */
+  }
+
+  .govbb-header__toggle {
+    display: none;
+  }
+
+  .govbb-header__nav-inner {
+    flex-direction: row;
+    align-items: center;
+    gap: var(--govbb-space-l);
   }
 }
