@@ -97,12 +97,10 @@
 
 /* Text — a link, not a box */
 .govbb-button--text {
-  padding: var(--govbb-space-xxs);
   color: var(--govbb-color-tertiary);
   background: transparent;
   text-decoration: underline;
   text-underline-offset: 2px;
-  border-radius: 0; /* keep the focus ring square */
 
   &:hover {
     color: var(--govbb-color-brand-accent);
