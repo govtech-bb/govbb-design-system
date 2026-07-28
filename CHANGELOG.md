@@ -1,9 +1,29 @@
 # Changelog
 
+## 1.0.0-alpha.21 (2026-07-28)
+
+### button
+- Pad the text variant like the other buttons by @AaronHarris
+- Hold the text button's colour on hover and press by @AaronHarris
+- Outline the tertiary button in forced-colors mode by @AaronHarris
+- Document the text, negative and inverse variants by @AaronHarris
+
+### form
+- Space a fieldset hint like a form field hint by @AaronHarris
+
+### header
+- Match responsive navigation design by @AaronHarris
+- Shorten the nav link comment by @AaronHarris
+
+### General
+- Update visual regression baselines by @github-actions[bot]
 ## 1.0.0-alpha.20 (2026-07-28)
 
 ### header
 - Restore responsive navigation by @AaronHarris
+
+### General
+- Release v1.0.0-alpha.20 by @github-actions[bot]
 ## 1.0.0-alpha.19 (2026-07-28)
 
 ### format
