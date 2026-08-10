@@ -32,6 +32,16 @@ This works in two directions and the loop is the same for both:
 platform's routing and file conventions. This skill changes what an interface
 is made of, not where it lives.
 
+**Where the real failures are.** Testing this against a no-skill baseline
+settled which parts matter. Getting class names right turned out not to
+distinguish anything — read the stylesheet and you avoid inventing names with or
+without help. What the baseline got wrong, every time, was quieter: markup that
+renders perfectly while the component is inert because its
+`data-govbb-module` and `initAll()` are missing (Step 6); a component borrowed
+for a job its guidance rules out; and binding design-log decisions nobody
+checked. Those are the steps to slow down on. They all share a shape — the page
+looks finished, so nothing in review catches them.
+
 ## The one rule that matters most
 
 **Never write a `govbb-` class or a `--govbb-` token you have not just read in
@@ -84,31 +94,61 @@ work down instead: local source in `packages/frontend/src/`, or an installed
 not verify any of these names" is a better outcome than a conversion that looks
 finished and has to be redone.
 
+One caveat on the local rungs: a checkout can be **behind** the deployed site,
+and an installed package behind both. Classes that exist on the site can be
+absent locally, so a local-only audit reports real names as invented. Prefer the
+site whenever it is reachable, and say which source you verified against.
+
 ## Step 1 — Identify the consumer target
 
 Two supported targets with different idioms. Getting this wrong invalidates
 everything downstream, so establish it before touching markup. Look at whether
 the prototype renders React components or emits HTML directly.
 
-|            | HTML / server-rendered                         | React                                                    |
-| ---------- | ---------------------------------------------- | -------------------------------------------------------- |
-| Install    | `pnpm add @govtech-bb/frontend`                | `pnpm add @govtech-bb/frontend @govtech-bb/react`        |
-| Stylesheet | `import '@govtech-bb/frontend/css'` once       | `import '@govtech-bb/frontend/css'` once at the app root |
-| Components | `govbb-`-prefixed classes on your own markup   | `import { Button } from '@govtech-bb/react'`             |
-| Behaviour  | `data-govbb-module="…"` + one `initAll()` call | built into the wrapper                                   |
+|            | HTML / server-rendered                         | React                                                         |
+| ---------- | ---------------------------------------------- | ------------------------------------------------------------- |
+| Install    | `pnpm add @govtech-bb/frontend@alpha`          | `pnpm add @govtech-bb/frontend@alpha @govtech-bb/react@alpha` |
+| Stylesheet | `import '@govtech-bb/frontend/css'` once       | `import '@govtech-bb/frontend/css'` once at the app root      |
+| Components | `govbb-`-prefixed classes on your own markup   | `import { Button } from '@govtech-bb/react'`                  |
+| Behaviour  | `data-govbb-module="…"` + one `initAll()` call | built into the wrapper                                        |
 
-Two mistakes worth naming, because they are easy to make and produce confusing
-symptoms rather than clean errors:
+**Install the `alpha` tag, not the default.** On npm today, `latest` points at a
+superseded package: `@govtech-bb/react@latest` resolves to a build of the
+_previous_ Tailwind and Radix design system, which is missing `Header`,
+`SkipLink`, `SummaryList`, `FormGroup`, `Label`, `Hint`, `Fieldset`,
+`ButtonGroup` and `List`. A plain `pnpm add @govtech-bb/react` installs the
+wrong design system, and it fails as puzzling missing exports rather than as an
+obviously wrong package. Check what you resolved with
+`npm view @govtech-bb/react dist-tags` before debugging anything else, and pin
+the version in `package.json` so a later install cannot drift.
 
-- **Calling `initAll()` over React components.** The wrappers already carry
-  their behaviour; scanning them again double-binds listeners.
-- **Mixing targets in one page** — React wrappers alongside hand-written
-  `govbb-` markup for the same component. Pick one per surface. The classes are
-  a stable API, so hand-written markup is legitimate in a React app when no
-  wrapper exists; just do not do both for the same thing.
+Two mistakes worth naming, because they produce confusing symptoms rather than
+clean errors:
+
+- **Calling `initAll()` over React wrappers.** They already carry their
+  behaviour; scanning them again double-binds listeners. The exception is worth
+  knowing: hand-written `govbb-` markup is legitimate in a React app where no
+  wrapper exists, and if that markup is a behavioural component it does need
+  `initAll()` — scoped to that subtree, not the whole document.
+- **Mixing targets for one element** — a React wrapper in one place and
+  hand-written markup for the same component elsewhere on the surface. Pick one
+  per element, or you have two things to update and will miss one.
 
 A prototype using Tailwind, plain CSS or CSS modules is still an HTML target.
 The question is only whether **React wrappers** are in play.
+
+### Decide the rendering architecture before you scaffold
+
+If you are building new, this is the moment. The system expects progressive
+enhancement, so a **client-rendered single-page app cannot meet the standard**:
+with JavaScript unavailable it renders nothing at all, which is worse than any
+component degrading. That is not a detail to discover at verification, when the
+fix is a rewrite.
+
+Prefer server-rendered pages with real `action`s and a redirect after post.
+Where an SPA is already chosen and cannot change, say so plainly in the report
+as the one deviation a design-system review should object to, and recommend the
+migration before alpha rather than leaving it implied.
 
 ## Step 2 — Inventory before changing anything
 
@@ -241,6 +281,13 @@ person; a bridged utility class is none of those.
 
 ## Step 6 — Wire up behaviour
 
+**Do not skip this step, and do not leave it until last.** It is the single
+thing a conversion most reliably gets wrong: in testing, a run without this
+guidance produced a page that rendered perfectly with every component inert — no
+`data-govbb-module` anywhere and no `initAll()`, so the mobile navigation never
+opened and the number-input steppers did nothing. Nothing in the markup looks
+wrong, which is why it reaches users.
+
 Most components are CSS-only. A few are progressive enhancements, and **a
 component's page tells you which**: its markup carries a `data-govbb-module`
 attribute. `/documentation/using-the-design-system.md` names them as a set. Do
@@ -316,6 +363,12 @@ that source review passed.
   renders unstyled while passing every existence check. Copying the documented
   markup is what protects you there; the audit only catches names that are
   wholly invented.
+
+  And when the audit contradicts the documented markup, the documentation wins
+  and the mismatch is a finding. `govbb-footer__item` appears in the Footer
+  page's canonical markup and resolves to no rule in any stylesheet. Copying the
+  markup is still right; chasing the audit here would mean deviating from the
+  documentation to satisfy a script. Report it and move on.
 
 - **Render the pages and look at them.** Spacing problems (Step 4) are invisible
   in source, and a page can be entirely correct class-by-class and still look
