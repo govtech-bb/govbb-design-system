@@ -134,10 +134,13 @@ two components both look plausible. Work through it before concluding anything
 is novel — bucket 3 should be small, and when it is large that usually means the
 inventory was done by name.
 
-Resist the pull of a name that matches too neatly. "Alert" looks like Status
-banner, and Status banner is actually for where a page sits in its lifecycle —
-its own guidance sends validation messages to Error summary instead. Only the
-component's page can tell you that, which is why a guess is not an inventory.
+Resist the pull of a name that matches too neatly, and beware of over-correcting
+too. "Alert" maps to Status banner for some meanings and not others: that
+component covers where a page sits in its lifecycle and service disruption, so
+an outage notice belongs there — while its own guidance sends form validation to
+Error summary instead, and tells you not to use it for routine content. One
+prototype word can land in three different places. Only the component's page
+resolves that, which is why a guess is not an inventory.
 
 Show the user this inventory before converting. It is cheap to redirect now and
 expensive after the markup has changed.
@@ -298,10 +301,22 @@ that source review passed.
 
 - **Audit the classes you emitted, mechanically.** Collect every `class="…"`
   value from the rendered output and check each `govbb-` name against the
-  component pages you fetched — or, if you have the repo, against the built
+  component pages you fetched — or, if you have the repo, against
   `packages/frontend/dist/govbb.css`, where a name that resolves to nothing is a
   name that does not exist. This is a few lines of scripting and it is the only
   reliable guard against a plausible invented name surviving to review.
+
+  Rebuild before you trust that file, and see whether anything changes — a stale
+  build from before a rename reports real classes as invented and sends you
+  chasing them. Use that path rather than any other `dist/` in the tree.
+
+  Know what this audit cannot tell you: a name existing in the stylesheet does
+  not mean the selector will match your markup. `.govbb-error-summary__link` is
+  styled only as `.govbb-link.govbb-error-summary__link`, so using it alone
+  renders unstyled while passing every existence check. Copying the documented
+  markup is what protects you there; the audit only catches names that are
+  wholly invented.
+
 - **Render the pages and look at them.** Spacing problems (Step 4) are invisible
   in source, and a page can be entirely correct class-by-class and still look
   wrong.

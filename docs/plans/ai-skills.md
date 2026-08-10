@@ -762,6 +762,66 @@ for the design system rather than the skill.
    the one-thing-per-page tradition — worth a design log entry recording which,
    so the next team does not re-ask.
 
+### Found while testing the skill against prototypes
+
+9. **No `[hidden]` reset in `base.css`, while `.govbb-error-message` sets
+   `display: block`.** An author-stylesheet class beats the user-agent `[hidden]`
+   rule, so a service that toggles inline errors with the `hidden` attribute gets
+   permanently visible error messages. Any team using `hidden` for conditional
+   content hits this; a one-line `:where([hidden]) { display: none }` in
+   `base.css` would close it.
+10. **`.govbb-error-summary__link` is styled only via the compound selector
+    `.govbb-link.govbb-error-summary__link`.** Markup carrying just the `__link`
+    class renders unstyled, and no existence check catches it, because the name
+    genuinely is in the stylesheet. It is the only compound selector of its kind
+    in the system, which is what makes it easy to miss. Either style the single
+    class too, or keep the guidance page's markup as the only thing anyone copies.
+11. **A stale `dist/govbb.css` at the repo root** (3 July, with pre-rename
+    `govbb-btn` classes) sits alongside the current
+    `packages/frontend/dist/govbb.css`. It is gitignored, so local cruft rather
+    than a shipped defect, but it is a trap for anyone auditing class names
+    against "the build".
+
+### Publishing defect — the documented install gives teams the wrong package
+
+12. **`latest` on npm points at a superseded, architecturally different
+    package.** `npm view @govtech-bb/react dist-tags` returns
+    `latest: 1.0.0-alpha.16` and `alpha: 1.0.0-alpha.21`; `@govtech-bb/frontend`
+    is `latest: 1.0.0-alpha.17` against the same `alpha: 1.0.0-alpha.21`.
+    `alpha.16` of the React package depends on `tailwind-merge`,
+    `@radix-ui/*` and `@govtech-bb/design` — it is the **previous
+    Tailwind/Radix design system**, not this CSS-first one, and it is missing
+    `Header`, `SkipLink`, `SummaryList`, `FormGroup`, `Label`, `Hint`,
+    `Fieldset`, `ButtonGroup` and `List`.
+
+    `using-the-design-system.md` tells teams to run
+    `pnpm add @govtech-bb/frontend @govtech-bb/react` with no version, which
+    resolves `latest`. So the documented install currently hands a service team
+    the wrong design system, and the failure looks like missing exports rather
+    than a wrong package.
+
+    Fix is one command — move the `latest` tag to `alpha.21` — plus deciding
+    whether the docs should pin a version until the package leaves alpha. This
+    is the highest-impact finding from the whole exercise and it was found by an
+    eval run, not by reading anything.
+
+### Unconfirmed — reported by eval runs, not reproducible
+
+13. Two runs independently reported layout defects: `.govbb-grid-row`'s twelve
+    tracks and eleven 32px gaps giving a 352px floor that overflows the 375px
+    mobile frame, and `.govbb-width-container`'s `margin-inline: auto`
+    suppressing flex stretch so `<main>` shrinks to its content. **Neither
+    reproduces.** Tested at 320/375/414/1280px, with trivial text, an input, an
+    unbreakable string, a table and a nested row, across three page structures
+    (`govbb-page` on `<body>`, on a React mount node, and `width-container` as
+    the flex item itself), against both the local build and the published
+    package — no horizontal overflow and no misalignment in any combination.
+
+    Recorded because two independent runs claimed them and both applied
+    workarounds, so something real may be happening inside their own React
+    scaffolds. But they should be isolated before anyone changes `layout.css`:
+    as written they are attributions, not reproductions.
+
 ### Also worth knowing
 
 8. **Prototypes want the ESM runtime served, not bundled.** Serving

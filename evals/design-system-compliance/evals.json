@@ -4,10 +4,14 @@
     {
       "id": 0,
       "name": "convert-real-html-prototype",
-      "prompt": "I've got a prototype at /Users/work/Documents/Projects/pension-calculator — it's the Government pension calculator, plain HTML with its own styles.css. Can you bring it onto the GovBB design system? Start with index.html and calculate.html. Don't touch my working copy, put the converted files somewhere separate and tell me what you changed.",
+      "prompt": "I've got a prototype at /Users/work/Documents/Projects/pension-calculator \u2014 it's the Government pension calculator, plain HTML with its own styles.css. Can you bring it onto the GovBB design system? Start with index.html and calculate.html. Don't touch my working copy, put the converted files somewhere separate and tell me what you changed.",
       "expected_output": "An inventory of the prototype's UI mapped to real GovBB components before any conversion; converted index.html and calculate.html written to a separate location using only real govbb- classes; the prototype's parallel token system (--spacing-xs, --color-grey-00, --font-size-body) mapped onto --govbb-* tokens; recognition that styles.css locally redefines .govbb-table and that this is restyling component internals; an honest gap list.",
       "files": [],
       "assertions": [
+        "Behavioural components carry their data-govbb-module attribute, so they are not silently inert",
+        "initAll() is wired once so those components initialise",
+        "Binding design-log decisions are consulted and cited where they bear on the work",
+        "status-banner is not used for routine notices; its guidance restricts it to page lifecycle and service disruption",
         "Every govbb- class in the converted output resolves to a selector in packages/frontend/dist/govbb.css",
         "No --govbb- custom property is used that is not defined in packages/frontend/dist/govbb.css",
         "An inventory mapping each prototype element to a named real component, pattern or template is shown before any file is converted",
@@ -16,7 +20,8 @@
         "The local redefinition of .govbb-table in styles.css is identified as restyling component internals and is not carried into the converted CSS",
         "The converted files are written outside /Users/work/Documents/Projects/pension-calculator and the original files are left unmodified",
         "The report contains a gap list naming what could not be converted, with a route for each item, rather than omitting those elements silently"
-      ]
+      ],
+      "notes": "The first four assertions are the discriminating ones. The name-resolution assertions that follow pass for a capable agent with or without the skill, because the built stylesheet is readable either way \u2014 keep them as regression guards, but do not read them as evidence the skill helps."
     },
     {
       "id": 1,

@@ -106,12 +106,16 @@ Converted to the HTML target:
 ```html
 <div class="govbb-form-group">
   <label class="govbb-label" for="nid">National ID number</label>
-  <span class="govbb-hint" id="nid-hint">For example, 123456-7890</span>
+  <span class="govbb-hint" id="nid-hint">
+    This is on your National Registration card. For example, 900314-0052
+  </span>
   <input
     class="govbb-input"
     id="nid"
     name="nid"
     type="text"
+    inputmode="numeric"
+    autocomplete="off"
     aria-describedby="nid-hint"
   />
 </div>
@@ -130,6 +134,14 @@ What actually happened, beyond the class swap:
 - The hint gained an `id` and the input an `aria-describedby`. The prototype
   showed the hint; it did not associate it. Conversion is the moment to fix
   that, because you are already editing both lines.
+- **The hint text itself changed, and this is the easiest thing in the example
+  to miss.** The prototype's `123456-7890` is not a possible National ID: the
+  format is six date-of-birth digits then four more, so `900314-0052`. There is a
+  pattern for this field — `/patterns/id.md` — which supplies the correct hint
+  wording, the `inputmode` and the "use another document instead" route. Every
+  class in a conversion can be right while the content is still wrong, and
+  swapping classes will not surface it. Check `/sitemap/` for a pattern covering
+  the field before you treat it as just markup.
 - The spacing utilities (`mb-4`, `mb-1`) went away rather than becoming token
   equivalents. `.govbb-form-group` owns that rhythm — replacing one spacing
   system with another inside a component that already handles it is how pages
