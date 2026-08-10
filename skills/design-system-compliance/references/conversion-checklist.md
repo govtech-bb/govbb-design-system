@@ -1,76 +1,87 @@
 # Conversion checklist
 
-Hand-written companion to the live site. Use it during
-Step 2 (inventory) and Step 3 (convert).
+Hand-written companion to the live site. Use it during Step 2 (inventory) and
+Step 3 (convert).
 
 ## Contents
 
 - [Translating names](#translating-names)
-- [What the system deliberately does not have](#what-the-system-deliberately-does-not-have)
+- [When something looks missing](#when-something-looks-missing)
 - [Worked example](#worked-example)
 - [Per-target checklist](#per-target-checklist)
 
 ## Translating names
 
-Design systems name the same behaviour differently. Match on what a thing
-_does_, not what the prototype calls it. Confirm every row against
-the site before using it — this table exists to stop you concluding
-"no component exists" too early, not to replace the site.
+Design systems name the same behaviour differently, which makes the prototype's
+vocabulary the wrong thing to search for. Work out what an element _does_, find
+the candidate on the site, then read its page to confirm. The site holds the
+answer; what follows is only the method for getting there.
 
-| The prototype calls it                                    | GovBB component                    |
-| --------------------------------------------------------- | ---------------------------------- |
-| Alert, notification, callout, flash message, inline toast | **Status banner**                  |
-| Accordion, details, disclosure, expander, "read more"     | **Show/hide**                      |
-| Definition list, key–value pairs, review/answers list     | **Summary list**                   |
-| Data table, grid                                          | **Table**                          |
-| Validation summary, error banner at the top of a form     | **Error summary**                  |
-| Inline field error, validation message                    | **Error message** (see Form group) |
-| Helper text, description under a field                    | **Hint** (see Form group)          |
-| Text field, textarea, email or phone input                | **Input**                          |
-| Numeric stepper, quantity spinner                         | **Number input**                   |
-| Dropdown used as a form control, simple combobox          | **Select**                         |
-| Segmented control, "pick one" option list                 | **Radio**                          |
-| Multi-select boxes, opt-in list                           | **Checkbox**                       |
-| Date picker, date-of-birth fields                         | **Date input**                     |
-| File picker, drag-and-drop upload, attachment field       | **File upload**                    |
-| Related controls sharing one question                     | **Fieldset**                       |
-| Search bar                                                | **Search**                         |
-| Breadcrumb trail                                          | **Breadcrumbs**                    |
-| Back link, "previous" link                                | **Back button**                    |
-| Skip nav, "jump to content"                               | **Skip link**                      |
-| Site header, masthead, top nav                            | **Header**                         |
-| Site footer                                               | **Footer**                         |
-| Government identity strip, "an official site" bar         | **Official banner**                |
-| Service directory, list of links with descriptions        | **Service list**                   |
-| Order summary, cost breakdown, fees table                 | **Payment**                        |
-| "Was this page useful?" widget                            | **Feedback**                       |
-| Anchor, hyperlink                                         | **Link**                           |
-| Bulleted or numbered list                                 | **List**                           |
-| Any call to action, primary/secondary/danger              | **Button**                         |
+Fetch `/components/` once. Every entry has a one-line description of what the
+component is for, and the entries are grouped — form elements, navigation,
+content and so on — so you can narrow to a group before reading descriptions.
+Then:
 
-## What the system deliberately does not have
+- **Search for the behaviour, not the label.** For an accordion, look for wording
+  about revealing content on demand; for a definition list, wording about
+  key/value pairs. "Expander", "read more" and "disclosure" appear nowhere on the
+  site, but the behaviour they share does, and one GovBB component often absorbs
+  all three prototype names.
+- **Split a generic word before you search.** "Dropdown" is a form control in one
+  prototype and a navigation menu in another. Decide which you have first, or you
+  will match the wrong entry and carry the mistake into the markup.
+- **Distrust a name that matches too neatly.** Status banner sounds like the home
+  for any alert or flash message; its page says it is for where a page sits in
+  its lifecycle, and sends form validation to Error summary instead. A familiar
+  name is a reason to open the page, not to skip it.
+- **Look inside components, not only at them.** Some behaviour is part of a
+  larger component rather than a component of its own — hint text and inline
+  error messages belong to Form group, for instance. If a behaviour has no entry
+  of its own, read the pages of the components it would sit inside before
+  deciding it is absent.
 
-No component exists for these. That is usually a **design decision, not a
-gap** — government services follow one-thing-per-page, which removes the need
-for most of them. Treating them as missing features and building lookalikes is
-how a service drifts away from the system.
+When two components both look plausible, fetch both `.md` pages and read the
+"when not to use" guidance on each: it is written to separate exactly these
+pairs, and usually names the rival component outright. If it still does not
+decide it, use the closer one and say in the report which alternative you
+rejected and why — a named choice can be reviewed, a silent one cannot.
+Concluding that nothing fits is only safe once you have searched by behaviour and
+come up empty; an inventory done by name is what makes the novel bucket look
+large.
 
-| Not in the system            | What to do instead                                                                                                                           |
-| ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| Modal, dialog, lightbox      | Give it its own page. Interrupting a task in an overlay is hostile on small screens and to screen readers.                                   |
-| Tabs                         | Separate pages, or sections with headings.                                                                                                   |
-| Carousel                     | Show the content. Carousels hide most of it.                                                                                                 |
-| Tooltip, popover             | **Hint** text for form fields; **Show/hide** for longer asides. Hover-only content is unreachable by touch and keyboard.                     |
-| Card                         | Compose from typography, **Link** and spacing tokens. For a list of services, use **Service list**.                                          |
-| Progress bar, step indicator | Check `/templates/` — the multiple-questions-page and single-question-page templates cover journey structure.                                |
-| Pagination                   | Not covered. Record it as a gap.                                                                                                             |
-| Toggle switch                | **Checkbox**. A switch and a checkbox do the same job; only one is in the system.                                                            |
-| Badge, tag, chip             | Not covered. Record it as a gap.                                                                                                             |
-| Autocomplete, typeahead      | **Select** if the list is short and known. Otherwise record it as a gap — an accessible autocomplete is a real component, not a styling job. |
+## When something looks missing
 
-When something lands here, say so in the report. "The system deliberately has
-no modal; this step became its own page" is a useful sentence. Quietly
-inventing `govbb-modal` is not.
+Government services follow one thing per page, and that single decision removes
+the need for a whole family of interface furniture: overlays that interrupt a
+task, tab strips and carousels that hide most of their content, hover-only text
+that touch and keyboard users never reach. So when a prototype uses something
+you cannot find, the first question is not "how do I build it" but "does the page
+still need it once the task is one thing per page". Often it does not, and the
+absence is a deliberate design decision rather than a gap.
+
+Confirm the absence before acting on it: search `/components/` by behaviour as
+above, and check `/sitemap/` for a pattern or template too, since a multi-step
+journey or a whole task is more often solved there than assembled from
+components. The system gains components over time, so a belief that something
+does not exist ages badly — and a hand-rolled lookalike sitting beside a real
+component is worse than either mistake alone.
+
+If it genuinely is not there, one of three things is true, and it is worth saying
+which:
+
+- **The behaviour becomes its own page.** Anything that interrupts a task — a
+  confirmation overlay, a step buried in a wizard — reads better as a page with a
+  heading, a URL and a back link, and it survives a small screen.
+- **It composes from what exists.** Typography, links, lists and the spacing and
+  colour tokens cover most of what prototypes reach for a bespoke component for.
+  Composition from published parts stays inside the system; a new `govbb-` class
+  does not.
+- **It is a real gap.** Some things are genuine components with real
+  accessibility requirements rather than a styling job, and the honest answer is
+  to record them for the design system team.
+
+Either way, say so in the report. "The system has no modal, so this step became
+its own page" is a useful sentence. Quietly inventing `govbb-modal` is not.
 
 ## Worked example
 
@@ -140,10 +151,13 @@ tokens rather than reaching back for utility classes.
 
 - [ ] `@govtech-bb/frontend` installed; `@govtech-bb/frontend/css` imported once
 - [ ] Every class read from the component's page on the site
-- [ ] `data-govbb-module` present on Header, File upload, Number input
+- [ ] `data-govbb-module` present wherever the component's page shows it — the
+      behavioural components carry it in their canonical markup, so copying the
+      markup rather than retyping it gets this right
 - [ ] `initAll()` called once, after the document exists
 - [ ] Image and font assets resolved from `@govtech-bb/frontend/assets/*` and
-      passed to Header, Footer and Official banner as URLs
+      passed in as URLs; the page-furniture pages show which attribute or prop
+      each one expects
 - [ ] No `initAll()` over React components (there should be none here)
 
 ### React
@@ -157,7 +171,8 @@ tokens rather than reaching back for utility classes.
 
 ### Both
 
-- [ ] Page furniture present: Skip link, Official banner, Header, Footer
+- [ ] Page furniture present — everything in the page-furniture group on
+      `/components/`, plus the Skip link
 - [ ] Every form control keeps its label association, hint and error wiring
 - [ ] Literal colours, spacing and font sizes replaced with `--govbb-*` tokens,
       preferring semantic names over the primitive ramp

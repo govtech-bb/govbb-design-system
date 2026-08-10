@@ -14,7 +14,7 @@ metadata:
   title: Design system compliance
   audience: public
   status: experimental
-  requires: ['network access to design-system.service.alpha.gov.bb']
+  requires: ['the design system site, or a local copy of its source']
 ---
 
 # GovBB Design System compliance
@@ -34,29 +34,55 @@ is made of, not where it lives.
 
 ## The one rule that matters most
 
-**Never write a `govbb-` class or a `--govbb-` token you have not just read on
-the design system site.** Plausible-sounding names — `govbb-card`,
-`govbb-alert`, `govbb-modal`, `--govbb-color-primary` — are the single most
-common way this work goes wrong. They do not exist, so they render as unstyled
-markup, and Stylelint rejects the prefix in service code. Worse, they _imply the
-design system supports something it does not_, and that misinformation outlives
-the pull request.
+**Never write a `govbb-` class or a `--govbb-` token you have not just read in
+the design system's own documentation or source.** Fluent, correctly prefixed,
+plausible names are the single most common way this work goes wrong — reach for
+`govbb-card`, `govbb-modal` or `--govbb-color-primary` and check whether they
+exist before you rely on them, because names of that shape are exactly the ones
+that feel safe and usually are not. An undefined class renders as unstyled
+markup, an undefined custom property silently resolves to nothing, and Stylelint
+rejects the prefix in service code. Worse, either one _implies the design system
+supports something it does not_, and that misinformation outlives the pull
+request.
 
 The site is the allowlist, and it is live:
 
 - **`https://design-system.service.alpha.gov.bb/sitemap/`** lists every page.
-- **Any page plus `.md`** serves its raw markdown —
-  `/components/button.md`. A component's page carries its canonical markup with
-  every class it exposes.
+- **Component, pattern, template, style and documentation pages have a raw
+  markdown twin** at the same URL plus `.md` — `/components/button.md`. A
+  component's twin carries its canonical markup with every class it exposes.
+  Design-log entries and the section index pages have no twin; read those as
+  HTML.
 
-Read the component's page and copy its markup. If the thing you want is not on
-the site, it does not exist, and your job is to say so rather than invent it.
+Read the component's page and copy its markup. If nothing on the site covers
+what you need, say so rather than invent it.
 
-`references/looking-things-up.md` has the full lookup contract, including where
-the site does not yet publish something. **This skill deliberately holds no list
-of components, classes or tokens** — such a list drifts the moment the system
-changes, and it drifted three times while this skill was being written. Fetching
-is one request and cannot be stale.
+`references/looking-things-up.md` has the full lookup contract, including which
+sections have markdown twins and where the site does not publish something.
+
+**What this skill will and will not tell you**, because the difference is the
+whole design:
+
+- **Which components exist, what they are called, and when to use each** —
+  never from here. That is inventory; it changes; you fetch it. An earlier
+  version of this skill embedded it and went stale three times during
+  development, once badly enough to send someone to file a gap for a component
+  that partly existed.
+- **The page scaffold** (`govbb-page`, `govbb-width-container`,
+  `govbb-main-wrapper`, `govbb-grid-row` and the column classes) — named here.
+  It is architecture rather than inventory: a handful of classes, stable across
+  releases, and you cannot sequence a conversion without them. `/styles/layout.md`
+  is still the authority if anything looks off.
+- **Per-component margin behaviour** — in `references/layout-and-spacing.md`,
+  because the site does not publish it anywhere. That file is derived from the
+  stylesheets and dated, and it is the one place here that can go out of date.
+
+If you cannot reach the site — no network, no fetch tool, the site down — do not
+fall back on remembered class names. `looking-things-up.md` has the ladder to
+work down instead: local source in `packages/frontend/src/`, or an installed
+`@govtech-bb/frontend`, and otherwise stopping. Stopping with an honest "I could
+not verify any of these names" is a better outcome than a conversion that looks
+finished and has to be redone.
 
 ## Step 1 — Identify the consumer target
 
@@ -88,8 +114,9 @@ The question is only whether **React wrappers** are in play.
 
 Fetch `/components/` for the component list with one-line descriptions, and
 `/sitemap/` for the patterns, templates and design-log entries. Two requests,
-and they tell you what exists today. Do not fetch all sixty-odd pages — get the
-index, then fetch individual pages as you need them in Step 3.
+and they tell you what exists today. The sitemap runs to about seventy-five
+links — do not fetch them all. Get the index, then fetch individual pages as you
+need them in Step 3.
 
 Then walk the prototype and list every distinct UI element, sorting each into
 one of three buckets:
@@ -101,10 +128,16 @@ one of three buckets:
 3. **Genuinely novel** — nothing covers it.
 
 Names differ between design systems, so match on behaviour rather than
-vocabulary. `references/conversion-checklist.md` has a translation table for
-the usual suspects (an "alert" is a Status banner; an "accordion" is
-Show/hide). Check it before concluding something is novel — bucket 3 should be
-small, and when it is large that usually means the inventory was done by name.
+vocabulary. `references/conversion-checklist.md` gives you the method for
+translating a prototype's vocabulary into the system's, and the tie-break when
+two components both look plausible. Work through it before concluding anything
+is novel — bucket 3 should be small, and when it is large that usually means the
+inventory was done by name.
+
+Resist the pull of a name that matches too neatly. "Alert" looks like Status
+banner, and Status banner is actually for where a page sits in its lifecycle —
+its own guidance sends validation messages to Error summary instead. Only the
+component's page can tell you that, which is why a guess is not an inventory.
 
 Show the user this inventory before converting. It is cheap to redirect now and
 expensive after the markup has changed.
@@ -135,48 +168,38 @@ service phase.
 
 ## Step 4 — Use the system's layout and rhythm
 
-Read `references/layout-and-spacing.md` before laying out a page. Most of this
-is already handled, and the risk is building a parallel system on top of it.
+Layout and the spacing scale are published — `/styles/layout.md` and
+`/styles/spacing.md` — so fetch those rather than working from memory. What is
+**not** published is per-component margin behaviour, which is why
+`references/layout-and-spacing.md` exists and why it is the one file here derived
+from the stylesheets rather than the site. Read it before laying out a page.
 
-**The system owns page layout.** `govbb-page` for a full-height page with the
-footer pinned down, `govbb-width-container` for responsive gutters,
-`govbb-main-wrapper` for `<main>`'s vertical padding, `govbb-grid-row` plus a
-`govbb-grid-column-*` for columns. Columns stack full width below tablet on
-their own, so there is no mobile variant to write.
+**Vertical rhythm has a stated strategy: content margins own it.** `base.css`
+puts a 16px bottom margin on every heading and paragraph, so a page of prose
+needs no spacing CSS at all. The risk is not that rhythm is missing — it is
+building a second spacing system on top of the one that exists.
 
-**Vertical rhythm has a stated strategy: content margins own it.** `layout.css`
-says so, and `base.css` implements it with a 16px bottom margin on every heading
-and paragraph. A page that is mostly prose needs no spacing CSS at all.
+Only three components space themselves from what follows: `govbb-form-group`,
+`govbb-summary-section` and `govbb-error-summary`. Three list components zero
+their own margin, and everything else declares none. So a heading followed by a
+list followed by a call to action collapses into one block, and it looks evenly
+spaced enough to survive a markup review.
 
-Three things opt out of that strategy, and they are the only gaps you should be
-filling:
+Filling those gaps is a handful of rules, and two things keep it safe:
 
-- `govbb-list` and `govbb-summary-list` set `margin: 0` — the browser's margin
-  removed and nothing put back.
-- `govbb-button` and `govbb-back-button` have no margin declared.
-- The base margin is flat, so an 80px `govbb-text-display` heading gets the same
-  16px as a caption. Section headings need more room above them.
-
-So a heading followed by a list followed by a button collapses into one block,
-while prose is fine. It looks evenly spaced, therefore deliberate — which is how
-it survives a markup review.
-
-Filling those gaps takes a handful of rules. Two things keep it safe:
-
-- **Put the margin on your own class, never on a `govbb-` one.** A margin on
+- **Put each margin on your own class, never on a `govbb-` one.** A margin on
   `.govbb-list` restyles a component's internals and makes this service disagree
   with every other one.
-- **Every value comes from `--govbb-space-*`.**
+- **Take every value from `--govbb-space-*`.**
 
-Do not add a generic `* + *` rule: it duplicates the base margins and then leans
-on margin collapsing to hide the overlap. Supply only what opted out. And skip
-components that already own their rhythm (`govbb-form-group`,
-`govbb-error-summary`) or you will double-space the form.
+Avoid a generic `* + *` rule — it duplicates the base margins and then leans on
+collapsing to hide the overlap. The reference has a worked stylesheet, and lists
+the traps: components whose `margin: 0` is clearing a browser default rather than
+opting out, and the one component that already brings its own top margin.
 
-**Render the page and look at it.** Class correctness does not imply visual
-correctness, and this is not verifiable by reading markup. If you needed more
-than a handful of rules, put that in the report with what you needed — repeated
-evidence is what lets the design team act on it.
+**Then render the page and look at it.** Spacing is not verifiable by reading
+markup. If you needed more than a handful of rules, put that in the report with
+what you needed — repeated evidence is what lets the design team act on it.
 
 ## Step 5 — Replace ad-hoc styling with tokens
 
@@ -215,19 +238,26 @@ person; a bridged utility class is none of those.
 
 ## Step 6 — Wire up behaviour
 
-Three components need JavaScript: **Header**, **File upload**, **Number
-input**. On an HTML target each needs its `data-govbb-module` attribute plus a
-single `initAll()` call after the document exists:
+Most components are CSS-only. A few are progressive enhancements, and **a
+component's page tells you which**: its markup carries a `data-govbb-module`
+attribute. `/documentation/using-the-design-system.md` names them as a set. Do
+not work from a remembered list — the set grows as behavioural components are
+added.
+
+On an HTML target, every element with `data-govbb-module` needs that attribute
+copied exactly as the guidance shows, plus a single `initAll()` call after the
+document exists:
 
 ```js
 import { initAll } from '@govtech-bb/frontend';
 initAll();
 ```
 
-Miss this and the markup still renders — which is why it slips through. The
-mobile navigation just never opens.
+Miss this and the markup still renders, which is why it slips through review.
+The component simply never does anything — a mobile navigation that does not
+open, a file upload with no file list.
 
-Everything else is CSS-only. React wrappers need none of this.
+React wrappers carry their own behaviour, so do not call `initAll()` over them.
 
 ## Step 7 — Report what you could not convert
 
@@ -266,10 +296,12 @@ Route each gap rather than leaving it hanging:
 Reading the markup is not verification. Each of these has caught a real defect
 that source review passed.
 
-- **Audit the classes you emitted against the site**, mechanically. Collect
-  every `class="…"` value from the rendered output and check each `govbb-` name
-  against `references/`. This is cheap to script and it is the only reliable
-  guard against a plausible invented name surviving.
+- **Audit the classes you emitted, mechanically.** Collect every `class="…"`
+  value from the rendered output and check each `govbb-` name against the
+  component pages you fetched — or, if you have the repo, against the built
+  `packages/frontend/dist/govbb.css`, where a name that resolves to nothing is a
+  name that does not exist. This is a few lines of scripting and it is the only
+  reliable guard against a plausible invented name surviving to review.
 - **Render the pages and look at them.** Spacing problems (Step 4) are invisible
   in source, and a page can be entirely correct class-by-class and still look
   wrong.
@@ -301,10 +333,13 @@ Read these as you need them rather than up front.
   leaves to you, and how to add rhythm without restyling components. Derived
   from the stylesheets rather than the site, so it is the one file here that can
   drift; it says so and gives you the source to check.
-- **`references/conversion-checklist.md`** — the common-name translation table,
-  a worked conversion, and the per-target checklist.
+- **`references/conversion-checklist.md`** — how to translate a prototype's
+  vocabulary into the system's, what to do when something looks missing, a
+  worked conversion, and the per-target checklist.
 - **`references/anti-patterns.md`** — the specific ways this goes wrong, and
   what to do instead.
 
-None of these lists components, classes or tokens. Those come from the site,
-every time, so this skill does not need updating when the design system changes.
+Only `layout-and-spacing.md` states facts derived from the source, and only
+because the site does not publish them. Everything else here teaches a method.
+Which components exist and what they are called comes from the site every time,
+so adding or renaming a component does not oblige anyone to update this skill.

@@ -19,9 +19,14 @@ and — the real cost — they claim the design system supports something it doe
 not. Someone later greps for `govbb-card`, finds nothing, and cannot tell
 whether it was deleted or never existed.
 
-**Instead:** fetch the component's page. If it does not exist, either compose from
-what exists (a "card" is typography, a **Link** and spacing) or record it as a
-gap. Both are fine. Inventing is not.
+**Instead:** search `/components/` for the behaviour, and fetch the page of
+anything that looks close. If nothing covers it, either compose it from what does
+exist or record it as a gap. Both are fine; inventing is not.
+
+Do not shortcut that search on the strength of a name. Something that reads as
+absent is often present under a different one, or present as part of a larger
+component — a tag treatment exists inside Service list, for instance, which is
+easy to miss if you searched for "badge" and stopped.
 
 The same applies to tokens. `--govbb-color-primary` sounds right and is not
 real; the brand colour is `--govbb-color-brand`. An undefined custom property

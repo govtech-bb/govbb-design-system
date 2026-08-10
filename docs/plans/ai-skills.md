@@ -741,12 +741,23 @@ for the design system rather than the skill.
    children.
 5. **The base block margin does not scale with the type ramp.** A flat 16px
    follows an 80px `govbb-text-display` heading and a 12px caption alike, so
-   large type reads as crowded.
-6. **No status tag or badge component.** Any service showing state — an
-   application under review, a licence expiring, a claim paused — has no way to
-   give that state visual weight. In the status-checker prototype the status
-   ended up as a Summary list value, styled identically to the dates beside it.
-   GOV.UK has a Tag component; this looks unruled-on rather than ruled out.
+   large type reads as crowded. This is a property of the base layer rather than
+   any component, and worth keeping separate from item 4 when deciding what to
+   change.
+
+   Two smaller documentation defects found while verifying the above:
+   `/styles/layout.md` claims a `-from-desktop` variant of the `full` column
+   which does not exist, and `.govbb-table` is easily misread as owning a bottom
+   margin when the 16px actually sits on `.govbb-table__caption`.
+6. **No general status tag component — but a tag treatment already exists.**
+   Any service showing state (an application under review, a licence expiring, a
+   claim paused) has no way to give that state visual weight; in the
+   status-checker prototype the status ended up as a Summary list value, styled
+   identically to the dates beside it. Note though that `govbb-service-list__tag`
+   exists and is documented as an optional tag per item, so the question is
+   whether to **generalise that treatment** rather than whether to invent
+   something. GOV.UK has a Tag component; this looks unruled-on rather than
+   ruled out.
 7. **No progress or timeline component.** May well be a deliberate omission in
    the one-thing-per-page tradition — worth a design log entry recording which,
    so the next team does not re-ask.
