@@ -1,0 +1,26 @@
+{
+  "skill_name": "design-system-compliance",
+  "evals": [
+    {
+      "id": 0,
+      "name": "convert-real-html-prototype",
+      "prompt": "I've got a prototype at /Users/work/Documents/Projects/pension-calculator — it's the Government pension calculator, plain HTML with its own styles.css. Can you bring it onto the GovBB design system? Start with index.html and calculate.html. Don't touch my working copy, put the converted files somewhere separate and tell me what you changed.",
+      "expected_output": "An inventory of the prototype's UI mapped to real GovBB components before any conversion; converted index.html and calculate.html written to a separate location using only real govbb- classes; the prototype's parallel token system (--spacing-xs, --color-grey-00, --font-size-body) mapped onto --govbb-* tokens; recognition that styles.css locally redefines .govbb-table and that this is restyling component internals; an honest gap list.",
+      "files": []
+    },
+    {
+      "id": 1,
+      "name": "build-new-react-with-traps",
+      "prompt": "starting a new react app for a business licence renewal service for gov.bb. i need a landing page and then the renewal form. for the form i want tabs so people can jump between the 3 sections, a modal that pops up to confirm before they submit, and a toggle switch for the 'email me updates' option. can you scaffold this with the govbb design system?",
+      "expected_output": "Uses @govtech-bb/react wrappers and imports the stylesheet once at the app root; does NOT invent govbb-tabs, govbb-modal or govbb-toggle; explains that tabs/modal are deliberately absent and routes to one-thing-per-page / separate pages, and that a toggle should be a Checkbox; suggests the landing and single-question-page templates; does not call initAll() in React.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "name": "review-planted-violations",
+      "prompt": "Can you review skills/design-system-compliance/evals/fixtures/review-me.html and tell me whether it's design-system compliant? Just a review please, don't rewrite the file.",
+      "expected_output": "Identifies the invented classes (govbb-card, govbb-alert, govbb-badge) and the invented token (--govbb-color-primary); flags the .govbb-button override as restyling component internals; catches the missing data-govbb-module + initAll() wiring on header and file upload; flags hardcoded #00267f/16px/1.25rem and the direct use of the primitive --govbb-blue-100; notes the unassociated hint. Does not rewrite the file, and does not invent violations that are not present.",
+      "files": ["fixtures/review-me.html"]
+    }
+  ]
+}
