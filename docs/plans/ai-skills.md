@@ -706,6 +706,60 @@ Until (2) and (3) land, the skill fetches `/styles/tokens/` as HTML for values
 and carries one source-derived file for spacing, which says plainly that it can
 drift.
 
+## 5a. Findings from validating the skill against prototypes
+
+The compliance skill was validated by building three prototypes with it — a
+single-question status checker, a twelve-page multi-step application, and a
+content-led guidance hub. The prototypes were throwaway and have been deleted;
+these are the findings worth keeping. Each is a small, separable piece of work
+for the design system rather than the skill.
+
+### Defects
+
+1. **`packages/frontend/layout.html` references a non-existent asset.** Two
+   occurrences of `/assets/images/govbb-creast.svg` (transposed) where the file
+   is `govbb-crest.svg`, so the demo page's crest images are broken.
+2. **The layout demo has no skip link.** `layout.html` reads as the canonical
+   page shell, so anyone copying it starts a service without one.
+3. **`summary-section` has a stylesheet but no guidance page.** It ships
+   `govbb-summary-section`, `__header` and `__title`, its markup appears on the
+   Summary list page, and the check-answers pattern depends on it — but it has no
+   page of its own and no entry in the component navigation. It is the only
+   component in this position across all 26 stylesheets. Either give it a page or
+   document explicitly that it belongs to Summary list.
+
+### Gaps in the system
+
+4. **Three components opt out of the system's own rhythm strategy.**
+   `layout.css` states that "content margins own that rhythm", and `base.css`
+   implements it — but `govbb-list`, `govbb-summary-list` and
+   `govbb-service-list` set `margin: 0`, and most other components declare no
+   margin at all. Every service that composes a heading with a list or a call to
+   action therefore writes the same few rules. Across three prototypes sharing no
+   code, each needed its own version. Two plausible answers: spacing utilities in
+   the GOV.UK Frontend style, or an opinionated prose wrapper that spaces its
+   children.
+5. **The base block margin does not scale with the type ramp.** A flat 16px
+   follows an 80px `govbb-text-display` heading and a 12px caption alike, so
+   large type reads as crowded.
+6. **No status tag or badge component.** Any service showing state — an
+   application under review, a licence expiring, a claim paused — has no way to
+   give that state visual weight. In the status-checker prototype the status
+   ended up as a Summary list value, styled identically to the dates beside it.
+   GOV.UK has a Tag component; this looks unruled-on rather than ruled out.
+7. **No progress or timeline component.** May well be a deliberate omission in
+   the one-thing-per-page tradition — worth a design log entry recording which,
+   so the next team does not re-ask.
+
+### Also worth knowing
+
+8. **Prototypes want the ESM runtime served, not bundled.** Serving
+   `packages/frontend/index.js` plus `src/components/*/*.js` over HTTP is enough
+   for `initAll()` to work in a browser with no build step, because the package
+   ships plain ESM with relative imports. That made progressive enhancement
+   genuinely testable in a static-ish prototype, and is worth documenting for
+   prototype teams.
+
 ## 6. Sharing and installation
 
 Two audiences, two routes, one source. No migration of `team-skills` required
