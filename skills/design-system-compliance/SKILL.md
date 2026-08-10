@@ -14,7 +14,7 @@ metadata:
   title: Design system compliance
   audience: public
   status: experimental
-  requires: []
+  requires: ['network access to design-system.service.alpha.gov.bb']
 ---
 
 # GovBB Design System compliance
@@ -34,16 +34,29 @@ is made of, not where it lives.
 
 ## The one rule that matters most
 
-**Never write a `govbb-` class or a `--govbb-` token that you have not read in
-`references/`.** Plausible-sounding names — `govbb-card`, `govbb-alert`,
-`govbb-modal`, `--govbb-color-primary` — are the single most common way this
-work goes wrong. They do not exist, so they render as unstyled markup, and
-Stylelint rejects the prefix in service code. Worse, they _imply the design
-system supports something it does not_, and that misinformation outlives the
-pull request.
+**Never write a `govbb-` class or a `--govbb-` token you have not just read on
+the design system site.** Plausible-sounding names — `govbb-card`,
+`govbb-alert`, `govbb-modal`, `--govbb-color-primary` — are the single most
+common way this work goes wrong. They do not exist, so they render as unstyled
+markup, and Stylelint rejects the prefix in service code. Worse, they _imply the
+design system supports something it does not_, and that misinformation outlives
+the pull request.
 
-`references/component-index.md` is the allowlist. If it is not there, it does
-not exist, and your job is to say so rather than invent it.
+The site is the allowlist, and it is live:
+
+- **`https://design-system.service.alpha.gov.bb/sitemap/`** lists every page.
+- **Any page plus `.md`** serves its raw markdown —
+  `/components/button.md`. A component's page carries its canonical markup with
+  every class it exposes.
+
+Read the component's page and copy its markup. If the thing you want is not on
+the site, it does not exist, and your job is to say so rather than invent it.
+
+`references/looking-things-up.md` has the full lookup contract, including where
+the site does not yet publish something. **This skill deliberately holds no list
+of components, classes or tokens** — such a list drifts the moment the system
+changes, and it drifted three times while this skill was being written. Fetching
+is one request and cannot be stale.
 
 ## Step 1 — Identify the consumer target
 
@@ -73,8 +86,10 @@ The question is only whether **React wrappers** are in play.
 
 ## Step 2 — Inventory before changing anything
 
-Read `references/component-index.md` first — all 28 components, their classes,
-their React wrappers, which need JavaScript, plus every pattern and template.
+Fetch `/components/` for the component list with one-line descriptions, and
+`/sitemap/` for the patterns, templates and design-log entries. Two requests,
+and they tell you what exists today. Do not fetch all sixty-odd pages — get the
+index, then fetch individual pages as you need them in Step 3.
 
 Then walk the prototype and list every distinct UI element, sorting each into
 one of three buckets:
@@ -112,56 +127,63 @@ field first and the page shell afterwards means doing the field twice.
 4. **Content** — typography, lists, tables, summary lists.
 5. **Bespoke leftovers** — whatever is left from bucket 3.
 
-For anything non-trivial, read the component's guidance page before using it.
-Every page has a raw-markdown twin: append `.md` to the URL in the index — so
-`https://design-system.service.alpha.gov.bb/components/button.md`. The guidance
-says when a component is the _wrong_ answer, which the index deliberately does
-not duplicate.
+Fetch each component's page before using it and copy the markup it shows.
+`/components/<slug>.md` gives you the raw markdown. The guidance says when a
+component is the _wrong_ answer, which a class name cannot tell you —
+`status-banner` looks right for "application under review" and is actually for
+service phase.
 
-## Step 4 — Give the page vertical rhythm
+## Step 4 — Use the system's layout and rhythm
 
-The single most common reason a technically-correct conversion still looks wrong.
-Read `references/layout-and-spacing.md` before laying out a page.
+Read `references/layout-and-spacing.md` before laying out a page. Most of this
+is already handled, and the risk is building a parallel system on top of it.
 
-The system owns horizontal layout completely and vertical rhythm barely at all:
+**The system owns page layout.** `govbb-page` for a full-height page with the
+footer pinned down, `govbb-width-container` for responsive gutters,
+`govbb-main-wrapper` for `<main>`'s vertical padding, `govbb-grid-row` plus a
+`govbb-grid-column-*` for columns. Columns stack full width below tablet on
+their own, so there is no mobile variant to write.
 
-- Base styles give every heading and paragraph a **flat 16px** bottom margin —
-  the same after an 80px display heading as after a caption.
-- `govbb-list` and `govbb-summary-list` set **`margin: 0`**, removing the
-  browser's margin and replacing it with nothing.
-- `govbb-button` and `govbb-back-button` have **no margin at all**.
-- There are **no spacing utility classes**. `--govbb-space-*` are tokens, not
-  classes.
+**Vertical rhythm has a stated strategy: content margins own it.** `layout.css`
+says so, and `base.css` implements it with a 16px bottom margin on every heading
+and paragraph. A page that is mostly prose needs no spacing CSS at all.
 
-So a heading, a list and a button in sequence collapse into one undifferentiated
-block, and it looks deliberate rather than broken — which is how it survives
-review.
+Three things opt out of that strategy, and they are the only gaps you should be
+filling:
 
-Writing a small amount of service CSS to fix this is correct, not a failure. Two
-things make it safe:
+- `govbb-list` and `govbb-summary-list` set `margin: 0` — the browser's margin
+  removed and nothing put back.
+- `govbb-button` and `govbb-back-button` have no margin declared.
+- The base margin is flat, so an 80px `govbb-text-display` heading gets the same
+  16px as a caption. Section headings need more room above them.
+
+So a heading followed by a list followed by a button collapses into one block,
+while prose is fine. It looks evenly spaced, therefore deliberate — which is how
+it survives a markup review.
+
+Filling those gaps takes a handful of rules. Two things keep it safe:
 
 - **Put the margin on your own class, never on a `govbb-` one.** A margin on
-  `.govbb-list` is restyling a component's internals, and it makes this service
-  disagree with every other one.
-- **Every value comes from `--govbb-space-*`.** Prefer one owned wrapper that
-  spaces its children over margins sprinkled per element — easier to review, and
-  easy to delete if the system later ships real spacing utilities.
+  `.govbb-list` restyles a component's internals and makes this service disagree
+  with every other one.
+- **Every value comes from `--govbb-space-*`.**
 
-Scale the gap to the type, and give a heading more space above than below, so
-proximity shows which content it introduces. Skip components that already own
-their rhythm (`govbb-form-group`, `govbb-error-summary`) or you will double-space
-the form.
+Do not add a generic `* + *` rule: it duplicates the base margins and then leans
+on margin collapsing to hide the overlap. Supply only what opted out. And skip
+components that already own their rhythm (`govbb-form-group`,
+`govbb-error-summary`) or you will double-space the form.
 
 **Render the page and look at it.** Class correctness does not imply visual
-correctness here, and this is not something you can verify by reading markup. If
-you needed more than a handful of spacing rules, put that in the report — the
-missing rhythm layer is a real finding, and repeated evidence is what lets the
-design team act on it.
+correctness, and this is not verifiable by reading markup. If you needed more
+than a handful of rules, put that in the report with what you needed — repeated
+evidence is what lets the design team act on it.
 
 ## Step 5 — Replace ad-hoc styling with tokens
 
 Flag every literal colour, spacing value, font size and radius, and map it to a
-`--govbb-*` token from `references/token-reference.md`.
+`--govbb-*` token. Token names and the two-tier rule are on
+`/styles/tokens.md`; for actual values fetch the rendered `/styles/tokens/`,
+whose tables are generated from `tokens.css` at build time.
 
 Prefer semantic tokens (`--govbb-color-brand`, `--govbb-space-s`) over the
 primitive ramp (`--govbb-blue-100`, and similar). The primitives exist so the
@@ -244,7 +266,7 @@ Route each gap rather than leaving it hanging:
 Reading the markup is not verification. Each of these has caught a real defect
 that source review passed.
 
-- **Audit the classes you emitted against the allowlist**, mechanically. Collect
+- **Audit the classes you emitted against the site**, mechanically. Collect
   every `class="…"` value from the rendered output and check each `govbb-` name
   against `references/`. This is cheap to script and it is the only reliable
   guard against a plausible invented name surviving.
@@ -272,19 +294,17 @@ that source review passed.
 
 Read these as you need them rather than up front.
 
-- **`references/component-index.md`** — generated from source. All components
-  with classes, React wrappers, JavaScript needs and doc links, plus all
-  patterns and templates. Your allowlist for Step 2.
-- **`references/token-reference.md`** — generated from source. Every
-  `--govbb-*` token with its value. Your allowlist for Step 5.
+- **`references/looking-things-up.md`** — the lookup contract: `/sitemap/` for
+  discovery, `<page>.md` for raw markdown, where the site does not yet publish
+  something, and why this skill holds no component list. **Read this first.**
 - **`references/layout-and-spacing.md`** — what the system spaces and what it
-  leaves to you, and how to add rhythm without restyling components. Read it
-  before laying out a page, not after it looks wrong.
+  leaves to you, and how to add rhythm without restyling components. Derived
+  from the stylesheets rather than the site, so it is the one file here that can
+  drift; it says so and gives you the source to check.
 - **`references/conversion-checklist.md`** — the common-name translation table,
   a worked conversion, and the per-target checklist.
 - **`references/anti-patterns.md`** — the specific ways this goes wrong, and
   what to do instead.
 
-The two generated files are rebuilt by `skills/scripts/build-references.mjs`
-and verified in CI, so they track the code rather than a snapshot of it. Trust
-them over your recollection of any design system, including this one.
+None of these lists components, classes or tokens. Those come from the site,
+every time, so this skill does not need updating when the design system changes.

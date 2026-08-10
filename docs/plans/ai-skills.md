@@ -656,29 +656,55 @@ one real component end to end.
 
 ---
 
-## 5. Keeping skills true: generated references
+## 5. Keeping skills true: read the site, do not snapshot it
 
 The main long-term failure mode is drift — a skill confidently naming a
 component that was renamed, or missing one added last week.
 
-Fix: **generate the factual references, hand-write only the judgement.**
+**The first attempt at this was wrong and is worth recording.** The
+`design-system-compliance` skill originally shipped a generated
+`component-index.md` and `token-reference.md`, rebuilt by a script with a CI
+`--check` mode that failed on drift. It went stale three times during
+development, each time the same way: a list derived by walking one source misses
+whatever that source does not enumerate — BEM child classes (the regex excluded
+underscores), layout and utility classes (outside the component directories), and
+a component whose stylesheet had no guidance page. Each gap made the skill reject
+a real class, because the skill treated the index as definitive.
 
-- A script (`skills/scripts/build-references.mjs`) generates
-  `design-system-compliance/references/component-index.md` (name, group, class
-  names, React wrapper, whether it needs `data-govbb-module`, status, doc URL)
-  and `token-reference.md` from `tokens.css`.
-- Both files are committed, so the skills work offline and diffs are reviewable.
-- **CI check fails if regenerating changes them** — the same discipline already
-  applied to `CHANGELOG.md`. Adding a component then forces the index to be
-  regenerated in the same PR.
-- Prose files (`conversion-checklist.md`, `anti-patterns.md`,
-  `component-a11y-contracts.md`) stay hand-written and reviewed.
+**The fix is to hold no lists at all.** The site already publishes itself in a
+machine-readable form, generated from the same source the components are:
 
-Everything else, the skills should **link** to the existing `.md` twin routes
-(`/components/button.md`, `/patterns/forms.md`) rather than copy. That
-infrastructure already exists and is already maintained.
+- `/sitemap/` lists every page — discovery with no maintenance.
+- Any page plus `.md` serves its raw markdown (`/components/button.md`).
+- A component's `.md` page carries its canonical markup, so every class it
+  exposes is in there, along with the guidance on when *not* to use it.
 
----
+So the skills fetch. One request cannot be stale, and a skill that holds no
+facts about the system needs no update when the system changes. The generated
+files and their script were deleted.
+
+### Three small site changes would close the remaining gaps
+
+Worth doing because they help every AI tool, not just these skills — which is
+what `/ai-skills/` is for:
+
+1. **Publish `/llms.txt`.** The site has no machine-readable index at all —
+   no `llms.txt`, no `sitemap.xml`, no section `index.md`. Discovery currently
+   means parsing the `/sitemap/` HTML. One Astro route fixes it.
+2. **Include generated tables in the `.md` twins.** `/styles/tokens.md` carries
+   the prose but not the values, because the tables are generated into the
+   rendered HTML at build time. A crawler can read token *names* but not what
+   they resolve to. Emitting the tables into the markdown body — or adding
+   `/styles/tokens.json` — would fix the one thing the skill still cannot get
+   cleanly.
+3. **Publish per-component spacing behaviour.** Components differ in whether
+   they own a block margin, and it decides whether a page needs service CSS for
+   rhythm. It is not documented anywhere, so it is the only fact the skill still
+   keeps in a hand-maintained file.
+
+Until (2) and (3) land, the skill fetches `/styles/tokens/` as HTML for values
+and carries one source-derived file for spacing, which says plainly that it can
+drift.
 
 ## 6. Sharing and installation
 

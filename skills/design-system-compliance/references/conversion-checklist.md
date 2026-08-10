@@ -1,6 +1,6 @@
 # Conversion checklist
 
-Hand-written companion to the generated `component-index.md`. Use it during
+Hand-written companion to the live site. Use it during
 Step 2 (inventory) and Step 3 (convert).
 
 ## Contents
@@ -14,8 +14,8 @@ Step 2 (inventory) and Step 3 (convert).
 
 Design systems name the same behaviour differently. Match on what a thing
 _does_, not what the prototype calls it. Confirm every row against
-`component-index.md` before using it — this table exists to stop you concluding
-"no component exists" too early, not to replace the index.
+the site before using it — this table exists to stop you concluding
+"no component exists" too early, not to replace the site.
 
 | The prototype calls it                                    | GovBB component                    |
 | --------------------------------------------------------- | ---------------------------------- |
@@ -62,7 +62,7 @@ how a service drifts away from the system.
 | Carousel                     | Show the content. Carousels hide most of it.                                                                                                 |
 | Tooltip, popover             | **Hint** text for form fields; **Show/hide** for longer asides. Hover-only content is unreachable by touch and keyboard.                     |
 | Card                         | Compose from typography, **Link** and spacing tokens. For a list of services, use **Service list**.                                          |
-| Progress bar, step indicator | Check the **Templates** section of the index — the multiple-questions-page and single-question-page templates cover journey structure.       |
+| Progress bar, step indicator | Check `/templates/` — the multiple-questions-page and single-question-page templates cover journey structure.                                |
 | Pagination                   | Not covered. Record it as a gap.                                                                                                             |
 | Toggle switch                | **Checkbox**. A switch and a checkbox do the same job; only one is in the system.                                                            |
 | Badge, tag, chip             | Not covered. Record it as a gap.                                                                                                             |
@@ -139,7 +139,7 @@ tokens rather than reaching back for utility classes.
 ### HTML / server-rendered
 
 - [ ] `@govtech-bb/frontend` installed; `@govtech-bb/frontend/css` imported once
-- [ ] Every class checked against `component-index.md`
+- [ ] Every class read from the component's page on the site
 - [ ] `data-govbb-module` present on Header, File upload, Number input
 - [ ] `initAll()` called once, after the document exists
 - [ ] Image and font assets resolved from `@govtech-bb/frontend/assets/*` and

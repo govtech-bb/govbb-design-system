@@ -19,7 +19,7 @@ and — the real cost — they claim the design system supports something it doe
 not. Someone later greps for `govbb-card`, finds nothing, and cannot tell
 whether it was deleted or never existed.
 
-**Instead:** check `component-index.md`. If it is absent, either compose from
+**Instead:** fetch the component's page. If it does not exist, either compose from
 what exists (a "card" is typography, a **Link** and spacing) or record it as a
 gap. Both are fine. Inventing is not.
 
@@ -47,7 +47,7 @@ and the override breaks without warning when the component's internals change �
 they are not a public API, the class name is.
 
 **Instead:** use the variant the system provides (`govbb-button--negative` for
-destructive actions, and similar — check the index for what exists). If no
+destructive actions, and similar — the component's page lists its variants). If no
 variant fits, that is a finding for the report, not a local patch.
 
 ## Reinventing a pattern or template
@@ -60,8 +60,8 @@ Patterns encode question wording, validation behaviour and error handling that
 were decided once and tested. Rebuilding from components loses all of that and
 looks like it worked, because the visual result is similar.
 
-**Instead:** scan the Patterns and Templates sections of `component-index.md`
-during inventory, before you start assembling.
+**Instead:** fetch `/sitemap/` during inventory and scan the patterns and
+templates, before you start assembling.
 
 ## Forgetting the progressive-enhancement wiring
 
@@ -75,8 +75,9 @@ Header, File upload and Number input need `data-govbb-module` plus one
 the failure only shows up when someone interacts with it — often on the phone,
 after release.
 
-**Instead:** treat the JavaScript wiring as part of using those three
-components, not a follow-up task. The index lists exactly which ones.
+**Instead:** treat the JavaScript wiring as part of using those components, not
+a follow-up task. A component's page shows `data-govbb-module` in its markup
+when it needs one, and `/documentation/using-the-design-system.md` names them.
 
 ## Mixing the two consumer targets for one element
 
