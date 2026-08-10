@@ -241,14 +241,32 @@ Route each gap rather than leaving it hanging:
 
 ## Verify before you hand it over
 
-- No `govbb-` class or `--govbb-` token appears that is not in `references/`.
-- The page still works with JavaScript disabled, or degrades honestly. The
-  system is built on progressive enhancement, so this is a real expectation,
-  not a nicety.
-- Every form control keeps its label association and error wiring.
-- If the repo has linting, it passes. In the design-system repo itself that is
+Reading the markup is not verification. Each of these has caught a real defect
+that source review passed.
+
+- **Audit the classes you emitted against the allowlist**, mechanically. Collect
+  every `class="…"` value from the rendered output and check each `govbb-` name
+  against `references/`. This is cheap to script and it is the only reliable
+  guard against a plausible invented name surviving.
+- **Render the pages and look at them.** Spacing problems (Step 4) are invisible
+  in source, and a page can be entirely correct class-by-class and still look
+  wrong.
+- **Walk the journey the way a user does** — load each page, follow the
+  redirects, use the Back links, click a "Change" link and come back. Posting to
+  each endpoint in sequence is not the same test: it skips the page loads, so it
+  misses anything in the rendering or guard path. A multi-step service can pass a
+  post-only walkthrough and be broken in a browser.
+- **Turn JavaScript off and repeat.** The system is built on progressive
+  enhancement, so this is a real expectation, not a nicety. Components with
+  `data-govbb-module` should degrade to working native controls, and every form
+  should still submit.
+- **Check every form control keeps its label association and error wiring** —
+  `for`/`id`, `aria-describedby` for hints and errors, `aria-invalid` when
+  invalid, and an error summary that links to the field.
+- **Run the linting** if the repo has any. In the design-system repo that is
   `pnpm lint`, where Stylelint enforces the `govbb-` prefix.
-- The gap list is complete and specific enough to act on.
+- **Re-read the gap list.** Is each item specific enough that someone could act
+  on it without asking you a question?
 
 ## References
 

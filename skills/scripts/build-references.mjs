@@ -250,6 +250,33 @@ function buildComponentIndex() {
     }
   }
 
+  // Some component stylesheets have no guidance page of their own — the scan
+  // above walks doc pages, so it misses them entirely. `summary-section` is one:
+  // real CSS, markup documented on the Summary list page, used by the
+  // check-answers pattern, and invisible to a reader treating this file as the
+  // allowlist.
+  const referenced = new Set(rows.map((r) => r.sharedWith ?? r.id));
+  const orphans = readdirSync(CSS_DIR).filter((d) => !referenced.has(d));
+  if (orphans.length) {
+    lines.push(
+      '## Components without a guidance page',
+      '',
+      'These stylesheets ship real classes but have no page of their own, so',
+      'there is no "when to use this" guidance to read. They are usually',
+      'documented as part of a related component — check that page before using',
+      'them, and prefer the documented parent where one covers the need.',
+      '',
+    );
+    for (const dir of orphans) {
+      const found = classesIn(join(CSS_DIR, dir, `${dir}.css`));
+      if (!found.length) continue;
+      lines.push(
+        `**\`${dir}.css\`**: ${found.map((c) => `\`${c}\``).join(', ')}`,
+        '',
+      );
+    }
+  }
+
   // Layout and utility classes live outside the component directories, so the
   // component scan above misses them. They still have to be in the allowlist:
   // the conversion starts with the width container and grid, and a reader told

@@ -311,6 +311,15 @@ Use the official banner to confirm to users that they are on a genuine Governmen
 - Docs: https://design-system.service.alpha.gov.bb/components/official-banner/
 - Classes in `official-banner.css`: `govbb-official-banner`, `govbb-official-banner__crest`, `govbb-official-banner__icon`, `govbb-official-banner__inner`, `govbb-official-banner__link`, `govbb-official-banner__text`
 
+## Components without a guidance page
+
+These stylesheets ship real classes but have no page of their own, so
+there is no "when to use this" guidance to read. They are usually
+documented as part of a related component — check that page before using
+them, and prefer the documented parent where one covers the need.
+
+**`summary-section.css`**: `govbb-summary-section`, `govbb-summary-section__header`, `govbb-summary-section__title`
+
 ## Layout and utilities
 
 Not components, but real classes you will need — the page scaffold comes
