@@ -17,10 +17,21 @@ import {
   writeFileSync,
 } from 'node:fs';
 import { join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { createHash } from 'node:crypto';
 
 const ITER = process.argv[2];
-const REPO = '/Users/work/Documents/Projects/govbb-design-system';
+if (!ITER) {
+  console.error('usage: node grade.mjs <iteration-dir>');
+  process.exit(2);
+}
+if (!existsSync(ITER)) {
+  console.error(`iteration dir not found: ${ITER}`);
+  process.exit(2);
+}
+/* Derived from this file's own location rather than hardcoded, so the script is
+   runnable from any checkout instead of only the machine it was written on. */
+const REPO = fileURLToPath(new URL('../../', import.meta.url));
 
 /*
  * Grade against the union of the local build and the deployed stylesheet.
@@ -30,9 +41,16 @@ const REPO = '/Users/work/Documents/Projects/govbb-design-system';
  * Checking only the local build marks those real classes as invented and
  * penalises exactly the behaviour the skill asks for — reading the live site.
  */
+const LIVE_CSS = '/tmp/live.css';
+if (!existsSync(LIVE_CSS))
+  console.warn(
+    `warning: ${LIVE_CSS} absent — grading against the local build only.\n` +
+      '  Classes that exist only on the deployed site will be scored as invented,\n' +
+      '  so name-resolution results are not comparable with runs that had it.',
+  );
 const CSS = [
   readFileSync(join(REPO, 'packages/frontend/dist/govbb.css'), 'utf8'),
-  existsSync('/tmp/live.css') ? readFileSync('/tmp/live.css', 'utf8') : '',
+  existsSync(LIVE_CSS) ? readFileSync(LIVE_CSS, 'utf8') : '',
 ].join('\n');
 
 /** Every govbb- class actually defined in the shipped stylesheet. */
