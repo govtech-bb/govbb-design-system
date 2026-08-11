@@ -86,7 +86,8 @@ Always pair an input with a visible `<label>`. Never rely on placeholder text as
 a label, because placeholder text disappears as soon as the user starts typing
 and is easy to miss altogether. Use hint text (`.govbb-hint`) beneath the label
 to explain a format or give an example, such as "As it appears on your ID", and
-link it to the input with `aria-describedby`.
+link it to the input with `aria-describedby`. We don't use placeholder text at
+all — see [why we don't use placeholder text](/design-log/placeholder-text/).
 
 ## Choosing the right type
 
