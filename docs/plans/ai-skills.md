@@ -661,6 +661,18 @@ one real component end to end.
 The main long-term failure mode is drift — a skill confidently naming a
 component that was renamed, or missing one added last week.
 
+**The authoring rule for all four skills:** a skill must not state anything that
+is only true of the design system as it is today. Where a skill needs such a
+fact, it does not record the fact — it tells the agent **where to resolve it from
+the source of truth at run time**, and to do that on every run.
+
+This is a hard rule rather than a preference, because stale facts in a skill do
+not fail loudly. Nothing errors. The skill simply starts giving confident wrong
+answers, and the review or conversion it produces looks exactly as authoritative
+as a correct one. Every drift found so far has had the same shape — a design-system
+*quantity* or *roster* written into prose — and the same fix: keep the durable
+principle, resolve the quantity.
+
 **The first attempt at this was wrong and is worth recording.** The
 `design-system-compliance` skill originally shipped a generated
 `component-index.md` and `token-reference.md`, rebuilt by a script with a CI
@@ -682,6 +694,76 @@ machine-readable form, generated from the same source the components are:
 So the skills fetch. One request cannot be stale, and a skill that holds no
 facts about the system needs no update when the system changes. The generated
 files and their script were deleted.
+
+### What a skill may state, and what it must resolve
+
+Building `accessibility-review` sharpened the rule and exposed a second failure
+mode, so both are recorded here for the two skills still to be written.
+
+**The dangerous direction is exemptions, not omissions.** §5's compliance
+example fails by *rejecting* something real — annoying, but visible: someone
+argues back. A review skill fails the other way. Its most valuable instructions
+are the ones saying "do not raise this, the design system already handles it",
+because that is what stops it generating noise. Those instructions are
+load-bearing, and the moment the underlying fact changes they invert into
+*instructions to overlook a real failure* — silently, and with the authority of
+the skill behind them. The first draft of `accessibility-review` contained five
+such exemptions, including one that would have told reviewers to ignore a form
+border that had dropped from 21:1 to below the 3:1 minimum.
+
+So the test to apply when authoring is not "is this fact correct?" but **"if this
+fact silently changed, what would the skill then tell someone to do?"** If the
+answer is "clear something that now fails", it must be resolved at run time, not
+stated.
+
+**The line between statable and resolvable.** These are safe to write down, since
+they do not move when the design system does:
+
+- Requirements from external standards — WCAG criteria and thresholds, HTML and
+  ARIA semantics, native element behaviour.
+- Method, ordering and reporting discipline — how to establish what is testable,
+  how to tag evidence, what not to claim, the report structure.
+- Judgement about what matters and why.
+
+These must be resolved at run time, every time:
+
+- Which components, patterns, templates or tokens exist, and what they are called.
+- Which components need JavaScript wiring, and what each one guarantees.
+- Any numeric value from the system — a token's colour, a size, a ratio, a spacing
+  step.
+- Anything the site's own documentation is the contract for. Point at the page,
+  including its `.md` twin, and say to check the service against what it currently
+  says rather than against a summary.
+
+**Structure reference material by kind, not by component name.** `component-contracts.md`
+was originally organised per component and had to be rewritten, because a
+per-component file is a roster and rosters churn. Organised by *kind of control* —
+anything that collects a value, a group of related controls, an error on a
+control, anything hand-built rather than native — the same guidance survives
+components being added and renamed, and it applies to a novel component on its
+first day.
+
+**Sometimes the repo is not the source of truth either.** Sizes are declared in
+`rem`, so the rendered pixel value depends on root font size, user zoom and any
+local override — which decides which WCAG contrast threshold applies. Reading the
+token is not enough; the running page is the authority. Where that is true, say
+so, and name the mechanism (`getComputedStyle`).
+
+**A cache is allowed if it is labelled as one.** Precomputed contrast ratios are
+genuinely useful and expensive to regenerate by hand, so `accessibility-review`
+keeps a table — but the file states that the script is the authority and the table
+is a snapshot, and requires re-derivation before *clearing* any concern. A cache
+that names its authority is safe; one that reads as a clearance is not.
+
+**Tools should announce their assumptions.** `contrast.mjs` defaults to the
+stricter threshold when no text size is given and says in its output that it
+assumed rather than measured. Pushing the assumption into the tool's output beats
+documenting it, because the reviewer sees it at the moment it matters.
+
+**Skills must not carry defect state.** A note recording that some component's
+documentation is incomplete rots by design: when someone fixes it, nothing closes
+the note, and it becomes a false accusation the skill keeps repeating. Defects go
+to issues; skills carry method.
 
 ### Three small site changes would close the remaining gaps
 
@@ -949,6 +1031,15 @@ first fortnight — a skill nobody uses cannot be known to be wrong.
 - Adopt the `team-skills` review checklist verbatim: frontmatter present;
   description states when to invoke; content is *instructions to Claude*, not
   documentation *about* Claude; steps are ones we want consistent every time.
+- **Add a drift check to that checklist, as a reviewer's question rather than a
+  linter's:** for every factual claim about the design system in the diff — a
+  component name, a token, a number, a list, an exemption — ask *"what would this
+  skill tell someone to do if this silently changed?"* If the answer is anything
+  other than "the same correct thing", the claim must become an instruction to
+  resolve it at run time. See §5 for the statable/resolvable line. This is the
+  single most valuable thing a reviewer can do on a skill PR, because it is the
+  one class of defect that testing does not surface: a skill built on a stale fact
+  passes its evals on the day it is written.
 - **Triggering test.** Before merging any skill, check that these prompts route
   to exactly one skill: *"make this prototype use GovBB"* → compliance;
   *"is this accessible?"* → accessibility-review; *"what's wrong with this
@@ -964,7 +1055,8 @@ first fortnight — a skill nobody uses cannot be known to be wrong.
 
 | Risk | Mitigation |
 |---|---|
-| Skills drift from the system and give confidently wrong advice | Generated references + CI drift check (§5); skills link to `.md` twins rather than restating |
+| Skills drift from the system and give confidently wrong advice | The §5 authoring rule: state nothing that is only true today; resolve it from the source of truth at run time. Skills fetch the `.md` twins rather than restating them, and hold no lists |
+| A stale exemption tells a reviewer to overlook a real failure | The §5 test — "if this fact silently changed, what would the skill tell someone to do?" — applied to every claim in a skill PR (§9). Caches must name their authority; tools must announce assumptions |
 | Critique output gets cited as user research | Caveat at the top of the report template, on the site page, and in the skill; framed as a pre-research filter |
 | Personas overclaim what the tooling actually tested — "fine on slow connections", "works with a screen reader" | Playwright MCP has no bandwidth throttling and returns an accessibility tree, not AT output. Personas reframed to JS-blocked/offline and tree-exposure; both overclaims called out in the report template (§4.3) |
 | Parallel personas collide in a shared browser and produce harness artefacts as findings | One isolated context per persona; proven with two concurrent sessions in Phase 0 before six are built (Decision D) |
