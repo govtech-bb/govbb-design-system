@@ -131,17 +131,31 @@ const DESCRIBE = () => {
     // frameworks commonly reset it to a stack of rgba(…,0) layers. Treating
     // that as a ring hides missing focus indicators on exactly the elements
     // most likely to have them stripped, so count only visible shadows.
+    //
+    // Each colour is extracted and inspected separately rather than matching
+    // the whole shadow against one pattern: a single pattern over a repeating
+    // structure needs nested quantifiers, which backtrack exponentially on
+    // adversarial input. This stays linear.
     ring: (() => {
       const shadow = style.boxShadow;
+      const present = !!shadow && shadow !== 'none';
+      const colours = present ? shadow.match(/rgba?\([^)]*\)/g) || [] : [];
+      const isTransparent = (fn) => {
+        const parts = fn
+          .slice(fn.indexOf('(') + 1, -1)
+          .split(',')
+          .map((s) => s.trim());
+        // rgb() has no alpha, so it is always opaque; rgba() alpha of 0 is not.
+        return parts.length > 3 && Number(parts[3]) === 0;
+      };
+      // Unparseable values count as a real ring: better to stay quiet than to
+      // flag a control that does have an indicator we could not read.
       const opaque =
-        shadow &&
-        shadow !== 'none' &&
-        // any colour component that is not fully transparent
-        !/^(\s*rgba\([^)]*,\s*0\s*\)[^,]*,?\s*)+$/.test(shadow);
+        present && (colours.length === 0 || !colours.every(isTransparent));
       return {
         outline: `${style.outlineStyle} ${style.outlineWidth} ${style.outlineColor}`,
         boxShadow: opaque ? shadow.slice(0, 80) : null,
-        boxShadowTransparent: !!shadow && shadow !== 'none' && !opaque,
+        boxShadowTransparent: present && !opaque,
       };
     })(),
   };
