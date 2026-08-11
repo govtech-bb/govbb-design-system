@@ -887,22 +887,40 @@ for the design system rather than the skill.
     is the highest-impact finding from the whole exercise and it was found by an
     eval run, not by reading anything.
 
-### Unconfirmed — reported by eval runs, not reproducible
+### Confirmed — reported by eval runs, and reproducible after all
 
 13. Two runs independently reported layout defects: `.govbb-grid-row`'s twelve
     tracks and eleven 32px gaps giving a 352px floor that overflows the 375px
     mobile frame, and `.govbb-width-container`'s `margin-inline: auto`
-    suppressing flex stretch so `<main>` shrinks to its content. **Neither
-    reproduces.** Tested at 320/375/414/1280px, with trivial text, an input, an
-    unbreakable string, a table and a nested row, across three page structures
-    (`govbb-page` on `<body>`, on a React mount node, and `width-container` as
-    the flex item itself), against both the local build and the published
-    package — no horizontal overflow and no misalignment in any combination.
+    suppressing flex stretch so `<main>` shrinks to its content. **Both
+    reproduce**, and the first lands on its predicted number: at 375px the row
+    measures 352px against a 384px document `scrollWidth`, overflowing by 9px.
+    It overflows by 64px at 320px and clears only at 414px. The second measures
+    562px against a 1280px viewport, drifting 359px from the header.
 
-    Recorded because two independent runs claimed them and both applied
-    workarounds, so something real may be happening inside their own React
-    scaffolds. But they should be isolated before anyone changes `layout.css`:
-    as written they are attributions, not reproductions.
+    Claim 1 fails **WCAG 2.2 SC 1.4.10 Reflow** — no horizontal scrolling at
+    320px — for any page using a grid row, so it is an accessibility defect in a
+    layout primitive rather than a cosmetic one. It has no fix that preserves
+    the current design: `repeat(12, minmax(0, 1fr))` lets every track collapse
+    to zero while `column-gap` stays fixed, so 11 × 32px is the narrowest the
+    row can be. Choosing between a smaller gap, a relative gap, or fewer tracks
+    below a breakpoint is a design decision.
+
+    **This entry previously read "Neither reproduces", and that was wrong in a
+    way worth recording.** The harness set page content without navigating
+    first, so the document stayed on `about:blank`; Chromium refuses `file://`
+    subresources from a non-`file` document, the stylesheet silently failed, and
+    every measurement was taken against an unstyled page — with neither
+    mechanism under test even active. Eighteen measurements of nothing read
+    exactly like eighteen clean results.
+
+    The lesson generalises past this entry: **a negative result is evidence only
+    if the thing under test was loaded.** Any harness asserting an absence needs
+    a preflight proving it could have detected a presence, and `reproduce.mjs`
+    now has one. Worth noting which way the evidence pointed, too — two
+    independent agents reported these, and a passing automated check was allowed
+    to overrule them. The check was the weakest evidence available and was
+    treated as the strongest.
 
 ### Also worth knowing
 
