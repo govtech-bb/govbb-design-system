@@ -6,7 +6,12 @@
  * Judgement-based assertions (did it explain WHY tabs are absent, is the gap
  * list actionable) are left for human review in the viewer.
  *
- *   node grade.mjs <iteration-dir>
+ *   node grade.mjs <iteration-dir> [--pension-dir <path>]
+ *
+ * Needs packages/frontend/dist/govbb.css built, or it exits rather than grade
+ * every real class as invented. The conversion prototype is outside this repo,
+ * so pass its path with --pension-dir (or PENSION_DIR); without it the
+ * immutability assertion reports that it could not be checked. See evals/README.md.
  */
 
 import {
@@ -48,8 +53,23 @@ if (!existsSync(LIVE_CSS))
       '  Classes that exist only on the deployed site will be scored as invented,\n' +
       '  so name-resolution results are not comparable with runs that had it.',
   );
+/*
+ * Every name-resolution assertion is decided against this stylesheet, so a
+ * missing or stale build does not degrade the grading — it inverts it, marking
+ * real classes as invented. `dist/` is gitignored, so a fresh checkout has none.
+ * Refuse to grade rather than report a run as full of invented names.
+ */
+const DIST = join(REPO, 'packages/frontend/dist/govbb.css');
+if (!existsSync(DIST)) {
+  console.error(
+    `stylesheet not built: ${DIST}\n` +
+      'Build it first, or every govbb- class will be graded as invented:\n' +
+      '  pnpm --filter @govtech-bb/frontend build',
+  );
+  process.exit(2);
+}
 const CSS = [
-  readFileSync(join(REPO, 'packages/frontend/dist/govbb.css'), 'utf8'),
+  readFileSync(DIST, 'utf8'),
   existsSync(LIVE_CSS) ? readFileSync(LIVE_CSS, 'utf8') : '',
 ].join('\n');
 
@@ -78,9 +98,17 @@ function walk(dir) {
  */
 const VENDORED = /(^|\/)(node_modules|vendor|dist)(\/|$)|@govtech-bb/;
 
+/*
+ * Include every module extension, not just .js/.ts. An agent that scaffolds
+ * with `main.mjs` was previously graded as producing no code at all — every
+ * content check saw an empty string and the run scored as if it had written
+ * nothing, which reads as a failure of the agent rather than of the grader.
+ */
+const CODE = /\.(html|[mc]?jsx?|[mc]?tsx?|css|md|json)$/;
+
 const read = (dir) =>
   walk(dir)
-    .filter((f) => /\.(html|jsx?|tsx?|css|md|json)$/.test(f))
+    .filter((f) => CODE.test(f))
     .filter((f) => !VENDORED.test(f.slice(dir.length)))
     .map((f) => ({ file: f, text: readFileSync(f, 'utf8') }));
 
@@ -108,41 +136,93 @@ const hash = (f) =>
     ? createHash('sha256').update(readFileSync(f)).digest('hex')
     : null;
 
-/* Baselines recorded before the runs. */
-const fixtureBefore = readFileSync(
-  join(ITER, 'fixture-hash-before.txt'),
-  'utf8',
-)
-  .trim()
-  .split(/\s+/)[0];
-/* Compare as a SET. The baseline file is sorted by path; comparing ordered
-   joins against a differently-ordered list reports a change that never
-   happened. */
-const pensionBefore = new Set(
-  readFileSync(join(ITER, 'pension-hash-before.txt'), 'utf8')
-    .trim()
-    .split('\n')
-    .map((l) => l.trim().split(/\s+/)[0]),
-);
-const sameSet = (a, b) => a.size === b.size && [...a].every((x) => b.has(x));
+/* Baselines recorded before the runs. Missing ones are reported as such rather
+   than crashing with an opaque ENOENT halfway through grading. */
+const baseline = (name) => {
+  const p = join(ITER, name);
+  return existsSync(p) ? readFileSync(p, 'utf8').trim() : null;
+};
+const fixtureBaseline = baseline('fixture-hash-before.txt');
+const fixtureBefore = fixtureBaseline ? fixtureBaseline.split(/\s+/)[0] : null;
+
+/*
+ * Parse `hash  path` lines into a path→hash map. An earlier version compared a
+ * SET of hashes with paths discarded, which cannot tell a rename from an
+ * untouched file and cannot see an added file at all — both of which are
+ * modifications of the directory the assertion claims is unmodified. Lines
+ * carrying only a hash still work; the comparison degrades to a set and says so.
+ */
+const parseHashes = (text) => {
+  const map = new Map();
+  let pathsPresent = true;
+  for (const line of text.split('\n').filter((l) => l.trim())) {
+    const [h, ...rest] = line.trim().split(/\s+/);
+    const path = rest.join(' ').replace(/^\*/, '');
+    if (!path) pathsPresent = false;
+    map.set(path || h, h);
+  }
+  return { map, pathsPresent };
+};
+
+/*
+ * The prototype under conversion lives outside this repository, so its location
+ * cannot be derived. Take it from --pension-dir or PENSION_DIR, falling back to
+ * a sibling of the repo, and treat "not found" as unverifiable rather than
+ * passing. The previous version hashed a hardcoded absolute path through
+ * `.filter(Boolean)`, so on any other machine both sides were empty sets and the
+ * immutability assertion passed without comparing anything.
+ */
+const pensionFlag = process.argv.indexOf('--pension-dir');
+const PENSION =
+  pensionFlag !== -1 && process.argv[pensionFlag + 1]
+    ? process.argv[pensionFlag + 1]
+    : (process.env.PENSION_DIR ?? join(REPO, '../pension-calculator'));
+
+const pensionBaseline = baseline('pension-hash-before.txt');
+const pensionBefore = pensionBaseline ? parseHashes(pensionBaseline) : null;
+
+const relHashes = (dir) => {
+  const map = new Map();
+  for (const f of walk(dir)) {
+    if (VENDORED.test(f.slice(dir.length))) continue;
+    map.set(f.slice(dir.length).replace(/^\//, ''), hash(f));
+  }
+  return map;
+};
+const pensionNow = existsSync(PENSION) ? relHashes(PENSION) : null;
+
+/** Compare path→hash maps, reporting what actually differs. */
+const compareHashes = (before, now) => {
+  if (!before) return { ok: false, why: 'no pension-hash-before.txt baseline' };
+  if (!now) return { ok: false, why: `prototype not found at ${PENSION}` };
+  if (!before.pathsPresent) {
+    const b = new Set(before.map.values());
+    const n = new Set(now.values());
+    const ok = b.size === n.size && [...b].every((x) => n.has(x));
+    return {
+      ok,
+      why: ok
+        ? `${n.size} hashes match (baseline has no paths, so a rename would pass)`
+        : 'hash set differs',
+    };
+  }
+  const changed = [];
+  for (const [p, h] of before.map)
+    if (!now.has(p)) changed.push(`removed ${p}`);
+    else if (now.get(p) !== h) changed.push(`modified ${p}`);
+  for (const p of now.keys())
+    if (!before.map.has(p)) changed.push(`added ${p}`);
+  return {
+    ok: changed.length === 0,
+    why: changed.length
+      ? changed.slice(0, 6).join('; ')
+      : `${now.size} files unchanged`,
+  };
+};
 
 const FIXTURE = join(
   REPO,
   'evals/design-system-compliance/fixtures/review-me.html',
-);
-const pensionNow = new Set(
-  [
-    'about-pensions.html',
-    'calculate.html',
-    'index.html',
-    'results.html',
-    'comments.css',
-    'styles.css',
-  ]
-    .map((f) =>
-      hash(join('/Users/work/Documents/Projects/pension-calculator', f)),
-    )
-    .filter(Boolean),
 );
 
 /* The ten violations planted in the fixture, and what a correct review names. */
@@ -259,10 +339,11 @@ for (const evalDir of readdirSync(ITER).filter((d) => d.startsWith('eval-'))) {
           ? 'redefines .govbb-table at selector root'
           : 'not redefined',
       );
+      const pension = compareHashes(pensionBefore, pensionNow);
       add(
         'Original pension-calculator files left unmodified',
-        sameSet(pensionNow, pensionBefore),
-        sameSet(pensionNow, pensionBefore) ? 'hashes match' : 'FILES CHANGED',
+        pension.ok,
+        pension.why,
       );
       /*
        * Discriminating checks. The name-resolution assertions above pass for a
@@ -364,8 +445,12 @@ for (const evalDir of readdirSync(ITER).filter((d) => d.startsWith('eval-'))) {
       }
       add(
         'Fixture left byte-for-byte unmodified',
-        hash(FIXTURE) === fixtureBefore,
-        hash(FIXTURE) === fixtureBefore ? 'hash matches' : 'FIXTURE MODIFIED',
+        fixtureBefore !== null && hash(FIXTURE) === fixtureBefore,
+        fixtureBefore === null
+          ? 'no fixture-hash-before.txt baseline — cannot verify'
+          : hash(FIXTURE) === fixtureBefore
+            ? 'hash matches'
+            : 'FIXTURE MODIFIED',
       );
       add(
         'Did not produce a rewritten version of the file',
