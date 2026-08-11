@@ -296,6 +296,30 @@ know what to fix first, and criterion order buries a blocker under a nitpick.
 Name the criterion on each finding so the report is still traceable to the
 standard.
 
+### Before writing up: trace a repeated defect to its source
+
+Check whether any finding repeats — the same defect at the same selector on more
+than one page, or in more than one file. In a design system the repeat matters
+more than any of its instances, because near-identical markup rarely gets typed
+twice: it came from a shared layout, a copied snippet, or the example markup a
+component's guidance page tells consumers to paste. Reported page by page, one
+cause becomes several findings, all of them noise and none naming the actual fix.
+
+So grep for the offending pattern beyond the pages in scope. If it sits in
+something those pages share, the fix is one edit there. If it sits in published
+example markup, every service that followed that guidance has it too and the
+guidance is what needs changing — which also moves the `owner`. A defect the
+service typed is `service`; the same defect arriving from shared markup or
+published guidance is `design system` even though it shows up in the service,
+because pointing a team at their own copy leaves the source free to propagate
+again.
+
+Write it up as one finding, naming the source and listing each place it appears,
+so the reader sees the blast radius without losing the instances. If no shared
+source turns up, still say the pattern repeats: several pages sharing one defect
+is evidence about how the service was built, and it tells the team to check the
+pages you did not review.
+
 ### Length: compress each finding, never the list
 
 A service team reads this to start fixing things. A report they have to mine is
@@ -368,7 +392,8 @@ Findings that stop someone completing the service.
 - **What:** <the defect, evidence quoted once. For `computed`, give the command
   and the value it returned so the reader can reproduce it.>
 - **Who it affects:** <the barrier, in a clause — not "users with disabilities">
-- **Fix:** <the change, in one or two lines>
+- **Fix:** <the change, in one or two lines — or the corrected markup for this
+  defect where a snippet is clearer than a sentence, minimal and paste-ready>
 
 ## Degrades the experience
 
@@ -479,8 +504,13 @@ report back the issue numbers and URLs.
   rather than inaccessible, that belongs to `design-critique`. Where they
   overlap — a screen reader user lost in a form — report the conformance failure
   here and leave the experience narrative to that skill.
-- **Do not rewrite the service.** Report findings with specific fixes. Apply
-  fixes only when asked, and then one at a time so each can be reviewed.
+- **Fix the defect, not the page.** Corrected markup for the specific defect
+  belongs in the finding — the smallest change that makes it pass, quoted so
+  someone can paste it, because a snippet removes the ambiguity prose leaves.
+  What is out of bounds is going further: refactoring the surrounding code,
+  renaming things, restructuring the journey, or rewriting a page that has one
+  broken element in it. Editing the service's files is a separate job — do that
+  only when asked, and then one fix at a time so each can be reviewed.
 - **Do not weaken a finding because it is inconvenient.** If a core component
   has a problem, say so and route it to the design system rather than advising a
   service team to work around it.
