@@ -1,35 +1,154 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import { getAiSkillsSidebar } from '../../data/nav';
+import { publishedSkills, skillsCliCommand } from '../../lib/skills';
+
+const skills = await publishedSkills();
 ---
-<BaseLayout
+
+<ArticleLayout
   title="AI skills"
   section="ai-skills"
-  description="Interim guidance for using AI tools alongside the GovBB Design System."
+  description="Skills that apply the design system's own standards to AI-assisted work, and the standards that apply however the work was produced."
+  pageTitle="AI skills"
+  pageSubtitle="Reusable instructions that hold AI-assisted work to the same standards as any other."
+  sidebarGroups={await getAiSkillsSidebar()}
+  sidebarLabel="AI skills"
+  onThisPage={[
+    { label: 'Available skills', href: '#available-skills' },
+    { label: 'Install', href: '#install' },
+    { label: 'What a skill is', href: '#what-a-skill-is' },
+    { label: 'Standards that apply either way', href: '#standards' },
+  ]}
+  breadcrumbs={[{ label: 'AI skills' }]}
 >
-  <section class="govbb-width-container govbb-page-section">
-    <div class="govbb-page-header">
-      <h1 class="govbb-page-title">AI skills</h1>
-      <p class="govbb-page-subtitle">
-        Interim guidance for using AI tools without lowering the standards applied to government services.
-      </p>
-    </div>
+  <div class="govbb-prose govbb-prose--article">
+    <h2 id="available-skills">Available skills</h2>
 
-    <div class="govbb-prose">
-      <p>
-        Dedicated AI guidance is still being developed. Until it is published, AI-assisted
-        work must meet the same design, accessibility, privacy and review standards as work
-        produced by any other method.
-      </p>
-      <h2>What to use now</h2>
-      <ul>
-        <li><a href="/documentation/using-the-design-system/#standards">Follow the design-system standards</a>.</li>
-        <li>Use published <a href="/components/">components</a> and <a href="/patterns/">patterns</a> instead of inventing alternatives.</li>
-        <li>Review generated copy, code and interfaces before they reach users.</li>
-        <li>Do not enter personal, confidential or security-sensitive information into an AI tool unless your organisation has approved that use.</li>
-      </ul>
-      <p>
-        This page will expand when Government of Barbados guidance for specific AI tools and workflows is approved.
-      </p>
-    </div>
-  </section>
-</BaseLayout>
+    {
+      skills.length === 0 ? (
+        <p>No skills are published yet.</p>
+      ) : (
+        <table class="govbb-table">
+          <thead>
+            <tr>
+              <th scope="col">Skill</th>
+              <th scope="col">Use it when</th>
+              <th scope="col">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {skills.map((skill) => (
+              <tr>
+                <th scope="row">
+                  <a href={`/ai-skills/${skill.id}/`}>{skill.data.metadata.title}</a>
+                </th>
+                <td>{skill.data.description}</td>
+                <td>
+                  {skill.data.metadata.status === 'supported'
+                    ? 'Supported'
+                    : 'Experimental'}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )
+    }
+
+    <p>
+      <strong>Experimental</strong> means the skill works and has been used, but
+      has not yet earned its keep across enough real services for us to promise
+      it will not change. Read its page before relying on its output.
+    </p>
+
+    <h2 id="install">Install</h2>
+
+    <p>
+      If you are at GovTech, add the team marketplace once and install the
+      <code>govbb</code> plugin. Skills then appear as
+      <code>/govbb:&lt;name&gt;</code>:
+    </p>
+
+    <pre tabindex="0"><code>/plugin marketplace add govtech-bb/team-skills
+/plugin install govbb@team-skills</code></pre>
+
+    <p>
+      The plugin is sourced from this design system's own repository, so a change
+      here reaches you at your next start with nothing to update. If you added
+      that marketplace before the <code>govbb</code> plugin existed, run
+      <code>/plugin marketplace update team-skills</code> first — automatic
+      updates cover new versions of a plugin, not the arrival of a new one.
+    </p>
+
+    <p>
+      Outside GovTech, or to take a single skill into any repository, install it
+      directly. No marketplace needed:
+    </p>
+
+    <pre tabindex="0"><code>{skills.length
+      ? skillsCliCommand(skills[0].id)
+      : 'npx skills add govtech-bb/govbb-design-system'}</code></pre>
+
+    <p>
+      Every skill also has a raw Markdown twin at its page URL plus
+      <code>.md</code> — that is the file itself, so you can read it, review it,
+      or hand it to a tool that has no installer.
+    </p>
+
+    <h2 id="what-a-skill-is">What a skill is</h2>
+
+    <p>
+      A skill is a set of instructions an AI coding assistant loads when a task
+      matches it. It is not a model, a service, or anything that runs on its own.
+      It carries no data about your service anywhere.
+    </p>
+
+    <p>
+      These skills exist because the same questions kept being answered
+      differently: which component covers this, does this meet the accessibility
+      standard, is this what the design system actually says. Writing the answer
+      down once means every team gets the same one, and that answer can be
+      reviewed and argued with like any other guidance.
+    </p>
+
+    <p>
+      They deliberately hold no list of components, tokens or values. Those
+      change, and a skill repeating a stale one gives confident wrong answers
+      without anything failing to warn you. Instead each skill reads this site at
+      the moment it runs, which is why guidance here and advice from a skill
+      cannot drift apart.
+    </p>
+
+    <h2 id="standards">Standards that apply either way</h2>
+
+    <p>
+      A skill helps meet these; it does not replace them. AI-assisted work is held
+      to the same design, accessibility, privacy and review standards as work
+      produced any other way.
+    </p>
+
+    <ul>
+      <li>
+        <a href="/documentation/using-the-design-system/">Follow the design-system standards</a>.
+      </li>
+      <li>
+        Use published <a href="/components/">components</a> and
+        <a href="/patterns/">patterns</a> instead of inventing alternatives.
+      </li>
+      <li>Review generated copy, code and interfaces before they reach users.</li>
+      <li>
+        Do not enter personal, confidential or security-sensitive information
+        into an AI tool unless your organisation has approved that use.
+      </li>
+    </ul>
+
+    <p>
+      A skill's report is a starting point for a person, not a sign-off. Where a
+      skill can only verify something partly, it is written to say so rather than
+      imply it passed — if a report claims something you cannot reproduce, treat
+      that as a defect in the skill and
+      <a href="/support/">tell us</a>.
+    </p>
+  </div>
+</ArticleLayout>
