@@ -64,9 +64,21 @@ function findAxeSource() {
   for (let i = 0; i < 8; i++) {
     const store = join(dir, 'node_modules/.pnpm');
     if (existsSync(store)) {
+      // Compare version numerically, not lexically: a plain sort puts
+      // axe-core@4.9.0 above axe-core@4.12.1 and would quietly run an older
+      // rule set than the project installed.
+      const version = (name) =>
+        name
+          .slice(name.lastIndexOf('@') + 1)
+          .split('.')
+          .map((part) => Number.parseInt(part, 10) || 0);
       const match = readdirSync(store)
         .filter((n) => n.startsWith('axe-core@'))
-        .sort()
+        .sort((a, b) => {
+          const [aMajor, aMinor, aPatch] = version(a);
+          const [bMajor, bMinor, bPatch] = version(b);
+          return aMajor - bMajor || aMinor - bMinor || aPatch - bPatch;
+        })
         .pop();
       if (match) {
         const file = join(store, match, 'node_modules/axe-core/axe.min.js');
