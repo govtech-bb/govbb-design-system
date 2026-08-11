@@ -62,8 +62,6 @@
 .govbb-form-group > .govbb-label + .govbb-hint,
 .govbb-form-group > .govbb-label + .govbb-error-message,
 .govbb-form-group > .govbb-hint + .govbb-error-message,
-.govbb-fieldset > .govbb-fieldset__legend + .govbb-hint,
-.govbb-fieldset > .govbb-fieldset__legend + .govbb-error-message,
 .govbb-fieldset > .govbb-hint + .govbb-error-message {
   margin-block-start: calc(var(--govbb-space-xs) * -1);
 }

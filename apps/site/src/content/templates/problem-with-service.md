@@ -66,12 +66,24 @@ group: Error pages
 <footer class="govbb-footer">
   <div class="govbb-width-container govbb-footer__inner">
     <nav class="govbb-footer__nav" aria-label="Footer navigation">
-      <a class="govbb-link govbb-footer__link" href="/">Home</a>
-      <a class="govbb-link govbb-footer__link" href="/cookies">Cookie policy</a>
-      <a class="govbb-link govbb-footer__link" href="/terms">
-        Terms &amp; conditions
-      </a>
-      <a class="govbb-link govbb-footer__link" href="/sitemap">Sitemap</a>
+      <ul class="govbb-footer__list">
+        <li class="govbb-footer__item">
+          <a class="govbb-link govbb-footer__link" href="/">Home</a>
+        </li>
+        <li class="govbb-footer__item">
+          <a class="govbb-link govbb-footer__link" href="/cookies">
+            Cookie policy
+          </a>
+        </li>
+        <li class="govbb-footer__item">
+          <a class="govbb-link govbb-footer__link" href="/terms">
+            Terms &amp; conditions
+          </a>
+        </li>
+        <li class="govbb-footer__item">
+          <a class="govbb-link govbb-footer__link" href="/sitemap">Sitemap</a>
+        </li>
+      </ul>
     </nav>
     <hr class="govbb-footer__divider" aria-hidden="true" />
     <div class="govbb-footer__end">

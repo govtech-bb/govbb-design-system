@@ -11,7 +11,7 @@ css: form
 ```html title="Label with hint text"
 <div class="govbb-form-group">
   <label class="govbb-label" for="nrn">National registration number</label>
-  <span class="govbb-hint" id="nrn-hint">
+  <span class="govbb-hint" id="nrn-description">
     It is on your national ID card. For example, 850101-0123
   </span>
   <input
@@ -19,7 +19,7 @@ css: form
     id="nrn"
     name="nrn"
     type="text"
-    aria-describedby="nrn-hint"
+    aria-describedby="nrn-description"
   />
 </div>
 ```
@@ -29,10 +29,10 @@ import { FormGroup, Hint, Input, Label } from '@govtech-bb/react';
 
 <FormGroup>
   <Label htmlFor="nrn">National registration number</Label>
-  <Hint id="nrn-hint">
+  <Hint id="nrn-description">
     It is on your national ID card. For example, 850101-0123
   </Hint>
-  <Input id="nrn" name="nrn" aria-describedby="nrn-hint" />
+  <Input id="nrn" name="nrn" aria-describedby="nrn-description" />
 </FormGroup>;
 ```
 

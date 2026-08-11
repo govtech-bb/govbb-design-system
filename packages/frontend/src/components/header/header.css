@@ -1,81 +1,131 @@
-/* Header — the gold site header holding the gov.bb logo (the link home), an
-   optional search or sign-out control, and the site menu. Renders on every
-   page, directly below the official banner. Markup:
-   <header class="govbb-header"> wrapping
-   <div class="govbb-width-container govbb-header__inner"> (logo link first,
-   then a <button class="govbb-header__toggle" hidden> Menu control) followed
-   by <nav class="govbb-header__nav"> holding a
-   <div class="govbb-width-container govbb-header__nav-inner"> of links.
-   The header module (data-govbb-module="header") reveals the toggle and
-   collapses the nav behind it via the hidden attribute, at every width —
-   the menu is always a disclosure, never an inline row (Figma). */
+/* Header — the gold site header holding the gov.bb logo (the link home),
+   optional consumer-provided controls, and the site menu. Renders on every
+   page, directly below the official banner. The logo, controls, and nav share
+   one width container so they form one row when space permits. On narrower
+   containers the nav becomes a full-width tinted panel below the logo/Menu
+   row. The header module (data-govbb-module="header") reveals the toggle after
+   enhancement; without JavaScript, the navigation remains available. */
 
 .govbb-header {
   color: var(--govbb-color-ink);
   background: var(--govbb-color-brand-accent);
+  container-type: inline-size;
 }
 
 .govbb-header__inner {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
-  justify-content: space-between; /* logo left, menu/controls right (Figma) */
-  gap: var(--govbb-space-s);
+  column-gap: var(--govbb-space-s);
   padding-block: var(--govbb-space-s);
+}
+
+.govbb-header__home {
+  min-inline-size: 0;
+  justify-self: start;
 }
 
 .govbb-header__logo {
   display: block;
+  max-inline-size: 100%;
   width: auto;
   height: 1.5rem; /* 24px */
 }
 
-/* Menu toggle — the disclosure control for the __nav (the Figma collapsed
-   state: semibold ink "Menu" at the right of the gold band). Ships [hidden]
-   for the no-JS baseline, where the nav panel simply stays open; JS reveals
-   it. No display is set here, so the hidden attribute alone controls it. */
+.govbb-header__controls {
+  display: flex;
+  grid-column: 2;
+  grid-row: 1;
+  gap: var(--govbb-space-s);
+  align-items: center;
+  justify-content: flex-end;
+  min-width: 0;
+}
+
+/* Layout only — visual styling and interaction colours come from the
+   govbb-button--text variant. */
 .govbb-header__toggle {
-  padding: 0;
-  border: 0;
-  font-family: inherit;
-  font-size: var(--govbb-font-size-caption);
-  font-weight: 600;
-  line-height: var(--govbb-line-height-base);
-  color: var(--govbb-color-ink);
-  cursor: pointer;
-  background: none;
+  flex: none;
+  min-block-size: 2.75rem;
 }
 
-.govbb-header__toggle:focus-visible {
-  outline: 4px solid var(--govbb-color-focus);
-  outline-offset: 2px;
-}
-
-/* Nav — the expanded-menu panel from the Figma header: a full-width blue-tint
-   band below the gold bar with stacked bold teal links (the default link
-   colour), the same at every breakpoint. JS collapses it with the hidden
-   attribute; no display is set on the <nav> itself so hidden just works,
-   while the __nav-inner width container keeps the links aligned with the
-   logo above. */
+/* The mobile panel bleeds through the width-container gutter while its content
+   remains aligned with the logo. The negative block-end margin consumes the
+   container's bottom padding so the tint ends flush with the header. */
 .govbb-header__nav {
-  font-size: var(--govbb-font-size-caption);
-  font-weight: 700;
+  grid-column: 1 / -1;
+  margin-block: var(--govbb-space-s) calc(-1 * var(--govbb-space-s));
+  margin-inline: calc(-1 * var(--govbb-page-gutter));
+  padding-inline: var(--govbb-page-gutter);
+  font-size: var(--govbb-font-size-body);
   background: var(--govbb-blue-10);
+}
+
+.govbb-header__nav .govbb-link {
+  font-weight: 700;
+}
+
+.govbb-header__nav .govbb-button {
+  align-self: stretch;
+  order: -1;
+  font-weight: 400;
 }
 
 .govbb-header__nav-inner {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: stretch;
   gap: var(--govbb-space-s);
   padding-block: var(--govbb-space-s);
 }
 
-@media (--tablet) {
+@container (width < 50rem) {
+  .govbb-header[data-govbb-header-enhanced]
+    .govbb-header__nav[data-expanded='false'] {
+    display: none;
+  }
+}
+
+@container (width >= 50rem) {
   .govbb-header__inner {
-    padding-block: var(--govbb-space-m);
+    display: flex;
+    gap: var(--govbb-space-xm);
+    padding-block: var(--govbb-space-xm);
   }
 
   .govbb-header__logo {
     height: 2.1875rem; /* 35px */
+  }
+
+  .govbb-header__controls {
+    margin-inline-start: auto;
+  }
+
+  .govbb-header__toggle {
+    display: none;
+  }
+
+  .govbb-header__nav {
+    margin: 0;
+    padding: 0;
+    background: transparent;
+  }
+
+  .govbb-header__nav-inner {
+    flex-direction: row;
+    align-items: center;
+    gap: var(--govbb-space-l);
+    padding-block: 0;
+  }
+
+  /* nav links read as menu items: ink, underlined only on interaction */
+  .govbb-header__nav .govbb-link:not(:hover, :active, :focus-visible) {
+    color: var(--govbb-color-ink);
+    text-decoration: none;
+  }
+
+  .govbb-header__nav .govbb-button {
+    align-self: auto;
+    order: 0;
   }
 }

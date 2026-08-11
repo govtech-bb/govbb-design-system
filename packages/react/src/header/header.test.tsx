@@ -26,21 +26,58 @@ describe('Header', () => {
         linkComponent={RouterLink}
       />,
     );
-    const anchor = screen.getByRole('img', { name: 'gov.bb' }).closest('a')!;
-    expect(anchor.getAttribute('data-router')).toBe('true');
-    expect(anchor.getAttribute('href')).toBe('/home');
+    const home = screen.getByRole('img', { name: 'gov.bb' }).closest('a')!;
+    expect(home.getAttribute('data-router')).toBe('true');
+    expect(home.getAttribute('href')).toBe('/home');
   });
 
-  it('renders nav links in a labelled nav landmark once expanded', () => {
-    render(
-      <Header logoSrc="/logo.svg" nav={<a href="/services">Services</a>} />,
+  it('renders custom content in the header top row', () => {
+    const { container } = render(
+      <Header logoSrc="/logo.svg">
+        <a href="/account">Account</a>
+      </Header>,
     );
-    fireEvent.click(screen.getByRole('button', { name: 'Menu' }));
-    const nav = screen.getByRole('navigation', { name: 'Menu' });
-    expect(nav.classList.contains('govbb-header__nav')).toBe(true);
+
+    expect(screen.getByRole('link', { name: 'Account' })).toBeDefined();
     expect(
-      screen.getByRole('link', { name: 'Services' }).getAttribute('href'),
-    ).toBe('/services');
+      container
+        .querySelector('.govbb-header__controls')
+        ?.contains(screen.getByRole('link', { name: 'Account' })),
+    ).toBe(true);
+  });
+
+  it('renders custom nav content in a labelled landmark', () => {
+    render(
+      <Header
+        logoSrc="/logo.svg"
+        nav={<a href="/services">Services</a>}
+        navAriaLabel="Primary navigation"
+      />,
+    );
+    const nav = screen.getByRole('navigation', {
+      name: 'Primary navigation',
+    });
+    expect(nav.classList.contains('govbb-header__nav')).toBe(true);
+    expect(nav.parentElement?.classList.contains('govbb-header__inner')).toBe(
+      true,
+    );
+    const link = screen.getByRole('link', { name: 'Services' });
+    expect(link.getAttribute('href')).toBe('/services');
+  });
+
+  it('supports custom collapsed and expanded menu labels', () => {
+    render(
+      <Header
+        logoSrc="/logo.svg"
+        nav={<a href="/services">Services</a>}
+        menuLabel="Navigation"
+        closeMenuLabel="Close navigation"
+      />,
+    );
+    fireEvent.click(screen.getByRole('button', { name: 'Navigation' }));
+    expect(
+      screen.getByRole('button', { name: 'Close navigation' }),
+    ).toBeDefined();
   });
 
   it('omits the nav landmark and toggle when no nav is given', () => {
@@ -54,12 +91,20 @@ describe('Header', () => {
       <Header logoSrc="/logo.svg" nav={<a href="/services">Services</a>} />,
     );
     const toggle = screen.getByRole('button', { name: 'Menu' });
-    // the mount effect has run, so the toggle is revealed (JS enhancement)
-    // and the nav starts collapsed (hidden, hence queried by class)
+    // The mount effect has run, so the toggle is revealed. CSS uses the
+    // enhanced and expanded data attributes to collapse the nav only on mobile.
+    expect(toggle.classList.contains('govbb-button')).toBe(true);
+    expect(toggle.classList.contains('govbb-button--text')).toBe(true);
     expect(toggle.hasAttribute('hidden')).toBe(false);
     expect(toggle.getAttribute('aria-expanded')).toBe('false');
     const nav = container.querySelector('.govbb-header__nav')!;
-    expect(nav.hasAttribute('hidden')).toBe(true);
+    expect(
+      container
+        .querySelector('.govbb-header')
+        ?.hasAttribute('data-govbb-header-enhanced'),
+    ).toBe(true);
+    expect(nav.hasAttribute('hidden')).toBe(false);
+    expect(nav.getAttribute('data-expanded')).toBe('false');
     expect(toggle.getAttribute('aria-controls')).toBe(nav.id);
   });
 
@@ -71,10 +116,10 @@ describe('Header', () => {
     const nav = container.querySelector('.govbb-header__nav')!;
     fireEvent.click(toggle);
     expect(toggle.getAttribute('aria-expanded')).toBe('true');
-    expect(nav.hasAttribute('hidden')).toBe(false);
+    expect(nav.getAttribute('data-expanded')).toBe('true');
     fireEvent.click(toggle);
     expect(toggle.getAttribute('aria-expanded')).toBe('false');
-    expect(nav.hasAttribute('hidden')).toBe(true);
+    expect(nav.getAttribute('data-expanded')).toBe('false');
   });
 });
 

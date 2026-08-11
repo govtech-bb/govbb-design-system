@@ -1,9 +1,8 @@
 /*
- * Header menu toggle. Enhances .govbb-header at every width: reveals the
- * .govbb-header__toggle button (server-rendered [hidden]) and collapses the
- * __nav panel behind it, flipping the button's aria-expanded and the nav's
- * hidden attribute on click. Without JS the toggle stays hidden and the nav
- * panel stays open.
+ * Header menu toggle. Reveals the server-rendered [hidden] Menu control and
+ * exposes state through data attributes. CSS collapses the navigation only at
+ * mobile widths; desktop navigation remains visible. Without JS the toggle
+ * stays hidden and the navigation stays open at every width.
  */
 export class Header {
   /** @param {HTMLElement} el */
@@ -16,15 +15,17 @@ export class Header {
     this.onClick = this.onClick.bind(this);
     this.toggle.setAttribute('aria-controls', this.nav.id);
     this.toggle.setAttribute('aria-expanded', 'false'); // start collapsed
+    this.el.setAttribute('data-govbb-header-enhanced', '');
+    this.nav.setAttribute('data-expanded', 'false');
     this.toggle.removeAttribute('hidden');
-    this.nav.hidden = true;
+    this.nav.removeAttribute('hidden');
     this.toggle.addEventListener('click', this.onClick);
   }
 
   onClick() {
     const expanded = this.toggle.getAttribute('aria-expanded') === 'true';
     this.toggle.setAttribute('aria-expanded', String(!expanded));
-    this.nav.hidden = expanded;
+    this.nav.setAttribute('data-expanded', String(!expanded));
   }
 
   destroy() {
@@ -33,6 +34,8 @@ export class Header {
     // back to the no-JS baseline: hidden toggle, open panel
     this.toggle.removeAttribute('aria-expanded');
     this.toggle.setAttribute('hidden', '');
-    this.nav.hidden = false;
+    this.el.removeAttribute('data-govbb-header-enhanced');
+    this.nav.removeAttribute('data-expanded');
+    this.nav.removeAttribute('hidden');
   }
 }

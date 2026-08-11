@@ -1,8 +1,9 @@
 /* Footer — dark blue band with supporting links, the coat of arms and a
    copyright line. Markup: <footer class="govbb-footer"> wrapping
-   <div class="govbb-width-container govbb-footer__inner"> holding a __nav of
-   __link anchors, a __divider <hr> (mobile only) and an __end column with the
-   __coat image and __copy line. Two columns from the tablet breakpoint. */
+   <div class="govbb-width-container govbb-footer__inner"> holding a __nav
+   with a semantic __list of __item > __link entries, a __divider <hr> (mobile
+   only) and an __end column with the __coat image and __copy line. Two columns
+   from the tablet breakpoint. */
 
 .govbb-footer {
   /* dark band: links inside go white; hover is the teal tint with dark
@@ -21,11 +22,24 @@
 }
 
 .govbb-footer__nav {
+  padding-block: var(--govbb-space-m);
+}
+
+/* Keep the nav itself as a stack for pre-links API markup, where FooterLink
+   children were rendered directly inside it. The list repeats that layout for
+   the canonical semantic markup. */
+.govbb-footer__nav,
+.govbb-footer__list {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: var(--govbb-space-xs);
-  padding-block: var(--govbb-space-m);
+}
+
+.govbb-footer__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
 /* Footer links are .govbb-link (that class owns colour/underline/hover/focus);
@@ -34,6 +48,7 @@
 .govbb-footer__link {
   font-size: var(--govbb-font-size-body);
   line-height: var(--govbb-line-height-base);
+  overflow-wrap: anywhere;
 }
 
 .govbb-footer__divider {
@@ -54,6 +69,10 @@
   justify-content: space-between;
   gap: var(--govbb-space-xm);
   padding-block: var(--govbb-space-m) var(--govbb-space-s);
+}
+
+.govbb-footer__end:only-child {
+  grid-column: 1 / -1;
 }
 
 .govbb-footer__coat {

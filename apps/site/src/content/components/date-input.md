@@ -9,9 +9,13 @@ group: Form elements
 
 ```html title="Date of birth"
 <div class="govbb-form-group">
-  <fieldset class="govbb-fieldset" role="group" aria-describedby="dob-hint">
+  <fieldset
+    class="govbb-fieldset"
+    role="group"
+    aria-describedby="dob-description"
+  >
     <legend class="govbb-fieldset__legend">Date of birth</legend>
-    <span class="govbb-hint" id="dob-hint">For example, 27 3 1990</span>
+    <span class="govbb-hint" id="dob-description">For example, 27 3 1990</span>
     <div class="govbb-date-input">
       <div class="govbb-date-input__part">
         <label class="govbb-label" for="dob-day">Day</label>
@@ -63,7 +67,7 @@ const [dob, setDob] = useState<DateInputValue>({
 
 <DateInput
   legend="Date of birth"
-  hint="For example, 27 3 1990"
+  description="For example, 27 3 1990"
   name="dob"
   value={dob}
   onChange={setDob}
@@ -148,8 +152,13 @@ of it.
 
 ```html title="Date of birth with error"
 <div class="govbb-form-group">
-  <fieldset class="govbb-fieldset" role="group" aria-describedby="dob2-error">
+  <fieldset
+    class="govbb-fieldset"
+    role="group"
+    aria-describedby="dob2-description dob2-error"
+  >
     <legend class="govbb-fieldset__legend">Date of birth</legend>
+    <span class="govbb-hint" id="dob2-description">For example, 27 3 1990</span>
     <span class="govbb-error-message" id="dob2-error" role="alert">
       Date of birth must be a real date
     </span>
@@ -195,5 +204,9 @@ of it.
 ```tsx
 import { DateInput } from '@govtech-bb/react';
 
-<DateInput legend="Date of birth" error="Date of birth must be a real date" />;
+<DateInput
+  legend="Date of birth"
+  description="For example, 27 3 1990"
+  error="Date of birth must be a real date"
+/>;
 ```

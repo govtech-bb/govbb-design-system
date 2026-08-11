@@ -15,6 +15,7 @@ group: Actions
 <button class="govbb-button govbb-button--tertiary" type="button">
   Tertiary
 </button>
+<button class="govbb-button govbb-button--text" type="button">Text</button>
 ```
 
 ```tsx
@@ -23,6 +24,7 @@ import { Button } from '@govtech-bb/react';
 <Button>Primary</Button>
 <Button variant="secondary">Secondary</Button>
 <Button variant="tertiary">Tertiary</Button>
+<Button variant="text">Text</Button>
 ```
 
 The Button component lets users initiate an action, such as submitting a form,
@@ -80,6 +82,119 @@ describes the action it performs.
 Use the **secondary** button for actions that sit alongside the primary one but
 are less important. Use the **tertiary** button for the least prominent actions.
 
+Use the **text** button for an action that must not compete with the buttons
+around it, such as _Remove_ next to an uploaded file or the _Menu_ control in
+the [header](/components/header/). It carries no fill or outline, only an
+underlined label, but it keeps the same box as the other variants so a row of
+mixed buttons lines up. It is still a button: use it for actions, and use a
+[link](/components/link/) for navigation.
+
+```html title="Text button"
+<button class="govbb-button govbb-button--text" type="button">Remove</button>
+```
+
+```tsx
+import { Button } from '@govtech-bb/react';
+
+<Button variant="text">Remove</Button>;
+```
+
+Use `LinkButton` when navigation is the primary call to action. It remains a
+semantic link and also supports `external` when a separate service must open
+in a new tab.
+
+```html title="External link styled as a button"
+<a
+  class="govbb-button"
+  href="https://www.gov.bb/"
+  target="_blank"
+  rel="noopener noreferrer"
+>
+  Start on an external service
+</a>
+```
+
+```tsx
+import { LinkButton } from '@govtech-bb/react';
+
+<LinkButton href="https://www.gov.bb/" external>
+  Start on an external service
+</LinkButton>;
+```
+
+## Destructive actions
+
+Add the `negative` modifier to a primary or text button when the action
+destroys data or cannot be undone, such as deleting a record. It is a warning,
+not a substitute for confirmation: pair it with a step that lets the user check
+what they are about to lose. Do not use it for ordinary actions, because a page
+full of red buttons stops reading as a warning.
+
+```html title="Destructive actions"
+<button class="govbb-button govbb-button--negative" type="button">
+  Delete application
+</button>
+<button
+  class="govbb-button govbb-button--text govbb-button--negative"
+  type="button"
+>
+  Remove file
+</button>
+```
+
+```tsx
+import { Button } from '@govtech-bb/react';
+
+<Button negative>Delete application</Button>
+<Button variant="text" negative>Remove file</Button>
+```
+
+## Buttons on dark backgrounds
+
+Add the `inverse` modifier when a button sits on a dark or brand-coloured
+surface, such as a hero panel. It flips the primary button to a white fill with
+brand-blue text, and turns the tertiary and text variants white so they stay
+visible. The surrounding surface must supply the dark background: the modifier
+only recolours the button.
+
+```html title="Inverse buttons"
+<button class="govbb-button govbb-button--inverse" type="button">
+  Start now
+</button>
+<button
+  class="govbb-button govbb-button--tertiary govbb-button--inverse"
+  type="button"
+>
+  Find out more
+</button>
+```
+
+```tsx
+import { Button } from '@govtech-bb/react';
+
+<Button inverse>Start now</Button>
+<Button variant="tertiary" inverse>Find out more</Button>
+```
+
+## Client-side routing
+
+`LinkButton` accepts an href-compatible router component through
+`linkComponent`, so a start button can navigate without a full page load. The
+router renders the same markup a plain link-button does.
+
+```html title="Start button rendered by a client-side router"
+<a class="govbb-button" href="/apply/">Start now</a>
+```
+
+```tsx
+import NextLink from 'next/link';
+import { LinkButton } from '@govtech-bb/react';
+
+<LinkButton linkComponent={NextLink} href="/apply/">
+  Start now
+</LinkButton>;
+```
+
 ## Disabled buttons
 
 Avoid disabling buttons wherever possible. A disabled button gives the user no
@@ -95,6 +210,11 @@ import { Button } from '@govtech-bb/react';
 
 <Button disabled>Submit application</Button>;
 ```
+
+A link cannot take the `disabled` attribute, so a `LinkButton` that must appear
+unavailable uses `aria-disabled="true"` instead. That styles it as disabled and
+announces it as such, but the link still works: stop the navigation in your own
+handler.
 
 ## Grouping buttons
 

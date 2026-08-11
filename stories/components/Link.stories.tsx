@@ -13,3 +13,10 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {};
 export const NoVisitedColour: Story = { args: { noVisited: true } };
 export const UnderlineOnHover: Story = { args: { noUnderline: true } };
+export const External: Story = {
+  args: {
+    children: 'Visit an external service',
+    href: 'https://www.gov.bb',
+    external: true,
+  },
+};

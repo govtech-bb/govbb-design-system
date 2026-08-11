@@ -14,8 +14,8 @@ const meta = {
   render: () => (
     <FormGroup>
       <Label htmlFor="email">Email address</Label>
-      <Hint id="email-hint">We will only use this to contact you.</Hint>
-      <Input id="email" type="email" aria-describedby="email-hint" />
+      <Hint id="email-description">We will only use this to contact you.</Hint>
+      <Input id="email" type="email" aria-describedby="email-description" />
     </FormGroup>
   ),
 } satisfies Meta<typeof Label>;

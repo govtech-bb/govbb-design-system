@@ -6,13 +6,13 @@ function markup() {
     <header class="govbb-header" data-govbb-module="header">
       <div class="govbb-width-container govbb-header__inner">
         <a href="/"><img class="govbb-header__logo" src="/logo.svg" alt="gov.bb" /></a>
-        <button class="govbb-header__toggle" type="button" hidden>Menu</button>
+        <button class="govbb-button govbb-button--text govbb-header__toggle" type="button" hidden>Menu</button>
+        <nav class="govbb-header__nav" aria-label="Menu">
+          <div class="govbb-header__nav-inner">
+            <a href="/services">Services</a>
+          </div>
+        </nav>
       </div>
-      <nav class="govbb-header__nav" aria-label="Menu">
-        <div class="govbb-width-container govbb-header__nav-inner">
-          <a href="/services">Services</a>
-        </div>
-      </nav>
     </header>`;
 }
 
@@ -26,11 +26,17 @@ function mount() {
 }
 
 describe('header module', () => {
-  it('reveals the toggle and collapses the nav behind it', () => {
+  it('reveals the toggle and exposes collapsed state for mobile CSS', () => {
     const { toggle, nav } = mount();
     expect(toggle.hasAttribute('hidden')).toBe(false);
     expect(toggle.getAttribute('aria-expanded')).toBe('false');
-    expect(nav.hidden).toBe(true);
+    expect(nav.hasAttribute('hidden')).toBe(false);
+    expect(nav.getAttribute('data-expanded')).toBe('false');
+    expect(
+      document
+        .querySelector('.govbb-header')
+        .hasAttribute('data-govbb-header-enhanced'),
+    ).toBe(true);
     expect(nav.id).not.toBe('');
     expect(toggle.getAttribute('aria-controls')).toBe(nav.id);
   });
@@ -39,10 +45,10 @@ describe('header module', () => {
     const { toggle, nav } = mount();
     toggle.click();
     expect(toggle.getAttribute('aria-expanded')).toBe('true');
-    expect(nav.hidden).toBe(false);
+    expect(nav.getAttribute('data-expanded')).toBe('true');
     toggle.click();
     expect(toggle.getAttribute('aria-expanded')).toBe('false');
-    expect(nav.hidden).toBe(true);
+    expect(nav.getAttribute('data-expanded')).toBe('false');
   });
 
   it('keeps an existing nav id', () => {
@@ -64,8 +70,13 @@ describe('header module', () => {
     module.destroy();
     expect(toggle.hasAttribute('hidden')).toBe(true);
     expect(toggle.hasAttribute('aria-expanded')).toBe(false);
-    expect(nav.hidden).toBe(false);
+    expect(nav.hasAttribute('data-expanded')).toBe(false);
+    expect(
+      document
+        .querySelector('.govbb-header')
+        .hasAttribute('data-govbb-header-enhanced'),
+    ).toBe(false);
     toggle.click();
-    expect(nav.hidden).toBe(false); // listener gone
+    expect(nav.hasAttribute('data-expanded')).toBe(false); // listener gone
   });
 });

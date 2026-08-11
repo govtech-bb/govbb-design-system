@@ -31,7 +31,7 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
   function NumberInput(
     {
       label,
-      hint,
+      description,
       error,
       labelId,
       id,
@@ -51,12 +51,8 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
     ref,
   ) {
     const inputRef = useRef<HTMLInputElement>(null);
-    const ids = useFieldIds(
-      id ?? name,
-      hint != null && error == null,
-      error != null,
-    );
-    const composed = label != null || hint != null || error != null;
+    const ids = useFieldIds(id ?? name, description != null, error != null);
+    const composed = label != null || description != null || error != null;
     const inputId = composed ? ids.fieldId : (id ?? name);
     const resolvedLabelId =
       labelId ?? (label != null ? `${ids.fieldId}-label` : undefined);
@@ -143,7 +139,9 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
     );
     if (!composed) return control;
     return (
-      <FieldShell {...{ label, hint, error, labelId: resolvedLabelId, ...ids }}>
+      <FieldShell
+        {...{ label, description, error, labelId: resolvedLabelId, ...ids }}
+      >
         {control}
       </FieldShell>
     );

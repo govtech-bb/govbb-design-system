@@ -7,7 +7,7 @@ const meta = {
   tags: ['autodocs'],
   args: {
     legend: 'Date of birth',
-    hint: 'For example, 27 3 1990',
+    description: 'For example, 27 3 1990',
     name: 'dob',
   },
 } satisfies Meta<typeof DateInput>;
@@ -16,5 +16,5 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
 export const Error: Story = {
-  args: { hint: undefined, error: 'Enter a valid date' },
+  args: { error: 'Enter a valid date' },
 };

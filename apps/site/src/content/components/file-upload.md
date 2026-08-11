@@ -12,7 +12,7 @@ group: Form elements
   <label class="govbb-label" id="proof-of-address-label" for="proof-of-address"
     >Proof of address</label
   >
-  <span class="govbb-hint" id="proof-of-address-hint">
+  <span class="govbb-hint" id="proof-of-address-description">
     This could be a recent utility bill or bank statement
   </span>
   <div class="govbb-file-upload" data-govbb-module="file-upload">
@@ -29,7 +29,7 @@ group: Form elements
         name="proof-of-address"
         type="file"
         aria-labelledby="proof-of-address-label"
-        aria-describedby="proof-of-address-hint"
+        aria-describedby="proof-of-address-description"
       />
       <span class="govbb-file-upload__action">
         <span class="govbb-button govbb-button--tertiary" aria-hidden="true"
@@ -62,7 +62,7 @@ const [files, setFiles] = useState<File[]>([]);
 
 <FileUpload
   label="Proof of address"
-  hint="This could be a recent utility bill or bank statement"
+  description="This could be a recent utility bill or bank statement"
   name="proof-of-address"
   subtitle="Attach a .pdf, .docx, or .png file"
   maxSize="Maximum size: 25MB"

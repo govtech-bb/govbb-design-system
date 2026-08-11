@@ -5,18 +5,18 @@ import { describe, expect, it, vi } from 'vitest';
 import { FileUpload } from './file-upload';
 
 describe('FileUpload', () => {
-  it('self-composes a labelled field with hint text', () => {
+  it('self-composes a labelled field with a description', () => {
     const { container } = render(
       <FileUpload
         label="Proof of address"
-        hint="Upload a recent utility bill"
+        description="Upload a recent utility bill"
         name="proof"
       />,
     );
     const input = screen.getByLabelText('Proof of address');
-    const hint = screen.getByText('Upload a recent utility bill');
+    const description = screen.getByText('Upload a recent utility bill');
     expect(input.id).toBe('proof');
-    expect(input.getAttribute('aria-describedby')).toBe(hint.id);
+    expect(input.getAttribute('aria-describedby')).toBe(description.id);
     expect(container.querySelector('.govbb-form-group')).not.toBeNull();
   });
 
@@ -32,6 +32,23 @@ describe('FileUpload', () => {
     const error = screen.getByText('Select a file');
     expect(input.getAttribute('aria-describedby')).toBe(error.id);
     expect(input.getAttribute('aria-invalid')).toBe('true');
+  });
+
+  it('keeps its description alongside an error', () => {
+    render(
+      <FileUpload
+        label="Proof of address"
+        description="Upload a recent utility bill"
+        error="Select a file"
+        name="proof"
+      />,
+    );
+    const input = screen.getByLabelText('Proof of address');
+    const description = screen.getByText('Upload a recent utility bill');
+    const error = screen.getByText('Select a file');
+    expect(input.getAttribute('aria-describedby')).toBe(
+      `${description.id} ${error.id}`,
+    );
   });
 
   it('lists files and calls onRemove', () => {
@@ -84,7 +101,7 @@ it('has no axe violations', async () => {
   const { container } = render(
     <FileUpload
       label="Proof of address"
-      hint="Attach a .pdf file"
+      description="Attach a .pdf file"
       subtitle="Attach a .pdf file"
       maxSize="Maximum size: 25MB"
       files={[{ name: 'proof.pdf', onRemove: () => {} }]}

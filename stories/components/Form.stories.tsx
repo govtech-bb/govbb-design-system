@@ -14,13 +14,13 @@ const meta = {
   render: () => (
     <FormGroup>
       <Label htmlFor="passport-number">Passport number</Label>
-      <Hint id="passport-number-hint">For example, BB123456</Hint>
+      <Hint id="passport-number-description">For example, BB123456</Hint>
       <ErrorMessage id="passport-number-error">
         Enter a passport number
       </ErrorMessage>
       <Input
         id="passport-number"
-        aria-describedby="passport-number-hint passport-number-error"
+        aria-describedby="passport-number-description passport-number-error"
         aria-invalid="true"
       />
     </FormGroup>

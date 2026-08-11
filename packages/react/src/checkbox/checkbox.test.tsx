@@ -40,19 +40,19 @@ describe('Checkbox', () => {
     ).toBe(item?.nextElementSibling?.id);
   });
 
-  it('wires a per-option hint via aria-describedby', () => {
+  it('wires a per-option description via aria-describedby', () => {
     render(
       <Checkbox
         label="British"
-        hint="Including English, Scottish, Welsh and Northern Irish"
+        description="Including English, Scottish, Welsh and Northern Irish"
       />,
     );
     const checkbox = screen.getByRole('checkbox', { name: 'British' });
-    const hint = screen.getByText(
+    const description = screen.getByText(
       'Including English, Scottish, Welsh and Northern Irish',
     );
-    expect(hint.className).toBe('govbb-hint');
-    expect(checkbox.getAttribute('aria-describedby')).toBe(hint.id);
+    expect(description.className).toBe('govbb-hint');
+    expect(checkbox.getAttribute('aria-describedby')).toBe(description.id);
   });
 });
 
@@ -93,21 +93,22 @@ describe('CheckboxGroup', () => {
     expect(ref.current?.id).toBe('contact-group');
   });
 
-  it('shows the error and drops the group hint if both are passed', () => {
+  it('keeps the group description when an error is shown and announces both', () => {
     render(
-      // @ts-expect-error hint/error are mutually exclusive
       <CheckboxGroup
         legend="Select all that apply"
-        hint="Leave blank any that do not"
+        description="Leave blank any that do not"
         error="Choose at least one"
       >
         <Checkbox label="Email" value="email" />
       </CheckboxGroup>,
     );
     const group = screen.getByRole('group', { name: /select all that apply/i });
+    const description = screen.getByText('Leave blank any that do not');
     const error = screen.getByText('Choose at least one');
-    expect(screen.queryByText('Leave blank any that do not')).toBeNull();
-    expect(group.getAttribute('aria-describedby')).toBe(error.id);
+    expect(group.getAttribute('aria-describedby')).toBe(
+      `${description.id} ${error.id}`,
+    );
   });
 
   it('has no axe violations', async () => {

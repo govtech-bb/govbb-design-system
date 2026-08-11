@@ -7,9 +7,11 @@ const meta = {
   parameters: { layout: 'fullscreen' },
   tags: ['autodocs'],
   args: {
-    crestSrc: '/assets/images/govbb-crest.svg',
+    imageSrc: '/assets/images/govbb-crest.svg',
+    imageAlt: '',
     children: 'Official government website',
-    linkHref: '#learn-more',
+    showLearnMore: true,
+    learnMoreHref: '#learn-more',
     linkLabel: 'Learn more',
   },
 } satisfies Meta<typeof OfficialBanner>;

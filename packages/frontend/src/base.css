@@ -19,17 +19,17 @@
   -webkit-font-smoothing: antialiased;
 }
 
-/* Weight, rhythm and line-height only — the size ramp is intentionally left to
-   the browser defaults (scaled off the 20px base) until the type scale
-   is confirmed. */
+/* Text elements own typography, not layout. Reset browser margins so spacing
+   comes from surrounding layout or component styles. The size ramp is left to
+   the browser defaults (scaled off the 20px base) until it is confirmed. */
 :where(h1, h2, h3, h4, h5, h6) {
-  margin-block: 0 var(--govbb-space-s);
+  margin-block: 0;
   font-weight: 700;
   line-height: 1.2;
 }
 
 :where(p) {
-  margin-block: 0 var(--govbb-space-s);
+  margin-block: 0;
 }
 
 :where(a) {

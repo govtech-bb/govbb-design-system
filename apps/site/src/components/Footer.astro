@@ -16,9 +16,15 @@ const footerLinks = [
 <footer class="govbb-footer" data-pagefind-ignore>
   <div class="govbb-width-container govbb-footer__inner">
     <nav class="govbb-footer__nav" aria-label="Footer navigation">
-      {footerLinks.map((item) => (
-        <a class="govbb-footer__link" href={item.href}>{item.label}</a>
-      ))}
+      <ul class="govbb-footer__list">
+        {footerLinks.map((item) => (
+          <li class="govbb-footer__item">
+            <a class="govbb-link govbb-footer__link" href={item.href}>
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
     </nav>
     <hr class="govbb-footer__divider" aria-hidden="true" />
     <div class="govbb-footer__end">

@@ -38,4 +38,36 @@ describe('published CSS entry', () => {
       [],
     );
   });
+
+  it('does not attach design-system spacing to text elements', async () => {
+    const css = await readFile('src/base.css', 'utf8');
+    const textRules = [...css.matchAll(/:where\((?:h1[^)]*|p)\)\s*{([^}]*)}/g)];
+
+    expect(textRules).toHaveLength(2);
+    expect(
+      textRules.every(([, declarations]) =>
+        declarations.includes('margin-block: 0;'),
+      ),
+    ).toBe(true);
+    expect(
+      textRules.every(
+        ([, declarations]) => !declarations.includes('var(--govbb-space-'),
+      ),
+    ).toBe(true);
+  });
+
+  it('stacks both legacy and semantic footer-link markup', async () => {
+    const css = await readFile('src/components/footer/footer.css', 'utf8');
+    const sharedLayout = css.match(
+      /\.govbb-footer__nav,\s*\.govbb-footer__list\s*{([^}]*)}/,
+    );
+    const listRules = [...css.matchAll(/\.govbb-footer__list\s*{([^}]*)}/g)];
+    const listReset = listRules.at(-1);
+
+    expect(sharedLayout?.[1]).toContain('display: flex;');
+    expect(sharedLayout?.[1]).toContain('flex-direction: column;');
+    expect(sharedLayout?.[1]).toContain('gap: var(--govbb-space-xs);');
+    expect(sharedLayout?.[1]).not.toContain('padding: 0;');
+    expect(listReset?.[1]).toContain('padding: 0;');
+  });
 });

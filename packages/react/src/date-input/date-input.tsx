@@ -8,7 +8,7 @@ import {
   type ReactNode,
 } from 'react';
 import { FormGroup } from '../form/form';
-import type { HintOrError } from '../form/field';
+import type { FieldFeedback } from '../form/field';
 
 /*
  * Day / month / year fieldset. Field labels and structure are fixed; pass
@@ -46,13 +46,13 @@ export type DateInputProps = Omit<
   dayProps?: FieldProps;
   monthProps?: FieldProps;
   yearProps?: FieldProps;
-} & HintOrError;
+} & FieldFeedback;
 
 export const DateInput = forwardRef<HTMLFieldSetElement, DateInputProps>(
   function DateInput(
     {
       legend,
-      hint,
+      description,
       error,
       name,
       value,
@@ -67,7 +67,7 @@ export const DateInput = forwardRef<HTMLFieldSetElement, DateInputProps>(
     ref,
   ) {
     const id = useId();
-    const hintId = hint != null && error == null ? `${id}-hint` : undefined;
+    const descriptionId = description != null ? `${id}-description` : undefined;
     const errorId = error != null ? `${id}-error` : undefined;
     const parts = [
       {
@@ -96,13 +96,15 @@ export const DateInput = forwardRef<HTMLFieldSetElement, DateInputProps>(
           ref={ref}
           className={cx('govbb-fieldset', className)}
           role="group"
-          aria-describedby={cx(hintId, errorId, describedBy) || undefined}
+          aria-describedby={
+            cx(descriptionId, errorId, describedBy) || undefined
+          }
           {...props}
         >
           <legend className="govbb-fieldset__legend">{legend}</legend>
-          {hint != null && error == null && (
-            <span className="govbb-hint" id={hintId}>
-              {hint}
+          {description != null && (
+            <span className="govbb-hint" id={descriptionId}>
+              {description}
             </span>
           )}
           {error != null && (
@@ -135,6 +137,7 @@ export const DateInput = forwardRef<HTMLFieldSetElement, DateInputProps>(
                     props?.className,
                   )}
                   id={partId}
+                  aria-invalid={error != null ? true : props?.['aria-invalid']}
                 />
               </div>
             ))}

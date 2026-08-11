@@ -30,6 +30,29 @@ describe('Link', () => {
     expect(link.getAttribute('data-router')).toBe('true');
     expect(link.className).toBe('govbb-link govbb-link--no-visited');
   });
+
+  it('adds safe defaults for an external destination', () => {
+    render(
+      <Link href="https://example.org" external>
+        External service
+      </Link>,
+    );
+    const link = screen.getByRole('link', { name: 'External service' });
+    expect(link.getAttribute('target')).toBe('_blank');
+    expect(link.getAttribute('rel')).toBe('noopener noreferrer');
+    expect(link.hasAttribute('isexternal')).toBe(false);
+  });
+
+  it('lets explicit target and rel values override external defaults', () => {
+    render(
+      <Link href="https://example.org" external target="_self" rel="nofollow">
+        Same tab
+      </Link>,
+    );
+    const link = screen.getByRole('link', { name: 'Same tab' });
+    expect(link.getAttribute('target')).toBe('_self');
+    expect(link.getAttribute('rel')).toBe('nofollow');
+  });
 });
 
 it('has no axe violations', async () => {

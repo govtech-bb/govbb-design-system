@@ -14,7 +14,7 @@ group: Authentication
   <form action="/account/create/" method="post" novalidate>
     <div class="govbb-form-group">
       <label class="govbb-label" for="email">Email address</label>
-      <span class="govbb-hint" id="email-hint">
+      <span class="govbb-hint" id="email-description">
         We will send a confirmation link to this address
       </span>
       <input
@@ -23,14 +23,14 @@ group: Authentication
         name="email"
         type="email"
         autocomplete="username"
-        aria-describedby="email-hint"
+        aria-describedby="email-description"
         spellcheck="false"
       />
     </div>
 
     <div class="govbb-form-group">
       <label class="govbb-label" for="password">Create a password</label>
-      <span class="govbb-hint" id="password-hint">
+      <span class="govbb-hint" id="password-description">
         Use at least 12 characters
       </span>
       <input
@@ -39,7 +39,7 @@ group: Authentication
         name="password"
         type="password"
         autocomplete="new-password"
-        aria-describedby="password-hint"
+        aria-describedby="password-description"
       />
     </div>
 

@@ -10,7 +10,7 @@ group: Form elements
 ```html title="Number input with hint text"
 <div class="govbb-form-group">
   <label class="govbb-label" id="quantity-label" for="quantity">Quantity</label>
-  <span class="govbb-hint" id="quantity-hint">Between 1 and 10</span>
+  <span class="govbb-hint" id="quantity-description">Between 1 and 10</span>
   <div
     class="govbb-number-input-wrapper"
     role="group"
@@ -27,7 +27,7 @@ group: Form elements
       max="10"
       step="1"
       value="1"
-      aria-describedby="quantity-hint"
+      aria-describedby="quantity-description"
     />
     <div class="govbb-number-input__steppers">
       <button
@@ -55,7 +55,7 @@ import { NumberInput } from '@govtech-bb/react';
 
 <NumberInput
   label="Quantity"
-  hint="Between 1 and 10"
+  description="Between 1 and 10"
   name="quantity"
   min={1}
   max={10}

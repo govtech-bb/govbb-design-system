@@ -97,23 +97,22 @@
 
 /* Text — a link, not a box */
 .govbb-button--text {
-  padding: var(--govbb-space-xxs);
   color: var(--govbb-color-tertiary);
   background: transparent;
   text-decoration: underline;
   text-underline-offset: 2px;
-  border-radius: 0; /* keep the focus ring square */
 
-  &:hover {
-    color: var(--govbb-color-brand-accent);
+  &:is(:hover, :active) {
+    color: var(--govbb-color-tertiary);
     background: transparent;
     box-shadow: none;
   }
+}
 
-  &:active {
-    color: var(--govbb-yellow-00);
-    background: transparent;
-    box-shadow: none;
+/* forced-colors drops box-shadow, so the inset outline needs a real border */
+@media (forced-colors: active) {
+  .govbb-button--tertiary {
+    border: 2px solid ButtonBorder;
   }
 }
 
@@ -140,13 +139,7 @@
     color: var(--govbb-color-error);
     background: transparent;
 
-    &:hover {
-      color: var(--govbb-red-100);
-      background: transparent;
-      box-shadow: none;
-    }
-
-    &:active {
+    &:is(:hover, :active) {
       color: var(--govbb-color-error);
       background: transparent;
       box-shadow: none;

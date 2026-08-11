@@ -18,7 +18,7 @@ group: Ask users for
 
 <div class="govbb-form-group">
   <label class="govbb-label" for="account-holder">Account holder name</label>
-  <span class="govbb-hint" id="account-holder-hint">
+  <span class="govbb-hint" id="account-holder-description">
     Enter the full name shown on the bank account
   </span>
   <input
@@ -27,13 +27,13 @@ group: Ask users for
     name="account-holder"
     type="text"
     spellcheck="false"
-    aria-describedby="account-holder-hint"
+    aria-describedby="account-holder-description"
   />
 </div>
 
 <div class="govbb-form-group">
   <label class="govbb-label" for="bank-name">Bank name</label>
-  <span class="govbb-hint" id="bank-name-hint">
+  <span class="govbb-hint" id="bank-name-description">
     For example: Republic Bank, Scotiabank, CIBC FirstCaribbean.
   </span>
   <input
@@ -41,13 +41,13 @@ group: Ask users for
     id="bank-name"
     name="bank-name"
     type="text"
-    aria-describedby="bank-name-hint"
+    aria-describedby="bank-name-description"
   />
 </div>
 
 <div class="govbb-form-group">
   <label class="govbb-label" for="account-number">Account number</label>
-  <span class="govbb-hint" id="account-number-hint">
+  <span class="govbb-hint" id="account-number-description">
     Enter the account number exactly as it appears on your bank statement
   </span>
   <input
@@ -56,13 +56,13 @@ group: Ask users for
     name="account-number"
     type="text"
     inputmode="numeric"
-    aria-describedby="account-number-hint"
+    aria-describedby="account-number-description"
   />
 </div>
 
 <div class="govbb-form-group">
   <label class="govbb-label" for="branch-name">Branch name</label>
-  <span class="govbb-hint" id="branch-name-hint">
+  <span class="govbb-hint" id="branch-name-description">
     Enter the branch where the account is held.
   </span>
   <input
@@ -70,13 +70,13 @@ group: Ask users for
     id="branch-name"
     name="branch-name"
     type="text"
-    aria-describedby="branch-name-hint"
+    aria-describedby="branch-name-description"
   />
 </div>
 
 <div class="govbb-form-group">
   <label class="govbb-label" for="branch-code">Branch code</label>
-  <span class="govbb-hint" id="branch-code-hint">
+  <span class="govbb-hint" id="branch-code-description">
     Enter the bank branch code used for transfers
   </span>
   <input
@@ -85,7 +85,7 @@ group: Ask users for
     name="branch-code"
     type="text"
     inputmode="numeric"
-    aria-describedby="branch-code-hint"
+    aria-describedby="branch-code-description"
   />
 </div>
 
@@ -121,7 +121,7 @@ group: Ask users for
 
 <div class="govbb-form-group">
   <label class="govbb-label" for="swift">SWIFT/BIC code</label>
-  <span class="govbb-hint" id="swift-hint">
+  <span class="govbb-hint" id="swift-description">
     For example: RBTTBB2X, BOFAUS3N.
   </span>
   <input
@@ -131,7 +131,7 @@ group: Ask users for
     type="text"
     autocapitalize="characters"
     spellcheck="false"
-    aria-describedby="swift-hint"
+    aria-describedby="swift-description"
   />
 </div>
 

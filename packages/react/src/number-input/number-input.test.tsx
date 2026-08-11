@@ -6,14 +6,18 @@ import { describe, expect, it, vi } from 'vitest';
 import { NumberInput } from './number-input';
 
 describe('NumberInput', () => {
-  it('self-composes a labelled field with hint text', () => {
+  it('self-composes a labelled field with a description', () => {
     const { container } = render(
-      <NumberInput label="Quantity" hint="Between 1 and 10" name="quantity" />,
+      <NumberInput
+        label="Quantity"
+        description="Between 1 and 10"
+        name="quantity"
+      />,
     );
     const input = screen.getByRole('spinbutton', { name: 'Quantity' });
-    const hint = screen.getByText('Between 1 and 10');
+    const description = screen.getByText('Between 1 and 10');
     expect(input.id).toBe('quantity');
-    expect(input.getAttribute('aria-describedby')).toBe(hint.id);
+    expect(input.getAttribute('aria-describedby')).toBe(description.id);
     expect(container.querySelector('.govbb-form-group')).not.toBeNull();
     expect(screen.getByRole('group', { name: 'Quantity' })).toBeDefined();
   });
@@ -26,6 +30,23 @@ describe('NumberInput', () => {
     const error = screen.getByText('Enter a quantity');
     expect(input.getAttribute('aria-describedby')).toBe(error.id);
     expect(input.getAttribute('aria-invalid')).toBe('true');
+  });
+
+  it('keeps its description alongside an error', () => {
+    render(
+      <NumberInput
+        label="Quantity"
+        description="Between 1 and 10"
+        error="Enter a quantity"
+        name="quantity"
+      />,
+    );
+    const input = screen.getByRole('spinbutton', { name: 'Quantity' });
+    const description = screen.getByText('Between 1 and 10');
+    const error = screen.getByText('Enter a quantity');
+    expect(input.getAttribute('aria-describedby')).toBe(
+      `${description.id} ${error.id}`,
+    );
   });
 
   it('steps and fires onChange from the stepper buttons', () => {

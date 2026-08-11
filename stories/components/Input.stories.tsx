@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { Input, Textarea } from '../../packages/react/src/input/input';
+import { Input, TextArea } from '../../packages/react/src/input/input';
 
 const meta = {
   title: 'Components/Input',
@@ -7,7 +7,7 @@ const meta = {
   tags: ['autodocs'],
   args: {
     label: 'National registration number',
-    hint: 'For example, 123456-7890',
+    description: 'For example, 123456-7890',
     name: 'national-id',
   },
 } satisfies Meta<typeof Input>;
@@ -16,13 +16,13 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
 export const Error: Story = {
-  args: { hint: undefined, error: 'Enter a registration number' },
+  args: { error: 'Enter a registration number' },
 };
 export const Multiline: Story = {
   render: () => (
-    <Textarea
+    <TextArea
       label="Additional information"
-      hint="Do not include sensitive information."
+      description="Do not include sensitive information."
       rows={5}
     />
   ),

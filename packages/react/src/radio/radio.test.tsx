@@ -103,17 +103,23 @@ describe('RadioGroup', () => {
     expect(ref.current?.id).toBe('choose-one');
   });
 
-  it('shows the error and drops the group hint if both are passed', () => {
+  it('keeps the group description when an error is shown and announces both', () => {
     render(
-      // @ts-expect-error hint/error are mutually exclusive
-      <RadioGroup legend="Choose one" name="c" hint="Pick one" error="Required">
+      <RadioGroup
+        legend="Choose one"
+        name="c"
+        description="Pick one"
+        error="Required"
+      >
         <Radio label="Yes" value="yes" />
       </RadioGroup>,
     );
     const group = screen.getByRole('group');
+    const description = screen.getByText('Pick one');
     const error = screen.getByText('Required');
-    expect(screen.queryByText('Pick one')).toBeNull();
-    expect(group.getAttribute('aria-describedby')).toBe(error.id);
+    expect(group.getAttribute('aria-describedby')).toBe(
+      `${description.id} ${error.id}`,
+    );
   });
 
   it('has no axe violations', async () => {
@@ -121,7 +127,7 @@ describe('RadioGroup', () => {
       <RadioGroup
         legend="Are you self-employed?"
         name="employment"
-        hint="Choose one"
+        description="Choose one"
         value="no"
       >
         <Radio label="Yes" value="yes" />
@@ -156,16 +162,16 @@ it('renders no aria-expanded on controlled conditional radios (invalid on the ra
   await expectNoAxeViolations(container);
 });
 
-it('wires a per-option hint via aria-describedby', () => {
+it('wires a per-option description via aria-describedby', () => {
   render(
     <Radio
       name="contact"
       label="Email"
-      hint="We'll only use this for updates."
+      description="We'll only use this for updates."
     />,
   );
   const radio = screen.getByRole('radio', { name: 'Email' });
-  const hint = screen.getByText("We'll only use this for updates.");
-  expect(hint.className).toBe('govbb-hint');
-  expect(radio.getAttribute('aria-describedby')).toBe(hint.id);
+  const description = screen.getByText("We'll only use this for updates.");
+  expect(description.className).toBe('govbb-hint');
+  expect(radio.getAttribute('aria-describedby')).toBe(description.id);
 });

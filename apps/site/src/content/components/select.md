@@ -10,12 +10,14 @@ group: Form elements
 ```html title="Select with hint text"
 <div class="govbb-form-group">
   <label class="govbb-label" for="parish">Parish</label>
-  <span class="govbb-hint" id="parish-hint">Where you currently live</span>
+  <span class="govbb-hint" id="parish-description"
+    >Where you currently live</span
+  >
   <select
     class="govbb-select"
     id="parish"
     name="parish"
-    aria-describedby="parish-hint"
+    aria-describedby="parish-description"
   >
     <option value="" disabled selected>Select a parish</option>
     <option value="christ-church">Christ Church</option>
@@ -38,7 +40,7 @@ import { Select } from '@govtech-bb/react';
 
 <Select
   label="Parish"
-  hint="Where you currently live"
+  description="Where you currently live"
   name="parish"
   defaultValue=""
   options={[

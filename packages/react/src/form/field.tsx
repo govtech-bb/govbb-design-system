@@ -3,55 +3,59 @@ import { useId, type ReactNode } from 'react';
 import { ErrorMessage, FormGroup, Hint, Label } from './form';
 
 /*
- * Internal helper shared by the composed fields (Input, Textarea, Select).
- * When a field is given a label/hint/error it self-composes the GOV.UK
+ * Internal helper shared by the composed fields (Input, TextArea, Select).
+ * When a field is given a label/description/error it self-composes the GOV.UK
  * form-group scaffolding; without them the control renders bare. Not part of
  * the public API — compose FormGroup/Label/Hint/ErrorMessage directly for
  * anything this doesn't cover.
  */
 
-export type HintOrError =
-  { hint?: ReactNode; error?: never } | { error?: ReactNode; hint?: never };
+export interface FieldFeedback {
+  /** Persistent help text, announced via aria-describedby. */
+  description?: ReactNode;
+  /** Actionable validation error, announced after the description when present. */
+  error?: ReactNode;
+}
 
 export type FieldExtras = {
   /** Field label. Provide it to switch the control into self-composing mode. */
   label?: ReactNode;
-} & HintOrError;
+} & FieldFeedback;
 
-/** Stable ids for the control and its hint/error, wired for aria-describedby. */
+/** Stable ids for the control and its description/error, wired for aria-describedby. */
 export function useFieldIds(
   id: string | undefined,
-  hasHint: boolean,
+  hasDescription: boolean,
   hasError: boolean,
 ) {
   const autoId = useId();
   const fieldId = id ?? autoId;
-  const hintId = hasHint ? `${fieldId}-hint` : undefined;
+  const descriptionId = hasDescription ? `${fieldId}-description` : undefined;
   const errorId = hasError ? `${fieldId}-error` : undefined;
   return {
     fieldId,
-    hintId,
+    descriptionId,
     errorId,
-    describedBy: cx(hintId, errorId) || undefined,
+    describedBy: cx(descriptionId, errorId) || undefined,
   };
 }
 
 export function FieldShell({
   label,
-  hint,
+  description,
   error,
   fieldId,
   labelId,
-  hintId,
+  descriptionId,
   errorId,
   children,
 }: {
   label?: ReactNode;
-  hint?: ReactNode;
+  description?: ReactNode;
   error?: ReactNode;
   fieldId: string;
   labelId?: string;
-  hintId?: string;
+  descriptionId?: string;
   errorId?: string;
   children: ReactNode;
 }) {
@@ -62,7 +66,7 @@ export function FieldShell({
           {label}
         </Label>
       )}
-      {hint != null && error == null && <Hint id={hintId}>{hint}</Hint>}
+      {description != null && <Hint id={descriptionId}>{description}</Hint>}
       {error != null && (
         <ErrorMessage id={errorId} role="alert">
           {error}

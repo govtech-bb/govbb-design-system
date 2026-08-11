@@ -9,11 +9,11 @@ import {
 } from './date-input';
 
 describe('DateInput', () => {
-  it('renders labelled day/month/year fields and wires the hint', () => {
+  it('renders labelled day/month/year fields and wires the description', () => {
     const { container } = render(
       <DateInput
         legend="Date of birth"
-        hint="For example, 27 3 1990"
+        description="For example, 27 3 1990"
         dayProps={{ name: 'dob-day' }}
       />,
     );
@@ -21,8 +21,8 @@ describe('DateInput', () => {
     expect(group.parentElement).toBe(
       container.querySelector('.govbb-form-group'),
     );
-    const hint = screen.getByText('For example, 27 3 1990');
-    expect(group.getAttribute('aria-describedby')).toBe(hint.id);
+    const description = screen.getByText('For example, 27 3 1990');
+    expect(group.getAttribute('aria-describedby')).toBe(description.id);
     const day = screen.getByLabelText('Day') as HTMLInputElement;
     expect(day.name).toBe('dob-day');
     expect(screen.getByLabelText('Year').className).toContain(
@@ -108,7 +108,7 @@ describe('formatDateInput / parseDateInput', () => {
 
 it('has no axe violations', async () => {
   const { container } = render(
-    <DateInput legend="Date of birth" hint="For example, 27 3 1990" />,
+    <DateInput legend="Date of birth" description="For example, 27 3 1990" />,
   );
   await expectNoAxeViolations(container);
 });
@@ -121,17 +121,24 @@ it('renders an error message wired into the group description', () => {
   expect(group.getAttribute('aria-describedby')).toBe(error.id);
 });
 
-it('shows the error and drops the hint if both are passed', () => {
+it('keeps the description with an error and marks every date part invalid', () => {
   render(
-    // @ts-expect-error hint/error are mutually exclusive
     <DateInput
       legend="Date of birth"
-      hint="For example, 27 3 1990"
+      description="For example, 27 3 1990"
       error="Enter a valid date"
+      dayProps={{ 'aria-invalid': false }}
     />,
   );
   const group = screen.getByRole('group', { name: 'Date of birth' });
+  const description = screen.getByText('For example, 27 3 1990');
   const error = screen.getByText('Enter a valid date');
-  expect(screen.queryByText('For example, 27 3 1990')).toBeNull();
-  expect(group.getAttribute('aria-describedby')).toBe(error.id);
+  expect(group.getAttribute('aria-describedby')).toBe(
+    `${description.id} ${error.id}`,
+  );
+  for (const label of ['Day', 'Month', 'Year']) {
+    expect(screen.getByLabelText(label).getAttribute('aria-invalid')).toBe(
+      'true',
+    );
+  }
 });

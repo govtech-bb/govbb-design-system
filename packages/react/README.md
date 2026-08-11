@@ -33,8 +33,8 @@ import { Button, Checkbox, ErrorSummary, FormGroup, Hint, Input, Label } from '@
 
 <FormGroup>
   <Label htmlFor="full-name">Full name</Label>
-  <Hint id="fn-hint">As it appears on your ID</Hint>
-  <Input id="full-name" aria-describedby="fn-hint" />
+  <Hint id="fn-description">As it appears on your ID</Hint>
+  <Input id="full-name" aria-describedby="fn-description" />
 </FormGroup>
 
 <Checkbox label="I agree to the terms of service" />
@@ -54,7 +54,7 @@ BackButton · Breadcrumbs · Button / LinkButton · ButtonGroup · Checkbox ·
 DateInput ·
 ErrorMessage · ErrorSummary · Feedback · Fieldset · FileUpload ·
 Footer / FooterLink · FormGroup · Header · Heading / Text · Hint ·
-Input / Textarea · Label · Link · List · NumberInput · OfficialBanner ·
+Input / TextArea · Label · Link · List · NumberInput · OfficialBanner ·
 Payment · Radio · Search · Select · ServiceList · ShowHide · SkipLink ·
 StatusBanner · SummaryList · Table
 

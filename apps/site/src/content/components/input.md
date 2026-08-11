@@ -10,13 +10,15 @@ group: Form elements
 ```html title="Input with hint text"
 <div class="govbb-form-group">
   <label class="govbb-label" for="full-name">Full name</label>
-  <span class="govbb-hint" id="full-name-hint">As it appears on your ID</span>
+  <span class="govbb-hint" id="full-name-description"
+    >As it appears on your ID</span
+  >
   <input
     class="govbb-input"
     id="full-name"
     name="full-name"
     type="text"
-    aria-describedby="full-name-hint"
+    aria-describedby="full-name-description"
   />
 </div>
 ```
@@ -26,8 +28,12 @@ import { FormGroup, Hint, Input, Label } from '@govtech-bb/react';
 
 <FormGroup>
   <Label htmlFor="full-name">Full name</Label>
-  <Hint id="full-name-hint">As it appears on your ID</Hint>
-  <Input id="full-name" name="full-name" aria-describedby="full-name-hint" />
+  <Hint id="full-name-description">As it appears on your ID</Hint>
+  <Input
+    id="full-name"
+    name="full-name"
+    aria-describedby="full-name-description"
+  />
 </FormGroup>;
 ```
 

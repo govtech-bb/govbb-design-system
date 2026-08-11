@@ -9,9 +9,15 @@ group: Ask users for
 
 ```html title="Personal information"
 <div class="govbb-form-group">
-  <fieldset class="govbb-fieldset" role="group" aria-describedby="dob-hint">
+  <fieldset
+    class="govbb-fieldset"
+    role="group"
+    aria-describedby="dob-description"
+  >
     <legend class="govbb-fieldset__legend">Date of birth</legend>
-    <span class="govbb-hint" id="dob-hint">For example, 30 December 1986</span>
+    <span class="govbb-hint" id="dob-description"
+      >For example, 30 December 1986</span
+    >
     <div class="govbb-date-input">
       <div class="govbb-date-input__part">
         <label class="govbb-label" for="dob-day">Day</label>

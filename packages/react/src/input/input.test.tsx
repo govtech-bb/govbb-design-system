@@ -3,7 +3,7 @@ import { expectNoAxeViolations } from '../testing/axe';
 import { render, screen } from '@testing-library/react';
 import { createRef } from 'react';
 import { describe, expect, it } from 'vitest';
-import { Input, Textarea } from './input';
+import { Input, TextArea } from './input';
 
 describe('Input', () => {
   it('renders a govbb-input and forwards the ref', () => {
@@ -14,19 +14,19 @@ describe('Input', () => {
     expect(input.className).toBe('govbb-input extra');
   });
 
-  it('stays bare (no form-group) without label/hint/error', () => {
+  it('stays bare (no form-group) without label/description/error', () => {
     const { container } = render(<Input aria-label="Name" />);
     expect(container.querySelector('.govbb-form-group')).toBeNull();
   });
 
-  it('self-composes label and hint when given them', () => {
+  it('self-composes label and description when given them', () => {
     const { container } = render(
-      <Input label="Average weekly pay" hint="Include overtime" />,
+      <Input label="Average weekly pay" description="Include overtime" />,
     );
     const input = screen.getByRole('textbox', { name: 'Average weekly pay' });
-    const hint = screen.getByText('Include overtime');
+    const description = screen.getByText('Include overtime');
     expect(container.querySelector('.govbb-form-group')).not.toBeNull();
-    expect(input.getAttribute('aria-describedby')).toBe(hint.id);
+    expect(input.getAttribute('aria-describedby')).toBe(description.id);
     expect(input.getAttribute('aria-invalid')).toBeNull();
   });
 
@@ -48,24 +48,48 @@ describe('Input', () => {
     expect(input.getAttribute('aria-invalid')).toBe('true');
   });
 
-  it('shows the error and drops the hint if both are passed', () => {
+  it('keeps the description when an error is shown and announces both', () => {
     render(
-      // @ts-expect-error hint/error are mutually exclusive
-      <Input label="Pay" hint="Include overtime" error="Enter your pay" />,
+      <Input
+        label="Pay"
+        description="Include overtime"
+        error="Enter your pay"
+        aria-invalid={false}
+      />,
     );
     const input = screen.getByRole('textbox', { name: 'Pay' });
-    expect(screen.queryByText('Include overtime')).toBeNull();
+    const description = screen.getByText('Include overtime');
     const error = screen.getByText('Enter your pay');
-    expect(input.getAttribute('aria-describedby')).toBe(error.id);
+    expect(input.getAttribute('aria-describedby')).toBe(
+      `${description.id} ${error.id}`,
+    );
+    expect(input.getAttribute('aria-invalid')).toBe('true');
   });
 });
 
-describe('Textarea', () => {
+describe('TextArea', () => {
   it('renders a govbb-textarea and forwards the ref', () => {
     const ref = createRef<HTMLTextAreaElement>();
-    render(<Textarea ref={ref} aria-label="Message" />);
+    render(<TextArea ref={ref} aria-label="Message" />);
     expect(ref.current).toBe(screen.getByRole('textbox', { name: 'Message' }));
     expect(ref.current!.className).toBe('govbb-textarea');
+  });
+
+  it('keeps its description alongside an error', () => {
+    render(
+      <TextArea
+        label="Details"
+        description="Do not include account numbers"
+        error="Enter more detail"
+      />,
+    );
+    const textarea = screen.getByRole('textbox', { name: 'Details' });
+    const description = screen.getByText('Do not include account numbers');
+    const error = screen.getByText('Enter more detail');
+    expect(textarea.getAttribute('aria-describedby')).toBe(
+      `${description.id} ${error.id}`,
+    );
+    expect(textarea.getAttribute('aria-invalid')).toBe('true');
   });
 });
 
@@ -75,7 +99,7 @@ it('has no axe violations', async () => {
       <Label htmlFor="in">Email</Label>
       <Input id="in" type="email" />
       <Label htmlFor="ta">Message</Label>
-      <Textarea id="ta" rows={5} />
+      <TextArea id="ta" rows={5} />
     </>,
   );
   await expectNoAxeViolations(container);

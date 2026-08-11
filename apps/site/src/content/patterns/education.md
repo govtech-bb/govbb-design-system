@@ -62,7 +62,7 @@ group: Ask users for
 
 <div class="govbb-form-group">
   <label class="govbb-label" for="courses">Courses studied</label>
-  <span class="govbb-hint" id="courses-hint">
+  <span class="govbb-hint" id="courses-description">
     Separate each course with a comma
   </span>
   <textarea
@@ -70,7 +70,7 @@ group: Ask users for
     id="courses"
     name="courses"
     rows="4"
-    aria-describedby="courses-hint"
+    aria-describedby="courses-description"
   ></textarea>
 </div>
 

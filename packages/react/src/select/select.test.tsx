@@ -55,6 +55,26 @@ describe('Select', () => {
       false,
     );
   });
+
+  it('keeps its description alongside an error and marks the select invalid', () => {
+    render(
+      <Select
+        label="Parish"
+        description="Choose where you live"
+        error="Choose a parish"
+        aria-invalid={false}
+      >
+        <option value="">Select a parish</option>
+      </Select>,
+    );
+    const select = screen.getByRole('combobox', { name: 'Parish' });
+    const description = screen.getByText('Choose where you live');
+    const error = screen.getByText('Choose a parish');
+    expect(select.getAttribute('aria-describedby')).toBe(
+      `${description.id} ${error.id}`,
+    );
+    expect(select.getAttribute('aria-invalid')).toBe('true');
+  });
 });
 
 it('has no axe violations', async () => {

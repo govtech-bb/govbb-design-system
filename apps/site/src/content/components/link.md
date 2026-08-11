@@ -71,6 +71,32 @@ Use an underline in body content, provide visible hover and focus states and
 show visited state where it helps orientation. Avoid opening a new tab unless
 there is a strong user need, and warn users when you do.
 
+## External links
+
+When an external service must open in a new tab, use `external`. It defaults
+`target` to `_blank` and `rel` to `noopener noreferrer`. You can still provide
+either native attribute explicitly when a destination needs different
+behaviour. Make the link text clear that the destination is a separate service.
+
+```html title="External link"
+<a
+  class="govbb-link"
+  href="https://www.gov.bb/"
+  target="_blank"
+  rel="noopener noreferrer"
+>
+  Visit the Government of Barbados portal
+</a>
+```
+
+```tsx
+import { Link } from '@govtech-bb/react';
+
+<Link href="https://www.gov.bb/" external>
+  Visit the Government of Barbados portal
+</Link>;
+```
+
 ## Links without a permanent underline
 
 Add the `govbb-link--no-underline` modifier to show the underline only on
