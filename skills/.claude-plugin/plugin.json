@@ -1,6 +1,6 @@
 {
   "name": "govbb",
-  "description": "Build with the GovBB Design System — compliance, accessibility review, design critique and component authoring.",
+  "description": "Skills for building with the GovBB Design System. Sourced from the design system itself, so they stay in step with it.",
   "homepage": "https://design-system.service.alpha.gov.bb/ai-skills/",
   "repository": "https://github.com/govtech-bb/govbb-design-system",
   "author": { "name": "GovTech Barbados" },
