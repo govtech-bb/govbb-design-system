@@ -45,10 +45,9 @@ checklist will miss all six, and they are among the easiest to fail.
 Using the design system gets you a long way, and it does not get you all the
 way. Roughly:
 
-**The design system's half.** Colour combinations that meet contrast
-requirements, a visible keyboard focus indicator, hit areas on interactive
-controls, sensible heading and text sizing, components whose markup carries the
-semantics they need, and forced-colors handling.
+**The design system's half.** A visible keyboard focus indicator, hit areas on
+interactive controls, sensible heading and text sizing, components whose markup
+carries the semantics they need, and forced-colors handling.
 
 **Your service's half.** Everything about _your_ content and _your_ journey:
 labels associated with their controls, errors connected to the fields they
