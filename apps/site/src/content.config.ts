@@ -93,6 +93,40 @@ const templates = defineCollection({
   }),
 });
 
+// AI skills. Unlike every other collection these files are not authored for the
+// site: they are the `SKILL.md` files an agent actually loads, read from the
+// repository root. Publishing the same file the agent reads is deliberate — a
+// hand-written summary beside it would be a second description of the skill,
+// free to drift from the instructions it describes.
+//
+// `metadata` mirrors the frontmatter contract in docs/plans/ai-skills.md. The
+// skills CLI and Claude Code read only `name` and `description`; everything
+// under `metadata` exists for this site and is ignored by both.
+const skills = defineCollection({
+  loader: glob({
+    pattern: '*/SKILL.md',
+    base: '../../skills',
+    // Without this the id would be "<name>/SKILL", which is not a URL anyone
+    // wants. The directory name is the skill name.
+    generateId: ({ entry }) => entry.split('/')[0],
+  }),
+  schema: z.object({
+    name: z.string(),
+    description: z.string(),
+    metadata: z.object({
+      title: z.string(),
+      /** `design-team` skills are not published; see publishedSkills(). */
+      audience: z.enum(['public', 'design-team']).default('public'),
+      /** Matches the maturity vocabulary used for components. */
+      status: z.enum(['experimental', 'supported']).default('experimental'),
+      /** Tools a reader must have before the skill can do its job. */
+      requires: z.array(z.string()).default([]),
+      /** Belt-and-braces exclusion; see publishedSkills(). */
+      internal: z.boolean().default(false),
+    }),
+  }),
+});
+
 export const collections = {
   designLog,
   components,
@@ -100,4 +134,5 @@ export const collections = {
   styles,
   patterns,
   templates,
+  skills,
 };

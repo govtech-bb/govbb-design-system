@@ -229,6 +229,26 @@ export async function getDesignLogSidebar(): Promise<SidebarGroup[]> {
   ];
 }
 
+// Left-sidebar navigation for the AI skills section. Built from
+// publishedSkills() rather than the collection, so a restricted skill cannot
+// reach the sidebar even if it reaches the repository.
+export async function getAiSkillsSidebar(): Promise<SidebarGroup[]> {
+  const { publishedSkills } = await import('../lib/skills');
+  const entries = await publishedSkills();
+  return [
+    {
+      heading: 'AI skills',
+      links: [
+        { label: 'Overview', href: '/ai-skills/' },
+        ...entries.map((e) => ({
+          label: e.data.metadata.title,
+          href: `/ai-skills/${e.id}/`,
+        })),
+      ],
+    },
+  ];
+}
+
 // Left-sidebar navigation for the Documentation section, derived from the
 // docs content collection.
 export async function getDocumentationSidebar(): Promise<SidebarGroup[]> {

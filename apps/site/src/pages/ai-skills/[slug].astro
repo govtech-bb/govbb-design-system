@@ -1,0 +1,87 @@
+---
+import { render } from 'astro:content';
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import { getAiSkillsSidebar } from '../../data/nav';
+import { getContentNeighbors } from '../../lib/content-navigation';
+import {
+  publishedSkills,
+  skillSource,
+  skillsCliCommand,
+} from '../../lib/skills';
+
+export async function getStaticPaths() {
+  const entries = await publishedSkills();
+  return entries.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const { Content, headings } = await render(entry);
+const { title, status, requires } = entry.data.metadata;
+
+const onThisPage = headings
+  .filter((h) => h.depth === 2)
+  .map((h) => ({ label: h.text, href: `#${h.slug}` }));
+
+// getContentNeighbors reads `data.title`, which every other collection has at
+// the top level. A skill's human-facing title sits under `metadata`, so project
+// it here rather than widening a helper five other sections depend on.
+const entries = await publishedSkills();
+const neighbors = getContentNeighbors(
+  entries.map((e) => ({ id: e.id, data: { title: e.data.metadata.title } })),
+  entry.id,
+  '/ai-skills/',
+);
+
+const meta = [
+  { label: 'Status', value: status === 'supported' ? 'Supported' : 'Experimental' },
+  { label: 'Invoke', value: `/govbb:${entry.data.name}` },
+];
+if (requires.length) meta.push({ label: 'Needs', value: requires.join(', ') });
+---
+
+<ArticleLayout
+  title={title}
+  section="ai-skills"
+  description={entry.data.description}
+  pageTitle={title}
+  sidebarGroups={await getAiSkillsSidebar()}
+  sidebarLabel="AI skills"
+  source={skillSource(entry.id)}
+  onThisPage={onThisPage}
+  breadcrumbs={[{ label: 'AI skills', href: '/ai-skills/' }]}
+  meta={meta}
+  previous={neighbors.previous}
+  next={neighbors.next}
+>
+  <div class="govbb-prose govbb-prose--article">
+    <h2 id="when-to-use-it">When to use it</h2>
+    <p>{entry.data.description}</p>
+
+    <h2 id="install">Install</h2>
+    <p>
+      If you are at GovTech, this skill comes with the <code>govbb</code> plugin
+      from the team marketplace — see
+      <a href="/ai-skills/#install">the overview</a> for that route. To take just
+      this skill, from any repository:
+    </p>
+    <pre tabindex="0"><code>{skillsCliCommand(entry.id)}</code></pre>
+    {
+      requires.length > 0 && (
+        <p>
+          It needs {requires.join(', ')} to do its job. Without those, the skill
+          says so in its report rather than guessing — but you get less from it.
+        </p>
+      )
+    }
+
+    <h2 id="instructions">What the skill tells the AI to do</h2>
+    <p>
+      Below is the skill itself, unedited — the same text the AI loads. It is
+      written as instructions to an agent rather than as guidance for you, which
+      is why it reads the way it does. It is published in full so that anyone
+      relying on the output can see exactly what standard was applied, and
+      challenge it.
+    </p>
+    <Content />
+  </div>
+</ArticleLayout>
