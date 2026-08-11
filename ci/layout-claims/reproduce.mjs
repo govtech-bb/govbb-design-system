@@ -30,10 +30,23 @@ const LOCAL = new URL('../../packages/frontend/dist/govbb.css', import.meta.url)
   .href;
 const CSS =
   process.argv.includes('--css') && argCss
-    ? argCss.startsWith('http')
+    ? /^https?:\/\//.test(argCss)
       ? argCss
       : pathToFileURL(resolve(process.cwd(), argCss)).href
     : LOCAL;
+
+/*
+ * The document must be given a real file:// base URL before its content is set.
+ * `setContent` alone leaves the page on about:blank, and Chromium refuses to
+ * load a file:// subresource from a non-file document ("Not allowed to load
+ * local resource"), so the <link> silently fails and every measurement is taken
+ * against an unstyled page — `.govbb-page` never becomes `display: flex` and
+ * `.govbb-grid-row` never becomes a 12-track grid, which are the exact
+ * mechanisms both claims are about. Navigating to the stylesheet's own
+ * directory first also resolves the relative @font-face URLs, so text metrics
+ * match production rather than a fallback face.
+ */
+const BASE = new URL('.', CSS.startsWith('file://') ? CSS : LOCAL).href;
 
 if (CSS.startsWith('file://') && !existsSync(new URL(CSS))) {
   console.error(
@@ -73,12 +86,41 @@ const browser = await chromium.launch();
 const measure = async (html, width, evaluate) => {
   const ctx = await browser.newContext({ viewport: { width, height: 800 } });
   const p = await ctx.newPage();
+  await p.goto(BASE);
   await p.setContent(html);
   await p.waitForLoadState('load');
+  await p.evaluate(() => document.fonts.ready);
   const r = await p.evaluate(evaluate);
   await ctx.close();
   return r;
 };
+
+/*
+ * Preflight: prove the stylesheet actually applied before trusting any
+ * measurement. Without this, a stylesheet that fails to load reads as "neither
+ * claim reproduces" — a green result that measured nothing at all.
+ */
+const applied = await measure(page(scaffold('<p>Preflight.</p>')), 375, () => ({
+  page: getComputedStyle(document.querySelector('.govbb-page')).display,
+  row: getComputedStyle(document.querySelector('.govbb-grid-row')).display,
+  container: getComputedStyle(document.querySelector('.govbb-width-container'))
+    .maxInlineSize,
+}));
+if (
+  applied.page !== 'flex' ||
+  applied.row !== 'grid' ||
+  applied.container === 'none'
+) {
+  console.error(
+    `stylesheet did not apply: ${CSS}\n` +
+      `  .govbb-page display          ${applied.page} (expected flex)\n` +
+      `  .govbb-grid-row display      ${applied.row} (expected grid)\n` +
+      `  .govbb-width-container max   ${applied.container} (expected a length)\n` +
+      'Measurements would be taken against an unstyled page. Refusing to report.',
+  );
+  await browser.close();
+  process.exit(2);
+}
 
 const overflow = () => ({
   scrollWidth: document.documentElement.scrollWidth,
