@@ -14,13 +14,7 @@
  * immutability assertion reports that it could not be checked. See evals/README.md.
  */
 
-import {
-  readFileSync,
-  existsSync,
-  readdirSync,
-  statSync,
-  writeFileSync,
-} from 'node:fs';
+import { readFileSync, existsSync, readdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createHash } from 'node:crypto';
@@ -82,14 +76,6 @@ const realTokens = new Set(
   [...CSS.matchAll(/(--govbb-[a-zA-Z0-9-]+)\s*:/g)].map((m) => m[1]),
 );
 
-function walk(dir) {
-  if (!existsSync(dir)) return [];
-  return readdirSync(dir).flatMap((f) => {
-    const p = join(dir, f);
-    return statSync(p).isDirectory() ? walk(p) : [p];
-  });
-}
-
 /*
  * Vendored and installed copies of the design system are not the run's own
  * output. Grading them attributes the system's own CSS and runtime to the
@@ -97,6 +83,30 @@ function walk(dir) {
  * counted as the run's work.
  */
 const VENDORED = /(^|\/)(node_modules|vendor|dist)(\/|$)|@govtech-bb/;
+
+/*
+ * Prune vendored trees while descending rather than filtering after, and never
+ * follow a symlink. Both matter because a run that installed dependencies has a
+ * node_modules, and pnpm's is built out of symlinks: walking it costs thousands
+ * of stats for files that are then discarded, and it crashes outright on the two
+ * link shapes that layout produces — a loop raises ENAMETOOLONG and a dangling
+ * link raises ENOENT, either of which ends grading part-way through with no
+ * result.
+ *
+ * Dirent types come from the directory entry itself, so a symlink reports as a
+ * link rather than as whatever it points at. Skipping links is also the right
+ * grading call: a linked file is not something the run wrote, and its target may
+ * sit outside the output directory entirely.
+ */
+function walk(dir, root = dir) {
+  if (!existsSync(dir)) return [];
+  return readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
+    const p = join(dir, entry.name);
+    if (VENDORED.test(p.slice(root.length))) return [];
+    if (entry.isSymbolicLink()) return [];
+    return entry.isDirectory() ? walk(p, root) : [p];
+  });
+}
 
 /*
  * Include every module extension, not just .js/.ts. An agent that scaffolds
@@ -109,7 +119,6 @@ const CODE = /\.(html|[mc]?jsx?|[mc]?tsx?|css|md|json)$/;
 const read = (dir) =>
   walk(dir)
     .filter((f) => CODE.test(f))
-    .filter((f) => !VENDORED.test(f.slice(dir.length)))
     .map((f) => ({ file: f, text: readFileSync(f, 'utf8') }));
 
 /** Classes used in class= / className= attributes, which is what actually ships. */
