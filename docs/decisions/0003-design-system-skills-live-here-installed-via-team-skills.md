@@ -34,11 +34,25 @@ The skills are authored here and catalogued there.
 
 - Skill sources live at `skills/` in this repository, with
   `skills/.claude-plugin/plugin.json` making that directory the plugin root.
+  Because the plugin root is itself the skills directory, default discovery
+  (which looks for `<plugin root>/skills/`) finds nothing, so the manifest
+  declares `"skills": ["./"]`. Use the `["./"]` form, not `"."`: before Claude
+  Code v2.1.221 a bare `"."` fails manifest validation and the plugin does not
+  load at all, so an installer on an older version gets nothing and is told
+  nothing. Verified with `claude plugin details`, which reports
+  `Skills (1) accessibility-review` with the field and `Skills (0)` without it.
 - `team-skills/.claude-plugin/marketplace.json` gains a `govbb` entry whose
-  source is `git-subdir` pointing at `govtech-bb/govbb-design-system`, path
-  `skills`. Claude Code supports a plugin source in a different repository
-  from the marketplace, and `git-subdir` clones sparsely, so listing a
-  monorepo subdirectory costs the installer nothing.
+  source is `git-subdir` pointing at this repository, path `skills`. Claude Code
+  supports a plugin source in a different repository from the marketplace, and
+  `git-subdir` clones sparsely, so listing a monorepo subdirectory costs the
+  installer nothing.
+- **The `url` must be the full HTTPS clone URL**
+  (`https://github.com/govtech-bb/govbb-design-system.git`), not the
+  `owner/repo` shorthand. The shorthand resolves to an SSH clone, which fails
+  with `Host key verification failed` for anyone without GitHub SSH keys
+  configured — that is, for most people. Found by installing from a temporary
+  marketplace pinned to the branch before opening the `team-skills` pull
+  request.
 - Neither the marketplace entry nor `plugin.json` declares a `version`. For
   git-based sources every commit then counts as a new version, so merging to
   `main` here reaches installed users at their next startup with no change to
