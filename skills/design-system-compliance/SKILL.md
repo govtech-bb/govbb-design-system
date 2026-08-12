@@ -192,13 +192,45 @@ expensive after the markup has changed.
 Order matters because later steps sit inside earlier ones. Converting a form
 field first and the page shell afterwards means doing the field twice.
 
+### The page outline
+
+Dependency order tells you what to convert first. It does not tell you what
+nests inside what, and those are different questions — a page can use every
+correct class and still put things in the wrong place. Every page has this
+shape:
+
+```
+skip link
+official banner
+header
+  ↓  anything that navigates AWAY from the page — a back link — goes here
+main  id="main-content"  tabindex="-1"      ← the skip link's target
+  width container → grid row → two-thirds column
+    h1  (exactly one)
+    the page's actual task
+footer
+```
+
+**A back link belongs above `main`, not inside it.** Its own guidance says
+"before the page title and main task", and the reason bites in practice: `main`
+is what the skip link jumps to, so a back link placed first inside it means a
+keyboard user who asks to skip navigation lands directly on navigation. Nothing
+about the rendered page looks wrong, and the class audit passes, because
+nothing here is a class error.
+
+The same reasoning covers anything else that leaves the page — a "start again"
+link, a phase-banner feedback link. Ask what the element is _for_: if the
+answer is "leave this page", it is not part of the main task.
+
 1. **Page scaffold and layout** — `govbb-width-container`, then
    `govbb-grid-row` with a `govbb-grid-column-*`. Body content belongs in
    `govbb-grid-column-two-thirds`: that is the measure the type scale was
    designed for, and full-width body text is too long a line to read.
-2. **Page furniture** — Skip link, Official banner, Header, Footer. These frame
-   everything else and are what make a page read as a government service at a
-   glance.
+2. **Page landmarks** — Skip link, Official banner, Header, Footer. These are
+   not decoration. Each has a job, and placing something carelessly near one
+   breaks that job silently: the skip link is the keyboard entry point to the
+   page, `main` is the target it jumps to, the header is the primary
+   navigation, and the footer closes the page.
 3. **Form elements** — Form group, Label, Hint, Error message, then the
    specific inputs. Keep each control's label and hint associated as you go;
    this is where accessibility is usually lost.
@@ -215,6 +247,26 @@ service phase.
 
 Layout and the spacing scale are published — `/styles/layout.md` and
 `/styles/spacing.md` — so fetch those rather than working from memory.
+
+### Three tiers of spacing, and you only write the third
+
+`/styles/spacing.md` states the division: use the grid for space _between_
+regions of a page, and spacing tokens for space _inside_ a component and for
+vertical rhythm between elements. That leaves a clear split of ownership, and
+knowing which tier a gap belongs to is what stops you fighting the system:
+
+| Tier                    | Owned by                                                                 | You write                                     |
+| ----------------------- | ------------------------------------------------------------------------ | --------------------------------------------- |
+| The page frame          | `govbb-width-container` and `govbb-main-wrapper`, which space themselves | **nothing**                                   |
+| Between regions         | the grid — row and column classes                                        | class names                                   |
+| Rhythm between elements | you                                                                      | your own class, values from `--govbb-space-*` |
+
+The first row is the one that catches people. The wrapper already provides the
+page's vertical padding and the container already provides its side margins, at
+sizes that change with the viewport. So a gap below the header that looks tight
+is almost never yours to fix — adding page padding there overrides a responsive
+system with a fixed guess, and the guess is wrong at the widths you did not
+check. Measure it before concluding anything is missing.
 
 **Who owns vertical rhythm is not published, and you cannot lay out a page until
 you know.** Two arrangements are possible and they need opposite work from you.
@@ -390,9 +442,17 @@ that source review passed.
   markup is still right; chasing the audit here would mean deviating from the
   documentation to satisfy a script. Report it and move on.
 
-- **Render the pages and look at them.** Spacing problems (Step 4) are invisible
-  in source, and a page can be entirely correct class-by-class and still look
-  wrong.
+- **Check the page structure, mechanically.** `scripts/layout-check.mjs` reads
+  the rendered DOM for the things a class audit cannot see: one `h1`, the skip
+  link resolving to a `main` that is focusable, no link away from the page
+  sitting in front of the `h1` inside `main`, one of each landmark, body content
+  inside a grid column, and no horizontal overflow. Every one of these renders
+  perfectly while being wrong, which is why looking does not catch them.
+- **Render the pages and look at them, at 360px and 1280px.** Spacing problems
+  (Step 4) are invisible in source, and a page can be entirely correct
+  class-by-class and still look wrong. One width is not a check: a layout can be
+  flawless on a laptop and overflow on a phone, and the phone is how most people
+  will meet the service.
 - **Walk the journey the way a user does** — load each page, follow the
   redirects, use the Back links, click a "Change" link and come back. Posting to
   each endpoint in sequence is not the same test: it skips the page loads, so it
@@ -427,3 +487,13 @@ None of these states a fact about what the design system currently contains. The
 teach a method; the contents come from the site, or from the source where the site
 does not publish them yet, every time. So adding a component, renaming one, or
 changing how spacing works obliges nobody to update this skill.
+
+## Scripts
+
+Plain Node ESM, no build step. Run with `--help` for options.
+
+- **`scripts/layout-check.mjs`** — page-structure checks against the rendered
+  DOM: landmarks, the skip link's target, whether anything that leaves the page
+  sits in front of the `h1` inside `main`, grid column placement, and horizontal
+  overflow at each width. Needs the pages served somewhere it can reach them.
+  Holds no design-system inventory, so it does not go stale.
