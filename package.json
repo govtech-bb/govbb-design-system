@@ -18,6 +18,7 @@
     "site:build": "pnpm --filter @govbb/site build",
     "lint": "oxlint && stylelint \"packages/*/src/**/*.css\"",
     "test": "pnpm -r test",
+    "test:evals": "pnpm --filter @govtech-bb/frontend build && node evals/design-system-compliance/grade.test.mjs",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "changelog": "git-cliff --output CHANGELOG.md",

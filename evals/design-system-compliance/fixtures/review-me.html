@@ -1,25 +1,20 @@
 <!doctype html>
 <!--
-  Fixture for the "compliance review" eval. Every problem below is planted
-  deliberately; the point is whether a reviewer finds them without inventing
-  new ones. Do not "fix" this file — it is the input, not the output.
+  Fixture for the "compliance review" eval. This file has problems planted in it
+  deliberately; the point is whether a reviewer finds them without inventing new
+  ones. Do not "fix" it — it is the input, not the output.
 
   This is a test input, not an example to copy. Nothing here is a model of how
-  to write GovBB markup: the classes and tokens below include names the design
-  system does not have, and copying any of it into a real service would be a
+  to write GovBB markup, and copying any of it into a real service would be a
   compliance failure of exactly the kind the skill exists to prevent.
 
-  Planted issues:
-   1. .govbb-card        — invented class, no such component
-   2. .govbb-alert       — invented class (real answer: status banner)
-   3. .govbb-badge       — invented class, no such component
-   4. --govbb-color-primary — invented token (real: --govbb-color-brand)
-   5. .govbb-button override in service CSS — restyling component internals
-   6. header uses .govbb-header but no data-govbb-module / initAll()
-   7. file upload likewise missing its module wiring
-   8. hardcoded #00267f, 16px, 1.25rem where tokens exist
-   9. --govbb-blue-100 used directly where the semantic token is meant
-  10. hint text present but not associated via aria-describedby
+  What is planted, and what a correct review names, is NOT recorded here. It
+  lives in the PLANTED table in ../grade.mjs, deliberately: this comment used to
+  list all ten with their answers, so a reviewer scored full marks by reading
+  the top of the file it had been asked to examine. The baseline did exactly
+  that, and the eval reported no difference between it and the skill.
+
+  Never put the answer key in the artefact under test.
 -->
 <html lang="en">
   <head>

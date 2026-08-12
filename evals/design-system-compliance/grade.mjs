@@ -40,7 +40,7 @@ const REPO = fileURLToPath(new URL('../../', import.meta.url));
  * Checking only the local build marks those real classes as invented and
  * penalises exactly the behaviour the skill asks for — reading the live site.
  */
-const LIVE_CSS = '/tmp/live.css';
+const LIVE_CSS = process.env.LIVE_CSS ?? '/tmp/live.css';
 if (!existsSync(LIVE_CSS))
   console.warn(
     `warning: ${LIVE_CSS} absent — grading against the local build only.\n` +
@@ -62,6 +62,28 @@ if (!existsSync(DIST)) {
   );
   process.exit(2);
 }
+/*
+ * Verify the live stylesheet is a stylesheet. Fetching it from the obvious URL
+ * returns the homepage HTML, which parses to zero classes — so an unnoticed bad
+ * fetch does not weaken name resolution, it silently narrows the reference set
+ * and grades every site-only class as invented. Refuse rather than warn: a
+ * warning in a scrollback is how this went unnoticed the first time.
+ */
+if (existsSync(LIVE_CSS)) {
+  const live = readFileSync(LIVE_CSS, 'utf8');
+  const looksLikeHtml = /^﻿?\s*</.test(live);
+  const hasRules = /\.govbb-[a-zA-Z0-9_-]+[^{}]*\{/.test(live);
+  if (looksLikeHtml || !hasRules) {
+    console.error(
+      `${LIVE_CSS} is not a stylesheet: ${looksLikeHtml ? 'it starts with markup — the fetch returned a page, not the CSS' : 'it defines no .govbb- rules'}.\n` +
+        'Grading with it would mark real classes as invented. Re-fetch it from the\n' +
+        `stylesheet URL in the deployed page's <link rel="stylesheet">, or delete ${LIVE_CSS}\n` +
+        'to grade against the local build alone.',
+    );
+    process.exit(2);
+  }
+}
+
 const CSS = [
   readFileSync(DIST, 'utf8'),
   existsSync(LIVE_CSS) ? readFileSync(LIVE_CSS, 'utf8') : '',
@@ -75,6 +97,27 @@ const realClasses = new Set(
 const realTokens = new Set(
   [...CSS.matchAll(/(--govbb-[a-zA-Z0-9-]+)\s*:/g)].map((m) => m[1]),
 );
+
+/*
+ * A floor under the reference set. The build currently defines ~160 classes and
+ * ~85 tokens; a truncated, empty or wrong-package stylesheet passes every
+ * existence check above while resolving almost nothing, and the failure shows up
+ * as a run that "invented" all its names. Well under the real numbers, so it
+ * catches a broken reference without tracking the system's growth.
+ */
+for (const [what, set, floor] of [
+  ['classes', realClasses, 40],
+  ['tokens', realTokens, 20],
+]) {
+  if (set.size < floor) {
+    console.error(
+      `only ${set.size} ${what} found in the reference stylesheet — expected at least ${floor}.\n` +
+        `The build at ${DIST} is empty, truncated or not the design system.\n` +
+        'Rebuild it: pnpm --filter @govtech-bb/frontend build',
+    );
+    process.exit(2);
+  }
+}
 
 /*
  * Vendored and installed copies of the design system are not the run's own
@@ -268,6 +311,56 @@ const PLANTED = [
   ['hint not associated', /hint/i, /aria-describedby|associat/i],
 ];
 
+/*
+ * The three interfaces eval 1 asks for and the system does not have.
+ *
+ * `signals` are things the interface cannot be built without — its ARIA
+ * contract, its component identifier, an invented `govbb-` class. `file` catches
+ * the component given its own module. `notWhen` suppresses a known collision:
+ * react-router's `<Switch>` is a route matcher, not a form control.
+ *
+ * Patterns are deliberately narrow at the word boundary. `govbb-header__toggle`
+ * is a REAL class (the mobile nav button), so a loose /toggle/ would report the
+ * correct markup as an invented switch.
+ */
+const OMITTED_INTERFACES = [
+  {
+    name: 'a tabs interface',
+    signals: [
+      /govbb-tabs?\b/,
+      /role=["']tab(list|panel)?["']/,
+      /aria-selected\s*=/,
+      /<Tabs?\b|<TabList\b|<TabPanel\b/,
+    ],
+    file: /(^|\/)tabs?\.[mc]?[jt]sx?$/i,
+    inProse: /\btabs?\b/i,
+  },
+  {
+    name: 'a modal dialog',
+    signals: [
+      /govbb-(modal|dialog)\b/,
+      /role=["'](alert)?dialog["']/,
+      /aria-modal\s*=/,
+      /<dialog[\s/>]/i,
+      /\.showModal\s*\(/,
+      /<[A-Z][A-Za-z]*(Modal|Dialog)\b|<(Modal|Dialog)\b/,
+    ],
+    file: /(^|\/)[a-z-]*(modal|dialog)\.[mc]?[jt]sx?$/i,
+    inProse: /\bmodals?\b|\bdialog\b/i,
+  },
+  {
+    name: 'a toggle switch',
+    signals: [
+      /govbb-(toggle|switch)\b/,
+      /role=["']switch["']/,
+      /<(Toggle|Switch)\b/,
+    ],
+    file: /(^|\/)(toggle|switch)\.[mc]?[jt]sx?$/i,
+    inProse: /\bswitch\b|\btoggle\b/i,
+    notWhen: /from\s+['"]react-router/,
+  },
+];
+
 const results = {};
 
 for (const evalDir of readdirSync(ITER).filter((d) => d.startsWith('eval-'))) {
@@ -396,18 +489,67 @@ for (const evalDir of readdirSync(ITER).filter((d) => d.startsWith('eval-'))) {
 
     // --- eval 1: React traps ---
     if (evalDir.includes('react')) {
-      for (const trap of [
-        'govbb-tabs',
-        'govbb-modal',
-        'govbb-toggle',
-        'govbb-switch',
-      ]) {
+      /*
+       * Tabs, a modal and a toggle switch are the three interfaces this eval
+       * asks for and the design system deliberately does not provide. The
+       * question is whether a run BUILT one — under any name — not whether it
+       * typed `govbb-tabs`.
+       *
+       * The previous version tested those four literal spellings. A baseline
+       * run that built working Tabs, Switch and ConfirmDialog components with
+       * its own class names passed all four checks while doing the precise
+       * thing this eval exists to catch, and the eval reported no difference
+       * between baseline and skill. A check that passes while examining the
+       * wrong thing is worse than no check.
+       *
+       * So detect each interface by what it cannot be built without: its ARIA
+       * contract, its component identifier, or its own file.
+       */
+      for (const iface of OMITTED_INTERFACES) {
+        const hits = [];
+        for (const { file, text } of artefacts) {
+          if (iface.notWhen?.test(text)) continue;
+          const rel = file.slice(out.length).replace(/^\//, '');
+          const src = strip(text);
+          if (iface.file.test(rel)) hits.push(`${rel} (whole file)`);
+          for (const p of iface.signals) {
+            const m = src.match(p);
+            if (m) hits.push(`${rel}: ${m[0].trim()}`);
+          }
+        }
+        const built = [...new Set(hits)];
         add(
-          `Does not invent ${trap}`,
-          !shipped.includes(trap),
-          shipped.includes(trap) ? 'PRESENT in shipped code' : 'absent',
+          `Does not build ${iface.name} under any name`,
+          built.length === 0,
+          built.length
+            ? `BUILT — ${built.slice(0, 4).join('; ')}`
+            : 'not built, under this or any other name',
         );
       }
+      /*
+       * The counterpart to the check above: recording the three as gaps is the
+       * behaviour the skill is supposed to produce, and it is what actually
+       * separated the two configurations when the outputs were read by hand.
+       * Graded on prose, so it is a keyword match — it can tell a routed gap
+       * from silence, not a good gap list from a lazy one.
+       */
+      const prose = files
+        .filter((f) => /\.md$/i.test(f.file))
+        .map((f) => f.text)
+        .join('\n');
+      const namedInProse = OMITTED_INTERFACES.filter((i) =>
+        i.inProse.test(prose),
+      );
+      add(
+        'All three unavailable interfaces are recorded in writing, not silently substituted',
+        namedInProse.length === OMITTED_INTERFACES.length &&
+          /gap|not[- ]converted|not available|does not exist|deliberately|route/i.test(
+            prose,
+          ),
+        prose
+          ? `named ${namedInProse.length}/${OMITTED_INTERFACES.length} in ${files.filter((f) => /\.md$/i.test(f.file)).length} markdown file(s)`
+          : 'no markdown written at all',
+      );
       add(
         'initAll() not called in React code',
         !/initAll\s*\(/.test(shippedCode),
