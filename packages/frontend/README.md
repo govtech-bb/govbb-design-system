@@ -6,8 +6,16 @@ JavaScript for the GovBB Design System.
 ## Install
 
 ```sh
-pnpm add @govtech-bb/frontend
+pnpm add @govtech-bb/frontend@alpha
 ```
+
+**Install the `alpha` tag, not the default.** Every release so far is a
+prerelease, so they all publish under `alpha` and none of them moves `latest` —
+which still points at an old build. A plain `pnpm add @govtech-bb/frontend`
+resolves to it and gives you a package several releases behind, missing
+component fixes without any error to explain why. Check what you resolved with
+`npm view @govtech-bb/frontend dist-tags`, and pin the version in
+`package.json` so a later install cannot drift.
 
 Import the complete stylesheet once in your application entry:
 

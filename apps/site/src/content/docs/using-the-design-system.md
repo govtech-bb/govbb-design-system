@@ -13,8 +13,14 @@ twice. Use `@govtech-bb/frontend` for framework-agnostic HTML, or add the thin
 ## Install for HTML or server-rendered services
 
 ```sh
-pnpm add @govtech-bb/frontend
+pnpm add @govtech-bb/frontend@alpha
 ```
+
+Install the `alpha` tag, not the default. Every release so far is a prerelease,
+so they all publish under `alpha` and none of them moves `latest`, which still
+points at an old build. Check what you resolved with
+`npm view @govtech-bb/frontend dist-tags`, and pin the version in
+`package.json` so a later install cannot drift.
 
 Import the complete stylesheet once:
 
@@ -35,8 +41,14 @@ initAll();
 ## Install for React services
 
 ```sh
-pnpm add @govtech-bb/frontend @govtech-bb/react
+pnpm add @govtech-bb/frontend@alpha @govtech-bb/react@alpha
 ```
+
+The `alpha` tag is not optional for React. `@govtech-bb/react@latest` is a build
+of the previous Tailwind and Radix design system, missing `Header`, `SkipLink`,
+`SummaryList`, `FormGroup`, `Label`, `Hint`, `Fieldset`, `ButtonGroup` and
+`List`. Installing without the tag gives you a different design system, and it
+fails as missing exports rather than as an obviously wrong package.
 
 Import the stylesheet once at the application root, then import components from
 the React package. React components include their own behaviour, so do not run

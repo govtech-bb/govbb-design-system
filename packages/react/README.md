@@ -8,8 +8,22 @@ behaviour React consumers expect (refs, controlled inputs, callbacks).
 ## Install
 
 ```bash
-pnpm add @govtech-bb/react @govtech-bb/frontend
+pnpm add @govtech-bb/react@alpha @govtech-bb/frontend@alpha
 ```
+
+**The `alpha` tag is required here, not just advisable.** On npm today
+`@govtech-bb/react@latest` is a build of the _previous_ Tailwind and Radix
+design system — it depends on `@radix-ui/*`, `tailwind-merge` and a
+`@govtech-bb/design` package that no longer exists — and it is missing
+`Header`, `SkipLink`, `SummaryList`, `FormGroup`, `Label`, `Hint`, `Fieldset`,
+`ButtonGroup` and `List`. A plain `pnpm add @govtech-bb/react` installs a
+different design system, and it fails as puzzling missing exports rather than
+as an obviously wrong package.
+
+Every release so far is a prerelease, so they publish under `alpha` and none of
+them moves `latest`. Check what you resolved with
+`npm view @govtech-bb/react dist-tags`, and pin the version in `package.json`
+so a later install cannot drift.
 
 `react >= 18` is a peer dependency. This package ships no CSS of its own —
 import the stylesheet once at your app root:

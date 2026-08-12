@@ -22,8 +22,12 @@ nothing from the old packages.
 
 ```sh
 npm remove @govtech-bb/styles
-npm install @govtech-bb/react @govtech-bb/frontend
+npm install @govtech-bb/react@alpha @govtech-bb/frontend@alpha
 ```
+
+The `@alpha` tags matter especially here: `@govtech-bb/react@latest` is still a
+build of the design system you are migrating away from, so installing without
+the tag lands you back where you started.
 
 Non-Tailwind consumers can remove `@govtech-bb/design` at the same time.
 Tailwind consumers should follow the additional migration note below first.
