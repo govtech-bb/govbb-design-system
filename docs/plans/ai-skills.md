@@ -1043,9 +1043,33 @@ first fortnight — a skill nobody uses cannot be known to be wrong.
 
 ## 9. How to write and test the skills
 
-- Use the **`skill-creator`** skill to scaffold each one; it also runs evals and
-  can benchmark description triggering, which matters here because four skills
-  with adjacent scopes will otherwise fire on each other's requests.
+- Use the **`skill-creator`** skill to scaffold each one. Its description
+  benchmarking is worth running, because four skills with adjacent scopes will
+  otherwise fire on each other's requests.
+- **Do not build a with-skill/without-skill eval harness for these skills.** We
+  built one, ran it, and removed it on 12 August 2026 — see
+  [ADR 0004](../decisions/0004-no-with-and-without-eval-harness-for-skills.md),
+  worth reading before building another. In short: both arms are the same model
+  reading the same documentation, so the comparison only separates them when the
+  skill supplies something the model cannot derive on its own. These skills
+  mostly make Claude look things up in the design system, which Claude does
+  anyway once the docs are in front of it. The final run scored 12/12 against
+  12/12 and 13/13 against 13/13, and both zeros were honest.
+- **Two rules for any instrument you do build**, learned the expensive way —
+  six checks in that harness were each found passing while examining the wrong
+  thing, and not one of them failed loudly:
+  - _An instrument that nothing tests is measuring nothing._ If a script decides
+    whether the work is good, something must decide whether the script is right,
+    and it must be able to fail. A grader with no test of its own reported a
+    confident zero difference while one side shipped three components the
+    design system deliberately omits.
+  - _Never put the answer key in the artefact under test._ A fixture that lists
+    its own planted defects is not measuring detection, it is measuring reading.
+- **Prefer real use to a benchmark.** Every finding that mattered in the first
+  week of these skills — the missing `'use client'` directives, the Date input's
+  two server contracts, `latest` sitting five releases behind `alpha` — came
+  from reading what a run actually produced on real work. None came from a
+  score. That is what §8's named owner is for.
 - Adopt the `team-skills` review checklist verbatim: frontmatter present;
   description states when to invoke; content is *instructions to Claude*, not
   documentation *about* Claude; steps are ones we want consistent every time.
