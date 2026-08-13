@@ -303,7 +303,32 @@ arrangement:
 - **Put each margin on your own class, never on a `govbb-` one.** A margin on
   `.govbb-list` restyles a component's internals and makes this service disagree
   with every other one.
-- **Take every value from `--govbb-space-*`.**
+- **Take every value from `--govbb-space-*` — unless the gap you need falls
+  between two steps.** The scale is deliberately coarse, and it has holes: it
+  runs 32px then 64px with nothing between, and the design system's own site
+  fills that with a hardcoded `3rem`. Snapping to the nearest step is wrong in
+  both directions — the smaller reads as cramped, the larger floats sections
+  apart, and neither looks like a decision anyone made. Use the value the page
+  actually needs, name it in a service-level custom property with a comment
+  saying why, and record it in the report as a gap in the scale:
+
+  ```css
+  /* The scale jumps --govbb-space-m (32px) to --govbb-space-l (64px). This
+     section gap wants ~48px, which the design system's own site also uses.
+     Remove when the scale gains a 3rem step. */
+  .service-prose {
+    --service-space-section: 3rem;
+  }
+  ```
+
+  **Never give that property a `govbb-` name.** A `--govbb-space-ml` you
+  invented claims the system publishes it, and the next service to copy your CSS
+  inherits a token that does not exist. The prefix belongs to the system.
+
+  This is the same rule Step 5 applies to literals you find in a prototype — do
+  not force the nearest token — and it applies just as much to spacing you write
+  yourself. A forced value is a silent wrong choice; a named one with a reason
+  is a finding the design team can act on.
 
 Avoid a generic `* + *` rule. If content already carries margins it duplicates
 them and leans on collapsing to hide the overlap; if content margins are zeroed it
