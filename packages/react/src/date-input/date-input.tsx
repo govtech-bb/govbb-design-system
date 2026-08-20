@@ -95,6 +95,9 @@ export const DateInput = forwardRef<HTMLFieldSetElement, DateInputProps>(
         <fieldset
           ref={ref}
           className={cx('govbb-fieldset', className)}
+          // Redundant per ARIA, but some screen-reader/browser pairs only
+          // announce aria-describedby on a fieldset with an explicit group
+          // role (same workaround as GOV.UK Frontend's date input).
           role="group"
           aria-describedby={
             cx(descriptionId, errorId, describedBy) || undefined
