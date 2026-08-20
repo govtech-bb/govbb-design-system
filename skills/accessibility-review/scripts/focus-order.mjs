@@ -80,12 +80,13 @@ const DESCRIBE = () => {
     .trim()
     .slice(0, 70);
 
+  // getAttribute('class') rather than .className: on SVG elements .className
+  // is an SVGAnimatedString, not a string.
+  const elClass = el.getAttribute('class');
   const selector =
     el.tagName.toLowerCase() +
     (el.id ? `#${el.id}` : '') +
-    (typeof el.className === 'string' && el.className
-      ? '.' + el.className.trim().split(/\s+/).slice(0, 2).join('.')
-      : '');
+    (elClass ? '.' + elClass.trim().split(/\s+/).slice(0, 2).join('.') : '');
 
   const inViewport =
     rect.width > 0 &&
@@ -105,12 +106,11 @@ const DESCRIBE = () => {
     );
     const top = document.elementFromPoint(x, y);
     if (top && top !== el && !el.contains(top) && !top.contains(el)) {
+      const topClass = top.getAttribute('class');
       obscuredBy =
         top.tagName.toLowerCase() +
         (top.id ? `#${top.id}` : '') +
-        (typeof top.className === 'string' && top.className
-          ? '.' + top.className.trim().split(/\s+/)[0]
-          : '');
+        (topClass ? '.' + topClass.trim().split(/\s+/)[0] : '');
     }
   }
 
