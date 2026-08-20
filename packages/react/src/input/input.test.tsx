@@ -48,6 +48,25 @@ describe('Input', () => {
     expect(input.getAttribute('aria-invalid')).toBe('true');
   });
 
+  it('wraps the field with aria-hidden prefix/suffix cells when given them', () => {
+    const { container } = render(
+      <Input label="Cost, in dollars" prefix="$" suffix="per day" />,
+    );
+    const wrapper = container.querySelector('.govbb-input-wrapper')!;
+    const prefix = wrapper.querySelector('.govbb-input__prefix')!;
+    const suffix = wrapper.querySelector('.govbb-input__suffix')!;
+    expect(prefix.textContent).toBe('$');
+    expect(prefix.getAttribute('aria-hidden')).toBe('true');
+    expect(suffix.textContent).toBe('per day');
+    expect(suffix.getAttribute('aria-hidden')).toBe('true');
+    expect(wrapper.contains(screen.getByRole('textbox'))).toBe(true);
+  });
+
+  it('renders no wrapper without prefix/suffix', () => {
+    const { container } = render(<Input aria-label="Name" />);
+    expect(container.querySelector('.govbb-input-wrapper')).toBeNull();
+  });
+
   it('keeps the description when an error is shown and announces both', () => {
     render(
       <Input
@@ -98,6 +117,7 @@ it('has no axe violations', async () => {
     <>
       <Label htmlFor="in">Email</Label>
       <Input id="in" type="email" />
+      <Input label="Cost, in dollars" prefix="$" suffix="per day" />
       <Label htmlFor="ta">Message</Label>
       <TextArea id="ta" rows={5} />
     </>,

@@ -9,7 +9,7 @@
    only their extras (border recolour, z-index lift). */
 
 :is(
-  .govbb-input,
+  .govbb-input:not(.govbb-input-wrapper *),
   .govbb-textarea,
   .govbb-checkbox,
   .govbb-radio,
@@ -17,9 +17,11 @@
   .govbb-search__input,
   .govbb-search__button
 ):focus-visible,
-:is(.govbb-number-input-wrapper, .govbb-file-upload__dropzone):has(
-  :focus-visible
-) {
+:is(
+  .govbb-number-input-wrapper,
+  .govbb-input-wrapper,
+  .govbb-file-upload__dropzone
+):has(:focus-visible) {
   box-shadow: 0 0 0 4px var(--govbb-color-focus);
   outline: 2px solid transparent; /* shows the ring in forced-colors mode */
   outline-offset: 2px;

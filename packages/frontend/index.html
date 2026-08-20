@@ -165,6 +165,46 @@
           aria-describedby="em-err"
         />
       </div>
+      <div class="govbb-form-group" style="max-width: 22.5rem">
+        <label class="govbb-label" for="cost">Cost, in dollars</label>
+        <div class="govbb-input-wrapper">
+          <span class="govbb-input__prefix" aria-hidden="true">$</span>
+          <input
+            class="govbb-input"
+            id="cost"
+            type="text"
+            inputmode="decimal"
+          />
+        </div>
+      </div>
+      <div class="govbb-form-group" style="max-width: 22.5rem">
+        <label class="govbb-label" for="weight">Weight, in kilograms</label>
+        <div class="govbb-input-wrapper">
+          <input
+            class="govbb-input"
+            id="weight"
+            type="text"
+            inputmode="decimal"
+          />
+          <span class="govbb-input__suffix" aria-hidden="true">kg</span>
+        </div>
+      </div>
+      <div class="govbb-form-group" style="max-width: 22.5rem">
+        <label class="govbb-label" for="fee">Fee, in dollars per day</label>
+        <span class="govbb-error-message" id="fee-err">Enter a fee</span>
+        <div class="govbb-input-wrapper">
+          <span class="govbb-input__prefix" aria-hidden="true">$</span>
+          <input
+            class="govbb-input"
+            id="fee"
+            type="text"
+            inputmode="decimal"
+            aria-invalid="true"
+            aria-describedby="fee-err"
+          />
+          <span class="govbb-input__suffix" aria-hidden="true">per day</span>
+        </div>
+      </div>
     </section>
 
     <section>
