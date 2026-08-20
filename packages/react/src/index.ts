@@ -1,3 +1,8 @@
+export { Accordion, AccordionSection } from './accordion/accordion';
+export type {
+  AccordionProps,
+  AccordionSectionProps,
+} from './accordion/accordion';
 export { BackButton } from './back-button/back-button';
 export type { BackButtonProps } from './back-button/back-button';
 export { Breadcrumbs } from './breadcrumbs/breadcrumbs';
