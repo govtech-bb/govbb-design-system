@@ -41,6 +41,13 @@
   color: var(--govbb-color-ink);
 }
 
+/* "(optional)" suffix inside the label — required fields carry no mark.
+   Kept inside the <label> so it's announced with the field name. */
+.govbb-label__optional {
+  font-weight: 400;
+  color: var(--govbb-color-muted);
+}
+
 .govbb-hint {
   display: block;
   margin: 0;

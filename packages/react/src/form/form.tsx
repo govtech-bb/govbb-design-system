@@ -22,14 +22,26 @@ export const FormGroup = forwardRef<HTMLDivElement, FormGroupProps>(
   },
 );
 
-export interface LabelProps extends LabelHTMLAttributes<HTMLLabelElement> {}
+export interface LabelProps extends LabelHTMLAttributes<HTMLLabelElement> {
+  /** Appends a muted "(optional)" after the label text. Required fields
+   *  carry no mark (GOV.UK convention — no asterisks). */
+  optional?: boolean;
+}
 
 export const Label = forwardRef<HTMLLabelElement, LabelProps>(function Label(
-  { className, ...props },
+  { className, optional, children, ...props },
   ref,
 ) {
   return (
-    <label ref={ref} className={cx('govbb-label', className)} {...props} />
+    <label ref={ref} className={cx('govbb-label', className)} {...props}>
+      {children}
+      {optional && (
+        <>
+          {' '}
+          <span className="govbb-label__optional">(optional)</span>
+        </>
+      )}
+    </label>
   );
 });
 

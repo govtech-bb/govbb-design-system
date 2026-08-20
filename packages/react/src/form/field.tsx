@@ -48,6 +48,7 @@ export function FieldShell({
   labelId,
   descriptionId,
   errorId,
+  optional,
   children,
 }: {
   label?: ReactNode;
@@ -57,12 +58,14 @@ export function FieldShell({
   labelId?: string;
   descriptionId?: string;
   errorId?: string;
+  /** Appends "(optional)" to the label. Fields derive it from required === false. */
+  optional?: boolean;
   children: ReactNode;
 }) {
   return (
     <FormGroup>
       {label != null && (
-        <Label id={labelId} htmlFor={fieldId}>
+        <Label id={labelId} htmlFor={fieldId} optional={optional}>
           {label}
         </Label>
       )}

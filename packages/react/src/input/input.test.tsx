@@ -48,6 +48,22 @@ describe('Input', () => {
     expect(input.getAttribute('aria-invalid')).toBe('true');
   });
 
+  it('marks the label (optional) only on an explicit required={false}', () => {
+    const { container, rerender } = render(
+      <Input label="Middle name" required={false} />,
+    );
+    expect(container.querySelector('.govbb-label__optional')!.textContent).toBe(
+      '(optional)',
+    );
+    expect(
+      screen.getByRole('textbox', { name: 'Middle name (optional)' }),
+    ).toBeTruthy();
+    rerender(<Input label="Middle name" />);
+    expect(container.querySelector('.govbb-label__optional')).toBeNull();
+    rerender(<Input label="Middle name" required />);
+    expect(container.querySelector('.govbb-label__optional')).toBeNull();
+  });
+
   it('wraps the field with aria-hidden prefix/suffix cells when given them', () => {
     const { container } = render(
       <Input label="Cost, in dollars" prefix="$" suffix="per day" />,

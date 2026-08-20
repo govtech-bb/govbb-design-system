@@ -62,7 +62,12 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
   }
   if (!composed) return input;
   return (
-    <FieldShell {...{ label, description, error, ...ids }}>{input}</FieldShell>
+    <FieldShell
+      {...{ label, description, error, ...ids }}
+      optional={props.required === false}
+    >
+      {input}
+    </FieldShell>
   );
 });
 
@@ -101,7 +106,10 @@ export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
     );
     if (!composed) return textarea;
     return (
-      <FieldShell {...{ label, description, error, ...ids }}>
+      <FieldShell
+        {...{ label, description, error, ...ids }}
+        optional={props.required === false}
+      >
         {textarea}
       </FieldShell>
     );

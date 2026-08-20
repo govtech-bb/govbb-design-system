@@ -132,7 +132,10 @@ export const FileUpload = forwardRef<HTMLInputElement, FileUploadProps>(
     );
     if (!composed) return upload;
     return (
-      <FieldShell {...{ label, description, error, labelId, ...ids }}>
+      <FieldShell
+        {...{ label, description, error, labelId, ...ids }}
+        optional={props.required === false}
+      >
         {upload}
       </FieldShell>
     );
