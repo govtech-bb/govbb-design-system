@@ -110,6 +110,41 @@ import { FormGroup, Input, Label } from '@govtech-bb/react';
 </FormGroup>;
 ```
 
+## Marking optional fields
+
+Most fields on a government form are required, so required fields carry no
+mark. Never use asterisks. When a field is genuinely optional, say so in the
+label with a muted "(optional)" suffix.
+
+```html title="Optional field"
+<div class="govbb-form-group">
+  <label class="govbb-label" for="middle-name">
+    Middle name <span class="govbb-label__optional">(optional)</span>
+  </label>
+  <input class="govbb-input" id="middle-name" name="middle-name" type="text" />
+</div>
+```
+
+```tsx
+import { FormGroup, Input, Label } from '@govtech-bb/react';
+
+// Standalone label
+<Label htmlFor="middle-name" optional>
+  Middle name
+</Label>;
+
+// Self-composing fields derive it from an explicit required={false}
+<Input label="Middle name" name="middle-name" required={false} />;
+```
+
+- Use "(optional)" only when most fields in the form are required. If most
+  fields are optional, question the form before questioning the labels.
+- Be consistent within a form: mark every optional field or none.
+- A field with no indicator is assumed required, so make sure it really is.
+- The indicator does not validate anything. Pair it with the `required`
+  attribute on the controls that must be filled in; the suffix sits inside the
+  label, so screen readers announce it with the field name.
+
 ## Grouping controls
 
 Use only one label per control. To name a group of related controls, such as a

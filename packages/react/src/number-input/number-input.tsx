@@ -141,6 +141,7 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
     return (
       <FieldShell
         {...{ label, description, error, labelId: resolvedLabelId, ...ids }}
+        optional={props.required === false}
       >
         {control}
       </FieldShell>

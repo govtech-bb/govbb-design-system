@@ -59,7 +59,10 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
     );
     if (!composed) return select;
     return (
-      <FieldShell {...{ label, description, error, ...ids }}>
+      <FieldShell
+        {...{ label, description, error, ...ids }}
+        optional={props.required === false}
+      >
         {select}
       </FieldShell>
     );

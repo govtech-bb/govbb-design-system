@@ -85,11 +85,11 @@
 }
 
 .govbb-payment--success {
-  background: var(--govbb-green-00);
+  background: var(--govbb-green-80);
 }
 
 .govbb-payment--failed {
-  background: var(--govbb-red-00);
+  background: var(--govbb-red-80);
 }
 
 .govbb-payment--success .govbb-payment__heading,

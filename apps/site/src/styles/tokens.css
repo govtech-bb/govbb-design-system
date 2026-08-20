@@ -11,10 +11,10 @@
 :root {
   /* Brand — from @govtech-bb/frontend */
   --govbb-color-teal: var(
-    --govbb-teal-00
+    --govbb-teal-80
   ); /* primary: buttons, links, active states */
   --govbb-color-teal-dark: var(--govbb-color-interactive-active); /* hover */
-  --govbb-color-navy: var(--govbb-blue-100); /* footer + gov banner */
+  --govbb-color-navy: var(--govbb-blue-40); /* footer + gov banner */
 
   /* Ink & surfaces — from @govtech-bb/frontend */
   --govbb-color-text: var(--govbb-color-ink);
@@ -26,17 +26,17 @@
     --govbb-blue-10
   ); /* gov bar, email box, active sidebar */
   --govbb-color-band: var(--govbb-pink-10); /* "Get started" band */
-  --govbb-color-border: var(--govbb-grey-00);
+  --govbb-color-border: var(--govbb-grey-20);
 
   /* Interaction — states are defined by @govtech-bb/frontend. */
   --govbb-color-link: var(--govbb-color-teal);
   --govbb-color-link-hover: var(--govbb-color-teal-dark);
 
   /* Decorative card fills — aliases of the package ramp */
-  --govbb-card-pink: var(--govbb-pink-40);
-  --govbb-card-lavender: var(--govbb-purple-40);
-  --govbb-card-teal: var(--govbb-teal-40);
-  --govbb-card-yellow: var(--govbb-yellow-40);
+  --govbb-card-pink: var(--govbb-pink-20);
+  --govbb-card-lavender: var(--govbb-purple-20);
+  --govbb-card-teal: var(--govbb-teal-20);
+  --govbb-card-yellow: var(--govbb-yellow-20);
 
   /* Typography — real Figtree face ships with @govtech-bb/frontend */
   --govbb-font-base: var(--govbb-font-sans);

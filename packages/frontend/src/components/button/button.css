@@ -82,7 +82,7 @@
   }
 
   &:active {
-    color: var(--govbb-green-40);
+    color: var(--govbb-green-20);
     background: var(--govbb-color-tertiary);
     box-shadow:
       inset 0 0 0 2px var(--govbb-color-tertiary),

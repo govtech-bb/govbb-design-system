@@ -41,7 +41,7 @@
 /* Navy rule closing off the header row. Keys off the semantic <thead> the
    markup already has, so a correct table gets it without an extra class. */
 .govbb-table thead .govbb-table__header {
-  border-bottom-color: var(--govbb-blue-00);
+  border-bottom-color: var(--govbb-blue-80);
 }
 
 /* Row headers (<th scope="row">) — a highlighted first column, with the

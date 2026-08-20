@@ -39,6 +39,11 @@ const STATES: Array<{
   { name: 'radio-focus', selector: '.govbb-radio', state: 'focus-visible' },
   { name: 'input-hover', selector: '.govbb-input', state: 'hover' },
   { name: 'input-focus', selector: '.govbb-input', state: 'focus-visible' },
+  {
+    name: 'input-prefix-focus',
+    selector: '.govbb-input-wrapper .govbb-input',
+    state: 'focus-visible',
+  },
   { name: 'select-hover', selector: '.govbb-select', state: 'hover' },
   { name: 'select-focus', selector: '.govbb-select', state: 'focus-visible' },
   {
