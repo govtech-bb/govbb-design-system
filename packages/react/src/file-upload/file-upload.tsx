@@ -24,7 +24,8 @@ export type FileUploadProps = Omit<
     /** e.g. "Maximum size: 25MB". */
     maxSize?: ReactNode;
     files?: Array<{ name: string; onRemove?: () => void }>;
-    removeLabel?: ReactNode;
+    /** A string: it doubles as each remove button's accessible name. */
+    removeLabel?: string;
   };
 
 /** Ref goes to the <input type="file">, not the wrapping div. */
@@ -73,8 +74,9 @@ export const FileUpload = forwardRef<HTMLInputElement, FileUploadProps>(
           <input
             ref={(node) => {
               inputRef.current = node;
-              if (typeof ref === 'function') ref(node);
-              else if (ref != null) ref.current = node;
+              if (ref == null) return;
+              if ('current' in ref) ref.current = node;
+              else ref(node);
             }}
             className={cx(
               'govbb-file-upload__input govbb-visually-hidden',
@@ -111,11 +113,7 @@ export const FileUpload = forwardRef<HTMLInputElement, FileUploadProps>(
                     type="button"
                     // Matches the PE runtime: name each button after its file
                     // so "Remove" buttons are distinguishable to AT.
-                    aria-label={
-                      typeof removeLabel === 'string'
-                        ? `${removeLabel} ${name}`
-                        : undefined
-                    }
+                    aria-label={`${removeLabel} ${name}`}
                     onClick={() => handleRemove(name, onRemove)}
                   >
                     {removeLabel}
