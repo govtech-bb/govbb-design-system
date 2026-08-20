@@ -8,7 +8,7 @@ import tokensCss from '@govtech-bb/frontend/tokens.css?raw';
 export interface Token {
   /** Custom property name, e.g. `--govbb-color-brand`. */
   name: string;
-  /** Declared value, whitespace-normalised, e.g. `var(--govbb-blue-100)`. */
+  /** Declared value, whitespace-normalised, e.g. `var(--govbb-blue-40)`. */
   value: string;
   /** Fully resolved value (aliases followed), e.g. `#00267f`. */
   resolved: string;
@@ -80,7 +80,7 @@ export const semanticColors = all.filter(
   (t) => t.name.startsWith('--govbb-color-') && isColor(t.resolved),
 );
 
-/** One primitive ramp family, e.g. `family('teal')` → teal-00/10/40/100. */
+/** One primitive ramp family, e.g. `family('teal')` → teal-10 … teal-90. */
 export function family(hue: string): Token[] {
   return all.filter((t) => new RegExp(`^--govbb-${hue}-\\d+$`).test(t.name));
 }

@@ -225,7 +225,7 @@ img:not([class]) {
 .govbb-prose th {
   background: var(--govbb-color-example-surface);
   font-weight: 600;
-  border-bottom-color: var(--govbb-mid-grey-00);
+  border-bottom-color: var(--govbb-grey-70);
 }
 
 /* Usage guidance pairs direct do/don't language with the component itself.
@@ -259,7 +259,7 @@ img:not([class]) {
   line-height: 1;
 }
 .govbb-usage-guidance__icon--do {
-  background: var(--govbb-green-00);
+  background: var(--govbb-green-80);
 }
 .govbb-usage-guidance__icon--dont {
   background: var(--govbb-color-error);

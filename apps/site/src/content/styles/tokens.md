@@ -20,7 +20,7 @@ Tokens come in two tiers, and the tier tells you whether you should reach for
 one.
 
 **Primitives** mirror the Figma variable ramp: the raw palette, named by hue
-and step, such as `--govbb-blue-100`, `--govbb-teal-00` or `--govbb-red-10`.
+and step, such as `--govbb-blue-40`, `--govbb-teal-80` or `--govbb-red-10`.
 Each colour family runs from a dark `00` shade through pale tints (`10`, `40`)
 to the saturated `100`. Primitives say what a colour _is_, not what it is
 _for_, so treat them as the source the semantic tier resolves to rather than
@@ -36,7 +36,7 @@ CSS needs no changes.
 
 The real button, annotated. Each callout is a token its stylesheet actually
 references, and the fill resolves through the semantic tier to one primitive.
-Pick a new value for `--govbb-teal-00` and the button, the callout, and every
+Pick a new value for `--govbb-teal-80` and the button, the callout, and every
 other component on the same tokens follow. No component CSS changes.
 
 ```token-demo
