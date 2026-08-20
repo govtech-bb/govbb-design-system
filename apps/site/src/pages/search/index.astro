@@ -281,15 +281,15 @@ import { primaryNav, secondaryNav } from '../../data/nav';
     const section = new URL(url, window.location.origin).pathname
       .split('/')
       .filter(Boolean)[0];
-    const labels: Record<string, string> = {
-      documentation: 'Get started',
-      styles: 'Styles',
-      components: 'Components',
-      patterns: 'Patterns',
-      templates: 'Templates',
-      'design-log': 'Design log',
-    };
-    return section ? (labels[section] ?? 'Design system') : 'Design system';
+    const labels = new Map([
+      ['documentation', 'Get started'],
+      ['styles', 'Styles'],
+      ['components', 'Components'],
+      ['patterns', 'Patterns'],
+      ['templates', 'Templates'],
+      ['design-log', 'Design log'],
+    ]);
+    return section ? (labels.get(section) ?? 'Design system') : 'Design system';
   };
 
   const cleanExcerpt = (excerpt: string) => {
@@ -302,12 +302,10 @@ import { primaryNav, secondaryNav } from '../../data/nav';
       .trim();
   };
 
-  // Load Pagefind's runtime bundle (generated into /pagefind at build time)
-  // without letting Vite try to resolve or preload it during the site build.
-  const importPagefind = new Function(
-    'p',
-    'return import(p)',
-  ) as (p: string) => Promise<PagefindModule>;
+  // Load Pagefind's runtime bundle (generated into /pagefind at build time);
+  // @vite-ignore stops Vite resolving or preloading it during the site build.
+  const importPagefind = (path: string): Promise<PagefindModule> =>
+    import(/* @vite-ignore */ path);
 
   if (query && input && status && list && more) {
     input.value = query;
