@@ -1,0 +1,259 @@
+/* Accordion — sections of related content, each collapsed behind its heading.
+   Built on native <details>/<summary>, so it opens, closes and takes keyboard
+   focus with no JavaScript. Give every section the same `name` to make the
+   group exclusive (opening one closes the rest); leave it off and sections
+   open independently.
+
+   <div class="govbb-accordion">
+     <details class="govbb-accordion__section">
+       <summary class="govbb-accordion__summary">
+         <h3 class="govbb-accordion__heading">Writing well</h3>
+       </summary>
+       <div class="govbb-accordion__content">…</div>
+     </details>
+   </div>
+
+   A summary can carry a decorative icon before the heading, and a hint line
+   under it:
+
+   <summary class="govbb-accordion__summary">
+     <span class="govbb-accordion__icon" aria-hidden="true"><svg …></span>
+     <span class="govbb-accordion__text">
+       <h3 class="govbb-accordion__heading">Writing well</h3>
+       <span class="govbb-accordion__hint">Plain language, short sentences</span>
+     </span>
+   </summary>
+
+   Modifiers: the frame modifiers swap the quiet stack of pressable rows for
+   --divided (rules between sections), --boxed (one border around the group)
+   or --cards (each section its own bordered card). A summary with
+   aria-disabled="true" cannot be opened. Accordions nest; every frame styles
+   only its own sections. */
+
+.govbb-accordion {
+  --govbb-accordion-heading-size: var(--govbb-font-size-h3);
+  --govbb-accordion-space: var(--govbb-space-s);
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--govbb-space-xxs);
+  font-size: var(--govbb-font-size-body);
+  line-height: var(--govbb-line-height-base);
+  color: var(--govbb-color-ink);
+}
+
+/* The row is the interactive block: it takes the hover fill and the rounding,
+   so it reads as pressable before the pointer reaches it. */
+.govbb-accordion__summary {
+  display: flex;
+  gap: var(--govbb-space-s);
+  align-items: center;
+  padding: var(--govbb-accordion-space);
+  color: var(--govbb-color-muted);
+  cursor: pointer;
+  outline: 0;
+  border-radius: var(--govbb-radius);
+  list-style: none;
+  transition:
+    color 0.15s ease,
+    background-color 0.15s ease;
+}
+
+.govbb-accordion__summary::-webkit-details-marker {
+  display: none;
+}
+
+.govbb-accordion__summary::marker {
+  content: '';
+}
+
+/* Hover and press fill the row with the neutral surface grey and take the
+   text to ink: the row is a pressable surface, not a link, so it does not
+   borrow the link's teal. */
+.govbb-accordion__summary:is(:hover, :active) {
+  color: var(--govbb-color-ink);
+  background: var(--govbb-color-neutral);
+}
+
+/* Keyboard focus takes the system ring: 4px of the shared focus teal, the
+   same language as the button outline and the form-control ring. It is drawn
+   inset so the boxed and cards frames cannot clip it away. The transparent
+   outline renders a ring in forced-colors mode, where the shadow is
+   stripped. */
+.govbb-accordion__summary:focus-visible {
+  color: var(--govbb-color-ink);
+  box-shadow: inset 0 0 0 4px var(--govbb-color-focus);
+  outline: 2px solid transparent;
+  outline-offset: -4px;
+}
+
+/* Chevron, trailing the heading at the end of the row: points right when
+   closed, down when open. The turned chevron is the only open signal — the
+   text does not change. It centres on the whole row; only the icon tracks
+   the heading line. */
+.govbb-accordion__summary::after {
+  content: '';
+  flex: none;
+  margin-inline-start: auto;
+  width: 0.5em;
+  height: 0.5em;
+  border-top: 2px solid;
+  border-right: 2px solid;
+  rotate: 45deg;
+  transition: rotate 0.2s ease;
+}
+
+.govbb-accordion__section[open] > .govbb-accordion__summary::after {
+  rotate: 135deg;
+}
+
+/* Any heading level renders at the same size, so the consumer picks the
+   level that fits their page outline without changing the look. */
+.govbb-accordion__heading {
+  margin: 0;
+  font-size: var(--govbb-accordion-heading-size);
+  line-height: var(--govbb-line-height-h3);
+  font-weight: 400;
+}
+
+/* Decorative icon before the heading. Its box is exactly one heading line
+   tall and pinned to the top of the row, so the glyph centres on the heading
+   line whether or not a hint sits under it. It takes the summary's colour, so
+   an SVG drawn in currentColor follows the hover, open and disabled states. */
+.govbb-accordion__icon {
+  display: flex;
+  flex: none;
+  align-items: center;
+  align-self: flex-start;
+  inline-size: 1.25em;
+  block-size: calc(
+    var(--govbb-accordion-heading-size) * var(--govbb-line-height-h3)
+  );
+}
+
+.govbb-accordion__icon > svg,
+.govbb-accordion__icon > img {
+  display: block;
+  inline-size: 100%;
+  block-size: 1.25em;
+}
+
+/* Heading with a hint line under it. The hint keeps the muted colour in
+   every row state: it is context, not the label. */
+.govbb-accordion__text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--govbb-space-xxs);
+  min-inline-size: 0;
+}
+
+.govbb-accordion__hint {
+  font-size: var(--govbb-font-size-caption);
+  line-height: var(--govbb-line-height-base);
+  font-weight: 400;
+  color: var(--govbb-color-muted);
+}
+
+.govbb-accordion__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--govbb-space-s);
+  padding-block: var(--govbb-space-xs) var(--govbb-space-s);
+  padding-inline: var(--govbb-accordion-space);
+}
+
+/* A section that cannot be opened: dimmed, and out of reach of pointer and
+   keyboard (the React wrapper also drops it from the tab order). */
+.govbb-accordion__section > .govbb-accordion__summary[aria-disabled='true'] {
+  color: var(--govbb-color-muted);
+  cursor: not-allowed;
+  opacity: var(--govbb-opacity-disabled);
+  pointer-events: none;
+}
+
+/* Not quiet: rules between sections instead of a stack of pressable rows.
+   Use it where the headings are long enough that users scan the list rather
+   than aim at it. */
+.govbb-accordion--divided {
+  gap: 0;
+}
+
+/* Boxed: one border around the whole group, rules between sections. Cards:
+   each section its own bordered card, with air between them. Both clip their
+   children, so the rows' hover fill runs to the border. */
+.govbb-accordion--boxed {
+  gap: 0;
+  overflow: clip;
+  border: 2px solid var(--govbb-color-neutral);
+  border-radius: var(--govbb-radius);
+}
+
+.govbb-accordion--cards {
+  gap: var(--govbb-space-xs);
+}
+
+.govbb-accordion--divided > .govbb-accordion__section {
+  border-block-end: 2px solid var(--govbb-color-neutral);
+}
+
+.govbb-accordion--cards > .govbb-accordion__section {
+  overflow: clip;
+  border: 2px solid var(--govbb-color-neutral);
+  border-radius: var(--govbb-radius);
+}
+
+.govbb-accordion--divided > .govbb-accordion__section:first-child {
+  border-block-start: 2px solid var(--govbb-color-neutral);
+}
+
+.govbb-accordion--boxed
+  > .govbb-accordion__section
+  + .govbb-accordion__section {
+  border-block-start: 2px solid var(--govbb-color-neutral);
+}
+
+.govbb-accordion--divided
+  > .govbb-accordion__section
+  > .govbb-accordion__summary {
+  border-radius: 0;
+}
+
+/* The clipped frames square their rows off, so the hover fill meets the
+   border exactly. The focus ring needs nothing here: it is inset already. */
+.govbb-accordion--boxed > .govbb-accordion__section > .govbb-accordion__summary,
+.govbb-accordion--cards
+  > .govbb-accordion__section
+  > .govbb-accordion__summary {
+  border-radius: 0;
+}
+
+/* Height animation, where the browser supports animating to a keyword size.
+   Everything else gets the same open/close, just instant. */
+@supports (interpolate-size: allow-keywords) and
+  selector(details::details-content) {
+  /* Scoped to the section, not :root — the property inherits into
+     ::details-content, and a component file must not opt the consumer's
+     whole page into keyword interpolation. */
+  .govbb-accordion__section {
+    interpolate-size: allow-keywords;
+  }
+
+  .govbb-accordion__section::details-content {
+    height: 0;
+    overflow: clip;
+    transition:
+      height 0.2s ease,
+      content-visibility 0.2s allow-discrete;
+  }
+
+  .govbb-accordion__section[open]::details-content {
+    height: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .govbb-accordion__summary::after,
+  .govbb-accordion__section::details-content {
+    transition: none;
+  }
+}

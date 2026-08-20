@@ -1,3 +1,8 @@
+export { Accordion, AccordionSection } from './accordion/accordion';
+export type {
+  AccordionProps,
+  AccordionSectionProps,
+} from './accordion/accordion';
 export { AddAnother, AddAnotherItem } from './add-another/add-another';
 export type {
   AddAnotherItemProps,
