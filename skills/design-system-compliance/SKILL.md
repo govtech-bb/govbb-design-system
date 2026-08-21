@@ -234,29 +234,13 @@ expensive after the markup has changed.
 Order matters because later steps sit inside earlier ones. Converting a form
 field first and the page shell afterwards means doing the field twice.
 
-### The page outline
-
-Dependency order tells you what to convert first. It does not tell you what
-nests inside what, and those are different questions — a page can use every
-correct class and still put things in the wrong place.
-
 **The template for the page type you are building is the authority on its
-shape.** Fetch it and copy its markup, the same way you would for a component.
-`/templates/` lists them; a single-question page, a landing page and a
-check-answers page each publish their own structure, and they differ from one
-another on purpose.
-
-`/styles/layout.md` publishes the general scaffold — `govbb-page` on the body,
-`govbb-width-container`, `govbb-main-wrapper` carrying `id="main-content"`,
-`govbb-grid-row`, and a column class around body content.
-
-**Where a template and the layout page disagree, follow the template for that
-page type and report the disagreement.** They do currently diverge — some
-templates show a flatter structure than `/styles/layout.md` does — and that is a
-question for the design team, not something to settle by picking whichever
-reading you prefer. Recording it is how it gets fixed; quietly choosing a side
-is how two services end up structured differently while both believing they are
-compliant.
+shape.** Fetch it and copy its markup, the same way you would for a component;
+`/templates/` lists them, and a single-question page, a landing page and a
+check-answers page each publish their own structure.
+`references/conversion-checklist.md` has the page shape section — the general
+scaffold `/styles/layout.md` publishes, and what to do where a template and the
+layout page disagree.
 
 1. **Page scaffold and layout** — `govbb-width-container`, then
    `govbb-grid-row` with a `govbb-grid-column-*`. Body content belongs in
@@ -284,54 +268,24 @@ service phase.
 Layout and the spacing scale are published — `/styles/layout.md` and
 `/styles/spacing.md` — so fetch those rather than working from memory.
 
-### Three tiers of spacing, and you only write the third
-
-`/styles/spacing.md` states the division: use the grid for space _between_
-regions of a page, and spacing tokens for space _inside_ a component and for
-vertical rhythm between elements. That leaves a clear split of ownership, and
-knowing which tier a gap belongs to is what stops you fighting the system:
-
-| Tier                    | Owned by                                                                 | You write                                     |
-| ----------------------- | ------------------------------------------------------------------------ | --------------------------------------------- |
-| The page frame          | `govbb-width-container` and `govbb-main-wrapper`, which space themselves | **nothing**                                   |
-| Between regions         | the grid — row and column classes                                        | class names                                   |
-| Rhythm between elements | you                                                                      | your own class, values from `--govbb-space-*` |
-
-The first row is the one that catches people. The wrapper already provides the
-page's vertical padding and the container already provides its side margins, at
-sizes that change with the viewport. So a gap below the header that looks tight
-is almost never yours to fix — adding page padding there overrides a responsive
-system with a fixed guess, and the guess is wrong at the widths you did not
-check. Measure it before concluding anything is missing.
+**Three tiers of spacing, and you only write the third.** `/styles/spacing.md`
+divides it: the grid for space _between_ regions of a page, spacing tokens for
+space _inside_ a component and for vertical rhythm between elements. The page
+frame — `govbb-width-container` and `govbb-main-wrapper` — already spaces
+itself, at sizes that change with the viewport, so a gap below the header that
+looks tight is almost never yours to fix. `references/conversion-checklist.md`
+has the table and why that first tier is the one that catches people.
 
 **Who owns vertical rhythm is not published, and you cannot lay out a page until
-you know.** Two arrangements are possible and they need opposite work from you.
-Either content elements carry their own bottom margins, in which case a page of
-prose needs almost no spacing CSS and adding some builds a second system on top
-of the first — or content margins are reset to zero and _every_ gap has to come
-from layout or component styles. Guessing wrong is not a small error in either
-direction, and the page looks plausible either way.
+you know.** Either content carries its own bottom margins — in which case adding
+spacing CSS builds a second system on top of the first — or those margins are
+reset to zero and _every_ gap is yours to write. Guessing wrong is not a small
+error in either direction, and the page looks plausible either way.
 
-Establish it from source rather than recalling it. Three questions:
-
-1. **Do headings and paragraphs carry a margin?** Read the package's base
-   stylesheet. A comment there usually states the intended strategy — and where a
-   comment and the declarations below it disagree, the declarations are what
-   ships.
-2. **Which components space themselves from what follows?** Grep the component
-   stylesheets for block-margin declarations. Distinguish a component that _adds_
-   a bottom margin from one whose `margin: 0` is clearing a browser default
-   rather than opting out of rhythm, and watch for margins on a component's inner
-   elements rather than its root — those do not space the component from its
-   neighbour.
-3. **Do the layout classes contribute any vertical gap?** Read the grid rules
-   rather than assuming one exists.
-
-Expect the source to be somewhat inconsistent with itself here, because this is
-the part of the system still settling. When a stylesheet comment and the rules
-beneath it tell different stories, that is a finding for the report and a question
-for the design team — not something to resolve silently by picking whichever
-reading suits your page.
+Establish it from source rather than recalling it — `references/conversion-checklist.md`
+has the three questions to ask of the package's stylesheets, and what to do when
+a stylesheet comment and the rules beneath it disagree (that is a finding, not a
+choice).
 
 Then fill whatever gaps you actually found. Two rules hold under either
 arrangement:
@@ -350,8 +304,7 @@ arrangement:
   not work is evidence the scale needs the step, and that evidence is worth more
   to the design team than a local workaround they never hear about.
 
-Avoid a generic `* + *` rule. If content already carries margins it duplicates
-them and leans on collapsing to hide the overlap; if content margins are zeroed it
+Avoid a generic `* + *` rule: it duplicates margins content already carries, or
 spaces elements that should not be spaced. Write the specific rules the page
 needs.
 
@@ -483,22 +436,9 @@ that source review passed.
   name that does not exist. This is a few lines of scripting and it is the only
   reliable guard against a plausible invented name surviving to review.
 
-  Rebuild before you trust that file, and see whether anything changes — a stale
-  build from before a rename reports real classes as invented and sends you
-  chasing them. Use that path rather than any other `dist/` in the tree.
-
-  Know what this audit cannot tell you: a name existing in the stylesheet does
-  not mean the selector will match your markup. `.govbb-error-summary__link` is
-  styled only as `.govbb-link.govbb-error-summary__link`, so using it alone
-  renders unstyled while passing every existence check. Copying the documented
-  markup is what protects you there; the audit only catches names that are
-  wholly invented.
-
-  And when the audit contradicts the documented markup, the documentation wins
-  and the mismatch is a finding. `govbb-footer__item` appears in the Footer
-  page's canonical markup and resolves to no rule in any stylesheet. Copying the
-  markup is still right; chasing the audit here would mean deviating from the
-  documentation to satisfy a script. Report it and move on.
+  `references/conversion-checklist.md` has the three caveats that decide whether
+  you can trust the result: rebuild first, a name existing is not the selector
+  matching, and what to do when the audit contradicts the documented markup.
 
 - **Check the page structure, mechanically.** `scripts/layout-check.mjs` reads
   the rendered DOM for the things a class audit cannot see: one `h1`, the skip
@@ -536,9 +476,10 @@ Read these as you need them rather than up front.
 - **`references/looking-things-up.md`** — the lookup contract: `/sitemap/` for
   discovery, `<page>.md` for raw markdown, where the site does not yet publish
   something, and why this skill holds no component list. **Read this first.**
-- **`references/conversion-checklist.md`** — how to translate a prototype's
-  vocabulary into the system's, what to do when something looks missing, a
-  worked conversion, and the per-target checklist.
+- **`references/conversion-checklist.md`** — page shape, who owns which spacing,
+  what the class audit cannot tell you, translating a prototype's vocabulary,
+  what to do when something looks missing, a worked conversion, and the
+  per-target checklist.
 - **`references/anti-patterns.md`** — the specific ways this goes wrong, and
   what to do instead.
 
