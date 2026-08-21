@@ -1,6 +1,6 @@
 {
   "name": "@govtech-bb/frontend",
-  "version": "1.0.0-alpha.22",
+  "version": "1.0.0-alpha.23",
   "description": "GovBB Design System — CSS, tokens and progressive-enhancement JS. Framework-agnostic.",
   "repository": {
     "type": "git",

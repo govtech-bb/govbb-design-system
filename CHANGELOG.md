@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.0.0-alpha.23 (2026-08-21)
+
+### service-list
+- Render item links with a custom link component by @AaronHarris
+
+### summary-list
+- Render change links with a custom link component by @AaronHarris
+
+### summary-section
+- Let the page turn off the spacing between sections by @AaronHarris
+
+### General
+- Update visual regression baselines by @github-actions[bot]
 ## 1.0.0-alpha.22 (2026-08-21)
 
 ### button
@@ -61,6 +74,7 @@
 - Align the form templates with the pattern library by @AaronHarris
 - Install the packages from the alpha tag by @AaronHarris
 - Update visual regression baselines by @github-actions[bot]
+- Release v1.0.0-alpha.22 by @github-actions[bot]
 ## 1.0.0-alpha.21 (2026-07-28)
 
 ### button
