@@ -142,6 +142,14 @@ twice — set `--govbb-summary-section-gap: 0` on the page (or on any ancestor o
 the stack) and let the gap do the work. Set it to a `--govbb-space-*` value to
 space the sections differently.
 
+### Router links
+
+Change links are plain `<a>` elements. In React, `linkComponent` swaps in a
+router link that takes an `href`. For a router whose link takes something else —
+TanStack Router's takes `to` — use `renderLink` instead: it is called with
+`{ href, className, children }`, where `children` is the label plus any visually
+hidden text, and it takes precedence over `linkComponent`.
+
 ## Row actions
 
 Add a change link to a row when an individual answer can be revisited on its
