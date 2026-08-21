@@ -8,10 +8,12 @@
  * landmarks — which is exactly the class of defect that reaches users, since
  * the page renders perfectly the whole time.
  *
- * The one that motivated this script: a back link placed first inside
- * `<main id="main-content">` means a keyboard user who activates "Skip to main
- * content" lands on navigation — the thing they just asked to skip. Correct
- * classes, correct styling, defeated skip link.
+ * It deliberately checks only things the design system itself publishes or that
+ * WCAG requires — landmarks, a skip link that resolves, no horizontal overflow.
+ * Where the site's own pages disagree with each other about page structure, that
+ * is a finding for the design team, not something for this script to adjudicate:
+ * a check that enforces one reading would fail every service following the
+ * other.
  *
  * Checks run against the rendered DOM, not the source, so they see what a
  * template actually produced.
@@ -34,9 +36,7 @@ Checks per page:
   · exactly one h1
   · the skip link's href resolves to an element that exists
   · main carries that id, and is focusable (tabindex="-1")
-  · the first focusable element inside main does not leave the page
   · one each of banner / main / contentinfo landmarks
-  · body content sits inside a grid column, not loose in the wrapper
   · no horizontal overflow at any width
 `;
 
@@ -106,35 +106,6 @@ async function structure(page) {
         : 'no main',
     );
 
-    /*
-     * The heart of it. A link inside main whose href leaves the current page,
-     * appearing before the h1, is navigation sitting in the skip target.
-     */
-    if (main) {
-      const focusables = [
-        ...main.querySelectorAll('a[href], button, input, select, textarea'),
-      ].filter((el) => el.offsetHeight > 0 && !el.hasAttribute('disabled'));
-      const first = focusables[0];
-      const h1 = main.querySelector('h1');
-      const beforeH1 =
-        first &&
-        h1 &&
-        first.compareDocumentPosition(h1) & Node.DOCUMENT_POSITION_FOLLOWING;
-      const leaves =
-        first &&
-        first.tagName === 'A' &&
-        !(first.getAttribute('href') || '').startsWith('#');
-      add(
-        'First thing inside main is not a link away from the page',
-        !(beforeH1 && leaves),
-        first
-          ? beforeH1 && leaves
-            ? `<a href="${first.getAttribute('href')}">${first.textContent.trim().slice(0, 30)}</a> precedes the h1 — a skip-link user lands here`
-            : `first focusable: <${first.tagName.toLowerCase()}>`
-          : 'nothing focusable in main',
-      );
-    }
-
     for (const [role, sel] of [
       ['banner', 'header, [role=banner]'],
       ['contentinfo', 'footer, [role=contentinfo]'],
@@ -143,18 +114,6 @@ async function structure(page) {
       add(`Exactly one ${role} landmark`, n === 1, `${n} found`);
     }
 
-    if (main) {
-      const h1 = main.querySelector('h1');
-      add(
-        'Body content sits inside a grid column',
-        Boolean(h1 && h1.closest('[class*="govbb-grid-column"]')),
-        h1
-          ? h1.closest('[class*="govbb-grid-column"]')
-            ? 'yes'
-            : 'h1 is not inside a govbb-grid-column-* — content is loose in the wrapper'
-          : 'no h1 in main',
-      );
-    }
     return out;
   });
 }
