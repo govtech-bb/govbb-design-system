@@ -148,14 +148,14 @@
 }
 
 /* Button group — lays out related actions (buttons, or buttons alongside a
-   text link) in a row that wraps, with a consistent gap. The --vertical
-   modifier stacks them and stretches each to the group's width, for narrow
-   or full-width action stacks. */
+   text link) in a row that wraps, 24px apart as in the pattern library's
+   Button group. The --vertical modifier stacks them and stretches each to the
+   group's width, for narrow or full-width action stacks. */
 .govbb-button-group {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: var(--govbb-space-s);
+  gap: var(--govbb-space-xm);
 }
 
 .govbb-button-group--vertical {
