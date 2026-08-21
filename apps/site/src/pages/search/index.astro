@@ -152,14 +152,18 @@ import { primaryNav, secondaryNav } from '../../data/nav';
     padding: 0;
     border-top: 1px solid var(--govbb-color-border);
   }
-  .govbb-search-list li {
+  /* Results are built at runtime by the script below, so they never get
+     Astro's scoping attribute — these rules have to escape the scope.
+     Nesting them under .govbb-search-list keeps them off the rest of
+     the site. */
+  .govbb-search-list :global(li) {
     padding-block: var(--govbb-space-4);
     border-bottom: 1px solid var(--govbb-color-border);
   }
   .govbb-search-more {
     margin-top: var(--govbb-space-4);
   }
-  .govbb-result__section {
+  .govbb-search-list :global(.govbb-result__section) {
     margin: 0 0 var(--govbb-space-1);
     color: var(--govbb-color-text-muted);
     font-size: 0.8125rem;
@@ -167,7 +171,7 @@ import { primaryNav, secondaryNav } from '../../data/nav';
     letter-spacing: 0.06em;
     text-transform: uppercase;
   }
-  .govbb-result__title {
+  .govbb-search-list :global(.govbb-result__title) {
     display: inline;
     color: var(--govbb-color-link);
     font-size: 1.375rem;
@@ -176,11 +180,18 @@ import { primaryNav, secondaryNav } from '../../data/nav';
     text-decoration-thickness: 0.08em;
     text-underline-offset: 0.15em;
   }
-  .govbb-result__title:hover {
+  .govbb-search-list :global(.govbb-result__title:hover) {
     color: var(--govbb-color-link-hover);
     text-decoration-thickness: 0.12em;
   }
-  .govbb-result__excerpt {
+  /* base.css focuses links as ink on gold via :where(a:focus-visible), which
+     carries no specificity — the rules above would otherwise leave the link
+     teal on the gold block, unlike every other link on the page. Last of the
+     three so it also wins when a result is hovered and focused at once. */
+  .govbb-search-list :global(.govbb-result__title:focus-visible) {
+    color: var(--govbb-link-active-color);
+  }
+  .govbb-search-list :global(.govbb-result__excerpt) {
     max-width: 64ch;
     margin: var(--govbb-space-2) 0 0;
     color: var(--govbb-color-text-muted);
