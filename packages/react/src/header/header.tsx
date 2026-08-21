@@ -4,12 +4,16 @@ import {
   forwardRef,
   type HTMLAttributes,
   type ReactNode,
-  useEffect,
   useId,
   useState,
+  useSyncExternalStore,
 } from 'react';
 import { Button } from '../button/button';
 import type { LinkComponent } from '../link/link';
+
+// Never-updating store: useSyncExternalStore reads false on the server and
+// true after hydration, which is the whole "is JS running" signal.
+const noopSubscribe = () => () => {};
 
 export interface HeaderProps extends HTMLAttributes<HTMLElement> {
   /** Logo image URL — the consumer hosts the asset. */
@@ -54,9 +58,12 @@ export const Header = forwardRef<HTMLElement, HeaderProps>(function Header(
   const [expanded, setExpanded] = useState(false);
   // The Menu toggle is a JS enhancement (same as the frontend header module):
   // it renders [hidden] with the nav open, so pages without JS keep their
-  // navigation. Once mounted, CSS collapses the nav only at mobile widths.
-  const [enhanced, setEnhanced] = useState(false);
-  useEffect(() => setEnhanced(true), []);
+  // navigation. Once hydrated, CSS collapses the nav only at mobile widths.
+  const enhanced = useSyncExternalStore(
+    noopSubscribe,
+    () => true,
+    () => false,
+  );
 
   return (
     <header

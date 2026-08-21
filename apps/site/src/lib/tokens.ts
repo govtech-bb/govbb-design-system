@@ -14,7 +14,7 @@ export interface Token {
   resolved: string;
   /** Name of the token this one aliases, if the value is a single var(). */
   aliasOf?: string;
-  /** Trailing `/* … *​/` comment on the declaration, if any. */
+  /** Trailing block-comment note on the declaration, if any. */
   note?: string;
 }
 
@@ -57,9 +57,6 @@ const all: Token[] = [...declarations.entries()].map(([name, decl]) => {
     note: decl.note,
   };
 });
-
-/** Every token, in declaration order. */
-export const tokens = all;
 
 /** Tokens whose names start with the given prefix, e.g. `--govbb-space-`. */
 export function byPrefix(prefix: string): Token[] {
