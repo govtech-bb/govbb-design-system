@@ -184,6 +184,13 @@ import { primaryNav, secondaryNav } from '../../data/nav';
     color: var(--govbb-color-link-hover);
     text-decoration-thickness: 0.12em;
   }
+  /* base.css focuses links as ink on gold via :where(a:focus-visible), which
+     carries no specificity — the rules above would otherwise leave the link
+     teal on the gold block, unlike every other link on the page. Last of the
+     three so it also wins when a result is hovered and focused at once. */
+  .govbb-search-list :global(.govbb-result__title:focus-visible) {
+    color: var(--govbb-link-active-color);
+  }
   .govbb-search-list :global(.govbb-result__excerpt) {
     max-width: 64ch;
     margin: var(--govbb-space-2) 0 0;
