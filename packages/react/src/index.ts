@@ -63,6 +63,8 @@ export { ServiceHeading } from './service-heading/service-heading';
 export type { ServiceHeadingProps } from './service-heading/service-heading';
 export { ServiceList, ServiceListItem } from './service-list/service-list';
 export type {
+  ServiceListLinkRenderer,
+  ServiceListLinkRenderProps,
   ServiceListProps,
   ServiceListItemProps,
 } from './service-list/service-list';

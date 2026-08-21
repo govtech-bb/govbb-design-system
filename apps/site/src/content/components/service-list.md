@@ -168,3 +168,9 @@ In React each item accepts a `linkComponent`, the same adapter pattern as the
 [link](/components/link/) component, so a single-page app can navigate without
 a full page load. Anchor attributes, including analytics data attributes, are
 spread onto the link.
+
+Some routers' links take something other than `href` — TanStack Router's takes
+`to` — so `linkComponent` will not type-check against them. Use `renderLink`
+instead: it is called with `{ href, className, children }`, where `children` is
+the service name, and you render whatever the router needs. It takes precedence
+over `linkComponent`.

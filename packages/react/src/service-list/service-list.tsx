@@ -40,6 +40,16 @@ export const ServiceList = forwardRef<HTMLUListElement, ServiceListProps>(
   },
 );
 
+export type ServiceListLinkRenderProps = {
+  href: string;
+  className: string;
+  children: ReactNode;
+};
+
+export type ServiceListLinkRenderer = (
+  props: ServiceListLinkRenderProps,
+) => ReactNode;
+
 export interface ServiceListItemProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
   href: string;
   /** Supporting line under the service name. */
@@ -50,6 +60,13 @@ export interface ServiceListItemProps extends AnchorHTMLAttributes<HTMLAnchorEle
   headingLevel?: 'h2' | 'h3' | 'h4';
   /** Swap the underlying `<a>` for a router link component. */
   linkComponent?: LinkComponent;
+  /**
+   * Render the link with a router or framework-specific component. Receives the
+   * href, the service name as children, and the GovBB classes. Takes precedence
+   * over linkComponent — use it for routers whose link takes `to` rather than
+   * `href`.
+   */
+  renderLink?: ServiceListLinkRenderer;
 }
 
 /**
@@ -68,6 +85,7 @@ export const ServiceListItem = forwardRef<
     tag,
     headingLevel: HeadingTag = 'h3',
     linkComponent = 'a',
+    renderLink,
     className,
     children,
     ...props
@@ -80,13 +98,21 @@ export const ServiceListItem = forwardRef<
     <li className="govbb-service-list__item">
       <div className="govbb-service-list__wrapper">
         <HeadingTag className="govbb-service-list__heading">
-          <Anchor
-            ref={ref}
-            className={cx('govbb-link govbb-service-list__link', className)}
-            {...props}
-          >
-            {children}
-          </Anchor>
+          {renderLink != null ? (
+            renderLink({
+              href: props.href,
+              className: cx('govbb-link govbb-service-list__link', className),
+              children,
+            })
+          ) : (
+            <Anchor
+              ref={ref}
+              className={cx('govbb-link govbb-service-list__link', className)}
+              {...props}
+            >
+              {children}
+            </Anchor>
+          )}
         </HeadingTag>
         {description != null && (
           <p className="govbb-service-list__description">{description}</p>
