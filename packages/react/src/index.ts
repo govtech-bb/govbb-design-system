@@ -63,6 +63,8 @@ export { ServiceHeading } from './service-heading/service-heading';
 export type { ServiceHeadingProps } from './service-heading/service-heading';
 export { ServiceList, ServiceListItem } from './service-list/service-list';
 export type {
+  ServiceListLinkRenderer,
+  ServiceListLinkRenderProps,
   ServiceListProps,
   ServiceListItemProps,
 } from './service-list/service-list';
@@ -74,6 +76,8 @@ export { StatusBanner } from './status-banner/status-banner';
 export type { StatusBannerProps } from './status-banner/status-banner';
 export { SummaryList } from './summary-list/summary-list';
 export type {
+  SummaryListLinkRenderer,
+  SummaryListLinkRenderProps,
   SummaryListAction,
   SummaryListProps,
   SummaryListRow,

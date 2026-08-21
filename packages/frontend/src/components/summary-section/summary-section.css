@@ -1,22 +1,31 @@
 /* Summary section — one check-your-answers group, per the Figma Forms
    confirmation comp: a heading with a section-level Change link, the answer
-   rows (a summary list), closed off by a rule. */
+   rows (a summary list), closed off by a rule.
+
+   Sections space themselves: 24px between siblings, and nothing before the first
+   or after the last, so a stack never carries a dangling margin at either end.
+
+   A page that lays its own blocks out with a flex or grid gap would space them
+   twice, so the amount is a custom property the page can turn off:
+
+     .my-check-answers { --govbb-summary-section-gap: 0; }
+
+   (Not a registered @property: an initial-value cannot reference the spacing
+   token, and splitting the two would be worse than the var() fallback.) */
 
 .govbb-summary-section {
   display: flex;
   flex-direction: column;
   gap: var(--govbb-space-s);
-  margin-bottom: var(--govbb-space-xm);
-  padding-bottom: var(--govbb-space-m);
+  padding-block-end: var(--govbb-space-m);
   font-size: var(--govbb-font-size-body);
   line-height: var(--govbb-line-height-base);
-  border-bottom: 4px solid var(--govbb-color-neutral);
+  border-block-end: 4px solid var(--govbb-color-neutral);
 }
 
-/* 32px between sections per the comp; collapses over the 24px bottom margin,
-   which stands alone before whatever follows the last section. */
+/* 24px between sections, as between the answer groups in the Review comp. */
 .govbb-summary-section + .govbb-summary-section {
-  margin-top: var(--govbb-space-m);
+  margin-block-start: var(--govbb-summary-section-gap, var(--govbb-space-xm));
 }
 
 .govbb-summary-section__header {

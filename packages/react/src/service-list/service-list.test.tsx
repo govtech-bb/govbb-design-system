@@ -147,6 +147,27 @@ describe('ServiceList', () => {
         .hasAttribute('data-fancy'),
     ).toBe(true);
   });
+
+  it('renders the link with renderLink when given one', () => {
+    render(
+      <ServiceList>
+        <ServiceListItem
+          href="/renew"
+          renderLink={({ href, className, children }) => (
+            <a className={className} data-router="true" href={href}>
+              {children}
+            </a>
+          )}
+        >
+          Renew a licence
+        </ServiceListItem>
+      </ServiceList>,
+    );
+
+    const link = screen.getByRole('link', { name: 'Renew a licence' });
+    expect(link.dataset.router).toBe('true');
+    expect(link.className).toBe('govbb-link govbb-service-list__link');
+  });
 });
 
 it('has no axe violations', async () => {

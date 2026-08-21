@@ -98,6 +98,58 @@ import { SummaryList } from '@govtech-bb/react';
 The section heading defaults to an `<h2>`; set `section.headingLevel` when it
 sits under a different heading structure.
 
+### Stacking sections
+
+Sections space themselves: 24px between siblings, matching the gap between
+answer groups in the check-your-answers comp. Stack them one after another and
+add nothing.
+
+```html title="Two stacked sections"
+<section class="govbb-summary-section">
+  <div class="govbb-summary-section__header">
+    <h2 class="govbb-summary-section__title">Tell us about yourself</h2>
+    <a class="govbb-link" href="/form/about-you/">
+      Change<span class="govbb-visually-hidden"> tell us about yourself</span>
+    </a>
+  </div>
+  <dl class="govbb-summary-list">
+    <div class="govbb-summary-list__row">
+      <dt class="govbb-summary-list__key">Name</dt>
+      <dd class="govbb-summary-list__value">Alex Nurse</dd>
+    </div>
+  </dl>
+</section>
+<section class="govbb-summary-section">
+  <div class="govbb-summary-section__header">
+    <h2 class="govbb-summary-section__title">Your contact details</h2>
+    <a class="govbb-link" href="/form/contact/">
+      Change<span class="govbb-visually-hidden"> your contact details</span>
+    </a>
+  </div>
+  <dl class="govbb-summary-list">
+    <div class="govbb-summary-list__row">
+      <dt class="govbb-summary-list__key">Email address</dt>
+      <dd class="govbb-summary-list__value">alex.nurse@example.com</dd>
+    </div>
+  </dl>
+</section>
+```
+
+The spacing is a top margin on every section after the first, so a stack never
+carries a dangling margin at either end. If your page lays its own blocks out
+with a flex or grid gap, that gap and these margins would space the sections
+twice — set `--govbb-summary-section-gap: 0` on the page (or on any ancestor of
+the stack) and let the gap do the work. Set it to a `--govbb-space-*` value to
+space the sections differently.
+
+### Router links
+
+Change links are plain `<a>` elements. In React, `linkComponent` swaps in a
+router link that takes an `href`. For a router whose link takes something else —
+TanStack Router's takes `to` — use `renderLink` instead: it is called with
+`{ href, className, children }`, where `children` is the label plus any visually
+hidden text, and it takes precedence over `linkComponent`.
+
 ## Row actions
 
 Add a change link to a row when an individual answer can be revisited on its

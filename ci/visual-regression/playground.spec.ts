@@ -9,7 +9,7 @@ import { playgroundCases, renderIsolated } from './harness';
  * count fails loudly when a section is added without a baseline (or a heading
  * rename orphans one).
  */
-const EXPECTED_SECTIONS = 30;
+const EXPECTED_SECTIONS = 31;
 
 test('every playground section renders in isolation', async ({ page }) => {
   const cases = await playgroundCases(page);

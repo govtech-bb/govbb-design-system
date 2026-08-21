@@ -14,6 +14,16 @@ export interface SummaryListRow {
   actions?: SummaryListAction | SummaryListAction[];
 }
 
+export type SummaryListLinkRenderProps = {
+  href: string;
+  className: string;
+  children: ReactNode;
+};
+
+export type SummaryListLinkRenderer = (
+  props: SummaryListLinkRenderProps,
+) => ReactNode;
+
 export interface SummaryListSection {
   title: ReactNode;
   headingLevel?: 'h2' | 'h3' | 'h4';
@@ -23,18 +33,27 @@ export interface SummaryListSection {
 export interface SummaryListProps extends HTMLAttributes<HTMLDListElement> {
   rows: SummaryListRow[];
   section?: SummaryListSection;
+  /** Render actions with an href-compatible router component. */
   linkComponent?: LinkComponent;
+  /**
+   * Render an action with a router or framework-specific component. Receives the
+   * href, the label as children, and the GovBB classes. Takes precedence over
+   * linkComponent — use it for routers whose link takes `to` rather than `href`.
+   */
+  renderLink?: SummaryListLinkRenderer;
 }
 
 function ActionLink({
   action,
   linkComponent: Action,
+  renderLink,
 }: {
   action: SummaryListAction;
   linkComponent: LinkComponent;
+  renderLink?: SummaryListLinkRenderer;
 }) {
-  return (
-    <Action className="govbb-link" href={action.href}>
+  const label = (
+    <>
       {action.label}
       {action.visuallyHiddenText != null && (
         <>
@@ -44,13 +63,25 @@ function ActionLink({
           </span>
         </>
       )}
+    </>
+  );
+  if (renderLink != null) {
+    return renderLink({
+      href: action.href,
+      className: 'govbb-link',
+      children: label,
+    });
+  }
+  return (
+    <Action className="govbb-link" href={action.href}>
+      {label}
     </Action>
   );
 }
 
 export const SummaryList = forwardRef<HTMLDListElement, SummaryListProps>(
   function SummaryList(
-    { rows, section, linkComponent = 'a', className, ...props },
+    { rows, section, linkComponent = 'a', renderLink, className, ...props },
     ref,
   ) {
     const list = (
@@ -71,8 +102,9 @@ export const SummaryList = forwardRef<HTMLDListElement, SummaryListProps>(
                   {actions.map((action, actionIndex) => (
                     <ActionLink
                       action={action}
-                      linkComponent={linkComponent}
                       key={actionIndex}
+                      linkComponent={linkComponent}
+                      renderLink={renderLink}
                     />
                   ))}
                 </dd>
@@ -91,7 +123,11 @@ export const SummaryList = forwardRef<HTMLDListElement, SummaryListProps>(
             {section.title}
           </HeadingTag>
           {section.action != null && (
-            <ActionLink action={section.action} linkComponent={linkComponent} />
+            <ActionLink
+              action={section.action}
+              linkComponent={linkComponent}
+              renderLink={renderLink}
+            />
           )}
         </div>
         {list}
