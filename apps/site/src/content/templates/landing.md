@@ -8,7 +8,7 @@ group: Service pages
 ## Preview
 
 ```html title="Service start page"
-<main class="govbb-width-container" id="main-content">
+<main class="govbb-width-container govbb-main-wrapper" id="main-content">
   <h1 class="govbb-text-display">Renew your driver's licence</h1>
   <p class="govbb-text-body-lg">
     Use this service to renew a Barbados driver's licence that expires within

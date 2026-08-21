@@ -8,7 +8,7 @@ behaviour React consumers expect (refs, controlled inputs, callbacks).
 ## Install
 
 ```bash
-pnpm add @govtech-bb/react @govtech-bb/frontend
+pnpm add @govtech-bb/react@alpha @govtech-bb/frontend@alpha
 ```
 
 `react >= 18` is a peer dependency. This package ships no CSS of its own —

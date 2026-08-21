@@ -36,6 +36,15 @@
   padding-inline: var(--govbb-page-gutter);
 }
 
+/* Auto inline margins are what centre the container past the cap, but auto
+   cross-axis margins also cancel a flex item's stretch — so inside the
+   .govbb-page column the container would shrink-wrap its content and drift off
+   the gutter the header and footer sit on. Keep it filling the page; the cap
+   and the auto margins still centre it. */
+.govbb-page > .govbb-width-container {
+  inline-size: 100%;
+}
+
 /* Vertical breathing room for the <main> landmark. */
 .govbb-main-wrapper {
   display: block;

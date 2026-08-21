@@ -65,28 +65,43 @@ anchors (16px at 375, 128px at 1512) and holds beyond.
 Put `govbb-page` on the `<body>`: it makes the page fill the viewport and
 pins the footer to the bottom when content is short.
 
-Every page wraps its content in the width container. The main content sits in
-the main wrapper, which renders vertical breathing room and should carry the
-`main-content` id that a skip link targets.
+Every page wraps its content in the width container, which owns the side
+margins, and in the main wrapper, which owns the vertical breathing room and
+carries the `main-content` id that a skip link targets. Both classes normally
+sit on the same `<main>`:
 
 ```html
 <body class="govbb-page">
   <!-- official banner, header -->
-  <div class="govbb-width-container">
-    <main class="govbb-main-wrapper" id="main-content">
-      <div class="govbb-grid-row">
-        <div class="govbb-grid-column-two-thirds">
-          <h1 class="govbb-text-h1">Page title</h1>
-        </div>
+  <main class="govbb-width-container govbb-main-wrapper" id="main-content">
+    <div class="govbb-grid-row">
+      <div class="govbb-grid-column-two-thirds">
+        <h1 class="govbb-text-h1">Page title</h1>
       </div>
-    </main>
-  </div>
+    </div>
+  </main>
   <!-- footer -->
 </body>
 ```
 
+Split them only when something has to line up with the page column while
+sitting outside the `main` landmark — a page-level notice, say. Then the
+container is a wrapping `<div>` and the `<main>` keeps the wrapper:
+
+```html
+<div class="govbb-width-container">
+  <div class="govbb-status-banner govbb-status-banner--alpha">…</div>
+  <main class="govbb-main-wrapper" id="main-content">…</main>
+</div>
+```
+
 The header, official banner and footer sit outside the width container and use
 it internally for their own content, so they can paint full-bleed backgrounds.
+
+The container centres itself with automatic side margins once the page is wider
+than 1512px. Inside the `govbb-page` column that would stop it stretching, so
+the stylesheet keeps a direct child of `govbb-page` at full width — you do not
+need to set a width yourself.
 
 ## Grid columns
 
