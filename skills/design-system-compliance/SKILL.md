@@ -101,7 +101,49 @@ and an installed package behind both. Classes that exist on the site can be
 absent locally, so a local-only audit reports real names as invented. Prefer the
 site whenever it is reachable, and say which source you verified against.
 
-## Step 1 — Identify the consumer target
+## Step 1 — Establish what the output has to match
+
+Two questions, in this order. The second one is the familiar one; the first is
+the one that gets skipped and costs the most.
+
+### Which system is this for?
+
+**The design system is not yet what the platform runs.** Check this at run time
+rather than believing this paragraph — it is the kind of fact that changes:
+
+```sh
+npm view @govtech-bb/react dist-tags        # what `latest` resolves to
+```
+
+Then open a live service on `alpha.gov.bb` and look at the markup. If its
+elements carry utility classes rather than `govbb-` ones, the platform is on a
+different system from the one this skill converts to, and **a faithful
+conversion will not look like the services next to it.**
+
+That is not a reason to abandon the conversion. It is a reason to say which
+target you built for, in one line at the top of the report, so nobody compares
+your output against a live service and concludes it is broken. If the prototype
+is going into the platform as it exists today, raise that before converting —
+it may be the wrong work.
+
+### What is the reference implementation?
+
+There may not be one, and assuming there is will send you calibrating against
+the wrong thing.
+
+- **The design system site is the authority for markup and guidance**, and that
+  is what the rest of this skill uses it for.
+- **It is not a reference service.** It is a documentation site with its own
+  token scale and its own layout conventions; its rendered spacing is not the
+  spacing a service gets from the package.
+- **A live service on `alpha.gov.bb` is not one either**, while the platform is
+  on a different system.
+
+So derive spacing from `/styles/spacing/` and the package source (Step 4), and
+record what you could not derive. Do not copy rendered values off either site
+and call it compliance.
+
+### Which consumer target: HTML or React?
 
 Two supported targets with different idioms. Getting this wrong invalidates
 everything downstream, so establish it before touching markup. Look at whether
@@ -196,31 +238,25 @@ field first and the page shell afterwards means doing the field twice.
 
 Dependency order tells you what to convert first. It does not tell you what
 nests inside what, and those are different questions — a page can use every
-correct class and still put things in the wrong place. Every page has this
-shape:
+correct class and still put things in the wrong place.
 
-```
-skip link
-official banner
-header
-  ↓  anything that navigates AWAY from the page — a back link — goes here
-main  id="main-content"  tabindex="-1"      ← the skip link's target
-  width container → grid row → two-thirds column
-    h1  (exactly one)
-    the page's actual task
-footer
-```
+**The template for the page type you are building is the authority on its
+shape.** Fetch it and copy its markup, the same way you would for a component.
+`/templates/` lists them; a single-question page, a landing page and a
+check-answers page each publish their own structure, and they differ from one
+another on purpose.
 
-**A back link belongs above `main`, not inside it.** Its own guidance says
-"before the page title and main task", and the reason bites in practice: `main`
-is what the skip link jumps to, so a back link placed first inside it means a
-keyboard user who asks to skip navigation lands directly on navigation. Nothing
-about the rendered page looks wrong, and the class audit passes, because
-nothing here is a class error.
+`/styles/layout.md` publishes the general scaffold — `govbb-page` on the body,
+`govbb-width-container`, `govbb-main-wrapper` carrying `id="main-content"`,
+`govbb-grid-row`, and a column class around body content.
 
-The same reasoning covers anything else that leaves the page — a "start again"
-link, a phase-banner feedback link. Ask what the element is _for_: if the
-answer is "leave this page", it is not part of the main task.
+**Where a template and the layout page disagree, follow the template for that
+page type and report the disagreement.** They do currently diverge — some
+templates show a flatter structure than `/styles/layout.md` does — and that is a
+question for the design team, not something to settle by picking whichever
+reading you prefer. Recording it is how it gets fixed; quietly choosing a side
+is how two services end up structured differently while both believing they are
+compliant.
 
 1. **Page scaffold and layout** — `govbb-width-container`, then
    `govbb-grid-row` with a `govbb-grid-column-*`. Body content belongs in
@@ -303,7 +339,16 @@ arrangement:
 - **Put each margin on your own class, never on a `govbb-` one.** A margin on
   `.govbb-list` restyles a component's internals and makes this service disagree
   with every other one.
-- **Take every value from `--govbb-space-*`.**
+- **Take every value from `--govbb-space-*`.** When the gap you need is not on
+  the scale, `/styles/spacing/` is explicit about what to do: _"pick the nearest
+  step rather than inventing a one-off. A new step should be added to the scale,
+  not hard-coded in a component."_ So pick the nearest step, and raise the
+  missing one with the design team — that is the route the system publishes, and
+  a service that invents its own step quietly forks the scale.
+
+  Record it in the report either way. A nearest-step choice that visibly does
+  not work is evidence the scale needs the step, and that evidence is worth more
+  to the design team than a local workaround they never hear about.
 
 Avoid a generic `* + *` rule. If content already carries margins it duplicates
 them and leans on collapsing to hide the overlap; if content margins are zeroed it
@@ -386,7 +431,20 @@ React wrappers carry their own behaviour, so do not call `initAll()` over them.
 An honest gap list is a deliverable, not an admission. Silent gaps are how a
 service ends up with a component nobody knows is bespoke.
 
-Use this structure:
+**Open with the target**, in one line, before anything else. Step 1 established
+which system this output is built for; the person reading the report did not
+watch you establish it, and if the platform is still on a different system they
+will otherwise compare your work against a live service and conclude it is
+broken.
+
+```markdown
+**Built for:** the GovBB Design System (`@govtech-bb/frontend@<version>`),
+verified against <the site, or the source you used>. Live services on
+alpha.gov.bb are <on this system / on a different system as of <date>>, so this
+output <will / will not> match them visually.
+```
+
+Then use this structure:
 
 ```markdown
 ## Converted
@@ -444,10 +502,11 @@ that source review passed.
 
 - **Check the page structure, mechanically.** `scripts/layout-check.mjs` reads
   the rendered DOM for the things a class audit cannot see: one `h1`, the skip
-  link resolving to a `main` that is focusable, no link away from the page
-  sitting in front of the `h1` inside `main`, one of each landmark, body content
-  inside a grid column, and no horizontal overflow. Every one of these renders
-  perfectly while being wrong, which is why looking does not catch them.
+  link resolving to a `main` that is focusable, one of each landmark, and no
+  horizontal overflow at each width. Every one of these renders perfectly while
+  being wrong, which is why looking does not catch them. It checks only what the
+  system publishes or WCAG requires — where the site's own pages disagree about
+  structure, that is a finding to report, not something a script should settle.
 - **Render the pages and look at them, at 360px and 1280px.** Spacing problems
   (Step 4) are invisible in source, and a page can be entirely correct
   class-by-class and still look wrong. One width is not a check: a layout can be
@@ -493,7 +552,7 @@ changing how spacing works obliges nobody to update this skill.
 Plain Node ESM, no build step. Run with `--help` for options.
 
 - **`scripts/layout-check.mjs`** — page-structure checks against the rendered
-  DOM: landmarks, the skip link's target, whether anything that leaves the page
-  sits in front of the `h1` inside `main`, grid column placement, and horizontal
-  overflow at each width. Needs the pages served somewhere it can reach them.
-  Holds no design-system inventory, so it does not go stale.
+  DOM: landmarks, the skip link's target, and horizontal overflow at each width.
+  Needs the pages served somewhere it can reach them. Holds no design-system
+  inventory and enforces no structure the site does not publish, so it neither
+  goes stale nor contradicts the docs.
