@@ -59,6 +59,8 @@ export { Search } from './search/search';
 export type { SearchProps } from './search/search';
 export { Select } from './select/select';
 export type { SelectOption, SelectProps } from './select/select';
+export { ServiceHeading } from './service-heading/service-heading';
+export type { ServiceHeadingProps } from './service-heading/service-heading';
 export { ServiceList, ServiceListItem } from './service-list/service-list';
 export type {
   ServiceListProps,
