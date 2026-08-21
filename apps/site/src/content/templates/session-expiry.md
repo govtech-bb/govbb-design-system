@@ -8,7 +8,7 @@ group: Service pages
 ## Preview
 
 ```html title="For your security, we signed you out"
-<main class="govbb-width-container" id="main-content">
+<main class="govbb-width-container govbb-main-wrapper" id="main-content">
   <h1 class="govbb-text-h1">For your security, we signed you out</h1>
   <p class="govbb-text-body-lg">
     You were inactive for 20 minutes, so we ended your session.

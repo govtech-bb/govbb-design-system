@@ -8,12 +8,13 @@ group: Forms
 ## Preview
 
 ```html title="Multiple questions page"
-<main class="govbb-width-container" id="main-content">
-  <a class="govbb-back-button" href="/service/previous-step/">Back</a>
+<main class="govbb-width-container govbb-main-wrapper" id="main-content">
+  <div class="govbb-service-heading">
+    <p class="govbb-service-heading__service">Redirect my business</p>
+    <h1 class="govbb-text-h1">What is your address?</h1>
+  </div>
 
   <form action="/service/address/" method="post" novalidate>
-    <h1 class="govbb-text-h1">What is your address?</h1>
-
     <div class="govbb-form-group">
       <label class="govbb-label" for="address-line-1">Address line 1</label>
       <input
@@ -27,7 +28,7 @@ group: Forms
 
     <div class="govbb-form-group">
       <label class="govbb-label" for="address-line-2">
-        Address line 2 (optional)
+        Address line 2 <span class="govbb-label__optional">(optional)</span>
       </label>
       <input
         class="govbb-input"
@@ -60,7 +61,15 @@ group: Forms
       />
     </div>
 
-    <button class="govbb-button" type="submit">Continue</button>
+    <div class="govbb-button-group">
+      <a
+        class="govbb-button govbb-button--secondary"
+        href="/service/previous-step/"
+      >
+        Back
+      </a>
+      <button class="govbb-button" type="submit">Continue</button>
+    </div>
   </form>
 </main>
 ```
@@ -86,6 +95,8 @@ failed - not the whole group.
 
 ## Optional fields
 
-Mark optional fields in the label ("Address line 2 (optional)") rather than
-marking every required field. Most fields are required, so flagging the
-exceptions is less noise.
+Mark optional fields with the muted `govbb-label__optional` suffix inside the
+label - or `optional` on the React `Label`, which self-composing fields derive
+from `required={false}`. Do not mark every required field: most fields are
+required, so flagging the exceptions is less noise. See
+[Label](/components/label/).
