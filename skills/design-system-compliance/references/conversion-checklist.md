@@ -5,10 +5,101 @@ Step 3 (convert).
 
 ## Contents
 
+- [Page shape](#page-shape)
+- [Who owns which spacing](#who-owns-which-spacing)
+- [What the class audit cannot tell you](#what-the-class-audit-cannot-tell-you)
 - [Translating names](#translating-names)
 - [When something looks missing](#when-something-looks-missing)
 - [Worked example](#worked-example)
 - [Per-target checklist](#per-target-checklist)
+
+## Page shape
+
+Dependency order tells you what to convert first. It does not tell you what
+nests inside what, and those are different questions — a page can use every
+correct class and still put things in the wrong place.
+
+**The template for the page type you are building is the authority on its
+shape.** Fetch it and copy its markup, the same way you would for a component.
+`/templates/` lists them; a single-question page, a landing page and a
+check-answers page each publish their own structure, and they differ from one
+another on purpose.
+
+`/styles/layout.md` publishes the general scaffold — `govbb-page` on the body,
+`govbb-width-container`, `govbb-main-wrapper` carrying `id="main-content"`,
+`govbb-grid-row`, and a column class around body content.
+
+**Where a template and the layout page disagree, follow the template for that
+page type and report the disagreement.** They do currently diverge — some
+templates show a flatter structure than `/styles/layout.md` does — and that is a
+question for the design team, not something to settle by picking whichever
+reading you prefer. Recording it is how it gets fixed; quietly choosing a side
+is how two services end up structured differently while both believing they are
+compliant.
+
+## Who owns which spacing
+
+`/styles/spacing.md` states the division: use the grid for space _between_
+regions of a page, and spacing tokens for space _inside_ a component and for
+vertical rhythm between elements. That leaves a clear split of ownership, and
+knowing which tier a gap belongs to is what stops you fighting the system:
+
+| Tier                    | Owned by                                                                 | You write                                     |
+| ----------------------- | ------------------------------------------------------------------------ | --------------------------------------------- |
+| The page frame          | `govbb-width-container` and `govbb-main-wrapper`, which space themselves | **nothing**                                   |
+| Between regions         | the grid — row and column classes                                        | class names                                   |
+| Rhythm between elements | you                                                                      | your own class, values from `--govbb-space-*` |
+
+The first row is the one that catches people. The wrapper already provides the
+page's vertical padding and the container already provides its side margins, at
+sizes that change with the viewport. So a gap below the header that looks tight
+is almost never yours to fix — adding page padding there overrides a responsive
+system with a fixed guess, and the guess is wrong at the widths you did not
+check. Measure it before concluding anything is missing.
+
+### Establishing who owns vertical rhythm
+
+Read it from the package source each time. Three questions:
+
+1. **Do headings and paragraphs carry a margin?** Read the package's base
+   stylesheet. A comment there usually states the intended strategy — and where a
+   comment and the declarations below it disagree, the declarations are what
+   ships.
+2. **Which components space themselves from what follows?** Grep the component
+   stylesheets for block-margin declarations. Distinguish a component that _adds_
+   a bottom margin from one whose `margin: 0` is clearing a browser default
+   rather than opting out of rhythm, and watch for margins on a component's inner
+   elements rather than its root — those do not space the component from its
+   neighbour.
+3. **Do the layout classes contribute any vertical gap?** Read the grid rules
+   rather than assuming one exists.
+
+Expect the source to be somewhat inconsistent with itself here, because this is
+the part of the system still settling. When a stylesheet comment and the rules
+beneath it tell different stories, that is a finding for the report and a question
+for the design team — not something to resolve silently by picking whichever
+reading suits your page.
+
+## What the class audit cannot tell you
+
+Run during **Verify**, after the mechanical class audit.
+
+Rebuild before you trust that file, and see whether anything changes — a stale
+build from before a rename reports real classes as invented and sends you
+chasing them. Use that path rather than any other `dist/` in the tree.
+
+Know what this audit cannot tell you: a name existing in the stylesheet does
+not mean the selector will match your markup. `.govbb-error-summary__link` is
+styled only as `.govbb-link.govbb-error-summary__link`, so using it alone
+renders unstyled while passing every existence check. Copying the documented
+markup is what protects you there; the audit only catches names that are
+wholly invented.
+
+And when the audit contradicts the documented markup, the documentation wins
+and the mismatch is a finding. `govbb-footer__item` appears in the Footer
+page's canonical markup and resolves to no rule in any stylesheet. Copying the
+markup is still right; chasing the audit here would mean deviating from the
+documentation to satisfy a script. Report it and move on.
 
 ## Translating names
 
