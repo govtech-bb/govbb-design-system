@@ -1,7 +1,8 @@
 ---
 name: accessibility-review
 description: >
-  Review a page, component, prototype or whole service against WCAG 2.2 level AA
+  Review a page, component, prototype or whole service against the design
+  system's published accessibility standard (currently WCAG 2.2 level AA)
   and the GovBB Design System's own accessibility contracts, keeping
   machine-verified findings strictly separate from human judgement. Use this
   whenever someone asks whether something is accessible, wants an accessibility
@@ -20,8 +21,21 @@ metadata:
 
 # Accessibility review
 
-Review an interface against WCAG 2.2 level AA and the accessibility contracts of
-the GovBB Design System.
+Review an interface against the design system's published accessibility standard
+and its own component contracts.
+
+**The standard is published, not held here.** Fetch
+`/documentation/accessibility.md` — the raw-markdown twin of
+[the accessibility page](https://design-system.service.alpha.gov.bb/documentation/accessibility/) —
+and review against what it currently states. It names the conformance target,
+lists every criterion with what it means for a government service, and marks the
+WCAG 2.2 additions that older checklists omit.
+
+Fetching rather than remembering matters for the same reason it does elsewhere in
+this skill: the target is a commitment the design system makes and can revise,
+and a review citing a level the site no longer states is worse than no citation.
+If the page is unreachable, say which standard you reviewed against and that you
+could not confirm it — do not assume a level.
 
 ## The one discipline that makes this review worth reading
 
@@ -369,7 +383,8 @@ a sentence is none of those three, delete it.
 
 **Scope:** <pages/components and the states covered — include error and
 confirmation states, or say they were not reached>
-**Standard:** WCAG 2.2 level AA
+**Standard:** <the target named on /documentation/accessibility/, as it reads
+today — quote it rather than paraphrasing, and say if you could not reach it>
 **Evidence:** <running URL or source-only; each tool that ran and its headline
 result, e.g. "axe 4.12: 0 violations, 1 incomplete (resolved by computation)">
 **Not covered:** <what you could not test, and why>
@@ -519,9 +534,12 @@ report back the issue numbers and URLs.
 
 Read these as needed rather than upfront:
 
-- `references/wcag-22-aa.md` — the AA criteria organised for review, with what
-  each one actually means for a government form. Includes the WCAG 2.2 additions
-  that older checklists omit.
+The criteria themselves are **not** in this skill. Fetch
+`/documentation/accessibility.md` for the conformance target, every criterion,
+what each means for a government service, and which are new in WCAG 2.2. That
+page is also what a service team reads, so citing it means a review and the
+standard it cites cannot disagree.
+
 - `references/component-contracts.md` — how to work out what the design system
   guarantees versus what the consumer must wire, then the consumer's duties
   organised by kind of control rather than by component name. Read in Step 3.
