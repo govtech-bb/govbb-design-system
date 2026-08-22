@@ -111,6 +111,29 @@ describe('CheckboxGroup', () => {
     );
   });
 
+  it('marks its checkboxes invalid when the group is in error', () => {
+    render(
+      <CheckboxGroup legend="Pick some" error="Select at least one">
+        <Checkbox name="a" label="One" />
+        <Checkbox name="b" label="Two" />
+      </CheckboxGroup>,
+    );
+    for (const box of screen.getAllByRole('checkbox')) {
+      expect(box.getAttribute('aria-invalid')).toBe('true');
+    }
+  });
+
+  it('leaves its checkboxes valid when there is no error', () => {
+    render(
+      <CheckboxGroup legend="Pick some">
+        <Checkbox name="a" label="One" />
+      </CheckboxGroup>,
+    );
+    expect(
+      screen.getByRole('checkbox').getAttribute('aria-invalid'),
+    ).toBeNull();
+  });
+
   it('has no axe violations', async () => {
     const { container } = render(
       <CheckboxGroup legend="Select all that apply">

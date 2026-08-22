@@ -1,9 +1,13 @@
 import { cx } from 'class-variance-authority';
 import {
+  Children,
+  cloneElement,
   forwardRef,
+  isValidElement,
   useId,
   type FieldsetHTMLAttributes,
   type InputHTMLAttributes,
+  type ReactElement,
   type ReactNode,
 } from 'react';
 import { ErrorMessage, Fieldset, Hint } from '../form/form';
@@ -84,7 +88,9 @@ export type CheckboxGroupProps = FieldsetHTMLAttributes<HTMLFieldSetElement> & {
 /*
  * Fieldset scaffolding for a set of <Checkbox> children: legend, description and
  * error. Checkboxes are independent booleans, so — unlike RadioGroup — this
- * holds no state; each Checkbox stays controlled by the consumer.
+ * holds no state; each Checkbox stays controlled by the consumer. A group-level
+ * error is the one thing it passes down, so the boxes it is about take the
+ * invalid styling.
  */
 export const CheckboxGroup = forwardRef<
   HTMLFieldSetElement,
@@ -116,7 +122,16 @@ export const CheckboxGroup = forwardRef<
           {error}
         </ErrorMessage>
       )}
-      {children}
+      {error == null
+        ? children
+        : Children.map(children, (child) => {
+            if (!isValidElement(child)) return child;
+            const checkbox = child as ReactElement<CheckboxProps>;
+            // An explicit aria-invalid on the child still wins.
+            return cloneElement(checkbox, {
+              'aria-invalid': checkbox.props['aria-invalid'] ?? true,
+            });
+          })}
     </Fieldset>
   );
 });
