@@ -134,6 +134,13 @@ export const RadioGroup = forwardRef<HTMLFieldSetElement, RadioGroupProps>(
           return cloneElement(radio, {
             name: radio.props.name ?? name,
             checked: radio.props.checked ?? radio.props.value === value,
+            /*
+             * A group-level error is an error about its controls: mark them so
+             * they take the invalid styling, the same way a composed input does.
+             * An explicit aria-invalid on the child still wins.
+             */
+            'aria-invalid':
+              radio.props['aria-invalid'] ?? (error != null ? true : undefined),
             onChange: (event: ChangeEvent<HTMLInputElement>) => {
               radio.props.onChange?.(event);
               onValueChange?.(String(radio.props.value));
