@@ -1,8 +1,9 @@
 /* Breadcrumbs — trail of links showing where a page sits in the hierarchy,
    without the current page itself. Markup: <nav class="govbb-breadcrumbs"
    aria-label="Breadcrumb"> holding an <ol class="govbb-breadcrumbs__list"> of
-   __item <li>s, each wrapping an __link <a>. Separators are drawn with a
-   rotated border — no characters to leak into screen readers.
+   __item <li>s, each wrapping a .govbb-link.govbb-breadcrumbs__link <a>.
+   Separators are drawn with a rotated border — no characters to leak into
+   screen readers.
    --collapse-on-mobile keeps only the first and last item on small screens. */
 
 .govbb-breadcrumbs {
@@ -40,8 +41,9 @@
   transform: rotate(45deg);
 }
 
-/* Link colour and underline come from the base link styles; long URLs used as
-   labels must not blow the trail open. */
+/* Crumbs carry .govbb-link for colour, underline and highlight states — the
+   base anchor styles leave text-decoration to the browser, which a consumer's
+   reset strips. Long URLs used as labels must not blow the trail open. */
 .govbb-breadcrumbs__link {
   overflow-wrap: anywhere; /* shatters only when a label can't wrap whole */
 }

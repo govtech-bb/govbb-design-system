@@ -56,7 +56,7 @@ describe('Breadcrumbs', () => {
     );
     for (const link of screen.getAllByRole('link')) {
       expect(link.getAttribute('data-router')).toBe('true');
-      expect(link.className).toBe('govbb-breadcrumbs__link');
+      expect(link.className).toBe('govbb-link govbb-breadcrumbs__link');
     }
   });
 });

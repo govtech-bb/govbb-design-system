@@ -1,4 +1,4 @@
-import { cva, type VariantProps } from 'class-variance-authority';
+import { cva, cx, type VariantProps } from 'class-variance-authority';
 import {
   forwardRef,
   type ElementType,
@@ -38,7 +38,7 @@ export const Breadcrumbs = forwardRef<HTMLElement, BreadcrumbsProps>(
           {items.map(({ href, label, current }) => (
             <li className="govbb-breadcrumbs__item" key={href}>
               <Crumb
-                className="govbb-breadcrumbs__link"
+                className={cx('govbb-link', 'govbb-breadcrumbs__link')}
                 href={href}
                 aria-current={current ? 'page' : undefined}
               >
