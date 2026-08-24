@@ -19,7 +19,8 @@
     },
     "./css": "./dist/govbb.css",
     "./tokens.css": "./src/tokens.css",
-    "./assets/*": "./assets/*"
+    "./assets/*": "./assets/*",
+    "./tailwind": "./dist/tailwind.css"
   },
   "files": [
     "assets",
@@ -27,7 +28,8 @@
     "src",
     "!src/**/*.test.js",
     "index.js",
-    "index.d.ts"
+    "index.d.ts",
+    "scripts"
   ],
   "sideEffects": [
     "**/*.css"
@@ -37,7 +39,7 @@
   ],
   "scripts": {
     "dev": "vite",
-    "build": "lightningcss --bundle --minify --custom-media --browserslist src/index.css -o dist/govbb.css",
+    "build": "lightningcss --bundle --minify --custom-media --browserslist src/index.css -o dist/govbb.css && node scripts/build-tailwind-theme.mjs",
     "test": "vitest run",
     "prepublishOnly": "pnpm build"
   },

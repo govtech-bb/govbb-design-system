@@ -20,6 +20,32 @@ layout helpers, components, focus states, and utilities. Tokens are exposed as
 prefixed CSS custom properties such as `--govbb-color-brand` and
 `--govbb-space-s`.
 
+## Tailwind
+
+Tailwind v4 consumers can register the tokens as theme values, so utilities
+like `bg-teal-80`, `p-s` and `text-body` resolve to the same custom properties
+the components use:
+
+```css
+@import 'tailwindcss';
+@import '@govtech-bb/frontend/tailwind';
+@import '@govtech-bb/frontend/css' layer(components);
+```
+
+The `tailwind` export registers names only. Import `css` as well for the token
+values and the components — separately, so you choose which cascade layer they
+land in. Putting them in a layer keeps them below your own utilities, which is
+usually what you want.
+
+Colour utilities follow the design system's ramp, where `10` is lightest and
+`80`/`90` darkest — `bg-teal-80` is the dark teal. Spacing uses the token
+names (`p-s`, `gap-xs`, `mb-m`), and every `text-*` size carries its paired
+line height.
+
+`dist/tailwind.css` is generated from `src/tokens.css` at build time, so it
+cannot drift from the tokens. Add a token and the build maps it; a test fails
+if a new token is neither mapped nor explicitly skipped.
+
 ## Progressive enhancement
 
 HTML for Header, FileUpload, and NumberInput marked with `data-govbb-module`
