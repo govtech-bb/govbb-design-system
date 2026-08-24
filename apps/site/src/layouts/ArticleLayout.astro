@@ -58,7 +58,7 @@ const {
                 {breadcrumbs.map((item) => (
                   <li class="govbb-breadcrumbs__item">
                     {item.href ? (
-                      <a class="govbb-breadcrumbs__link" href={item.href}>{item.label}</a>
+                      <a class="govbb-link govbb-breadcrumbs__link" href={item.href}>{item.label}</a>
                     ) : (
                       <span>{item.label}</span>
                     )}
