@@ -1,6 +1,6 @@
 {
   "name": "@govtech-bb/react",
-  "version": "1.0.0-alpha.23",
+  "version": "1.0.0-alpha.24",
   "description": "GovBB Design System — React wrappers over the CSS. Thin, own-the-code.",
   "repository": {
     "type": "git",

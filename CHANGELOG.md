@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.0.0-alpha.24 (2026-08-24)
+
+### breadcrumbs
+- Keep crumb links styled under a consumer's CSS reset by @AaronHarris
+
+### General
+- Bundle the compliance skill's mechanical checks as scripts by @Tarika
 ## 1.0.0-alpha.23 (2026-08-21)
 
 ### service-list
@@ -13,6 +20,7 @@
 
 ### General
 - Update visual regression baselines by @github-actions[bot]
+- Release v1.0.0-alpha.23 by @github-actions[bot]
 ## 1.0.0-alpha.22 (2026-08-21)
 
 ### button
