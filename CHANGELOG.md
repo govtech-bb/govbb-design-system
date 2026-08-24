@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.0-alpha.25 (2026-08-24)
+
+### frontend
+- Add a generated Tailwind theme export by @AaronHarris
 ## 1.0.0-alpha.24 (2026-08-24)
 
 ### breadcrumbs
@@ -7,6 +11,7 @@
 
 ### General
 - Bundle the compliance skill's mechanical checks as scripts by @Tarika
+- Release v1.0.0-alpha.24 by @github-actions[bot]
 ## 1.0.0-alpha.23 (2026-08-21)
 
 ### service-list
