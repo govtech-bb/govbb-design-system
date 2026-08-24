@@ -429,24 +429,21 @@ Route each gap rather than leaving it hanging:
 Reading the markup is not verification. Each of these has caught a real defect
 that source review passed.
 
-- **Audit the classes you emitted, mechanically.** Collect every `class="…"`
-  value from the rendered output and check each `govbb-` name against the
-  component pages you fetched — or, if you have the repo, against
-  `packages/frontend/dist/govbb.css`, where a name that resolves to nothing is a
-  name that does not exist. This is a few lines of scripting and it is the only
-  reliable guard against a plausible invented name surviving to review.
+- **Audit the names you emitted.** `scripts/audit-classes.mjs <dir>` resolves
+  every `govbb-` class and `--govbb-` token against the shipped stylesheet, and
+  flags service CSS targeting a `govbb-` class. It is the only reliable guard
+  against a plausible invented name reaching review.
 
   `references/conversion-checklist.md` has the three caveats that decide whether
   you can trust the result: rebuild first, a name existing is not the selector
   matching, and what to do when the audit contradicts the documented markup.
 
-- **Check the page structure, mechanically.** `scripts/layout-check.mjs` reads
-  the rendered DOM for the things a class audit cannot see: one `h1`, the skip
-  link resolving to a `main` that is focusable, one of each landmark, and no
-  horizontal overflow at each width. Every one of these renders perfectly while
-  being wrong, which is why looking does not catch them. It checks only what the
-  system publishes or WCAG requires — where the site's own pages disagree about
-  structure, that is a finding to report, not something a script should settle.
+- **Check the page structure.** `scripts/layout-check.mjs <url…>` reads the
+  rendered DOM for what a class audit cannot see: one `h1`, a skip link that
+  resolves to a focusable `main`, the landmarks, and horizontal overflow. All of
+  these render perfectly while being wrong. It checks only what the system
+  publishes or WCAG requires — where the site's own pages disagree about
+  structure, that is a finding to report, not a script's to settle.
 - **Render the pages and look at them, at 360px and 1280px.** Spacing problems
   (Step 4) are invisible in source, and a page can be entirely correct
   class-by-class and still look wrong. One width is not a check: a layout can be
@@ -457,10 +454,14 @@ that source review passed.
   each endpoint in sequence is not the same test: it skips the page loads, so it
   misses anything in the rendering or guard path. A multi-step service can pass a
   post-only walkthrough and be broken in a browser.
-- **Turn JavaScript off and repeat.** The system is built on progressive
-  enhancement, so this is a real expectation, not a nicety. Components with
-  `data-govbb-module` should degrade to working native controls, and every form
-  should still submit.
+- **Turn JavaScript off and repeat.** `scripts/pe-check.mjs <url…>` loads each
+  page twice and compares, so the answer is a number rather than an impression.
+  Progressive enhancement is a real expectation here, the failure is total when
+  it comes, and it is invisible until you look.
+- **Check the behavioural components are wired.** `scripts/module-check.mjs
+<url…>` confirms the runtime processed every `[data-govbb-module]` element.
+  Step 6 is what conversions most reliably get wrong, and the page renders
+  perfectly either way — `axe` cannot see it, nor can a class audit.
 - **Check every form control keeps its label association and error wiring** —
   `for`/`id`, `aria-describedby` for hints and errors, `aria-invalid` when
   invalid, and an error summary that links to the field.
@@ -490,10 +491,16 @@ changing how spacing works obliges nobody to update this skill.
 
 ## Scripts
 
-Plain Node ESM, no build step. Run with `--help` for options.
+Plain Node ESM, no build step; `--help` for options. None holds any
+design-system inventory, so none goes stale, and none enforces structure the
+site does not publish. `scripts.test.mjs` tests all four — per ADR 0004, an
+instrument that nothing tests is measuring nothing.
 
-- **`scripts/layout-check.mjs`** — page-structure checks against the rendered
-  DOM: landmarks, the skip link's target, and horizontal overflow at each width.
-  Needs the pages served somewhere it can reach them. Holds no design-system
-  inventory and enforces no structure the site does not publish, so it neither
-  goes stale nor contradicts the docs.
+| Script                    | Answers                                              |
+| ------------------------- | ---------------------------------------------------- |
+| `pe-check.mjs <url…>`     | Does this still work with JavaScript off?            |
+| `module-check.mjs <url…>` | Did `initAll()` process every `[data-govbb-module]`? |
+| `audit-classes.mjs <dir>` | Does every `govbb-` name I emitted resolve?          |
+| `layout-check.mjs <url…>` | Landmarks, skip-link target, horizontal overflow.    |
+
+The browser-driven three need the pages served somewhere they can reach.
