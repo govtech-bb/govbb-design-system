@@ -100,7 +100,8 @@
   color: var(--govbb-color-tertiary);
   background: transparent;
   text-decoration: underline;
-  text-underline-offset: 2px;
+  text-underline-offset: 0.1em;
+  text-decoration-thickness: max(1px, 0.0625em);
 
   &:is(:hover, :active) {
     color: var(--govbb-color-tertiary);

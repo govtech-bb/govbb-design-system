@@ -38,6 +38,7 @@
   flex: 1;
   margin: 0;
   font-size: var(--govbb-font-size-h2);
-  font-weight: 700;
+  font-weight: 600;
   line-height: var(--govbb-line-height-h2);
+  letter-spacing: var(--govbb-letter-spacing-heading);
 }
