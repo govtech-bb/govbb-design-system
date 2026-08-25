@@ -16,7 +16,7 @@ const meta = {
         Use this service to apply for or renew a Barbados passport.
       </Text>
       <Text>Standard body text supports the main guidance on a page.</Text>
-      <Text size="caption">Last updated 19 July 2026</Text>
+      <Text size="body-sm">Last updated 19 July 2026</Text>
     </div>
   ),
 } satisfies Meta<typeof Heading>;
