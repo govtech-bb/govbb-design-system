@@ -49,6 +49,7 @@
   padding-right: 2.9375rem;
   font: inherit;
   font-size: var(--govbb-font-size-body);
+  font-variant-numeric: tabular-nums;
   line-height: var(--govbb-line-height-base);
   color: var(--govbb-color-ink);
   background: none;

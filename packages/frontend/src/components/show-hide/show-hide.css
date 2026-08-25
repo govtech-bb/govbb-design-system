@@ -17,7 +17,8 @@
   cursor: pointer;
   outline: 0;
   text-decoration: underline;
-  text-underline-offset: 2px;
+  text-underline-offset: 0.1em;
+  text-decoration-thickness: max(1px, 0.0625em);
   list-style: none;
   transition: color 0.2s;
 }

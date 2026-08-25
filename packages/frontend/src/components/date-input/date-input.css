@@ -23,6 +23,7 @@
    import order. */
 .govbb-date-input .govbb-date-input__field {
   width: 5rem; /* 80px — day / month */
+  font-variant-numeric: tabular-nums;
 }
 
 .govbb-date-input .govbb-date-input__field--year {

@@ -17,29 +17,68 @@
   color: var(--govbb-color-ink);
   background: var(--govbb-color-surface);
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* Text elements own typography, not layout. Reset browser margins so spacing
-   comes from surrounding layout or component styles. The size ramp is left to
-   the browser defaults (scaled off the 20px base) until it is confirmed. */
+   comes from surrounding layout or component styles. Sizes come from the ramp
+   so bare server-rendered HTML is right with no classes at all; h5 matches
+   body and leans on weight, as the NHS scale does at its smallest heading. */
 :where(h1, h2, h3, h4, h5, h6) {
   margin-block: 0;
-  font-weight: 700;
+  font-weight: 600;
   line-height: 1.2;
+  text-wrap: balance;
+}
+
+:where(h1) {
+  font-size: var(--govbb-font-size-h1);
+  line-height: var(--govbb-line-height-h1);
+}
+
+:where(h2) {
+  font-size: var(--govbb-font-size-h2);
+  line-height: var(--govbb-line-height-h2);
+}
+
+:where(h3) {
+  font-size: var(--govbb-font-size-h3);
+  line-height: var(--govbb-line-height-h3);
+}
+
+:where(h4) {
+  font-size: var(--govbb-font-size-h4);
+}
+
+:where(h5) {
+  font-size: var(--govbb-font-size-body);
+}
+
+:where(h6) {
+  font-size: var(--govbb-font-size-body-sm);
 }
 
 :where(p) {
   margin-block: 0;
+  text-wrap: pretty;
 }
 
 :where(a) {
   color: var(--govbb-link-color);
-  text-underline-offset: 2px;
+
+  /* 0.1em is 2px at body size, and holds at any other size. */
+  text-underline-offset: 0.1em;
+  text-decoration-thickness: max(1px, 0.0625em);
 }
 
 :where(a:hover) {
   color: var(--govbb-link-hover-color);
   background-color: var(--govbb-link-hover-bg);
+}
+
+:where(::placeholder) {
+  color: var(--govbb-color-muted);
+  opacity: 1; /* Firefox dims placeholders by default */
 }
 
 /* Default keyboard focus ring for anything without its own. Components with

@@ -40,13 +40,13 @@ describe('Text', () => {
 
   it('maps element, size and weight', () => {
     render(
-      <Text as="span" size="caption" weight="bold">
+      <Text as="span" size="body-sm" weight="bold">
         Hint
       </Text>,
     );
     const el = screen.getByText('Hint');
     expect(el.tagName).toBe('SPAN');
-    expect(el.className).toBe('govbb-text-caption govbb-text-bold');
+    expect(el.className).toBe('govbb-text-body-sm govbb-text-bold');
   });
 });
 

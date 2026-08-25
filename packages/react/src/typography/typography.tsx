@@ -45,8 +45,7 @@ const text = cva('', {
     size: {
       'body-lg': 'govbb-text-body-lg',
       body: 'govbb-text-body',
-      caption: 'govbb-text-caption',
-      'caption-sm': 'govbb-text-caption-sm',
+      'body-sm': 'govbb-text-body-sm',
     },
     /** Visual bolding only — where the emphasis is semantic, use <strong>. */
     weight: {

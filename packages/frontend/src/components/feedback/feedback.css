@@ -30,7 +30,7 @@
 .govbb-feedback__heading {
   margin: 0;
   font-size: var(--govbb-font-size-h3);
-  font-weight: 700;
+  font-weight: 600;
   line-height: var(--govbb-line-height-h3);
 }
 

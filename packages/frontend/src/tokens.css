@@ -116,22 +116,38 @@
     'Figtree', system-ui, -apple-system, 'Segoe UI', 'Roboto', 'Helvetica',
     'Arial', sans-serif;
 
-  /* Size ramp — mirrors the Figma type scale (see the .govbb-text-* utility
-     classes). Everything except display/h1/h2/h3 uses the base line-height. */
-  --govbb-font-size-display: 5rem;
-  --govbb-font-size-h1: 3.5rem;
-  --govbb-font-size-h2: 2.5rem;
-  --govbb-font-size-h3: 1.5rem;
-  --govbb-font-size-h4: 1.25rem;
-  --govbb-font-size-body-lg: 2rem;
+  /* No brand mono face; the system stacks render instantly. */
+  --govbb-font-mono:
+    ui-monospace, 'SF Mono', 'SFMono-Regular', 'Menlo', 'Consolas',
+    'Liberation Mono', monospace;
+
+  /* Size ramp, mobile-first: these are the small-screen values and the media
+     blocks below step them up.
+     Only display, h1 and h2 move. Everything from h3 down holds one size at
+     every width, because body sizes the text inside every control and a
+     responsive body resizes buttons and inputs on a breakpoint.
+     Line heights are unitless ratios; the comment carries the px they make.
+     Everything except display/h1/h2/h3 uses the base line-height. */
+  --govbb-font-size-display: 3rem; /* 48px */
+  --govbb-font-size-h1: 2.5rem; /* 40px */
+  --govbb-font-size-h2: 1.75rem; /* 28px */
+  --govbb-font-size-h3: 1.5rem; /* 24px */
+  --govbb-font-size-h4: 1.25rem; /* 20px */
+  --govbb-font-size-body-lg: 1.5rem; /* 24px */
   --govbb-font-size-body: 1.25rem; /* 20px */
-  --govbb-font-size-caption: 1rem;
-  --govbb-font-size-caption-sm: 0.75rem;
-  --govbb-line-height-display: 1;
-  --govbb-line-height-h1: 1.15;
-  --govbb-line-height-h2: 1.25;
-  --govbb-line-height-h3: 1.25;
+  --govbb-font-size-body-sm: 1rem; /* 16px */
+  --govbb-line-height-display: 1; /* 48px */
+  --govbb-line-height-h1: 1.2; /* 48px */
+  --govbb-line-height-h2: 1.2857; /* 36px */
+  --govbb-line-height-h3: 1.3333; /* 32px */
   --govbb-line-height-base: 1.5;
+
+  /* Large type only — body copy takes no tracking. */
+  --govbb-letter-spacing-heading: -0.015em;
+
+  /* ~66 characters at body size. In em, not ch: Figtree's zero is 0.64em
+     against an average letter of 0.48em, so 60ch renders nearer 99. */
+  --govbb-measure: 42em;
 
   /* ---- Spacing. s, xm, m are confirmed; xxs/xs are placeholders. ---- */
   --govbb-space-xxs: 0.25rem; /* 4px */
@@ -139,8 +155,34 @@
   --govbb-space-s: 1rem; /* 16px */
   --govbb-space-xm: 1.5rem; /* 24px */
   --govbb-space-m: 2rem; /* 32px */
-  --govbb-space-l: 4rem; /* placeholder pending Figma confirmation */
+  --govbb-space-ml: 3rem; /* 48px */
+  --govbb-space-l: 4rem;
   --govbb-space-xl: 8rem; /* desktop-frame page gutter */
 
   --govbb-radius: 4px;
+}
+
+/* Plain width queries, not the breakpoints.css names: tokens.css is also
+   published standalone, where nothing inlines @custom-media. Desktop applies
+   from 64rem so ordinary laptops get the widest tier, not the middle one. */
+@media (width >= 50rem) {
+  :root {
+    --govbb-font-size-display: 4rem; /* 64px */
+    --govbb-font-size-h1: 3rem; /* 48px */
+    --govbb-font-size-h2: 2rem; /* 32px */
+    --govbb-font-size-h3: 1.75rem; /* 28px */
+    --govbb-line-height-h1: 1.1667; /* 56px */
+    --govbb-line-height-h2: 1.25; /* 40px */
+    --govbb-line-height-h3: 1.2857; /* 36px */
+  }
+}
+
+@media (width >= 64rem) {
+  :root {
+    --govbb-font-size-display: 5rem; /* 80px */
+    --govbb-font-size-h1: 3.5rem; /* 56px */
+    --govbb-font-size-h2: 2.5rem; /* 40px */
+    --govbb-line-height-h1: 1.1429; /* 64px */
+    --govbb-line-height-h2: 1.2; /* 48px */
+  }
 }

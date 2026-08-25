@@ -95,14 +95,6 @@
   color: var(--govbb-color-muted);
 }
 
-/* The desktop frame sizes service names up to the large-body size. */
-@media (--tablet) {
-  .govbb-service-list__heading {
-    font-size: var(--govbb-font-size-body-lg);
-    line-height: var(--govbb-line-height-base);
-  }
-}
-
 /* Signpost: in-category service links. Names drop to quiet body-size regular
    links in the standard teal at every width (these rules out-rank the tablet
    card upsize on specificity). */
