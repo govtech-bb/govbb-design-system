@@ -17,7 +17,11 @@ const TOKENS = join(here, '../src/tokens.css');
 const OUT = join(here, '../dist/tailwind.css');
 
 /** Tokens with no Tailwind namespace — reachable as var(--govbb-*) instead. */
-export const SKIPPED = new Set(['border-width-form', 'opacity-disabled']);
+export const SKIPPED = new Set([
+  'border-width-form',
+  'opacity-disabled',
+  'measure', // a layout cap, not a Tailwind namespace value
+]);
 
 /** Font sizes carrying their own line height; the rest use the base. */
 const OWN_LINE_HEIGHT = new Set(['display', 'h1', 'h2', 'h3']);
@@ -26,7 +30,9 @@ const OWN_LINE_HEIGHT = new Set(['display', 'h1', 'h2', 'h3']);
 export function themeVar(name) {
   if (SKIPPED.has(name)) return null;
   if (name === 'font-sans') return '--font-sans';
+  if (name === 'font-mono') return '--font-mono';
   if (name === 'radius') return '--radius';
+  if (name.startsWith('letter-spacing-')) return `--tracking-${name.slice(15)}`;
   if (name.startsWith('shadow-')) return `--${name}`;
   if (name.startsWith('space-')) return `--spacing-${name.slice(6)}`;
   if (name.startsWith('font-size-')) return `--text-${name.slice(10)}`;
@@ -47,10 +53,12 @@ function parse(css) {
 export function generate(css) {
   const tokens = parse(css);
   const lines = [];
+  const registered = new Set();
 
   for (const { name } of tokens) {
     const key = themeVar(name);
-    if (!key) continue;
+    if (!key || registered.has(key)) continue;
+    registered.add(key);
     lines.push(`  ${key}: var(--govbb-${name});`);
     if (key.startsWith('--text-')) {
       const size = key.slice(7);

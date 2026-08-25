@@ -8,36 +8,45 @@
   font-size: var(--govbb-font-size-display);
   line-height: var(--govbb-line-height-display);
   font-weight: 700;
+  letter-spacing: var(--govbb-letter-spacing-heading);
+  text-wrap: balance;
 }
 
 .govbb-text-h1 {
   font-size: var(--govbb-font-size-h1);
   line-height: var(--govbb-line-height-h1);
-  font-weight: 700;
+  font-weight: 600;
+  letter-spacing: var(--govbb-letter-spacing-heading);
+  text-wrap: balance;
 }
 
 .govbb-text-h2 {
   font-size: var(--govbb-font-size-h2);
   line-height: var(--govbb-line-height-h2);
-  font-weight: 700;
+  font-weight: 600;
+  letter-spacing: var(--govbb-letter-spacing-heading);
+  text-wrap: balance;
 }
 
 .govbb-text-h3 {
   font-size: var(--govbb-font-size-h3);
   line-height: var(--govbb-line-height-h3);
-  font-weight: 700;
+  font-weight: 600;
+  text-wrap: balance;
 }
 
 .govbb-text-h4 {
   font-size: var(--govbb-font-size-h4);
   line-height: var(--govbb-line-height-base);
-  font-weight: 700;
+  font-weight: 600;
+  text-wrap: balance;
 }
 
 .govbb-text-body-lg {
   font-size: var(--govbb-font-size-body-lg);
   line-height: var(--govbb-line-height-base);
   font-weight: 400;
+  text-wrap: pretty;
 }
 
 .govbb-text-body {
@@ -46,14 +55,8 @@
   font-weight: 400;
 }
 
-.govbb-text-caption {
-  font-size: var(--govbb-font-size-caption);
-  line-height: var(--govbb-line-height-base);
-  font-weight: 400;
-}
-
-.govbb-text-caption-sm {
-  font-size: var(--govbb-font-size-caption-sm);
+.govbb-text-body-sm {
+  font-size: var(--govbb-font-size-body-sm);
   line-height: var(--govbb-line-height-base);
   font-weight: 400;
 }

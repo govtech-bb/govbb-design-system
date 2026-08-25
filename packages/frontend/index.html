@@ -479,8 +479,7 @@
         <p class="govbb-text-h4" style="margin: 0">Heading 4</p>
         <p class="govbb-text-body-lg" style="margin: 0">Body large</p>
         <p class="govbb-text-body" style="margin: 0">Body</p>
-        <p class="govbb-text-caption" style="margin: 0">Caption</p>
-        <p class="govbb-text-caption-sm" style="margin: 0">Caption small</p>
+        <p class="govbb-text-body-sm" style="margin: 0">Small body text</p>
       </div>
     </section>
 
@@ -896,42 +895,111 @@
 
     <section>
       <h2>Table</h2>
-      <table class="govbb-table" style="width: 100%">
-        <caption class="govbb-table__caption">
-          Application fees
-        </caption>
-        <thead>
-          <tr>
-            <th class="govbb-table__header" scope="col">Service</th>
-            <th class="govbb-table__header" scope="col">Processing time</th>
-            <th
-              class="govbb-table__header govbb-table__header--numeric"
-              scope="col"
-            >
-              Fee
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th class="govbb-table__header" scope="row">Passport renewal</th>
-            <td class="govbb-table__cell">10 working days</td>
-            <td class="govbb-table__cell govbb-table__cell--numeric">
-              $150.00
-            </td>
-          </tr>
-          <tr>
-            <th class="govbb-table__header" scope="row">Birth certificate</th>
-            <td class="govbb-table__cell">5 working days</td>
-            <td class="govbb-table__cell govbb-table__cell--numeric">$25.00</td>
-          </tr>
-          <tr>
-            <th class="govbb-table__header" scope="row">Driver's licence</th>
-            <td class="govbb-table__cell">3 working days</td>
-            <td class="govbb-table__cell govbb-table__cell--numeric">$80.00</td>
-          </tr>
-        </tbody>
-      </table>
+      <div
+        class="govbb-table-container"
+        tabindex="0"
+        role="region"
+        aria-label="Application fees"
+      >
+        <table class="govbb-table" style="width: 100%">
+          <caption class="govbb-table__caption">
+            Application fees
+          </caption>
+          <thead>
+            <tr>
+              <th class="govbb-table__header" scope="col">Service</th>
+              <th class="govbb-table__header" scope="col">Processing time</th>
+              <th
+                class="govbb-table__header govbb-table__header--numeric"
+                scope="col"
+              >
+                Fee
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th class="govbb-table__header" scope="row">Passport renewal</th>
+              <td class="govbb-table__cell">10 working days</td>
+              <td class="govbb-table__cell govbb-table__cell--numeric">
+                $150.00
+              </td>
+            </tr>
+            <tr>
+              <th class="govbb-table__header" scope="row">Birth certificate</th>
+              <td class="govbb-table__cell">5 working days</td>
+              <td class="govbb-table__cell govbb-table__cell--numeric">
+                $25.00
+              </td>
+            </tr>
+            <tr>
+              <th class="govbb-table__header" scope="row">Driver's licence</th>
+              <td class="govbb-table__cell">3 working days</td>
+              <td class="govbb-table__cell govbb-table__cell--numeric">
+                $80.00
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section>
+      <h2>Prose</h2>
+      <div class="govbb-prose">
+        <h2>Before you start</h2>
+        <p>
+          You will need your national registration number and a debit card. The
+          service takes about ten minutes to complete and you can save your
+          answers and come back later.
+        </p>
+        <h3>What you can apply for</h3>
+        <ul>
+          <li>A first passport for a child under 16</li>
+          <li>A renewal for an adult passport</li>
+          <li>A replacement for a lost or stolen passport</li>
+        </ul>
+        <p>
+          Fees are set in the <code>Passport Regulations</code> and are
+          published on the fees page.
+        </p>
+        <blockquote>
+          <p>Applications made after 3pm are processed the next working day.</p>
+        </blockquote>
+        <div class="govbb-status-banner govbb-status-banner--beta">
+          <p>
+            A component inside prose keeps its own styling and the full column
+            width.
+          </p>
+        </div>
+        <details class="govbb-show-hide">
+          <summary class="govbb-show-hide__summary">
+            Help with your registration number
+          </summary>
+          <div class="govbb-show-hide__content">
+            <p>It is the ten-digit number on the back of your ID card.</p>
+          </div>
+        </details>
+        <h4>Contact</h4>
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Office</th>
+              <th scope="col">Hours</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Bridgetown</td>
+              <td>8:15am to 4:30pm</td>
+            </tr>
+            <tr>
+              <td>Speightstown</td>
+              <td>8:15am to 3:00pm</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </section>
 
     <script type="module">
