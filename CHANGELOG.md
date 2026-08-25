@@ -1,9 +1,32 @@
 # Changelog
 
+## 1.0.0-alpha.26 (2026-08-25)
+
+### fonts
+- Ship Figtree italic instead of slanting the roman by @AaronHarris
+
+### link
+- Scale underlines and add tabular figures where digits change by @AaronHarris
+
+### prose
+- Add the long-form content component by @AaronHarris
+- Count the prose playground section by @AaronHarris
+
+### tokens
+- **Breaking:** Tier the type scale by design width by @AaronHarris
+
+### typography
+- Move the story off the renamed caption size by @AaronHarris
+
+### General
+- Update visual regression baselines by @github-actions[bot]
 ## 1.0.0-alpha.25 (2026-08-24)
 
 ### frontend
 - Add a generated Tailwind theme export by @AaronHarris
+
+### General
+- Release v1.0.0-alpha.25 by @github-actions[bot]
 ## 1.0.0-alpha.24 (2026-08-24)
 
 ### breadcrumbs
