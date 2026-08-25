@@ -36,7 +36,10 @@ export const Default: Story = {
     await expect(nav).toBeVisible();
     await expect(canvas.queryByRole('button', { name: 'Menu' })).toBeNull();
     await expect(nav.parentElement).toBe(inner);
-    await expect(header).toHaveStyle({ backgroundColor: 'rgb(255, 199, 38)' });
+    await expect(header).toHaveStyle({
+      backgroundColor: 'rgb(255, 255, 255)',
+      borderBottomColor: 'rgb(153, 168, 204)',
+    });
     await expect(nav).toHaveStyle({ backgroundColor: 'rgba(0, 0, 0, 0)' });
     await expect(navInner).toHaveStyle({ flexDirection: 'row' });
     await expect(services).toHaveStyle({
