@@ -48,7 +48,7 @@ img:not([class]) {
 /* The official banner and footer come from the design-system package. */
 
 /* ── Site header (docs-site chrome: brand + nav + search; distinct from the
-   design-system's gold govbb-header component) ─────────────────── */
+   design-system's govbb-header component) ─────────────────── */
 .site-header {
   background: var(--govbb-color-white);
 }

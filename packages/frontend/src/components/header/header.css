@@ -1,14 +1,16 @@
-/* Header — the gold site header holding the gov.bb logo (the link home),
+/* Header — the white site header holding the gov.bb logo (the link home),
    optional consumer-provided controls, and the site menu. Renders on every
    page, directly below the official banner. The logo, controls, and nav share
-   one width container so they form one row when space permits. On narrower
-   containers the nav becomes a full-width tinted panel below the logo/Menu
-   row. The header module (data-govbb-module="header") reveals the toggle after
-   enhancement; without JavaScript, the navigation remains available. */
+   one width container so they form one row when space permits. A hairline rule
+   closes the band against the page. On narrower containers the nav becomes a
+   full-width tinted panel below the logo/Menu row. The header module
+   (data-govbb-module="header") reveals the toggle after enhancement; without
+   JavaScript, the navigation remains available. */
 
 .govbb-header {
   color: var(--govbb-color-ink);
-  background: var(--govbb-color-brand-accent);
+  background: var(--govbb-color-surface);
+  border-block-end: 1px solid var(--govbb-blue-20);
   container-type: inline-size;
 }
 

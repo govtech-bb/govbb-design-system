@@ -1,7 +1,7 @@
 ---
 title: Header
 description: Use the header to show users they are on gov.bb and give them a route back to the homepage.
-lede: The gold band at the top of every page, holding the gov.bb logo and primary navigation.
+lede: The white band at the top of every page, holding the gov.bb logo and primary navigation.
 group: Page furniture
 ---
 
@@ -72,7 +72,7 @@ always available.
 The Header owns the navigation landmark, responsive disclosure state and
 accessibility wiring, but does not prescribe the links or controls inside it.
 It omits the menu control and navigation landmark when `nav` is empty. Use
-`children` for optional custom content in the gold top row.
+`children` for optional custom content in the top row.
 
 ## Usage
 
