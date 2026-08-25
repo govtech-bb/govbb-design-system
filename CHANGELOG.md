@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.0.0-alpha.27 (2026-08-25)
+
+### header
+- Make the header white with a hairline rule by @AaronHarris
+- Assert the white band and hairline rule by @AaronHarris
+
+### General
+- Update visual regression baselines by @github-actions[bot]
 ## 1.0.0-alpha.26 (2026-08-25)
 
 ### fonts
@@ -20,6 +28,7 @@
 
 ### General
 - Update visual regression baselines by @github-actions[bot]
+- Release v1.0.0-alpha.26 by @github-actions[bot]
 ## 1.0.0-alpha.25 (2026-08-24)
 
 ### frontend
