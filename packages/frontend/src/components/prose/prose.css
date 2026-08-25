@@ -1,0 +1,220 @@
+/* Prose — long-form content whose tags arrive bare and unclassed: rendered
+   markdown, guidance, policy copy.
+
+   The block is always matched through :where(), so no rule here reaches class
+   specificity and a .govbb-* class dropped into the flow always wins. That is
+   what lets components live inside prose.
+
+   <div class="govbb-prose"> … rendered markdown … </div> */
+.govbb-prose {
+  /* Retheming knobs: set these on the block rather than writing selector
+     overrides — prose on a dark panel is five declarations, not fifteen. */
+  --govbb-prose-color: var(--govbb-color-ink);
+  --govbb-prose-heading-color: var(--govbb-prose-color);
+  --govbb-prose-marker-color: currentcolor;
+  --govbb-prose-code-bg: var(--govbb-color-highlight);
+  --govbb-prose-rule-color: var(--govbb-color-neutral);
+
+  color: var(--govbb-prose-color);
+  overflow-wrap: break-word; /* markdown carries unbreakable URLs and IDs */
+}
+
+/* The measure caps the children, not the container, so components, tables
+   and code still run the full column. Margins are zeroed here and handed back
+   by the rhythm rules below: browser defaults on ul, blockquote and pre are
+   in em, so leaving them collapses uneven gaps into the scale. */
+:where(.govbb-prose) > * {
+  margin-block: 0;
+  max-inline-size: var(--govbb-measure);
+}
+
+:where(.govbb-prose) > :where([class*='govbb-'], figure, table, pre) {
+  max-inline-size: none;
+}
+
+/* Rhythm, NHS-style values but owned here rather than bolted onto each type
+   class: the gaps grow with the viewport, the page heading gets real room
+   beneath it, and a sub-heading sits close to the content it introduces.
+   Every value is a spacing step. */
+:where(.govbb-prose) > * + * {
+  margin-block-start: var(--govbb-space-s);
+}
+
+:where(.govbb-prose) > :is(h2, h3, h4) + * {
+  margin-block-start: var(--govbb-space-xs);
+}
+
+:where(.govbb-prose) > h1 + * {
+  margin-block-start: var(--govbb-space-m);
+}
+
+:where(.govbb-prose) > * + :is(h3, h4) {
+  margin-block-start: var(--govbb-space-xm);
+}
+
+:where(.govbb-prose) > * + :is(h1, h2) {
+  margin-block-start: var(--govbb-space-m);
+}
+
+@media (--tablet) {
+  :where(.govbb-prose) > * + * {
+    margin-block-start: var(--govbb-space-xm);
+  }
+
+  :where(.govbb-prose) > :is(h2, h3, h4) + * {
+    margin-block-start: var(--govbb-space-s);
+  }
+
+  :where(.govbb-prose) > h1 + * {
+    margin-block-start: var(--govbb-space-ml);
+  }
+
+  :where(.govbb-prose) > * + :is(h3, h4) {
+    margin-block-start: var(--govbb-space-m);
+  }
+
+  :where(.govbb-prose) > * + :is(h1, h2) {
+    margin-block-start: var(--govbb-space-ml);
+  }
+}
+
+/* scroll-margin keeps an anchored heading clear of the top edge; consumers
+   with a sticky header raise it, and any class beats these rules. */
+:where(.govbb-prose) :where(h1, h2, h3, h4) {
+  color: var(--govbb-prose-heading-color);
+  scroll-margin-block-start: var(--govbb-space-m);
+}
+
+:where(.govbb-prose) :where(h1) {
+  font-size: var(--govbb-font-size-h1);
+  line-height: var(--govbb-line-height-h1);
+  letter-spacing: var(--govbb-letter-spacing-heading);
+}
+
+:where(.govbb-prose) :where(h2) {
+  font-size: var(--govbb-font-size-h2);
+  line-height: var(--govbb-line-height-h2);
+  letter-spacing: var(--govbb-letter-spacing-heading);
+}
+
+:where(.govbb-prose) :where(h3) {
+  font-size: var(--govbb-font-size-h3);
+  line-height: var(--govbb-line-height-h3);
+}
+
+:where(.govbb-prose) :where(h4) {
+  font-size: var(--govbb-font-size-h4);
+  line-height: var(--govbb-line-height-base);
+}
+
+/* The marker is declared, not inherited from the browser default: a reset
+   (Tailwind's preflight, for one) sets list-style:none on bare ul and ol, and
+   prose has to say otherwise or markdown lists lose their bullets. */
+:where(.govbb-prose) :where(ul, ol) {
+  padding-inline-start: var(--govbb-space-xm);
+}
+
+:where(.govbb-prose) :where(ul) {
+  list-style-type: disc;
+}
+
+:where(.govbb-prose) :where(ol) {
+  list-style-type: decimal;
+}
+
+/* Markers take the text colour, as .govbb-list's do; the knob is here for a
+   consumer that wants them quieter, not to quiet them by default. */
+:where(.govbb-prose) :where(li)::marker {
+  color: var(--govbb-prose-marker-color);
+}
+
+:where(.govbb-prose) :where(li + li) {
+  margin-block-start: var(--govbb-space-xs);
+}
+
+/* Blocks inside an item keep the paragraph rhythm — a paragraph reads the same
+   whether or not a list marker sits beside it. */
+:where(.govbb-prose) :is(li) > * + * {
+  margin-block-start: var(--govbb-space-s);
+}
+
+/* An item carrying several blocks is a section, not a bullet, so it needs more
+   air between items than inside one. Keyed on a second block rather than on any
+   block at all: markdown wraps every item of a loose list in a paragraph, so
+   :has(> p) would space one-line bullets like sections. */
+:where(.govbb-prose)
+  :is(
+    li:has(> :is(h2, h3, h4, ul, ol, div, p + p)) + li,
+    li + li:has(> :is(h2, h3, h4, ul, ol, div, p + p))
+  ) {
+  margin-block-start: var(--govbb-space-m);
+}
+
+/* Inline code only; highlighted blocks bring their own colours. */
+:where(.govbb-prose) :where(:not(pre) > code) {
+  padding: 0.1em 0.35em;
+  font-family: var(--govbb-font-mono);
+  font-size: 0.9em;
+  background: var(--govbb-prose-code-bg);
+  border-radius: var(--govbb-radius);
+}
+
+:where(.govbb-prose) :where(pre) {
+  overflow-x: auto;
+  padding: var(--govbb-space-s);
+  font-family: var(--govbb-font-mono);
+  font-size: var(--govbb-font-size-body-sm);
+  line-height: var(--govbb-line-height-base);
+  background: var(--govbb-prose-code-bg);
+  border-radius: var(--govbb-radius);
+}
+
+:where(.govbb-prose) :where(blockquote) {
+  padding-inline-start: var(--govbb-space-s);
+  border-inline-start: 4px solid var(--govbb-prose-rule-color);
+}
+
+:where(.govbb-prose) :where(hr) {
+  border: 0;
+  border-block-start: 1px solid var(--govbb-prose-rule-color);
+}
+
+:where(.govbb-prose) > :is(hr) {
+  margin-block: var(--govbb-space-m);
+}
+
+:where(.govbb-prose) :where(img) {
+  max-inline-size: 100%;
+  block-size: auto;
+}
+
+/* Markdown emits tables unclassed, so mirror .govbb-table. Anything wide
+   enough to scroll wants the real component and its container. */
+:where(.govbb-prose) :where(table) {
+  inline-size: 100%;
+  border-collapse: collapse;
+}
+
+:where(.govbb-prose) :where(th, td) {
+  padding: var(--govbb-space-s);
+  text-align: left;
+  vertical-align: top;
+  border-block-end: 1px solid var(--govbb-color-highlight);
+}
+
+:where(.govbb-prose) :where(thead th) {
+  font-weight: 700;
+  border-block-end-color: var(--govbb-blue-80);
+}
+
+/* No wrapper to scroll, so below tablet the columns divide the width and
+   long tokens break. display:block would scroll but costs table semantics. */
+@media (--mobile) {
+  :where(.govbb-prose) :where(table) {
+    table-layout: fixed;
+  }
+
+  :where(.govbb-prose) :where(th, td) {
+    overflow-wrap: anywhere;
+  }
+}

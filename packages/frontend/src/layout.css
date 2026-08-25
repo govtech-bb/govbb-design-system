@@ -51,6 +51,11 @@
   padding-block: var(--govbb-space-xm);
 }
 
+/* Direct children only, so component internals keep their own widths. */
+.govbb-main-wrapper > :where(p, ul, ol, dl) {
+  max-inline-size: var(--govbb-measure);
+}
+
 /*
  * Column grid — a real CSS grid, not GOV.UK's legacy floats. 12 tracks with
  * a gutter; the fraction classes span tracks on tablet+ and stack full-width
@@ -65,6 +70,14 @@
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
   column-gap: var(--govbb-space-m);
+}
+
+/* Stacked columns need no gutter, and 11 of them come to 352px — wider than
+   a 320px screen before any content is measured. */
+@media (--mobile) {
+  .govbb-grid-row {
+    column-gap: 0;
+  }
 }
 
 /* The -from-desktop variants hold full width through tablet and only take
