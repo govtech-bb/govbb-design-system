@@ -7,7 +7,7 @@ import {
   type FieldsetHTMLAttributes,
   type ReactNode,
 } from 'react';
-import { FormGroup } from '../form/form';
+import { FormGroup, has } from '../form/form';
 import type { FieldFeedback } from '../form/field';
 
 /*
@@ -67,8 +67,8 @@ export const DateInput = forwardRef<HTMLFieldSetElement, DateInputProps>(
     ref,
   ) {
     const id = useId();
-    const descriptionId = description != null ? `${id}-description` : undefined;
-    const errorId = error != null ? `${id}-error` : undefined;
+    const descriptionId = has(description) ? `${id}-description` : undefined;
+    const errorId = has(error) ? `${id}-error` : undefined;
     const parts = [
       {
         label: 'Day',
@@ -105,12 +105,12 @@ export const DateInput = forwardRef<HTMLFieldSetElement, DateInputProps>(
           {...props}
         >
           <legend className="govbb-fieldset__legend">{legend}</legend>
-          {description != null && (
+          {has(description) && (
             <span className="govbb-hint" id={descriptionId}>
               {description}
             </span>
           )}
-          {error != null && (
+          {has(error) && (
             <span className="govbb-error-message" id={errorId} role="alert">
               {error}
             </span>
@@ -140,7 +140,7 @@ export const DateInput = forwardRef<HTMLFieldSetElement, DateInputProps>(
                     props?.className,
                   )}
                   id={partId}
-                  aria-invalid={error != null ? true : props?.['aria-invalid']}
+                  aria-invalid={has(error) ? true : props?.['aria-invalid']}
                 />
               </div>
             ))}
