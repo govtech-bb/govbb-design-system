@@ -54,7 +54,10 @@ The display class is bold (700), the heading classes are semibold (600), and
 the body classes are regular (400). Where a run of body text needs visual bolding,
 add `govbb-text-bold`; where the emphasis is semantic, use `<strong>` instead.
 Because they are utilities, they win over component typography, so applying
-one to a component element is an explicit override.
+one to a component element is an explicit override. Where text can carry an
+unbreakable string a user typed, such as an email address or a reference in a
+heading, add `govbb-text-break-word` so it wraps instead of overflowing the
+column.
 
 Use `govbb-text-body-lg` once per page at most, as the opening paragraph that
 summarises what follows. Use `govbb-text-body-sm` sparingly, for hints and

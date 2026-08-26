@@ -67,6 +67,13 @@
   font-weight: 700;
 }
 
+/* Let an unbreakable string a user typed (an email address, a reference) wrap
+   rather than overflow the column. anywhere, not break-word: most components
+   here shrink-wrap their text as flex items, where break-word never fires. */
+.govbb-text-break-word {
+  overflow-wrap: anywhere;
+}
+
 /* Hidden from sight, still read by screen readers and focusable. */
 .govbb-visually-hidden {
   position: absolute;
