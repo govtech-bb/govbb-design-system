@@ -6,6 +6,7 @@ import {
   type TextareaHTMLAttributes,
 } from 'react';
 import { FieldShell, useFieldIds, type FieldExtras } from '../form/field';
+import { has } from '../form/form';
 
 export type InputProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'prefix'> &
   FieldExtras & {
@@ -31,28 +32,28 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
   },
   ref,
 ) {
-  const ids = useFieldIds(id ?? props.name, description != null, error != null);
-  const composed = label != null || description != null || error != null;
+  const ids = useFieldIds(id ?? props.name, has(description), has(error));
+  const composed = has(label) || has(description) || has(error);
   let input = (
     <input
       ref={ref}
       id={composed ? ids.fieldId : id}
       className={cx('govbb-input', className)}
       aria-describedby={cx(ids.describedBy, describedBy) || undefined}
-      aria-invalid={error != null ? true : ariaInvalid}
+      aria-invalid={has(error) ? true : ariaInvalid}
       {...props}
     />
   );
-  if (prefix != null || suffix != null) {
+  if (has(prefix) || has(suffix)) {
     input = (
       <div className="govbb-input-wrapper">
-        {prefix != null && (
+        {has(prefix) && (
           <span className="govbb-input__prefix" aria-hidden="true">
             {prefix}
           </span>
         )}
         {input}
-        {suffix != null && (
+        {has(suffix) && (
           <span className="govbb-input__suffix" aria-hidden="true">
             {suffix}
           </span>
@@ -88,19 +89,15 @@ export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
     },
     ref,
   ) {
-    const ids = useFieldIds(
-      id ?? props.name,
-      description != null,
-      error != null,
-    );
-    const composed = label != null || description != null || error != null;
+    const ids = useFieldIds(id ?? props.name, has(description), has(error));
+    const composed = has(label) || has(description) || has(error);
     const textarea = (
       <textarea
         ref={ref}
         id={composed ? ids.fieldId : id}
         className={cx('govbb-textarea', className)}
         aria-describedby={cx(ids.describedBy, describedBy) || undefined}
-        aria-invalid={error != null ? true : ariaInvalid}
+        aria-invalid={has(error) ? true : ariaInvalid}
         {...props}
       />
     );

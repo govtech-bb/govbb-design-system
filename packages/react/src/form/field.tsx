@@ -1,6 +1,6 @@
 import { cx } from 'class-variance-authority';
 import { useId, type ReactNode } from 'react';
-import { ErrorMessage, FormGroup, Hint, Label } from './form';
+import { ErrorMessage, FormGroup, Hint, Label, has } from './form';
 
 /*
  * Internal helper shared by the composed fields (Input, TextArea, Select).
@@ -64,13 +64,13 @@ export function FieldShell({
 }) {
   return (
     <FormGroup>
-      {label != null && (
+      {has(label) && (
         <Label id={labelId} htmlFor={fieldId} optional={optional}>
           {label}
         </Label>
       )}
-      {description != null && <Hint id={descriptionId}>{description}</Hint>}
-      {error != null && (
+      {has(description) && <Hint id={descriptionId}>{description}</Hint>}
+      {has(error) && (
         <ErrorMessage id={errorId} role="alert">
           {error}
         </ErrorMessage>

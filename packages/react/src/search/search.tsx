@@ -6,6 +6,7 @@ import {
   type FormHTMLAttributes,
   type ReactNode,
 } from 'react';
+import { has } from '../form/form';
 
 const search = cva('govbb-search', {
   variants: {
@@ -15,8 +16,9 @@ const search = cva('govbb-search', {
 
 export interface SearchProps
   extends FormHTMLAttributes<HTMLFormElement>, VariantProps<typeof search> {
-  /** Visually hidden label for the input. */
+  /** Visually hidden label for the input. Empty falls back to "Search". */
   label?: ReactNode;
+  /** Submit button text; keep it to one word. Empty falls back to "Search". */
   buttonLabel?: ReactNode;
   /** Reaches the <input> (name, value, onChange, ref, …). */
   inputProps?: ComponentPropsWithRef<'input'>;
@@ -24,14 +26,7 @@ export interface SearchProps
 
 /** Ref goes to the <form>; use inputProps.ref for the input. */
 export const Search = forwardRef<HTMLFormElement, SearchProps>(function Search(
-  {
-    label = 'Search',
-    buttonLabel = 'Search',
-    borderless,
-    inputProps,
-    className,
-    ...props
-  },
+  { label, buttonLabel, borderless, inputProps, className, ...props },
   ref,
 ) {
   const autoId = useId();
@@ -44,7 +39,7 @@ export const Search = forwardRef<HTMLFormElement, SearchProps>(function Search(
       {...props}
     >
       <label className="govbb-visually-hidden" htmlFor={inputId}>
-        {label}
+        {has(label) ? label : 'Search'}
       </label>
       <input
         type="search"
@@ -54,7 +49,7 @@ export const Search = forwardRef<HTMLFormElement, SearchProps>(function Search(
         id={inputId}
       />
       <button className="govbb-search__button" type="submit">
-        {buttonLabel}
+        {has(buttonLabel) ? buttonLabel : 'Search'}
       </button>
     </form>
   );

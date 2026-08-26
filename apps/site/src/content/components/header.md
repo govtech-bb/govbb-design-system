@@ -62,7 +62,9 @@ image ships in the `@govtech-bb/frontend` package under `assets/images/`. Host
 it with your service and point `src` at your copy.
 
 Pass consumer-owned navigation content through `nav`. At tablet and desktop
-widths the logo and navigation share one horizontal row. On mobile, the
+widths the logo and navigation share one horizontal row; links wrap onto
+further rows before the logo gives up any width. Keep `menuLabel` to a single
+word: a longer label takes its room from the logo. On mobile, the
 Header places the navigation in a tinted panel behind a Menu disclosure after
 JavaScript loads. A button in the navigation stretches across the mobile panel
 and appears before regular links while retaining its supplied order on larger

@@ -22,6 +22,13 @@
   font-weight: 700;
 }
 
+/* Keys and values carry what users typed (emails, references): break rather
+   than overflow the column. The columns are fixed tracks, so this is enough. */
+.govbb-summary-list__key,
+.govbb-summary-list__value {
+  overflow-wrap: break-word;
+}
+
 /* <dd> carries a default indent — remove it. */
 .govbb-summary-list__value,
 .govbb-summary-list__actions {
@@ -30,22 +37,28 @@
 
 .govbb-summary-list__actions {
   display: flex;
+  flex-wrap: wrap;
   gap: var(--govbb-space-s);
 }
 
 @media (--tablet) {
-  /* Fixed key column width from the Figma check-answers block. */
+  /* Fixed key column width from the Figma check-answers block; in a column
+     narrower than ~600px it falls back to a share of the width. The value
+     track has a zero minimum so an unbreakable value wraps inside it rather
+     than widening the row. */
   .govbb-summary-list__row {
     display: grid;
 
     /* 15.125rem = the comp's 242px, in rem so it tracks text zoom */
-    grid-template-columns: 15.125rem 1fr;
+    grid-template-columns: min(15.125rem, 40%) minmax(0, 1fr);
     gap: var(--govbb-space-s);
     align-items: start;
   }
 
-  /* Rows with actions gain a third column, links pushed to the right edge. */
+  /* Rows with actions gain a third column at the right edge, capped at a
+     fifth of the row so a long action label wraps instead of starving the
+     value. */
   .govbb-summary-list__row:has(> .govbb-summary-list__actions) {
-    grid-template-columns: 15.125rem 1fr auto;
+    grid-template-columns: min(15.125rem, 40%) minmax(0, 1fr) fit-content(20%);
   }
 }

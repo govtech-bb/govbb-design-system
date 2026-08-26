@@ -40,6 +40,16 @@ describe('Input', () => {
     expect(screen.getByRole('textbox', { name: 'Phone' }).id).toBe('mobile');
   });
 
+  it('treats empty label, description and error as absent', () => {
+    const { container } = render(
+      <Input aria-label="Name" label="" description="" error="" />,
+    );
+    expect(container.querySelector('.govbb-form-group')).toBeNull();
+    const input = screen.getByRole('textbox', { name: 'Name' });
+    expect(input.getAttribute('aria-invalid')).toBeNull();
+    expect(input.getAttribute('aria-describedby')).toBeNull();
+  });
+
   it('self-composes label and error when given them', () => {
     render(<Input label="Average weekly pay" error="Enter your pay" />);
     const input = screen.getByRole('textbox', { name: 'Average weekly pay' });

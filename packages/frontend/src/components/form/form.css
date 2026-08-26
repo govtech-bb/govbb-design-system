@@ -30,8 +30,12 @@
   line-height: var(--govbb-line-height-base);
   font-weight: 700;
   color: var(--govbb-color-ink);
+  overflow-wrap: anywhere;
 }
 
+/* Text primitives let an unbreakable word (an email address, a reference)
+   wrap rather than overflow the column. anywhere, not break-word: as
+   shrink-wrapped flex items they would otherwise size to the word. */
 .govbb-label {
   display: block;
   margin: 0;
@@ -39,6 +43,7 @@
   line-height: var(--govbb-line-height-base);
   font-weight: 700;
   color: var(--govbb-color-ink);
+  overflow-wrap: anywhere;
 }
 
 /* "(optional)" suffix inside the label — required fields carry no mark.
@@ -54,6 +59,7 @@
   font-size: var(--govbb-font-size-body);
   line-height: var(--govbb-line-height-base);
   color: var(--govbb-color-muted);
+  overflow-wrap: anywhere;
 }
 
 .govbb-error-message {
@@ -62,6 +68,7 @@
   font-size: var(--govbb-font-size-body);
   line-height: var(--govbb-line-height-base);
   color: var(--govbb-color-error);
+  overflow-wrap: anywhere;
 }
 
 /* Keep label/legend, hint and error message tight together — no gap between

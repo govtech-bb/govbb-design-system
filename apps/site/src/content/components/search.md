@@ -66,8 +66,9 @@ as search) but stays available to screen readers.
 ### Make the search scope clear
 
 Use a label that says what will be searched and keep the word “Search” in the
-submit button's accessible name. Give the field enough width for users to
-review several words before submitting.
+submit button's accessible name. Keep the button label to that one word: a
+longer label takes its width from the field. Give the field enough width for
+users to review several words before submitting.
 
 ### Preserve and recover from the query
 

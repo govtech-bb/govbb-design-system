@@ -181,6 +181,7 @@
 
 :where(.govbb-prose) > :is(hr) {
   margin-block: var(--govbb-space-m);
+  margin-inline: 0; /* the UA's auto margins would centre it in the measure */
 }
 
 :where(.govbb-prose) :where(img) {

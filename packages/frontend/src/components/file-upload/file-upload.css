@@ -3,15 +3,21 @@
    .govbb-file-upload__dropzone <label> (with __info text, the hidden __input,
    and an __action column) and an optional __list of __item rows. */
 
+/* Size containment keeps the copy's 16rem wrap floor and the nowrap file
+   names out of the component's min-content, so a narrow column shrinks it. */
 .govbb-file-upload {
   display: flex;
   flex-direction: column;
   gap: var(--govbb-space-xs);
   width: 100%;
+  contain: inline-size;
 }
 
+/* Copy and action share a row while the copy keeps 16rem; below that the
+   action wraps beneath it. */
 .govbb-file-upload__dropzone {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: var(--govbb-space-m);
   width: 100%;
@@ -38,11 +44,12 @@
 
 .govbb-file-upload__info {
   display: flex;
-  flex: 1;
+  flex: 1 1 16rem;
   flex-direction: column;
   align-items: flex-start;
   gap: var(--govbb-space-xxs);
   min-width: 0;
+  overflow-wrap: anywhere;
   text-align: start;
 }
 
@@ -59,16 +66,18 @@
 
 .govbb-file-upload__action {
   display: flex;
+  flex: 0 1 auto;
   flex-direction: column;
-  flex-shrink: 0;
   align-items: flex-start;
   gap: var(--govbb-space-xxs);
+  min-width: 0;
 }
 
 .govbb-file-upload__max-size {
   font-size: var(--govbb-font-size-body-sm);
   line-height: var(--govbb-line-height-base);
   color: var(--govbb-color-muted);
+  overflow-wrap: anywhere;
 }
 
 /* The hidden <input> carries .govbb-visually-hidden (the utility) for hiding;
@@ -84,8 +93,11 @@
   list-style: none;
 }
 
+/* Name and Remove share a row while the name keeps 8rem; below that Remove
+   drops beneath it. */
 .govbb-file-upload__item {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: var(--govbb-space-s);
@@ -96,7 +108,7 @@
 }
 
 .govbb-file-upload__name {
-  flex: 1;
+  flex: 1 1 8rem;
   min-width: 0;
   overflow: hidden;
   font-size: var(--govbb-font-size-body);
@@ -116,6 +128,7 @@
   }
 
   .govbb-file-upload__info {
+    flex-basis: auto;
     align-items: center;
   }
 

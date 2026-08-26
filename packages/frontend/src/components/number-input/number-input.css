@@ -8,7 +8,8 @@
   display: grid;
   grid-template-columns: 1fr 2.9375rem;
   align-items: center;
-  width: 11rem; /* 176px */
+  width: 100%;
+  max-width: 11rem; /* 176px; shrinks with a narrower column */
   background: var(--govbb-color-surface);
   border: var(--govbb-border-width-form) solid var(--govbb-color-ink);
   border-radius: var(--govbb-radius);

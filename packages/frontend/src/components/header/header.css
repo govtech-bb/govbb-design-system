@@ -99,6 +99,11 @@
     height: 2.1875rem; /* 35px */
   }
 
+  /* The logo keeps its width; navigation wraps onto further rows instead. */
+  .govbb-header__home {
+    flex: none;
+  }
+
   .govbb-header__controls {
     margin-inline-start: auto;
   }
@@ -114,9 +119,9 @@
   }
 
   .govbb-header__nav-inner {
-    flex-direction: row;
+    flex-flow: row wrap;
     align-items: center;
-    gap: var(--govbb-space-l);
+    gap: var(--govbb-space-s) var(--govbb-space-l);
     padding-block: 0;
   }
 

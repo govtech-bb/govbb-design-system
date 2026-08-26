@@ -11,8 +11,9 @@
 
 .govbb-search__input {
   flex: 1;
+  width: 100%; /* zero min-content, so the form shrinks with its column */
   min-width: 0;
-  height: 3.875rem; /* 62px — matches the button */
+  min-height: 3.875rem; /* 62px — matches the button */
   padding: 0 var(--govbb-space-s);
   font: inherit;
   font-size: var(--govbb-font-size-body);
@@ -43,7 +44,7 @@
 }
 
 .govbb-search__button {
-  height: 3.875rem;
+  min-height: 3.875rem; /* grows with a wrapped label rather than clipping it */
   padding: 0 var(--govbb-space-xm);
   font: inherit;
   font-size: var(--govbb-font-size-body);

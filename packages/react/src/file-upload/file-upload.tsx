@@ -7,6 +7,7 @@ import {
   type ReactNode,
 } from 'react';
 import { FieldShell, useFieldIds, type FieldExtras } from '../form/field';
+import { has } from '../form/form';
 
 /*
  * Dropzone + chosen-file list. Stateless: the consumer owns the file list
@@ -51,10 +52,10 @@ export const FileUpload = forwardRef<HTMLInputElement, FileUploadProps>(
     },
     ref,
   ) {
-    const ids = useFieldIds(id ?? name, description != null, error != null);
-    const composed = label != null || description != null || error != null;
+    const ids = useFieldIds(id ?? name, has(description), has(error));
+    const composed = has(label) || has(description) || has(error);
     const inputId = ids.fieldId;
-    const labelId = label != null ? `${ids.fieldId}-label` : undefined;
+    const labelId = has(label) ? `${ids.fieldId}-label` : undefined;
     const inputRef = useRef<HTMLInputElement | null>(null);
     const [announcement, setAnnouncement] = useState('');
     function handleRemove(name: string, onRemove: () => void) {
@@ -67,7 +68,7 @@ export const FileUpload = forwardRef<HTMLInputElement, FileUploadProps>(
         <label className="govbb-file-upload__dropzone" htmlFor={inputId}>
           <span className="govbb-file-upload__info">
             <span className="govbb-file-upload__title">{title}</span>
-            {subtitle != null && (
+            {has(subtitle) && (
               <span className="govbb-file-upload__subtitle">{subtitle}</span>
             )}
           </span>
@@ -86,7 +87,7 @@ export const FileUpload = forwardRef<HTMLInputElement, FileUploadProps>(
             name={name}
             aria-describedby={cx(ids.describedBy, describedBy) || undefined}
             aria-labelledby={cx(labelId, labelledBy) || undefined}
-            aria-invalid={error != null ? true : ariaInvalid}
+            aria-invalid={has(error) ? true : ariaInvalid}
             {...props}
             type="file"
           />
@@ -97,7 +98,7 @@ export const FileUpload = forwardRef<HTMLInputElement, FileUploadProps>(
             >
               {buttonLabel}
             </span>
-            {maxSize != null && (
+            {has(maxSize) && (
               <span className="govbb-file-upload__max-size">{maxSize}</span>
             )}
           </span>

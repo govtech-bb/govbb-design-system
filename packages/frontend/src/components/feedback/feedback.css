@@ -19,7 +19,7 @@
   gap: var(--govbb-space-xs);
   align-items: flex-start;
   padding: var(--govbb-space-xm) var(--govbb-space-s);
-  overflow-wrap: break-word;
+  overflow-wrap: anywhere; /* children are shrink-wrapped flex items */
   font-size: var(--govbb-font-size-body);
   line-height: var(--govbb-line-height-base);
   color: var(--govbb-color-ink);

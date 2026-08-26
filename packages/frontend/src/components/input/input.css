@@ -50,12 +50,19 @@
   cursor: not-allowed;
 }
 
-/* Prefix/suffix: the wrapper takes over border, radius and states. */
+/* Prefix/suffix: the wrapper takes over border, radius and states. The three
+   parts are flex items: once the field would drop under 8rem the adornments
+   wrap onto rows of their own and fill them (GOV.UK's stacked layout for
+   narrow screens, driven by the container rather than the viewport). Their
+   dividers are outlines, so they land on whichever side meets the field, and
+   the wrapper clips them to its rounded corners. */
 
 .govbb-input-wrapper {
   display: flex;
+  flex-wrap: wrap;
   align-items: stretch;
   width: 100%;
+  overflow: clip;
   background: var(--govbb-color-surface);
   border: var(--govbb-border-width-form) solid var(--govbb-color-ink);
   border-radius: var(--govbb-radius);
@@ -86,10 +93,14 @@
 }
 
 .govbb-input-wrapper > .govbb-input {
+  /* The huge grow factor keeps the adornments at their own width while they
+     share a row with the field; alone on a row they are the only item that
+     grows, so they fill it. */
+  flex: 1000000 1 8rem;
   min-width: 0;
   background: none;
   border: 0;
-  border-radius: inherit;
+  border-radius: 0;
   box-shadow: none; /* hover shadow renders on the wrapper, not the field */
 }
 
@@ -101,42 +112,22 @@
 .govbb-input__prefix,
 .govbb-input__suffix {
   display: flex;
-  flex-shrink: 0;
+  flex: 1 1 auto;
   align-items: center;
-  padding-inline: var(--govbb-space-s);
+  min-width: 0;
+  padding: var(--govbb-space-xs) var(--govbb-space-s);
   font-size: var(--govbb-font-size-body);
   line-height: var(--govbb-line-height-base);
   color: var(--govbb-color-ink);
-  white-space: nowrap;
   background: color-mix(
     in srgb,
     var(--govbb-color-neutral) 50%,
     var(--govbb-color-surface)
   );
-}
-
-.govbb-input__prefix {
-  border-inline-end: var(--govbb-border-width-form) solid var(--govbb-color-ink);
-  border-start-start-radius: calc(
-    var(--govbb-radius) - var(--govbb-border-width-form)
-  );
-  border-end-start-radius: calc(
-    var(--govbb-radius) - var(--govbb-border-width-form)
-  );
-}
-
-.govbb-input__suffix {
-  border-inline-start: var(--govbb-border-width-form) solid
-    var(--govbb-color-ink);
-  border-start-end-radius: calc(
-    var(--govbb-radius) - var(--govbb-border-width-form)
-  );
-  border-end-end-radius: calc(
-    var(--govbb-radius) - var(--govbb-border-width-form)
-  );
+  outline: var(--govbb-border-width-form) solid var(--govbb-color-ink);
 }
 
 .govbb-input-wrapper:has([aria-invalid='true'])
   :is(.govbb-input__prefix, .govbb-input__suffix) {
-  border-color: var(--govbb-color-error);
+  outline-color: var(--govbb-color-error);
 }

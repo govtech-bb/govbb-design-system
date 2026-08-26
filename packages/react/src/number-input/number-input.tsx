@@ -8,6 +8,7 @@ import {
   type InputEvent,
 } from 'react';
 import { FieldShell, useFieldIds, type FieldExtras } from '../form/field';
+import { has } from '../form/form';
 
 export type NumberInputProps = Omit<
   InputHTMLAttributes<HTMLInputElement>,
@@ -51,11 +52,11 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
     ref,
   ) {
     const inputRef = useRef<HTMLInputElement>(null);
-    const ids = useFieldIds(id ?? name, description != null, error != null);
-    const composed = label != null || description != null || error != null;
+    const ids = useFieldIds(id ?? name, has(description), has(error));
+    const composed = has(label) || has(description) || has(error);
     const inputId = composed ? ids.fieldId : (id ?? name);
     const resolvedLabelId =
-      labelId ?? (label != null ? `${ids.fieldId}-label` : undefined);
+      labelId ?? (has(label) ? `${ids.fieldId}-label` : undefined);
     const [uncontrolledValue, setUncontrolledValue] =
       useState<NumericValue>(defaultValue);
     useImperativeHandle(ref, () => inputRef.current!, []);
@@ -107,7 +108,7 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
           readOnly={readOnly}
           onInput={handleInput}
           aria-describedby={cx(ids.describedBy, describedBy) || undefined}
-          aria-invalid={error != null ? true : ariaInvalid}
+          aria-invalid={has(error) ? true : ariaInvalid}
           {...props}
           type="number"
         />

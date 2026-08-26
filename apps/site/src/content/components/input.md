@@ -96,6 +96,44 @@ Pick the `type` attribute that matches the expected answer (`email`, `tel`,
 correctly. Avoid `type="number"` on a plain input; use the dedicated number
 input component instead when you need step controls.
 
+## Prefixes and suffixes
+
+Use a prefix or suffix to show a unit or currency, such as "$" or "per day",
+so users do not type it themselves. Keep it to a symbol or one or two words:
+the adornment does not shrink, so a long one takes width from the field. Mark
+it `aria-hidden="true"` and make sure the label or hint carries its meaning,
+for example "Fee, in dollars per day". When there is no room for the field
+beside them, the adornments move onto rows of their own.
+
+```html title="Input with a prefix and suffix"
+<div class="govbb-form-group">
+  <label class="govbb-label" for="fee">Fee, in dollars per day</label>
+  <div class="govbb-input-wrapper">
+    <span class="govbb-input__prefix" aria-hidden="true">$</span>
+    <input
+      class="govbb-input"
+      id="fee"
+      name="fee"
+      type="text"
+      inputmode="decimal"
+    />
+    <span class="govbb-input__suffix" aria-hidden="true">per day</span>
+  </div>
+</div>
+```
+
+```tsx
+import { Input } from '@govtech-bb/react';
+
+<Input
+  label="Fee, in dollars per day"
+  name="fee"
+  inputMode="decimal"
+  prefix="$"
+  suffix="per day"
+/>;
+```
+
 ## Errors
 
 When an input fails validation, show an error message (`.govbb-error-message`)

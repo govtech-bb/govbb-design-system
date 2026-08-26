@@ -11,6 +11,7 @@
 .govbb-table-container {
   width: 100%;
   overflow-x: auto;
+  contain: inline-size; /* a scroll region's width must not come from its table */
 }
 
 .govbb-table {
