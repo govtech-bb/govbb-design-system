@@ -251,6 +251,109 @@
     </section>
 
     <section>
+      <h2>Combobox — default / error / disabled</h2>
+      <div class="govbb-form-group" style="max-width: 22.5rem">
+        <label class="govbb-label" for="country">Country of birth</label>
+        <span class="govbb-hint" id="country-hint"
+          >Start typing to filter the list</span
+        >
+        <div class="govbb-combobox" data-govbb-module="combobox">
+          <select
+            class="govbb-select"
+            id="country"
+            name="country"
+            aria-describedby="country-hint"
+          >
+            <option value="" disabled selected>Select a country</option>
+            <option value="ag">Antigua and Barbuda</option>
+            <option value="bs">Bahamas</option>
+            <option value="bb">Barbados</option>
+            <option value="bz">Belize</option>
+            <option value="ca">Canada</option>
+            <option value="dm">Dominica</option>
+            <option value="gd">Grenada</option>
+            <option value="gy">Guyana</option>
+            <option value="jm">Jamaica</option>
+            <option value="kn">Saint Kitts and Nevis</option>
+            <option value="lc">Saint Lucia</option>
+            <option value="vc">Saint Vincent and the Grenadines</option>
+            <option value="tt">Trinidad and Tobago</option>
+            <option value="gb">United Kingdom</option>
+            <option value="us">United States</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="govbb-form-group" style="max-width: 22.5rem">
+        <label class="govbb-label" for="country-err">Country of birth</label>
+        <span class="govbb-error-message" id="country-err-msg"
+          >Enter and select a country</span
+        >
+        <div class="govbb-combobox" data-govbb-module="combobox">
+          <select
+            class="govbb-select"
+            id="country-err"
+            aria-invalid="true"
+            aria-describedby="country-err-msg"
+          >
+            <option value="" disabled selected>Select a country</option>
+            <option value="bb">Barbados</option>
+            <option value="lc">Saint Lucia</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="govbb-form-group" style="max-width: 22.5rem">
+        <label class="govbb-label" for="country-dis">Country of birth</label>
+        <div class="govbb-combobox" data-govbb-module="combobox">
+          <select class="govbb-select" id="country-dis" disabled>
+            <option value="" disabled>Select a country</option>
+            <option value="bb" selected>Barbados</option>
+          </select>
+        </div>
+      </div>
+      <div class="govbb-form-group" style="max-width: 22.5rem">
+        <label class="govbb-label" for="street">Street</label>
+        <span class="govbb-hint" id="street-hint"
+          >Free text, with suggestions</span
+        >
+        <div class="govbb-combobox" data-govbb-module="combobox">
+          <input
+            class="govbb-input"
+            id="street"
+            name="street"
+            list="street-suggestions"
+            aria-describedby="street-hint"
+          />
+          <datalist id="street-suggestions"></datalist>
+        </div>
+      </div>
+      <script>
+        // stand-in lookup: refill the datalist as the user types
+        {
+          const streets = [
+            'Bay Street',
+            'Broad Street',
+            'Roebuck Street',
+            'Spry Street',
+            'Swan Street',
+            'Tudor Street',
+          ];
+          const street = document.getElementById('street');
+          const suggestions = document.getElementById('street-suggestions');
+          street.addEventListener('input', () => {
+            const typed = street.value.trim().toLowerCase();
+            suggestions.replaceChildren(
+              ...streets
+                .filter((name) => typed && name.toLowerCase().includes(typed))
+                .map((name) => new Option(name)),
+            );
+          });
+        }
+      </script>
+    </section>
+
+    <section>
       <h2>Date input</h2>
       <div class="govbb-form-group">
         <fieldset

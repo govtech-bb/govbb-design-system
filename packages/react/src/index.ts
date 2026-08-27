@@ -8,6 +8,8 @@ export { ButtonGroup } from './button-group/button-group';
 export type { ButtonGroupProps } from './button-group/button-group';
 export { Checkbox, CheckboxGroup } from './checkbox/checkbox';
 export type { CheckboxProps, CheckboxGroupProps } from './checkbox/checkbox';
+export { Combobox } from './combobox/combobox';
+export type { ComboboxProps } from './combobox/combobox';
 export {
   DateInput,
   formatDateInput,

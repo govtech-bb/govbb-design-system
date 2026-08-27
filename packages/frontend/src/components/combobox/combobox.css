@@ -1,0 +1,62 @@
+/* Combobox — a text input that filters a long list of options into a listbox
+   (the WAI-ARIA editable combobox pattern). Markup is a .govbb-combobox
+   wrapping a plain <select class="govbb-select">; with
+   data-govbb-module="combobox" the JS keeps the select in the form (its
+   name/value still submit) but hides it, and adds a .govbb-combobox__input
+   plus a floating .govbb-combobox__list. The input reuses the .govbb-input
+   recipe — border, hover shadow, shared focus ring — so this file styles only
+   the list. Without JS the user gets the select. */
+
+.govbb-combobox {
+  position: relative;
+}
+
+/* Floats over whatever follows the field, a focus-ring's width below it. */
+.govbb-combobox__list {
+  position: absolute;
+  inset-inline: 0;
+  top: calc(100% + var(--govbb-space-xs));
+  z-index: 10;
+  max-height: 23rem; /* eight rows, then the list scrolls */
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  list-style: none;
+  background: var(--govbb-color-surface);
+  border: var(--govbb-border-width-form) solid var(--govbb-color-ink);
+  border-radius: var(--govbb-radius);
+}
+
+.govbb-combobox__option {
+  padding: var(--govbb-space-xs) var(--govbb-space-s);
+  font-size: var(--govbb-font-size-body);
+  line-height: var(--govbb-line-height-base);
+  color: var(--govbb-color-ink);
+  overflow-wrap: anywhere;
+  cursor: pointer;
+}
+
+/* One highlight for pointer and keyboard: the option aria-activedescendant
+   points at. Only ever one option is emphasised. */
+.govbb-combobox__option[aria-selected='true'] {
+  background: var(--govbb-color-highlight);
+}
+
+/* The current value stays bold while the highlight moves. */
+.govbb-combobox__option--chosen {
+  font-weight: 700;
+}
+
+/* Disabled options and the "No results found" row. */
+.govbb-combobox__option[aria-disabled='true'] {
+  color: var(--govbb-color-muted);
+  cursor: default;
+}
+
+/* Forced colors strip the highlight fill; an outline is recoloured instead. */
+@media (forced-colors: active) {
+  .govbb-combobox__option[aria-selected='true'] {
+    outline: 2px solid transparent;
+    outline-offset: -2px;
+  }
+}
