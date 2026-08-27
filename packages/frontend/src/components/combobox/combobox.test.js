@@ -404,6 +404,28 @@ describe('combobox module over a text input and datalist', () => {
     ).toBe('Bay Street, Bridgetown');
   });
 
+  it('keeps the same option nodes when a re-render changes nothing', async () => {
+    const { input, datalist, list } = mountInput();
+    input.focus();
+    type(input, 'ba');
+    const before = Array.from(list.querySelectorAll('[role="option"]'));
+    expect(before).toHaveLength(3);
+
+    // A consumer re-rendering over the top with the same suggestions: the
+    // rows must not be swapped for identical new nodes, or whatever holds a
+    // reference to one — the pointer mid-click, assistive tech — loses it.
+    datalist.innerHTML = SUGGESTIONS;
+    await tick();
+    const after = Array.from(list.querySelectorAll('[role="option"]'));
+    expect(after).toEqual(before);
+    expect(before[0].isConnected).toBe(true);
+
+    // and a real change still rebuilds
+    datalist.innerHTML = '<option value="Bay Street"></option>';
+    await tick();
+    expect(shown(list)).toEqual(['Bay Street']);
+  });
+
   it('destroy() puts the input back', () => {
     document.body.innerHTML = `
       <div class="govbb-combobox">
