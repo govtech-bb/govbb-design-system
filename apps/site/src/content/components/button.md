@@ -15,6 +15,7 @@ group: Actions
 <button class="govbb-button govbb-button--tertiary" type="button">
   Tertiary
 </button>
+<button class="govbb-button govbb-button--ghost" type="button">Ghost</button>
 <button class="govbb-button govbb-button--text" type="button">Text</button>
 ```
 
@@ -24,6 +25,7 @@ import { Button } from '@govtech-bb/react';
 <Button>Primary</Button>
 <Button variant="secondary">Secondary</Button>
 <Button variant="tertiary">Tertiary</Button>
+<Button variant="ghost">Ghost</Button>
 <Button variant="text">Text</Button>
 ```
 
@@ -82,21 +84,40 @@ describes the action it performs.
 Use the **secondary** button for actions that sit alongside the primary one but
 are less important. Use the **tertiary** button for the least prominent actions.
 
-Use the **text** button for an action that must not compete with the buttons
-around it, such as _Remove_ next to an uploaded file or the _Menu_ control in
+Use the **ghost** button for an action that must not compete with the buttons
+around it, such as _Cancel_ beside a primary button or the _Menu_ control in
 the [header](/components/header/). It carries no fill or outline, only an
-underlined label, but it keeps the same box as the other variants so a row of
-mixed buttons lines up. It is still a button: use it for actions, and use a
+underlined label, but it keeps the same box as the other variants, so a row of
+mixed buttons lines up and the target stays full size.
+
+Use the **text** button only where there is no room for that box, such as
+_Remove_ in a table cell or a list row. It is the ghost button without its
+padding, so it sits flush with the text around it.
+
+Both are still buttons: use them for actions, and use a
 [link](/components/link/) for navigation.
 
-```html title="Text button"
-<button class="govbb-button govbb-button--text" type="button">Remove</button>
+```html title="Ghost and text buttons"
+<div class="govbb-button-group">
+  <button class="govbb-button" type="button">Save and continue</button>
+  <button class="govbb-button govbb-button--ghost" type="button">Cancel</button>
+</div>
+<p>
+  passport.pdf
+  <button class="govbb-button govbb-button--text" type="button">Remove</button>
+</p>
 ```
 
 ```tsx
-import { Button } from '@govtech-bb/react';
+import { Button, ButtonGroup } from '@govtech-bb/react';
 
-<Button variant="text">Remove</Button>;
+<ButtonGroup>
+  <Button>Save and continue</Button>
+  <Button variant="ghost">Cancel</Button>
+</ButtonGroup>
+<p>
+  passport.pdf <Button variant="text">Remove</Button>
+</p>
 ```
 
 Use `LinkButton` when navigation is the primary call to action. It remains a
@@ -124,7 +145,7 @@ import { LinkButton } from '@govtech-bb/react';
 
 ## Destructive actions
 
-Add the `negative` modifier to a primary or text button when the action
+Add the `negative` modifier to a primary, ghost or text button when the action
 destroys data or cannot be undone, such as deleting a record. It is a warning,
 not a substitute for confirmation: pair it with a step that lets the user check
 what they are about to lose. Do not use it for ordinary actions, because a page
@@ -153,8 +174,8 @@ import { Button } from '@govtech-bb/react';
 
 Add the `inverse` modifier when a button sits on a dark or brand-coloured
 surface, such as a hero panel. It flips the primary button to a white fill with
-brand-blue text, and turns the tertiary and text variants white so they stay
-visible. The surrounding surface must supply the dark background: the modifier
+brand-blue text, and turns the tertiary, ghost and text variants white so they
+stay visible. The surrounding surface must supply the dark background: the modifier
 only recolours the button.
 
 ```html title="Inverse buttons"

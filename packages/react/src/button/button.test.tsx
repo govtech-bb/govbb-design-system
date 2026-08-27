@@ -5,6 +5,13 @@ import { describe, expect, it } from 'vitest';
 import { Button, LinkButton } from './button';
 
 describe('Button', () => {
+  it('maps the ghost variant to its BEM class', () => {
+    render(<Button variant="ghost">Cancel</Button>);
+    expect(screen.getByRole('button', { name: 'Cancel' }).className).toBe(
+      'govbb-button govbb-button--ghost',
+    );
+  });
+
   it('maps variants to BEM classes and defaults type to button', () => {
     render(
       <Button variant="text" negative>

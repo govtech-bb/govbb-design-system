@@ -1,6 +1,6 @@
 /*
- * Button: primary, plus secondary / tertiary / text variants and the negative
- * (danger) and inverse (dark-background) modifiers.
+ * Button: primary, plus secondary / tertiary / ghost / text variants and the
+ * negative (danger) and inverse (dark-background) modifiers.
  *
  * Colours come from the semantic tokens. Hover/active are color-mixed off the
  * base colour, so recolouring a variant carries its states with it.
@@ -95,7 +95,10 @@
   }
 }
 
-/* Text — a link, not a box */
+/* Ghost and text — a label, not a box. Ghost keeps the button's padding, so
+   it lines up in a row of mixed buttons and keeps the full target; text drops
+   it to sit flush where space is tight, such as a table cell or a list row. */
+.govbb-button--ghost,
 .govbb-button--text {
   color: var(--govbb-color-tertiary);
   background: transparent;
@@ -110,6 +113,10 @@
   }
 }
 
+.govbb-button--text {
+  padding: 0;
+}
+
 /* forced-colors drops box-shadow, so the inset outline needs a real border */
 @media (forced-colors: active) {
   .govbb-button--tertiary {
@@ -117,7 +124,7 @@
   }
 }
 
-/* Negative (danger) — only primary and text use it */
+/* Negative (danger) — only primary, ghost and text use it */
 .govbb-button--negative {
   color: var(--govbb-color-surface);
   background: var(--govbb-color-error);
@@ -136,7 +143,7 @@
     outline-color: var(--govbb-color-focus-danger);
   }
 
-  &.govbb-button--text {
+  &:is(.govbb-button--ghost, .govbb-button--text) {
     color: var(--govbb-color-error);
     background: transparent;
 
@@ -192,7 +199,7 @@
     }
   }
 
-  &.govbb-button--text {
+  &:is(.govbb-button--ghost, .govbb-button--text) {
     color: var(--govbb-color-surface);
     background: transparent;
   }
