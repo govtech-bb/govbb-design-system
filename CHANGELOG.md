@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.0-alpha.29 (2026-08-27)
+
+### combobox
+- Keep the option nodes when a re-render changes nothing by @AaronHarris
 ## 1.0.0-alpha.28 (2026-08-27)
 
 ### add-another
@@ -60,6 +64,7 @@
 - Update visual regression baselines by @github-actions[bot]
 - Update visual regression baselines by @github-actions[bot]
 - Update visual regression baselines by @github-actions[bot]
+- Release v1.0.0-alpha.28 by @github-actions[bot]
 ## 1.0.0-alpha.27 (2026-08-25)
 
 ### header
