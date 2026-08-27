@@ -19,7 +19,7 @@ group: Page furniture
     </a>
     <div class="govbb-header__controls">
       <button
-        class="govbb-button govbb-button--text govbb-header__toggle"
+        class="govbb-button govbb-button--ghost govbb-header__toggle"
         type="button"
         hidden
       >
