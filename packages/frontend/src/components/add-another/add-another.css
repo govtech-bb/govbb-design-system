@@ -1,0 +1,122 @@
+/* Add another — lets users repeat a small group of fields (a person, an
+   account) on one page. Markup: .govbb-add-another holding an __items list of
+   __item blocks, each a .govbb-fieldset.govbb-add-another__fieldset with a
+   numbered __legend, its fields and a destructive __remove text button, then
+   an __add text button. Both are flush text buttons, as gov.bb forms already
+   renders them: adding is routine, and removing throws away what the user
+   typed, so it takes the negative (red) modifier. Without JS both buttons submit the form and the
+   server adds or removes the item; with data-govbb-module="add-another" the
+   JS does it on the page. --inline lays each item's fields out in one row
+   once the component has about 28rem of width (a container query, so a
+   narrow column falls back to stacked whatever the viewport), for up to
+   three short fields. */
+
+.govbb-add-another {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--govbb-space-xm);
+  width: 100%;
+}
+
+.govbb-add-another__items {
+  display: flex;
+  flex-direction: column;
+  gap: var(--govbb-space-m);
+  width: 100%;
+}
+
+/* A rule under each item keeps repeated blocks readable as separate things. */
+.govbb-add-another__item {
+  padding-bottom: var(--govbb-space-xm);
+  border-bottom: var(--govbb-border-width-form) solid var(--govbb-color-neutral);
+}
+
+.govbb-add-another__fieldset {
+  width: 100%;
+}
+
+/* Focus lands here after an item is added or removed. The ring is the base
+   one; the offset keeps it clear of the fields. */
+.govbb-add-another__fieldset:focus-visible {
+  outline-offset: var(--govbb-space-xs);
+}
+
+/* The JS hides Remove at the minimum and Add at the maximum with the hidden
+   attribute; the button's own display would otherwise override it. */
+.govbb-add-another__add[hidden],
+.govbb-add-another__remove[hidden] {
+  display: none;
+}
+
+.govbb-add-another__legend {
+  font-size: var(--govbb-font-size-h3);
+  line-height: var(--govbb-line-height-h3);
+  font-weight: 600;
+}
+
+/* The last form group's own margin would double the item's padding. */
+.govbb-add-another__fieldset > .govbb-form-group:last-of-type {
+  margin-bottom: 0;
+}
+
+/* Remove is a flush text button, so this margin is all that separates it
+   from the last field: a full step (gap + margin = 24px). */
+.govbb-add-another__remove {
+  margin-top: var(--govbb-space-s);
+}
+
+/* Inline: fields share one row and the Remove button sits at its end, so a
+   list of short entries reads as a table. The switch is container-driven: a
+   one-third column at desktop is as cramped as a phone, and the viewport
+   cannot tell the difference. */
+.govbb-add-another--inline {
+  container-type: inline-size;
+}
+
+@container (width >= 28rem) {
+  .govbb-add-another--inline .govbb-add-another__item {
+    padding-bottom: 0;
+    border-bottom: 0;
+  }
+
+  .govbb-add-another--inline .govbb-add-another__fieldset {
+    flex-direction: row;
+    gap: var(--govbb-space-xm);
+    align-items: flex-end;
+  }
+
+  /* Rows speak for themselves; the numbered legend stays for screen readers. */
+  .govbb-add-another--inline .govbb-add-another__legend {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .govbb-add-another--inline .govbb-add-another__fieldset > .govbb-form-group {
+    flex: 1 1 0;
+    width: auto;
+    margin-bottom: 0;
+  }
+
+  /* Bottom-aligned like the fields, then lifted by the field's own bottom
+     padding so the flush label lines up with the text inside them. */
+  .govbb-add-another--inline .govbb-add-another__remove {
+    flex: 0 0 auto;
+    margin-top: 0;
+    margin-bottom: var(--govbb-space-s);
+  }
+
+  /* An item with an error gets a red edge, so the row that needs attention
+     stands out even with its legend hidden. */
+  .govbb-add-another--inline
+    .govbb-add-another__item:has(.govbb-error-message) {
+    padding-inline-start: var(--govbb-space-s);
+    border-inline-start: 4px solid var(--govbb-color-error);
+  }
+}

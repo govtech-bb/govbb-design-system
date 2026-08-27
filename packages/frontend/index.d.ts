@@ -33,3 +33,15 @@ export class Combobox {
   sync(): void;
   destroy(): void;
 }
+
+/**
+ * Repeatable group of fields for `.govbb-add-another` (`data-govbb-module="add-another"`):
+ * Add clones a blank copy of the first item, Remove drops one, items are renumbered
+ * from their `%index%` template attributes (data-name, data-id, data-for,
+ * data-describedby, data-controls, data-labelledby). Fires `govbb-add-another-add`
+ * (detail: item, index) and `govbb-add-another-remove` (detail: index) on the root.
+ */
+export class AddAnother {
+  constructor(el: HTMLElement);
+  destroy(): void;
+}

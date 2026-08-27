@@ -50,7 +50,7 @@ component's own classes.
 
 ## Components
 
-Autocomplete · BackButton · Breadcrumbs · Button / LinkButton · ButtonGroup · Checkbox ·
+AddAnother / AddAnotherItem · Autocomplete · BackButton · Breadcrumbs · Button / LinkButton · ButtonGroup · Checkbox ·
 Combobox · DateInput ·
 ErrorMessage · ErrorSummary · Feedback · Fieldset · FileUpload ·
 Footer / FooterLink · FormGroup · Header · Heading / Text · Hint ·
