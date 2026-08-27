@@ -369,6 +369,155 @@
     </section>
 
     <section>
+      <h2>Add another — stacked / inline</h2>
+      <div
+        class="govbb-add-another"
+        data-govbb-module="add-another"
+        data-item-label="Person"
+        data-max="4"
+        style="max-width: 40rem"
+      >
+        <div class="govbb-add-another__items">
+          <div class="govbb-add-another__item">
+            <fieldset class="govbb-fieldset govbb-add-another__fieldset">
+              <legend class="govbb-fieldset__legend govbb-add-another__legend">
+                Person 1
+              </legend>
+              <div class="govbb-form-group">
+                <label class="govbb-label" for="person-0-name">Full name</label>
+                <input
+                  class="govbb-input"
+                  id="person-0-name"
+                  name="person[0][name]"
+                  type="text"
+                  data-id="person-%index%-name"
+                  data-name="person[%index%][name]"
+                />
+              </div>
+              <div class="govbb-form-group">
+                <label class="govbb-label" for="person-0-relationship"
+                  >Relationship to you</label
+                >
+                <input
+                  class="govbb-input"
+                  id="person-0-relationship"
+                  name="person[0][relationship]"
+                  type="text"
+                  data-id="person-%index%-relationship"
+                  data-name="person[%index%][relationship]"
+                />
+              </div>
+            </fieldset>
+          </div>
+        </div>
+        <button
+          class="govbb-button govbb-button--text govbb-add-another__add"
+          type="submit"
+          name="add-another"
+          value="person"
+        >
+          Add another person
+        </button>
+      </div>
+
+      <div
+        class="govbb-add-another govbb-add-another--inline"
+        data-govbb-module="add-another"
+        data-item-label="Payment"
+        style="max-width: 40rem"
+      >
+        <div class="govbb-add-another__items">
+          <div class="govbb-add-another__item">
+            <fieldset class="govbb-fieldset govbb-add-another__fieldset">
+              <legend class="govbb-fieldset__legend govbb-add-another__legend">
+                Payment 1
+              </legend>
+              <div class="govbb-form-group">
+                <label class="govbb-label" for="payment-0-payee">Paid to</label>
+                <input
+                  class="govbb-input"
+                  id="payment-0-payee"
+                  name="payment[0][payee]"
+                  type="text"
+                  data-id="payment-%index%-payee"
+                  data-name="payment[%index%][payee]"
+                />
+              </div>
+              <div class="govbb-form-group">
+                <label class="govbb-label" for="payment-0-amount">Amount</label>
+                <input
+                  class="govbb-input"
+                  id="payment-0-amount"
+                  name="payment[0][amount]"
+                  type="text"
+                  inputmode="decimal"
+                  data-id="payment-%index%-amount"
+                  data-name="payment[%index%][amount]"
+                />
+              </div>
+            </fieldset>
+          </div>
+          <div class="govbb-add-another__item">
+            <fieldset class="govbb-fieldset govbb-add-another__fieldset">
+              <legend class="govbb-fieldset__legend govbb-add-another__legend">
+                Payment 2
+              </legend>
+              <div class="govbb-form-group">
+                <label class="govbb-label" for="payment-1-payee">Paid to</label>
+                <span
+                  class="govbb-error-message"
+                  id="payment-1-payee-error"
+                  data-id="payment-%index%-payee-error"
+                  >Enter who payment 2 was paid to</span
+                >
+                <input
+                  class="govbb-input"
+                  id="payment-1-payee"
+                  name="payment[1][payee]"
+                  type="text"
+                  aria-invalid="true"
+                  aria-describedby="payment-1-payee-error"
+                  data-id="payment-%index%-payee"
+                  data-name="payment[%index%][payee]"
+                  data-describedby="payment-%index%-payee-error"
+                />
+              </div>
+              <div class="govbb-form-group">
+                <label class="govbb-label" for="payment-1-amount">Amount</label>
+                <input
+                  class="govbb-input"
+                  id="payment-1-amount"
+                  name="payment[1][amount]"
+                  type="text"
+                  inputmode="decimal"
+                  value="250"
+                  data-id="payment-%index%-amount"
+                  data-name="payment[%index%][amount]"
+                />
+              </div>
+              <button
+                class="govbb-button govbb-button--text govbb-button--negative govbb-add-another__remove"
+                type="submit"
+                name="remove"
+                value="1"
+              >
+                Remove payment 2
+              </button>
+            </fieldset>
+          </div>
+        </div>
+        <button
+          class="govbb-button govbb-button--text govbb-add-another__add"
+          type="submit"
+          name="add-another"
+          value="payment"
+        >
+          Add another payment
+        </button>
+      </div>
+    </section>
+
+    <section>
       <h2>Date input</h2>
       <div class="govbb-form-group">
         <fieldset

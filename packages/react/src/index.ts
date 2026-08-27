@@ -1,3 +1,8 @@
+export { AddAnother, AddAnotherItem } from './add-another/add-another';
+export type {
+  AddAnotherItemProps,
+  AddAnotherProps,
+} from './add-another/add-another';
 export { Autocomplete } from './autocomplete/autocomplete';
 export type {
   AutocompleteProps,
