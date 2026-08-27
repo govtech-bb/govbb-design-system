@@ -1,3 +1,8 @@
+export { Autocomplete } from './autocomplete/autocomplete';
+export type {
+  AutocompleteProps,
+  AutocompleteSuggestion,
+} from './autocomplete/autocomplete';
 export { BackButton } from './back-button/back-button';
 export type { BackButtonProps } from './back-button/back-button';
 export { Breadcrumbs } from './breadcrumbs/breadcrumbs';
