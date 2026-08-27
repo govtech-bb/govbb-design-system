@@ -221,35 +221,49 @@ export class Combobox {
     return options.find((option) => option.value === this.input.value) ?? null;
   }
 
-  /** Rebuild the list from the current options — filtered by what the user
-   *  typed in select mode, as supplied in free-text mode. Returns false when
-   *  there is nothing to show. */
+  /** Bring the list in line with the current options — filtered by what the
+   *  user typed in select mode, as supplied in free-text mode. The rows are
+   *  only rebuilt when what they show actually changes: a consumer that
+   *  re-renders while the list is open (a React form updating on every
+   *  keystroke) would otherwise swap every row for an identical new node,
+   *  detaching whatever the pointer, assistive tech or a test was holding.
+   *  Returns false when there is nothing to show. */
   render() {
     const query = this.select && this.filtered ? fold(this.input.value) : '';
     const chosen = this.chosen();
     const activeIndex = this.active?.dataset.index;
-    const items = [];
+    const rows = [];
     this.options().forEach((option, index) => {
       const label = option.label || option.value;
       // empty-value select options are placeholders ("Select a country")
       if (this.select && option.value === '') return;
       if (query && !fold(label).includes(query)) return;
+      rows.push({
+        index,
+        label,
+        disabled: Boolean(option.disabled),
+        chosen: option === chosen,
+      });
+    });
+    const count = rows.length;
+    // nothing to suggest for free text; a select says so in the list
+    if (!count && !this.select) return false;
+    const signature = JSON.stringify(count ? rows : [this.emptyLabel]);
+    if (this.list.dataset.signature === signature) return true;
+
+    const items = rows.map((row) => {
       const item = this.document.createElement('li');
       item.className = 'govbb-combobox__option';
-      item.id = `${this.id}-option-${index}`;
-      item.dataset.index = String(index);
+      item.id = `${this.id}-option-${row.index}`;
+      item.dataset.index = String(row.index);
       item.setAttribute('role', 'option');
       item.setAttribute('aria-selected', 'false');
-      if (option.disabled) item.setAttribute('aria-disabled', 'true');
-      if (option === chosen)
-        item.classList.add('govbb-combobox__option--chosen');
-      item.textContent = label;
-      items.push(item);
+      if (row.disabled) item.setAttribute('aria-disabled', 'true');
+      if (row.chosen) item.classList.add('govbb-combobox__option--chosen');
+      item.textContent = row.label;
+      return item;
     });
-    const count = items.length;
     if (!count) {
-      // nothing to suggest for free text; a select says so in the list
-      if (!this.select) return false;
       const empty = this.document.createElement('li');
       empty.className = 'govbb-combobox__option govbb-combobox__option--empty';
       empty.setAttribute('role', 'option');
@@ -259,6 +273,7 @@ export class Combobox {
       items.push(empty);
     }
     this.list.replaceChildren(...items);
+    this.list.dataset.signature = signature;
     this.setActive(
       items.find(
         (item) =>
@@ -296,6 +311,8 @@ export class Combobox {
     this.list.hidden = true;
     this.input.setAttribute('aria-expanded', 'false');
     this.status.textContent = '';
+    // so reopening announces the count again rather than staying silent
+    delete this.list.dataset.signature;
   }
 
   /** @param {HTMLLIElement | null} item */
