@@ -1,5 +1,65 @@
 # Changelog
 
+## 1.0.0-alpha.28 (2026-08-27)
+
+### add-another
+- Add the add another component by @AaronHarris
+
+### button
+- Add the ghost variant and drop the padding from text buttons by @AaronHarris
+- Drop the baseline for the renamed variants section by @AaronHarris
+
+### checkbox
+- Keep the control on the first line and dim disabled hints by @AaronHarris
+
+### combobox
+- Add the combobox component by @AaronHarris
+- Offer free-text suggestions over an input and datalist by @AaronHarris
+
+### feedback
+- Break unbreakable words inside the box by @AaronHarris
+
+### file-upload
+- Wrap the action under the copy and shrink with the column by @AaronHarris
+
+### form
+- Treat empty label, hint and error strings as absent by @AaronHarris
+- Wrap unbreakable words in labels, legends, hints and errors by @AaronHarris
+
+### header
+- Wrap the navigation instead of shrinking the logo by @AaronHarris
+- Use the ghost button for the menu toggle by @AaronHarris
+
+### input
+- Stack the prefix and suffix when the field runs out of room by @AaronHarris
+
+### number-input
+- Shrink with a narrower column by @AaronHarris
+
+### prose
+- Keep the horizontal rule left-aligned by @AaronHarris
+
+### search
+- Let the field shrink and the button grow with its label by @AaronHarris
+- Fall back to "Search" when a label is empty by @AaronHarris
+
+### summary-list
+- Wrap long values and cap the actions column by @AaronHarris
+
+### summary-section
+- Align the header action with the first line of the title by @AaronHarris
+
+### table
+- Let the scroll container shrink with its column by @AaronHarris
+
+### typography
+- Add the govbb-text-break-word utility by @AaronHarris
+
+### General
+- Update visual regression baselines by @github-actions[bot]
+- Update visual regression baselines by @github-actions[bot]
+- Update visual regression baselines by @github-actions[bot]
+- Update visual regression baselines by @github-actions[bot]
 ## 1.0.0-alpha.27 (2026-08-25)
 
 ### header
@@ -8,6 +68,7 @@
 
 ### General
 - Update visual regression baselines by @github-actions[bot]
+- Release v1.0.0-alpha.27 by @github-actions[bot]
 ## 1.0.0-alpha.26 (2026-08-25)
 
 ### fonts
