@@ -1,3 +1,8 @@
+export { Autocomplete } from './autocomplete/autocomplete';
+export type {
+  AutocompleteProps,
+  AutocompleteSuggestion,
+} from './autocomplete/autocomplete';
 export { BackButton } from './back-button/back-button';
 export type { BackButtonProps } from './back-button/back-button';
 export { Breadcrumbs } from './breadcrumbs/breadcrumbs';
@@ -8,6 +13,8 @@ export { ButtonGroup } from './button-group/button-group';
 export type { ButtonGroupProps } from './button-group/button-group';
 export { Checkbox, CheckboxGroup } from './checkbox/checkbox';
 export type { CheckboxProps, CheckboxGroupProps } from './checkbox/checkbox';
+export { Combobox } from './combobox/combobox';
+export type { ComboboxProps } from './combobox/combobox';
 export {
   DateInput,
   formatDateInput,

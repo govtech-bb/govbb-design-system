@@ -347,6 +347,13 @@ const codeBlocks = [
     };
     fit();
     new ResizeObserver(fit).observe(doc.body);
+    // Floating parts (a combobox's open list) add to scrollHeight without
+    // resizing the body, so re-fit on DOM changes too.
+    new MutationObserver(fit).observe(doc.body, {
+      attributes: true,
+      childList: true,
+      subtree: true,
+    });
     // Placeholder links (href="#") in examples must not navigate the preview
     // iframe — clicking one would replace the little preview with the docs
     // page. They are demo affordances, so make them inert like the buttons.
