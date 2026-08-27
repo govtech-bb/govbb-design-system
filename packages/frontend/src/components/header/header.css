@@ -45,7 +45,7 @@
 }
 
 /* Layout only — visual styling and interaction colours come from the
-   govbb-button--text variant. */
+   govbb-button--ghost variant. */
 .govbb-header__toggle {
   flex: none;
   min-block-size: 2.75rem;

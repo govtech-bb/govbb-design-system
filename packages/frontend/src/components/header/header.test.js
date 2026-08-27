@@ -6,7 +6,7 @@ function markup() {
     <header class="govbb-header" data-govbb-module="header">
       <div class="govbb-width-container govbb-header__inner">
         <a href="/"><img class="govbb-header__logo" src="/logo.svg" alt="gov.bb" /></a>
-        <button class="govbb-button govbb-button--text govbb-header__toggle" type="button" hidden>Menu</button>
+        <button class="govbb-button govbb-button--ghost govbb-header__toggle" type="button" hidden>Menu</button>
         <nav class="govbb-header__nav" aria-label="Menu">
           <div class="govbb-header__nav-inner">
             <a href="/services">Services</a>

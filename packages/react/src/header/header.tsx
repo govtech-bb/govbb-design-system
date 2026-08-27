@@ -82,7 +82,7 @@ export const Header = forwardRef<HTMLElement, HeaderProps>(function Header(
             {hasNavigation ? (
               <Button
                 className="govbb-header__toggle"
-                variant="text"
+                variant="ghost"
                 type="button"
                 hidden={!enhanced}
                 aria-expanded={expanded}
