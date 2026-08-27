@@ -31,7 +31,7 @@
 .govbb-summary-section__header {
   display: flex;
   gap: var(--govbb-space-m);
-  align-items: center;
+  align-items: start;
 }
 
 .govbb-summary-section__title {
