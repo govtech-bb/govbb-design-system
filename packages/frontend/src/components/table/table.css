@@ -16,6 +16,7 @@
 
 .govbb-table {
   width: 100%;
+  table-layout: auto; /* the container scrolls; prose's fixed fallback is not ours */
   border-collapse: collapse;
   font-size: var(--govbb-font-size-body);
   line-height: var(--govbb-line-height-base);
