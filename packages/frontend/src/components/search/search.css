@@ -2,7 +2,9 @@
    <form class="govbb-search"> holding a visually-hidden label (use the
    .govbb-visually-hidden utility), the __input and the __button.
    --borderless drops the input border for use inside coloured containers,
-   such as the header. */
+   such as the header. For suggestions as the user types, wrap the __input in
+   a .govbb-combobox--inline (see combobox.css): the list then opens beneath
+   the whole bar, in the page flow. */
 
 .govbb-search {
   display: flex;
@@ -81,4 +83,20 @@
 
 .govbb-search__button:disabled {
   pointer-events: none;
+}
+
+/* Search with suggestions. The combobox wrapper dissolves into the row so the
+   input and button keep sharing it, and the open list wraps onto its own
+   full-width row beneath both — as wide as the whole bar, as on GOV.UK. */
+.govbb-search:has(.govbb-combobox--inline) {
+  flex-wrap: wrap;
+}
+
+.govbb-search > .govbb-combobox--inline {
+  display: contents;
+}
+
+.govbb-search .govbb-combobox__list {
+  order: 1;
+  flex-basis: 100%;
 }

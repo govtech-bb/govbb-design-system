@@ -100,3 +100,112 @@ import { Search } from '@govtech-bb/react';
 
 <Search action="/search" borderless />;
 ```
+
+## Search with suggestions
+
+To suggest queries or pages as the user types, wrap the input in the
+[combobox](/components/combobox/#free-text-with-suggestions) enhancement in
+its inline mode: a `.govbb-combobox.govbb-combobox--inline` around the input
+and an empty `<datalist>` that the page refills as suggestions arrive. The
+list opens beneath the whole bar and sits in the page flow, so the content
+below moves down while it is open instead of being covered. GOV.UK's search
+does the same to keep overlays away from screen reader users. Keep to five
+suggestions or fewer: the inline list has no height cap and never scrolls.
+
+Give the input `type="text"` rather than `type="search"`. The enhanced input
+is a combobox, a role a search input may not take. `enterkeyhint="search"`
+keeps the Search key on touch keyboards.
+
+```html title="Search with suggestions"
+<form
+  role="search"
+  class="govbb-search"
+  action="/search"
+  style="max-width: 30rem"
+>
+  <label class="govbb-visually-hidden" for="site-q">Search</label>
+  <div
+    class="govbb-combobox govbb-combobox--inline"
+    data-govbb-module="combobox"
+  >
+    <input
+      class="govbb-search__input"
+      id="site-q"
+      name="q"
+      type="text"
+      enterkeyhint="search"
+      list="site-q-suggestions"
+      placeholder="Search gov.bb"
+    />
+    <datalist id="site-q-suggestions"></datalist>
+  </div>
+  <button class="govbb-search__button" type="submit">Search</button>
+</form>
+<p>Content below the search moves down while the suggestions are open.</p>
+<script>
+  // Stand-in for a suggestions service: refill the datalist as the user types.
+  const services = [
+    'Apply for a passport',
+    'Renew a passport',
+    'Apply for a police certificate of character',
+    'Pay land tax',
+    'Register a birth',
+    "Renew a driver's licence",
+  ];
+  const query = document.getElementById('site-q');
+  const suggestions = document.getElementById('site-q-suggestions');
+  query.addEventListener('input', () => {
+    const typed = query.value.trim().toLowerCase();
+    suggestions.replaceChildren(
+      ...services
+        .filter((name) => typed && name.toLowerCase().includes(typed))
+        .slice(0, 5)
+        .map((name) => new Option(name)),
+    );
+  });
+</script>
+```
+
+```tsx
+import { Search } from '@govtech-bb/react';
+import { useRef, useState } from 'react';
+
+const services = [
+  'Apply for a passport',
+  'Renew a passport',
+  'Apply for a police certificate of character',
+  'Pay land tax',
+  'Register a birth',
+  "Renew a driver's licence",
+];
+
+function SiteSearch() {
+  const form = useRef<HTMLFormElement>(null);
+  const [query, setQuery] = useState('');
+  const typed = query.trim().toLowerCase();
+  return (
+    <Search
+      ref={form}
+      action="/search"
+      inputProps={{
+        value: query,
+        onChange: (event) => setQuery(event.target.value),
+        placeholder: 'Search gov.bb',
+      }}
+      suggestions={services
+        .filter((name) => typed && name.toLowerCase().includes(typed))
+        .slice(0, 5)
+        .map((name) => ({ value: name }))}
+      onSuggestionSelect={() => form.current?.requestSubmit()}
+    />
+  );
+}
+```
+
+Passing `suggestions` to the React component renders this markup and mounts
+the enhancement; `inputProps` still reaches the input for its value and
+`onChange`. Choosing a suggestion fills the field, then fires
+`govbb-combobox-select` on the wrapper, or `onSuggestionSelect` in React,
+which is where a site search submits the query as GOV.UK's does. Keyboard
+support, the live result count and the ARIA wiring are those of the
+[combobox](/components/combobox/#how-it-works).
