@@ -78,6 +78,7 @@
 .govbb-footer__coat {
   display: block;
   width: auto;
+  max-inline-size: none; /* height-driven crest, not a fluid prose image */
   height: 7rem;
   user-select: none;
 }
