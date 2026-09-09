@@ -87,10 +87,11 @@
   outline-offset: -4px;
 }
 
-/* Chevron, trailing the heading at the end of the row: points right when
-   closed, down when open. The turned chevron is the only open signal — the
-   text does not change. It centres on the whole row; only the icon tracks
-   the heading line. */
+/* Chevron, trailing the heading at the end of the row: points down when
+   closed, up when open — never sideways, since a right-pointing chevron
+   reads as a link to another page. The turned chevron is the only open
+   signal; the text does not change. It centres on the whole row; only the
+   icon tracks the heading line. */
 .govbb-accordion__summary::after {
   content: '';
   flex: none;
@@ -99,12 +100,20 @@
   height: 0.5em;
   border-top: 2px solid;
   border-right: 2px solid;
-  rotate: 45deg;
-  transition: rotate 0.2s ease;
+  rotate: 135deg;
+
+  /* Two borders of a turned square: the V's visual centre sits a quarter of
+     the diagonal from the box's, towards the point. Nudge it back the other
+     way so the chevron centres on the text, closed and open alike. */
+  translate: 0 -35%;
+  transition:
+    rotate 0.2s ease,
+    translate 0.2s ease;
 }
 
 .govbb-accordion__section[open] > .govbb-accordion__summary::after {
-  rotate: 135deg;
+  rotate: -45deg;
+  translate: 0 35%;
 }
 
 /* Any heading level renders at the same size, so the consumer picks the
