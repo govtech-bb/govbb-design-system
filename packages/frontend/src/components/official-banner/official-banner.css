@@ -33,6 +33,7 @@
   display: block;
   flex-shrink: 0;
   width: auto;
+  max-inline-size: none; /* height-driven crest, not a fluid prose image */
   height: 1.5rem; /* 24px, in rem so the crest scales with text zoom */
 }
 

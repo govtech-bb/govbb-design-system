@@ -37,6 +37,7 @@
 
 .govbb-payment__title {
   margin: 0;
+  color: inherit; /* the banner sets the colour; prose must not repaint it */
   font-size: var(--govbb-font-size-h2);
   font-weight: 600;
   line-height: var(--govbb-line-height-h2);
