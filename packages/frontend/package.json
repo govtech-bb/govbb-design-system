@@ -38,6 +38,7 @@
     "defaults"
   ],
   "scripts": {
+    "audit:prose": "node scripts/prose-audit.mjs",
     "dev": "vite",
     "build": "lightningcss --bundle --minify --custom-media --browserslist src/index.css -o dist/govbb.css && node scripts/build-tailwind-theme.mjs",
     "test": "vitest run",
