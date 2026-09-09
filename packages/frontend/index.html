@@ -799,6 +799,59 @@
     </section>
 
     <section>
+      <h2>Search — with suggestions</h2>
+      <form
+        role="search"
+        class="govbb-search"
+        action="/search"
+        style="max-width: 30rem"
+      >
+        <label class="govbb-visually-hidden" for="search-suggest">Search</label>
+        <div
+          class="govbb-combobox govbb-combobox--inline"
+          data-govbb-module="combobox"
+        >
+          <input
+            class="govbb-search__input"
+            id="search-suggest"
+            name="q"
+            type="text"
+            enterkeyhint="search"
+            list="search-suggest-list"
+            placeholder="Search gov.bb"
+          />
+          <datalist id="search-suggest-list"></datalist>
+        </div>
+        <button class="govbb-search__button" type="submit">Search</button>
+      </form>
+      <script>
+        // stand-in suggestions service: refill the datalist as the user types
+        {
+          const services = [
+            'Apply for a passport',
+            'Renew a passport',
+            'Apply for a police certificate of character',
+            'Pay land tax',
+            'Register a birth',
+            "Renew a driver's licence",
+            'Apply for a fishing licence',
+          ];
+          const query = document.getElementById('search-suggest');
+          const suggestions = document.getElementById('search-suggest-list');
+          query.addEventListener('input', () => {
+            const typed = query.value.trim().toLowerCase();
+            suggestions.replaceChildren(
+              ...services
+                .filter((name) => typed && name.toLowerCase().includes(typed))
+                .slice(0, 5)
+                .map((name) => new Option(name)),
+            );
+          });
+        }
+      </script>
+    </section>
+
+    <section>
       <h2>Breadcrumbs — full / collapsed on mobile</h2>
       <nav class="govbb-breadcrumbs" aria-label="Breadcrumb">
         <ol class="govbb-breadcrumbs__list">
