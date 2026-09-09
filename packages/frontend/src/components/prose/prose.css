@@ -128,13 +128,22 @@
   color: var(--govbb-prose-marker-color);
 }
 
-:where(.govbb-prose) :where(li + li) {
+/* List spacing is keyed on an unclassed parent: a component's own list (the
+   error summary's, say) holds bare <li>s and owns the gaps between them, so
+   prose stops at the class. */
+:where(.govbb-prose)
+  :where(ul:not([class]), ol:not([class]))
+  > :where(li + li) {
   margin-block-start: var(--govbb-space-xs);
 }
 
 /* Blocks inside an item keep the paragraph rhythm — a paragraph reads the same
    whether or not a list marker sits beside it. */
-:where(.govbb-prose) :is(li) > * + * {
+:where(.govbb-prose)
+  :where(ul:not([class]), ol:not([class]))
+  > :is(li)
+  > *
+  + * {
   margin-block-start: var(--govbb-space-s);
 }
 
@@ -143,7 +152,8 @@
    block at all: markdown wraps every item of a loose list in a paragraph, so
    :has(> p) would space one-line bullets like sections. */
 :where(.govbb-prose)
-  :is(
+  :where(ul:not([class]), ol:not([class]))
+  > :where(
     li:has(> :is(h2, h3, h4, ul, ol, div, p + p)) + li,
     li + li:has(> :is(h2, h3, h4, ul, ol, div, p + p))
   ) {
