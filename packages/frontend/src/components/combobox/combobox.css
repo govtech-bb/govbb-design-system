@@ -3,9 +3,10 @@
    wrapping a plain <select class="govbb-select">; with
    data-govbb-module="combobox" the JS keeps the select in the form (its
    name/value still submit) but hides it, and adds a .govbb-combobox__input
-   plus a floating .govbb-combobox__list. The input reuses the .govbb-input
-   recipe — border, hover shadow, shared focus ring — so this file styles only
-   the list. Without JS the user gets the select. */
+   plus a floating .govbb-combobox__list (or, with --inline, one that sits in
+   the page flow). The input reuses the .govbb-input recipe — border, hover
+   shadow, shared focus ring — so this file styles only the list. Without JS
+   the user gets the select. */
 
 .govbb-combobox {
   position: relative;
@@ -51,6 +52,18 @@
 .govbb-combobox__option[aria-disabled='true'] {
   color: var(--govbb-color-muted);
   cursor: default;
+}
+
+/* --inline: the list joins the page flow instead of floating, so what follows
+   the field moves down while it is open — GOV.UK's search suggestions work
+   this way, since an overlay can hide content from screen reader users. No
+   height cap either: the page limits the suggestions instead, and five is
+   plenty for a search box. */
+.govbb-combobox--inline .govbb-combobox__list {
+  position: static;
+  max-height: none;
+  margin-block-start: var(--govbb-space-xs);
+  overflow-y: visible;
 }
 
 /* Forced colors strip the highlight fill; an outline is recoloured instead. */

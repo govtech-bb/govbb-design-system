@@ -1,11 +1,12 @@
 import { Combobox as ComboboxModule } from '@govtech-bb/frontend';
-import { cx } from 'class-variance-authority';
+import { cva, cx, type VariantProps } from 'class-variance-authority';
 import {
   forwardRef,
   useEffect,
   useImperativeHandle,
   useRef,
   type InputHTMLAttributes,
+  type RefObject,
 } from 'react';
 import { FieldShell, useFieldIds, type FieldExtras } from '../form/field';
 import { has } from '../form/form';
@@ -17,11 +18,18 @@ export interface AutocompleteSuggestion {
   label?: string;
 }
 
+const combobox = cva('govbb-combobox', {
+  variants: {
+    inline: { true: 'govbb-combobox--inline' },
+  },
+});
+
 export type AutocompleteProps = Omit<
   InputHTMLAttributes<HTMLInputElement>,
   'list' | 'type'
 > &
-  FieldExtras & {
+  FieldExtras &
+  VariantProps<typeof combobox> & {
     /** Suggestions for the current text. The page owns them — filter, fetch
      *  and debounce as the service needs; the list shows exactly what is
      *  passed, and closes when this is empty. */
@@ -32,6 +40,71 @@ export type AutocompleteProps = Omit<
       index: number,
     ) => void;
   };
+
+/**
+ * Mounts the frontend combobox module on the .govbb-combobox wrapper after
+ * hydration, keeps it in step with every render (new suggestions land in the
+ * datalist on render; the module follows) and reports picks against the
+ * current suggestions. Undefined suggestions mean the wrapper is not rendered,
+ * so nothing is mounted. Shared with Search.
+ */
+export function useSuggestions(
+  rootRef: RefObject<HTMLElement | null>,
+  suggestions: AutocompleteSuggestion[] | undefined,
+  onSuggestionSelect?: (
+    suggestion: AutocompleteSuggestion,
+    index: number,
+  ) => void,
+) {
+  const moduleRef = useRef<ComboboxModule | null>(null);
+  // Latest props for the module's select event without re-subscribing.
+  const latest = useRef({ suggestions, onSuggestionSelect });
+  latest.current = { suggestions, onSuggestionSelect };
+  const enhanced = suggestions !== undefined;
+
+  useEffect(() => {
+    const root = rootRef.current;
+    if (!root) return;
+    const module = new ComboboxModule(root);
+    moduleRef.current = module;
+    const onSelect = (event: Event) => {
+      const { index } = (event as CustomEvent<{ index: number }>).detail;
+      const suggestion = latest.current.suggestions?.[index];
+      if (suggestion) latest.current.onSuggestionSelect?.(suggestion, index);
+    };
+    root.addEventListener('govbb-combobox-select', onSelect);
+    return () => {
+      root.removeEventListener('govbb-combobox-select', onSelect);
+      module.destroy();
+      moduleRef.current = null;
+    };
+  }, [rootRef, enhanced]);
+  useEffect(() => {
+    moduleRef.current?.sync();
+  });
+}
+
+/** The datalist the module reads the suggestions from — and the browser's own
+ *  suggestion popup before it mounts, or without JavaScript. */
+export function SuggestionList({
+  id,
+  suggestions,
+}: {
+  id: string;
+  suggestions: AutocompleteSuggestion[];
+}) {
+  return (
+    <datalist id={id}>
+      {suggestions.map((suggestion, index) => (
+        <option
+          key={`${suggestion.value}-${index}`}
+          value={suggestion.value}
+          label={suggestion.label}
+        />
+      ))}
+    </datalist>
+  );
+}
 
 /*
  * Free-text input with suggestions: the frontend combobox module in its
@@ -49,6 +122,7 @@ export const Autocomplete = forwardRef<HTMLInputElement, AutocompleteProps>(
       error,
       suggestions = [],
       onSuggestionSelect,
+      inline,
       id,
       className,
       'aria-describedby': describedBy,
@@ -59,40 +133,16 @@ export const Autocomplete = forwardRef<HTMLInputElement, AutocompleteProps>(
   ) {
     const rootRef = useRef<HTMLDivElement>(null);
     const inputRef = useRef<HTMLInputElement>(null);
-    const moduleRef = useRef<ComboboxModule | null>(null);
-    // Latest props for the module's select event without re-subscribing.
-    const latest = useRef({ suggestions, onSuggestionSelect });
-    latest.current = { suggestions, onSuggestionSelect };
     useImperativeHandle(ref, () => inputRef.current!, []);
     const ids = useFieldIds(id ?? props.name, has(description), has(error));
     const composed = has(label) || has(description) || has(error);
     const listId = `${ids.fieldId}-suggestions`;
-
-    useEffect(() => {
-      const root = rootRef.current!;
-      const module = new ComboboxModule(root);
-      moduleRef.current = module;
-      const onSelect = (event: Event) => {
-        const { index } = (event as CustomEvent<{ index: number }>).detail;
-        const suggestion = latest.current.suggestions[index];
-        if (suggestion) latest.current.onSuggestionSelect?.(suggestion, index);
-      };
-      root.addEventListener('govbb-combobox-select', onSelect);
-      return () => {
-        root.removeEventListener('govbb-combobox-select', onSelect);
-        module.destroy();
-        moduleRef.current = null;
-      };
-    }, []);
-    // New suggestions land in the datalist on render; the module follows.
-    useEffect(() => {
-      moduleRef.current?.sync();
-    });
+    useSuggestions(rootRef, suggestions, onSuggestionSelect);
 
     const control = (
       <div
         ref={rootRef}
-        className="govbb-combobox"
+        className={combobox({ inline })}
         data-govbb-module="combobox"
         data-govbb-init=""
       >
@@ -106,15 +156,7 @@ export const Autocomplete = forwardRef<HTMLInputElement, AutocompleteProps>(
           aria-invalid={has(error) ? true : ariaInvalid}
           {...props}
         />
-        <datalist id={listId}>
-          {suggestions.map((suggestion, index) => (
-            <option
-              key={`${suggestion.value}-${index}`}
-              value={suggestion.value}
-              label={suggestion.label}
-            />
-          ))}
-        </datalist>
+        <SuggestionList id={listId} suggestions={suggestions} />
       </div>
     );
     if (!composed) return control;

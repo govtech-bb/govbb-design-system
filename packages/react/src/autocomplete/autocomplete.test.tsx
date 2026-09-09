@@ -81,6 +81,15 @@ describe('Autocomplete', () => {
     expect(screen.queryByRole('option')).toBeNull();
   });
 
+  it('puts the list in the page flow with inline', () => {
+    const { container } = render(
+      <Autocomplete label="Street" name="street" inline />,
+    );
+    expect(container.querySelector('.govbb-combobox')!.className).toBe(
+      'govbb-combobox govbb-combobox--inline',
+    );
+  });
+
   it('forwards the ref to the input and marks errors', () => {
     const ref = createRef<HTMLInputElement>();
     render(

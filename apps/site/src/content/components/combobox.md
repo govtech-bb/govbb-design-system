@@ -260,6 +260,16 @@ datalist is empty: no "No results found" row, because the typed text is a valid
 answer on its own. Enter with nothing highlighted submits the form as it would
 in any text input.
 
+### Inline list
+
+Add `govbb-combobox--inline` to the wrapper, or `inline` in React, to put the
+list in the page flow beneath the field instead of floating it over what
+follows: the content below moves down while the list is open, so nothing is
+covered. The inline list has no height cap and never scrolls, so cap the
+suggestions yourself. This is how
+[search with suggestions](/components/search/#search-with-suggestions) uses
+it.
+
 ## Errors
 
 When a combobox fails validation, show an error message (`.govbb-error-message`)
