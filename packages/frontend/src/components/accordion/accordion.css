@@ -157,7 +157,7 @@
 }
 
 .govbb-accordion__hint {
-  font-size: var(--govbb-font-size-caption);
+  font-size: var(--govbb-font-size-body-sm);
   line-height: var(--govbb-line-height-base);
   font-weight: 400;
   color: var(--govbb-color-muted);
