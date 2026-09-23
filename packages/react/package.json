@@ -1,7 +1,7 @@
 {
   "name": "@govtech-bb/react",
   "version": "1.0.0-alpha.29",
-  "description": "GovBB Design System — React wrappers over the CSS. Thin, own-the-code.",
+  "description": "GovBB Design System \u2014 React wrappers over the CSS. Thin, own-the-code.",
   "repository": {
     "type": "git",
     "url": "https://github.com/govtech-bb/govbb-design-system.git",
@@ -41,7 +41,7 @@
     "react-dom": "^19.2.7",
     "tsup": "^8.5.1",
     "typescript": "^5.7.0",
-    "vitest": "^4.1.9"
+    "vitest": "^4.1.11"
   },
   "scripts": {
     "build": "tsup",
