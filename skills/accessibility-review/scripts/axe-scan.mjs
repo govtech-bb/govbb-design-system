@@ -10,10 +10,9 @@
  *   node axe-scan.mjs http://localhost:4321/ http://localhost:4321/apply/ --out axe.json
  */
 
-import { createRequire } from 'node:module';
 import { readFileSync, existsSync, readdirSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { launchBrowser, projectRequire } from './project.mjs';
 
 const HELP = `Usage:
   node axe-scan.mjs <url> [url...] [options]
@@ -49,10 +48,9 @@ function parseArgs(argv) {
 
 /** Find axe.min.js: normal resolution first, then the pnpm store. */
 function findAxeSource() {
-  const require = createRequire(import.meta.url);
   for (const spec of ['axe-core/axe.min.js', 'axe-core']) {
     try {
-      const p = require.resolve(spec);
+      const p = projectRequire.resolve(spec);
       const file = p.endsWith('.min.js') ? p : join(dirname(p), 'axe.min.js');
       if (existsSync(file)) return { file, how: 'node_modules' };
     } catch {
@@ -60,8 +58,8 @@ function findAxeSource() {
     }
   }
   // pnpm store fallback: node_modules/.pnpm/axe-core@<ver>/node_modules/axe-core/
-  let dir = dirname(fileURLToPath(import.meta.url));
-  for (let i = 0; i < 8; i++) {
+  let dir = process.cwd();
+  while (true) {
     const store = join(dir, 'node_modules/.pnpm');
     if (existsSync(store)) {
       // Compare version numerically, not lexically: a plain sort puts
@@ -92,20 +90,6 @@ function findAxeSource() {
   return null;
 }
 
-async function loadChromium() {
-  try {
-    const { chromium } = await import('playwright');
-    return chromium;
-  } catch {
-    try {
-      const { chromium } = await import('@playwright/test');
-      return chromium;
-    } catch {
-      return null;
-    }
-  }
-}
-
 const opts = parseArgs(process.argv.slice(2));
 if (opts.help || opts.urls.length === 0) {
   console.log(HELP);
@@ -115,18 +99,8 @@ if (opts.help || opts.urls.length === 0) {
 const axe = findAxeSource();
 if (!axe) {
   console.error(
-    'Could not find axe-core.\n' +
-      'Install it with:  pnpm add -D axe-core\n' +
-      'Report this in the review as "automated pass could not run" rather than guessing.',
-  );
-  process.exit(1);
-}
-
-const chromium = await loadChromium();
-if (!chromium) {
-  console.error(
-    'Could not load Playwright.\n' +
-      'Install it with:  pnpm add -D playwright && npx playwright install chromium\n' +
+    `Could not find axe-core from ${process.cwd()}.\n` +
+      'Install it in this project: npm install -D axe-core\n' +
       'Report this in the review as "automated pass could not run" rather than guessing.',
   );
   process.exit(1);
@@ -135,7 +109,7 @@ if (!chromium) {
 const axeSource = readFileSync(axe.file, 'utf8');
 console.log(`axe-core from ${axe.how}\n`);
 
-const browser = await chromium.launch();
+const browser = await launchBrowser();
 const results = [];
 let totalViolations = 0;
 
@@ -144,7 +118,12 @@ try {
     const page = await browser.newPage();
     let result;
     try {
-      await page.goto(url, { waitUntil: 'networkidle', timeout: 30_000 });
+      const response = await page.goto(url, {
+        waitUntil: 'networkidle',
+        timeout: 30_000,
+      });
+      if (response && !response.ok())
+        throw new Error(`HTTP ${response.status()}`);
       if (opts.wait) await page.waitForTimeout(opts.wait);
       await page.evaluate(axeSource);
       const runOnly = opts.bestPractice
@@ -211,10 +190,12 @@ if (opts.out) {
   console.log(`Full results written to ${resolve(opts.out)}`);
 }
 
+const failedPages = results.filter((result) => result.error).length;
 console.log(
-  `\n---\n${totalViolations} violation type(s) across ${opts.urls.length} page(s).\n` +
+  `\n---\n${totalViolations} violation type(s) across ${results.length - failedPages} scanned page(s); ${failedPages} page(s) could not be scanned.\n` +
     'axe finds roughly a third of real barriers. A clean run is a starting point,\n' +
     'not a pass — say so in the review.',
 );
 
+if (failedPages) process.exit(2);
 if (opts.failOnViolations && totalViolations > 0) process.exit(1);

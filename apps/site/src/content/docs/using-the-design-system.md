@@ -64,6 +64,23 @@ service CSS. Tailwind applications can reference them directly with arbitrary
 values such as `bg-[var(--govbb-color-brand)]`; the design-system core does not
 require Tailwind.
 
+## Build with an AI assistant
+
+Give your assistant the [AI documentation index](/llms.txt), then ask it to
+read the linked Markdown pages relevant to your task. The index identifies the
+package versions used for these docs; implementation details must also match
+your project's installed version.
+
+Install the GovBB skills from your service project's directory:
+
+```sh
+npx skills add govtech-bb/govbb-design-system
+```
+
+Choose your coding assistant and the skills you need. The [AI skills guide](/ai-skills/)
+explains each skill's purpose, prerequisites and installation. Review generated
+code and test your complete service journey before release.
+
 ## Standards
 
 Every official Government of Barbados service should:

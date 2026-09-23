@@ -5,6 +5,14 @@
 // in the rendered HTML is replaced with the TokenTable component. Other code
 // fences are left in the prose untouched.
 
+import {
+  contrastOnWhite,
+  isColor,
+  remToPx,
+  select,
+  withAliasNotes,
+} from './tokens';
+
 export interface TokenTableSpec {
   /** Selector passed to tokens.ts `select()`, e.g. `family teal`. */
   tokens: string;
@@ -44,6 +52,45 @@ function parseSpec(code: string, id: string): TokenTableSpec {
     notes: spec.notes,
     label: spec.label,
   };
+}
+
+/** Expand the same token selectors used by the HTML tables for Markdown readers. */
+export function tokenMarkdown(entry: EntryLike, pageUrl: string): string {
+  return (entry.body ?? '').replace(
+    /^```([\w-]+)[^\n]*\n([\s\S]*?)^```/gm,
+    (fence, language: string, code: string) => {
+      if (language === 'token-demo') {
+        return `[View the interactive token example](${pageUrl}#how-tokens-build-a-component).`;
+      }
+      if (language !== 'token-table') return fence;
+      const spec = parseSpec(code, entry.id);
+      const tokens =
+        spec.notes === 'aliased-by'
+          ? withAliasNotes(select(spec.tokens))
+          : select(spec.tokens);
+      const cell = (value: string) =>
+        value.replace(/\|/g, '\\|').replace(/\n/g, ' ');
+      const rows = tokens.map((token) => {
+        const notes = [token.note, remToPx(token.resolved)];
+        if (spec.contrast && isColor(token.resolved)) {
+          const ratio = contrastOnWhite(token.resolved);
+          notes.push(
+            `${ratio.toFixed(1)}:1 on white (${ratio >= 4.5 ? 'AA' : ratio >= 3 ? 'AA large only' : 'fails AA'})`,
+          );
+        }
+        return `| \`${token.name}\` | \`${cell(token.value)}\` | \`${cell(token.resolved)}\` | ${cell(notes.filter(Boolean).join('; '))} |`;
+      });
+      return [
+        spec.label,
+        '',
+        `| Token | Declared value | Resolved value | ${spec.notes === 'aliased-by' ? 'Aliased by' : 'Notes'} |`,
+        '| --- | --- | --- | --- |',
+        ...rows,
+      ]
+        .filter((line) => line !== undefined)
+        .join('\n');
+    },
+  );
 }
 
 export function buildTokenBlocks(entry: EntryLike): TokenBlock[] {

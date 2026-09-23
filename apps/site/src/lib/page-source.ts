@@ -24,6 +24,7 @@ const SECTIONS = {
   styles: { contentDir: 'styles', urlBase: '/styles' },
   templates: { contentDir: 'templates', urlBase: '/templates' },
   documentation: { contentDir: 'docs', urlBase: '/documentation' },
+  'design-log': { contentDir: 'design-log', urlBase: '/design-log' },
 } as const;
 
 export interface PageSource {
@@ -64,11 +65,26 @@ export function componentPageSource(id: string): PageSource {
     title and lede, so the file stands alone when pasted into an AI. */
 export function entryMarkdown(entry: {
   body?: string;
-  data: { title: string; lede?: string; description?: string };
+  data: {
+    title: string;
+    lede?: string;
+    description?: string;
+    summary?: string;
+    date?: Date;
+    kind?: string;
+    author?: string;
+  };
 }): string {
-  const intro = entry.data.lede ?? entry.data.description;
+  const intro = entry.data.lede ?? entry.data.description ?? entry.data.summary;
+  const metadata = [
+    entry.data.date && `Date: ${entry.data.date.toISOString().slice(0, 10)}`,
+    entry.data.kind && `Kind: ${entry.data.kind}`,
+    entry.data.author && `Author: ${entry.data.author}`,
+  ]
+    .filter(Boolean)
+    .join('\n');
   return (
-    [`# ${entry.data.title}`, intro, entry.body?.trim()]
+    [`# ${entry.data.title}`, intro, metadata, entry.body?.trim()]
       .filter(Boolean)
       .join('\n\n') + '\n'
   );

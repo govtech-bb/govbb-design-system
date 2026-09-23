@@ -21,7 +21,7 @@
  *   node pe-check.mjs http://localhost:8102/ --min-ratio 0.9
  */
 
-import { chromium } from 'playwright';
+import { launchBrowser } from './project.mjs';
 
 const HELP = `Usage:
   node pe-check.mjs <url> [more urls…] [options]
@@ -34,7 +34,7 @@ Options:
 
 Checks per page, with JavaScript disabled:
   · the page still renders its content
-  · every form can submit without script (has an action, and a submit control)
+  · every form can submit without script (native action and a submit control)
   · no control depends on an inline handler alone
 `;
 
@@ -53,8 +53,12 @@ if (!(minRatio > 0 && minRatio <= 1)) {
 const urls = args.filter(
   (a, i) => !a.startsWith('--') && args[i - 1] !== '--min-ratio',
 );
+if (!urls.length) {
+  console.error('Provide at least one URL.');
+  process.exit(2);
+}
 
-const browser = await chromium.launch();
+const browser = await launchBrowser();
 
 /** Load once at a given JS policy and record what the page amounts to. */
 async function load(url, javaScriptEnabled) {
@@ -63,14 +67,20 @@ async function load(url, javaScriptEnabled) {
     javaScriptEnabled,
   });
   const page = await ctx.newPage();
-  await page.goto(url, { waitUntil: 'domcontentloaded' });
+  const response = await page.goto(url, { waitUntil: 'domcontentloaded' });
+  if (response && !response.ok())
+    throw new Error(`HTTP ${response.status()} at ${url}`);
   await page.waitForTimeout(600);
   const snapshot = await page.evaluate(() => {
     const forms = [...document.querySelectorAll('form')].map((f) => ({
-      action: f.getAttribute('action'),
+      action: f.action,
+      requiresScript: new URL(f.action).protocol === 'javascript:',
       method: (f.getAttribute('method') || 'get').toLowerCase(),
-      hasSubmit: Boolean(
-        f.querySelector('button:not([type=button]), input[type=submit]'),
+      hasSubmit: [...document.querySelectorAll('button, input')].some(
+        (control) =>
+          control.form === f &&
+          ['submit', 'image'].includes(control.type) &&
+          !control.matches(':disabled'),
       ),
     }));
     return {
@@ -103,7 +113,7 @@ for (const url of urls) {
    * Judged on the no-JS render, because that is the DOM a user without script
    * actually gets — a form injected by JavaScript is not there to submit.
    */
-  const broken = off.forms.filter((f) => !f.action || !f.hasSubmit);
+  const broken = off.forms.filter((f) => f.requiresScript || !f.hasSubmit);
   add(
     'Every form can submit without script',
     broken.length === 0,
@@ -113,7 +123,7 @@ for (const url of urls) {
         ? broken
             .map(
               (f) =>
-                `form ${!f.action ? 'has no action' : ''}${!f.action && !f.hasSubmit ? ' and ' : ''}${!f.hasSubmit ? 'has no submit control' : ''}`,
+                `form ${f.requiresScript ? 'has a javascript: action' : ''}${f.requiresScript && !f.hasSubmit ? ' and ' : ''}${!f.hasSubmit ? 'has no submit control' : ''}`,
             )
             .join('; ')
         : `${off.forms.length} form(s), all submittable`,

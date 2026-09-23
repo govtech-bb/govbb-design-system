@@ -1,18 +1,35 @@
 # Plan: GovBB Design System AI skills
 
-Plan for building four AI skills for the GovBB Design System, deciding where
-they live, how they are shared, and how they are published on
-[design-system.service.alpha.gov.bb](https://design-system.service.alpha.gov.bb/).
+**Status: historical proposal, superseded for public consumer skills on
+2026-09-22.** The original proposal below records earlier options and is not the
+current installation or implementation contract.
 
-Status: **agreed in outline; ready for Phase 0**. All four decisions in
-[Decisions](#2-decisions) were settled on 2026-08-06;
-A and B are recorded in
-[ADR 0003](../decisions/0003-design-system-skills-live-here-installed-via-team-skills.md).
+## Current implementation
 
-Phase 0 now exists to *prove* three of them rather than debate them: the
-two install routes (A), the Claude plan tier that decides how the private
-design-team marketplace is distributed (B), and concurrent isolated browser
-sessions for parallel personas (D).
+- Two independent public skills: `design-system-compliance` and
+  `accessibility-review`, both experimental. Additional critique and contributor
+  skills are deferred.
+- Only `npx skills add govtech-bb/govbb-design-system` is documented for
+  installation, from the consumer project directory. The default team marketplace
+  was verified to have no `govbb` entry before removing the local plugin manifest.
+- The live origin is `https://design-system.service.alpha.gov.bb`, configured in
+  Astro. `/llms.txt` is generated from the site collections and published skills.
+  It points to individual Markdown pages, including token values and dated
+  design-log entries.
+- Skill implementation checks use the consumer's installed package versions;
+  live docs are guidance and can be newer. Helpers resolve consumer dependencies
+  even when installed outside the project. Supported frameworks and Tailwind
+  integration are preserved.
+- `pnpm test:ai-docs` checks built output; `pnpm test:skills` checks the helper
+  scripts, with Chromium available. Both run in CI. New skill releases also need
+  CLI installation checks and representative task walkthroughs, without the
+  comparative grading harness rejected in ADR 0004.
+
+See [ADR 0003's amendment](../decisions/0003-design-system-skills-live-here-installed-via-team-skills.md#amendment-public-skills-use-npx-skills)
+and [CONTRIBUTING.md](../../CONTRIBUTING.md#ai-documentation-and-skills) for the
+maintained distribution and verification workflow.
+
+## Original proposal (2026-08-06)
 
 ---
 

@@ -31,7 +31,7 @@
  *   node module-check.mjs http://localhost:8102/ http://localhost:8102/form.html
  */
 
-import { chromium } from 'playwright';
+import { launchBrowser } from './project.mjs';
 
 const HELP = `Usage:
   node module-check.mjs <url> [more urls…] [options]
@@ -54,8 +54,12 @@ if (args.includes('-h') || args.includes('--help') || args.length === 0) {
 }
 const asJson = args.includes('--json');
 const urls = args.filter((a) => !a.startsWith('--'));
+if (!urls.length) {
+  console.error('Provide at least one URL.');
+  process.exit(2);
+}
 
-const browser = await chromium.launch();
+const browser = await launchBrowser();
 const results = [];
 
 for (const url of urls) {
@@ -63,7 +67,9 @@ for (const url of urls) {
     viewport: { width: 1280, height: 900 },
   });
   const page = await ctx.newPage();
-  await page.goto(url, { waitUntil: 'domcontentloaded' });
+  const response = await page.goto(url, { waitUntil: 'domcontentloaded' });
+  if (response && !response.ok())
+    throw new Error(`HTTP ${response.status()} at ${url}`);
   /* initAll() usually runs from a module script, which executes after parsing;
      give it a beat rather than racing it. */
   await page.waitForTimeout(800);

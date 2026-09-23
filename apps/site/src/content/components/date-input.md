@@ -79,6 +79,9 @@ const [dob, setDob] = useState<DateInputValue>({
 
 `value` and `onChange` drive the three fields as one `{ day, month, year }`
 object, and `name="dob"` names the fields `dob-day`, `dob-month`, `dob-year`.
+The HTML example above submits `dob[day]`, `dob[month]`, `dob[year]`. Read the
+matching field names on the server, or override the React input names through
+`dayProps`, `monthProps` and `yearProps` to match an existing server contract.
 `formatDateInput` and `parseDateInput` convert the value object to and from an
 ISO `YYYY-MM-DD` string when you need one, such as when submitting to an API.
 
@@ -206,7 +209,19 @@ import { DateInput } from '@govtech-bb/react';
 
 <DateInput
   legend="Date of birth"
+  name="dob"
   description="For example, 27 3 1990"
   error="Date of birth must be a real date"
 />;
 ```
+
+With `name="dob"`, the default input IDs are `dob-day`, `dob-month` and
+`dob-year`. An error-summary link for the whole date should target `#dob-day`.
+Use `dayProps.id`, `monthProps.id` and `yearProps.id` for custom input IDs, and
+update the summary link to match. An `id` on `DateInput` identifies the fieldset;
+it does not rename its inputs. Give multiple date inputs unique names or IDs.
+
+The React `error` prop associates the error with the fieldset and marks all
+three inputs invalid. Preserve entered values when rendering the error, and
+move focus to the error summary after a failed submission as described on the
+[Error summary page](/components/error-summary/).

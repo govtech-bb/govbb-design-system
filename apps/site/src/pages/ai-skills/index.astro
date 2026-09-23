@@ -15,6 +15,7 @@ const skills = await publishedSkills();
   sidebarGroups={await getAiSkillsSidebar()}
   sidebarLabel="AI skills"
   onThisPage={[
+    { label: 'Find guidance for your AI', href: '#find-guidance' },
     { label: 'Available skills', href: '#available-skills' },
     { label: 'Install', href: '#install' },
     { label: 'What a skill is', href: '#what-a-skill-is' },
@@ -23,6 +24,19 @@ const skills = await publishedSkills();
   breadcrumbs={[{ label: 'AI skills' }]}
 >
   <div class="govbb-prose">
+    <h2 id="find-guidance">Find guidance for your AI</h2>
+    <p>
+      Give your coding assistant the <a href="/llms.txt">AI documentation index</a>.
+      It links to Markdown versions of the installation guidance, components,
+      patterns, templates, styles and design decisions. Ask it to read the pages
+      relevant to your task.
+    </p>
+    <p>
+      The index lists the package versions used to build these docs. Your
+      assistant should check your project's installed version before using an
+      API, class or token. Documentation may describe a newer version.
+    </p>
+
     <h2 id="available-skills">Available skills</h2>
 
     {
@@ -65,35 +79,36 @@ const skills = await publishedSkills();
     <h2 id="install">Install</h2>
 
     <p>
-      If you are at GovTech, add the team marketplace once and install the
-      <code>govbb</code> plugin. Skills then appear as
-      <code>/govbb:&lt;name&gt;</code>:
+      From your service project's directory, run this command, then choose the
+      skills and coding assistant you use. This installs into that project by
+      default:
     </p>
 
-    <pre tabindex="0"><code>/plugin marketplace add govtech-bb/team-skills
-/plugin install govbb@team-skills</code></pre>
+    <pre tabindex="0"><code>{skillsCliCommand()}</code></pre>
 
     <p>
-      The plugin is sourced from this design system's own repository, so a change
-      here reaches you at your next start with nothing to update. If you added
-      that marketplace before the <code>govbb</code> plugin existed, run
-      <code>/plugin marketplace update team-skills</code> first — automatic
-      updates cover new versions of a plugin, not the arrival of a new one.
+      To list the available skills before installing:
+    </p>
+
+    <pre tabindex="0"><code>{skillsCliCommand()} --list</code></pre>
+
+    <p>
+      Each skill's page also gives a command to install just that skill. After
+      installation, ask your assistant to use the skill by name. Browser checks
+      need the additional tools listed on that skill's page.
     </p>
 
     <p>
-      Outside GovTech, or to take a single skill into any repository, install it
-      directly. No marketplace needed:
+      If you previously installed <code>govbb</code> from the team marketplace,
+      install through <code>npx skills</code>, check that your assistant can find
+      the skills, then uninstall the old <code>govbb</code> plugin through your
+      assistant's plugin manager to avoid loading duplicate instructions.
     </p>
 
-    <pre tabindex="0"><code>{skills.length
-      ? skillsCliCommand(skills[0].id)
-      : 'npx skills add govtech-bb/govbb-design-system'}</code></pre>
-
     <p>
-      Every skill also has a raw Markdown twin at its page URL plus
-      <code>.md</code> — that is the file itself, so you can read it, review it,
-      or hand it to a tool that has no installer.
+      Each skill's Markdown page previews its main instructions. Use
+      <code>npx skills</code> to install the complete skill, including the
+      references and scripts those instructions use.
     </p>
 
     <h2 id="what-a-skill-is">What a skill is</h2>
@@ -101,7 +116,8 @@ const skills = await publishedSkills();
     <p>
       A skill is a set of instructions an AI coding assistant loads when a task
       matches it. It is not a model, a service, or anything that runs on its own.
-      It carries no data about your service anywhere.
+      Review its instructions and your assistant's data settings before using it
+      with service information.
     </p>
 
     <p>
@@ -115,9 +131,9 @@ const skills = await publishedSkills();
     <p>
       They deliberately hold no list of components, tokens or values. Those
       change, and a skill repeating a stale one gives confident wrong answers
-      without anything failing to warn you. Instead each skill reads this site at
-      the moment it runs, which is why guidance here and advice from a skill
-      cannot drift apart.
+      without anything failing to warn you. Instead each skill looks up the
+      relevant guidance and checks implementation details against your project's
+      installed package version.
     </p>
 
     <h2 id="standards">Standards that apply either way</h2>

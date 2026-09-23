@@ -30,6 +30,32 @@ Every component ships CSS in `packages/frontend`, usually a thin wrapper in
 If a surface intentionally omits one of those pieces, document and test the
 exception.
 
+## AI documentation and skills
+
+Public skills live in `skills/<name>/SKILL.md` and install through
+`npx skills add govtech-bb/govbb-design-system`. Keep each skill's references
+and helpers inside its own directory so it can be installed independently.
+Run helpers from the consumer project, resolving dependencies and GovBB exports
+there rather than from the installed skill directory.
+
+The site generates `/llms.txt` from its content collections and published skills.
+Update the guidance source rather than maintaining a second inventory. Markdown
+token tables use the same token source as the HTML tables. Skill Markdown URLs
+preview the entrypoint; the CLI installs the supporting files too.
+
+```sh
+pnpm build
+pnpm test:ai-docs
+pnpm exec playwright install chromium
+pnpm test:skills
+npx skills add . --list
+```
+
+Test a changed skill with `npx skills add /path/to/this/checkout --skill <name>`
+from a disposable consumer project, then run its helpers from that project.
+Check both successful evidence and missing-tool failures. Review representative
+tasks without a comparative model-scoring harness (ADR 0004).
+
 ## Commit messages
 
 We use [Conventional Commits](https://www.conventionalcommits.org/). A `commit-msg`

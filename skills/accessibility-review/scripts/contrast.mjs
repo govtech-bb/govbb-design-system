@@ -12,9 +12,9 @@
  *   node contrast.mjs --tokens              # audit every semantic token on both surfaces
  */
 
-import { readFileSync, existsSync } from 'node:fs';
-import { dirname, join, resolve } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
+import { projectRequire } from './project.mjs';
 
 const HELP = `Usage:
   node contrast.mjs <colour> <colour> [options]
@@ -30,7 +30,8 @@ Options:
   --weight <w>         normal | bold (default normal)
   --non-text           Judge against the 3:1 non-text threshold (SC 1.4.11)
   --tokens             Audit semantic tokens against surface and ink
-  --tokens-file <p>    Path to tokens.css (default: auto-detect in this repo)
+  --tokens-file <p>    Path to tokens.css (default: installed frontend package
+                       resolved from the consumer's working directory)
   -h, --help
 `;
 
@@ -73,16 +74,7 @@ function contrast(a, b) {
 
 function findTokensFile(explicit) {
   if (explicit) return resolve(explicit);
-  // Walk up from this script looking for the frontend package's tokens.
-  let dir = dirname(fileURLToPath(import.meta.url));
-  for (let i = 0; i < 8; i++) {
-    const candidate = join(dir, 'packages/frontend/src/tokens.css');
-    if (existsSync(candidate)) return candidate;
-    const parent = dirname(dir);
-    if (parent === dir) break;
-    dir = parent;
-  }
-  return null;
+  return projectRequire.resolve('@govtech-bb/frontend/tokens.css');
 }
 
 /** Parse `--name: value;` declarations. Last definition wins, matching the
@@ -212,47 +204,65 @@ if (!['normal', 'bold'].includes(opts.weight)) {
   process.exit(1);
 }
 
-const tokensPath = findTokensFile(opts.tokensFile);
-const tokens = tokensPath
-  ? parseTokens(readFileSync(tokensPath, 'utf8'))
-  : null;
-
-if (opts.auditTokens) {
-  if (!tokens) {
-    console.error(
-      'Could not find tokens.css. Pass --tokens-file <path> explicitly.',
-    );
-    process.exit(1);
+let tokensPath;
+let tokens;
+try {
+  if (process.argv.includes('--tokens-file') && !opts.tokensFile) {
+    throw new Error('--tokens-file requires a file path.');
   }
-  console.log(`Tokens: ${tokensPath}\n`);
-  const surfaces = [
-    ['surface', '--govbb-color-surface'],
-    ['ink', '--govbb-color-ink'],
-  ];
-  const semantic = [...tokens.keys()].filter((k) =>
-    /^--govbb-(color|link)-/.test(k),
-  );
-  console.log('| Token | Value | vs surface | vs ink |');
-  console.log('|---|---|---|---|');
-  for (const name of semantic) {
-    const value = resolveToken(name, tokens);
-    if (!value || !value.startsWith('#')) continue;
-    const rgb = parseHex(value);
-    const cells = surfaces.map(([, tokenName]) => {
-      const other = resolveToken(tokenName, tokens);
-      if (!other || !other.startsWith('#')) return 'n/a';
-      return `${contrast(rgb, parseHex(other)).toFixed(2)}:1`;
-    });
-    console.log(`| \`${name}\` | ${value} | ${cells[0]} | ${cells[1]} |`);
+  if (
+    opts.tokensFile ||
+    opts.auditTokens ||
+    opts.colours.some((colour) => !colour.startsWith('#'))
+  ) {
+    tokensPath = findTokensFile(opts.tokensFile);
+    tokens = parseTokens(readFileSync(tokensPath, 'utf8'));
   }
-  console.log(
-    '\nRatios only. Whether each passes depends on what the colour is used for —\n' +
-      'text size and weight, or the 3:1 non-text threshold. Check the use, not the number.',
+} catch (error) {
+  console.error(
+    `Could not read tokens.css: ${error.message}\n` +
+      'Run from the consumer project with @govtech-bb/frontend installed,\n' +
+      'or pass --tokens-file <path> explicitly.',
   );
-  process.exit(0);
+  process.exit(2);
 }
 
 try {
+  if (opts.auditTokens) {
+    if (!tokens) {
+      console.error(
+        'Could not find tokens.css. Pass --tokens-file <path> explicitly.',
+      );
+      process.exit(1);
+    }
+    console.log(`Tokens: ${tokensPath}\n`);
+    const surfaces = [
+      ['surface', '--govbb-color-surface'],
+      ['ink', '--govbb-color-ink'],
+    ];
+    const semantic = [...tokens.keys()].filter((k) =>
+      /^--govbb-(color|link)-/.test(k),
+    );
+    console.log('| Token | Value | vs surface | vs ink |');
+    console.log('|---|---|---|---|');
+    for (const name of semantic) {
+      const value = resolveToken(name, tokens);
+      if (!value || !value.startsWith('#')) continue;
+      const rgb = parseHex(value);
+      const cells = surfaces.map(([, tokenName]) => {
+        const other = resolveToken(tokenName, tokens);
+        if (!other || !other.startsWith('#')) return 'n/a';
+        return `${contrast(rgb, parseHex(other)).toFixed(2)}:1`;
+      });
+      console.log(`| \`${name}\` | ${value} | ${cells[0]} | ${cells[1]} |`);
+    }
+    console.log(
+      '\nRatios only. Whether each passes depends on what the colour is used for —\n' +
+        'text size and weight, or the 3:1 non-text threshold. Check the use, not the number.',
+    );
+    process.exit(0);
+  }
+
   const [aInput, bInput] = opts.colours;
   const a = toRgb(aInput, tokens);
   const b = toRgb(bInput, tokens);

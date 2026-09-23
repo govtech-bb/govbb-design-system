@@ -18,6 +18,8 @@
     "site:build": "pnpm --filter @govbb/site build",
     "lint": "oxlint && stylelint \"packages/*/src/**/*.css\"",
     "test": "pnpm -r test",
+    "test:ai-docs": "node apps/site/scripts/check-ai-docs.mjs",
+    "test:skills": "node skills/design-system-compliance/scripts/scripts.test.mjs && node skills/accessibility-review/scripts/scripts.test.mjs",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "changelog": "git-cliff --output CHANGELOG.md",

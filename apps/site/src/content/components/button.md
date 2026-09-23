@@ -245,6 +245,10 @@ wrapping on narrow screens. Put the primary action first, and use secondary or
 tertiary buttons for the rest. A text link, such as _Cancel_, can sit in the
 group alongside the buttons.
 
+For Back and Continue navigation in a question flow, follow the
+[single-question page template](/templates/single-question-page/#back-and-continue),
+which places Back before Continue.
+
 ```html title="Button group"
 <div class="govbb-button-group">
   <button class="govbb-button" type="button">Save and continue</button>

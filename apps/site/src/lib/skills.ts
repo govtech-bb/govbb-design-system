@@ -42,14 +42,6 @@ export function skillSource(id: string) {
   };
 }
 
-/**
- * The install command for a skill.
- *
- * Two routes exist and they serve different people: GovTech installs the whole
- * plugin from the team marketplace, while anyone outside it takes a single skill
- * straight from this repository. The marketplace route is not per-skill, so it
- * belongs on the index page rather than here.
- */
-export function skillsCliCommand(id: string): string {
-  return `npx skills add govtech-bb/govbb-design-system -s ${id}`;
+export function skillsCliCommand(id?: string): string {
+  return `npx skills add govtech-bb/govbb-design-system${id ? ` --skill ${id}` : ''}`;
 }
