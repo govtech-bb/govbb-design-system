@@ -9,6 +9,7 @@ import {
   KIND_LABELS,
 } from '../../data/design-log';
 import { getContentNeighbors } from '../../lib/content-navigation';
+import { pageSource } from '../../lib/page-source';
 
 export const getStaticPaths = (async () => {
   const posts = await getSortedDesignLog();
@@ -36,6 +37,7 @@ const neighbors = getContentNeighbors(posts, post.id, '/design-log/');
   pageSubtitle={post.data.summary}
   sidebarGroups={await getDesignLogSidebar()}
   sidebarLabel="Design log"
+  source={pageSource('design-log', post.id)}
   onThisPage={onThisPage}
   breadcrumbs={[
     { label: 'Design log', href: '/design-log/' },

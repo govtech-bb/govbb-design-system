@@ -1,6 +1,7 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
 import type { APIRoute } from 'astro';
 import { markdownResponse } from '../../lib/page-source';
+import { tokenMarkdown } from '../../lib/token-blocks';
 
 // Raw-markdown twin of every styles page: /styles/<slug>.md serves the page's
 // markdown source as plain text (for copying into an AI, say). Rest param
@@ -15,4 +16,8 @@ export async function getStaticPaths() {
 
 export const GET: APIRoute<{ entry: CollectionEntry<'styles'> }> = ({
   props,
-}) => markdownResponse(props.entry);
+}) =>
+  markdownResponse({
+    ...props.entry,
+    body: tokenMarkdown(props.entry, `/styles/${props.entry.id}/`),
+  });

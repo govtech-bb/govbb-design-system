@@ -15,9 +15,7 @@ group: Ask users for
     aria-describedby="dob-description"
   >
     <legend class="govbb-fieldset__legend">Date of birth</legend>
-    <span class="govbb-hint" id="dob-description"
-      >For example, 30 December 1986</span
-    >
+    <span class="govbb-hint" id="dob-description">For example, 30 12 1986</span>
     <div class="govbb-date-input">
       <div class="govbb-date-input__part">
         <label class="govbb-label" for="dob-day">Day</label>

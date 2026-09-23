@@ -22,6 +22,8 @@
  *   node focus-order.mjs http://localhost:4321/ --max-tabs 40
  */
 
+import { launchBrowser } from './project.mjs';
+
 const HELP = `Usage:
   node focus-order.mjs <url> [options]
 
@@ -212,28 +214,17 @@ if (opts.help || !opts.url) {
   process.exit(opts.help ? 0 : 1);
 }
 
-let chromium;
-try {
-  ({ chromium } = await import('playwright'));
-} catch {
-  try {
-    ({ chromium } = await import('@playwright/test'));
-  } catch {
-    console.error(
-      'Could not load Playwright.\n' +
-        'Install it with:  pnpm add -D playwright && npx playwright install chromium\n' +
-        'Report this in the review as "keyboard pass could not run" rather than guessing.',
-    );
-    process.exit(1);
-  }
-}
-
-const browser = await chromium.launch();
+const browser = await launchBrowser();
 try {
   const page = await browser.newPage({
     viewport: { width: opts.width, height: opts.height },
   });
-  await page.goto(opts.url, { waitUntil: 'networkidle', timeout: 30_000 });
+  const response = await page.goto(opts.url, {
+    waitUntil: 'networkidle',
+    timeout: 30_000,
+  });
+  if (response && !response.ok())
+    throw new Error(`HTTP ${response.status()} at ${opts.url}`);
   if (opts.wait) await page.waitForTimeout(opts.wait);
 
   console.log(`# Focus walk: ${opts.url}`);

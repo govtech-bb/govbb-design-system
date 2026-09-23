@@ -1,97 +1,67 @@
-# Judging contrast in the GovBB Design System
+# Judging contrast in GovBB
 
-Method only. **This file deliberately holds no colour values and no ratios**, so
-there is nothing in it that can quietly stop being true.
+Compute values for the installed release and the rendered page. Cached palette
+ratios or live documentation alone do not establish the consumer's contrast.
 
-An earlier version cached a table of the palette's ratios. It was a liability
-rather than a shortcut: a cached ratio that has gone stale does not announce
-itself, it just reports a pass for something that now fails — the one outcome this
-skill exists to prevent. And the cache bought nothing, because the script
-regenerates the whole picture in a second.
+## Run from the consumer project
 
-## Getting the current picture
+Resolve `govbb_skill_dir` to the absolute directory of the installed
+`accessibility-review` skill, keeping the working directory at the consumer:
 
 ```sh
-# Every semantic token against surface and ink — the whole palette, current
-node scripts/contrast.mjs --tokens
-
-# One pair, by token name (resolved through tokens.css, following var() chains)
-node scripts/contrast.mjs govbb-color-interactive govbb-color-surface
-
-# Non-text threshold: control boundaries, focus indicators, meaningful graphics
-node scripts/contrast.mjs govbb-color-focus govbb-color-surface --non-text
+node "$govbb_skill_dir/scripts/contrast.mjs" --tokens
+node "$govbb_skill_dir/scripts/contrast.mjs" govbb-color-interactive govbb-color-surface
+node "$govbb_skill_dir/scripts/contrast.mjs" govbb-color-focus govbb-color-surface --non-text
+node "$govbb_skill_dir/scripts/contrast.mjs" "#595959" "#ffffff" --size 16 --weight normal
 ```
 
-For which threshold applies, and why you must measure the rendered text size
-rather than infer it from a token or heading level, see the contrast pass in
-`SKILL.md`. Do not reason about thresholds yourself — pass `--size` and
-`--weight` and let the script name the threshold it applied.
+Token lookup uses the consumer's exported `@govtech-bb/frontend/tokens.css`.
+Use `--tokens-file` for an explicit file, including a local GovBB source checkout.
+That establishes token values, not service overrides or the entire CSS cascade.
+Use computed colours for the actual element and backdrop when checking a page.
 
-## Where contrast actually fails in a token-based system
+## Choose the threshold from rendered text
 
-These are patterns, not measurements, so they hold as the palette changes. Each
-one is worth a deliberate check.
+- Normal text needs 4.5:1; large text needs 3:1.
+- Large means at least 24 CSS px regular or 14pt bold (approximately 18.67 CSS
+  px). Measure actual size/weight; a token name or heading level proves neither.
+- Relevant control boundaries, meaningful graphics and authored focus
+  indicators need 3:1 under SC 1.4.11. Read its applicability and exceptions
+  before reporting a particular visual boundary as required.
 
-**Focus indicators are the most likely non-text failure.** A focus colour gets
-chosen for visibility against the _control_ it surrounds, which does not make it
-visible against the _page_ behind it. Compute the ring against **both** adjacent
-surfaces — the control's own edge and the page surface — because SC 1.4.11 needs
-3:1 and it is easy to satisfy on one side and fail on the other.
+Pass the actual `--size` and `--weight`, or `--non-text`. With no size, the
+helper applies the stricter normal-text threshold. Inspect what it reports;
+do not round a failing contrast ratio up to a pass.
 
-If a ring comes out under 3:1 against the page: **do not report it against a
-service team.** They cannot fix a core token, and telling them to is noise. It is
-a design-system-level escalation, filed once as an issue. Note also that SC
-1.4.11's "adjacent colours" is genuinely ambiguous for a ring sandwiched between
-a high-contrast border and a low-contrast page — the stricter reading (and WCAG
-2.2's AAA SC 2.4.13 Focus Appearance) fails it, the narrower one passes. That
-argument should be settled once by an accessibility specialist for the whole
-system, not re-litigated in every review. Check whether it already has been
-before spending time on it.
+## Check the real pairing
 
-**Pale tints and bright accents are background-only, and tempting as text.** Any
-palette built for government branding contains light wash colours and a
-saturated accent. They are designed to sit _behind_ ink, and they are exactly what
-someone reaches for when they want a heading to look brand-forward. Compute
-before accepting any of them as a text colour, however official it looks.
+Check text on its actual background, including error tints and local overrides.
+The same colour may pass on one surface and fail on another. For focus rings,
+inspect the complete indicator, control and surrounding page; a single token
+pair is not enough to decide whether a multi-colour indicator meets the
+requirement. Use [W3C's non-text contrast guidance](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html)
+for adjacent colours and the relevant component state. Do not silently apply
+AAA Focus Appearance requirements as AA failures.
 
-**Control boundaries depend on which token was chosen, not on any markup.** A
-field's border passing 3:1 is a property of the token in the component's CSS. A
-change to a lighter border token drops it below the minimum without altering a
-line of HTML, and most palettes contain tokens low enough to do that. Read which
-token the component uses, then compute it against the surface behind it — never
-carry "field borders are fine" as an assumption.
+Read which tokens a control's border and focus styles actually use. A palette
+pairing is evidence only for that pair; it does not prove every control passes.
+Route a confirmed shared-token/component defect to the design system, and a
+service override to the service. External issue creation requires authorization.
 
-**A pairing that passes on white may fail on a tint.** Error text on a white page
-and the same error text on the error tint are two different computations. Check
-the surface the text actually sits on, including anything a component overrides
-on its own container.
+For text over images, gradients or transparency, determine the actual backdrop
+and composite it before computing. The helper rejects alpha-channel colours
+because the backdrop is unknown. If it cannot be established, mark the case
+`needs-manual-test`; an axe `incomplete` result is not a pass.
 
-**Text over images, gradients or transparency is where guessing is most
-tempting.** axe reports these as `incomplete` because it cannot determine the
-backdrop, and that is the honest answer. Composite the real backdrop and compute
-it, or mark it `needs-manual-test`. Do not estimate.
+Inactive controls, purely decorative graphics and logo text have relevant
+contrast exemptions. Separate a usability concern from a claimed contrast
+failure when an exemption applies.
 
-## Things that legitimately have no contrast requirement
+## Reproducible findings
 
-- **Disabled controls.** SC 1.4.3 exempts inactive components, so a dimmed
-  disabled control is not a contrast failure however low it computes. Still worth
-  a `judgement` note if it carries information someone needs.
-- **Purely decorative graphics**, and text that forms part of a logo.
-
-## Alpha and layered colours
-
-Overlay and shadow tokens are semi-transparent, and `contrast.mjs` refuses to
-compute a ratio for a colour with an alpha channel — deliberately, because the
-result depends entirely on what is behind it, and a ratio against an assumed
-backdrop is worse than no ratio. Composite the real stack first, or read the
-rendered pixel from the browser, then compute that.
-
-## Reporting a contrast finding
-
-A `computed` finding must be reproducible by whoever reads it. Give the command
-you ran, the ratio it returned, and the threshold that applied and why — the
-rendered size and weight for text, or non-text for a boundary or indicator.
-"Contrast is too low" is not a finding; it is an assertion.
-
-If anything here disagrees with what the script currently reports, the script is
-right.
+Record the source of the colours (rendered styles or named package/version),
+actual values, command, returned ratio and applicable threshold. For text,
+include rendered size and weight; for a non-text finding, identify the required
+visual information and adjacent background. If a helper result appears wrong,
+check the inputs and implementation against the standard rather than treating
+the tool as unquestionable authority.

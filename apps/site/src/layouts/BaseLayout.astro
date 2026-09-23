@@ -22,12 +22,14 @@ interface Props {
   description?: string;
   section?: Section;
   skipTarget?: string;
+  markdownUrl?: string;
 }
 const {
   title,
   description,
   section,
   skipTarget = '#main-content',
+  markdownUrl,
 } = Astro.props;
 const fullTitle = `${title} - GovBB Design System`;
 ---
@@ -37,6 +39,8 @@ const fullTitle = `${title} - GovBB Design System`;
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{fullTitle}</title>
+    <link rel="describedby" href="/llms.txt" type="text/plain" />
+    {markdownUrl && <link rel="alternate" type="text/markdown" href={markdownUrl} />}
     {
       description && (
         <meta

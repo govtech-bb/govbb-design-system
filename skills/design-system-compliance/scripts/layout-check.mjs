@@ -22,7 +22,7 @@
  *   node layout-check.mjs http://localhost:8102/ --widths 360,1280
  */
 
-import { chromium } from 'playwright';
+import { launchBrowser } from './project.mjs';
 
 const HELP = `Usage:
   node layout-check.mjs <url> [more urls…] [options]
@@ -35,7 +35,7 @@ Options:
 Checks per page:
   · exactly one h1
   · the skip link's href resolves to an element that exists
-  · main carries that id, and is focusable (tabindex="-1")
+  · the skip target is focusable and is main or a descendant of main
   · one each of banner / main / contentinfo landmarks
   · no horizontal overflow at any width
 `;
@@ -49,11 +49,19 @@ const asJson = args.includes('--json');
 let widths = [360, 1280];
 const wi = args.indexOf('--widths');
 if (wi !== -1 && args[wi + 1]) widths = args[wi + 1].split(',').map(Number);
+if (widths.some((width) => !Number.isInteger(width) || width <= 0)) {
+  console.error('--widths must contain positive integer viewport widths.');
+  process.exit(2);
+}
 const urls = args.filter(
   (a, i) => !a.startsWith('--') && args[i - 1] !== '--widths',
 );
+if (!urls.length) {
+  console.error('Provide at least one URL.');
+  process.exit(2);
+}
 
-const browser = await chromium.launch();
+const browser = await launchBrowser();
 
 /* Structure is width-independent, so it is checked once at the first width;
    only overflow is re-checked at each width. */
@@ -83,34 +91,40 @@ async function structure(page) {
           : `#${targetId} does not exist`,
     );
 
-    const main = q('main');
+    const mains = qa('main:not([role]), [role=main]');
+    const main = mains[0];
     add(
-      'Page has a main landmark',
-      Boolean(main),
-      main ? 'present' : 'missing',
+      'Exactly one main landmark',
+      mains.length === 1,
+      `${mains.length} found`,
     );
     add(
-      'main is the skip link target',
-      Boolean(main && target && main === target),
+      'Skip link targets main content',
+      Boolean(main && target && main.contains(target)),
       !main || !target
         ? 'cannot check'
-        : main === target
+        : main.contains(target)
           ? 'yes'
-          : `target is <${target.tagName.toLowerCase()}>, not main`,
+          : 'target is outside main',
     );
+    target?.focus();
     add(
-      'main is focusable (tabindex="-1")',
-      Boolean(main && main.getAttribute('tabindex') === '-1'),
-      main
-        ? `tabindex=${main.getAttribute('tabindex') ?? 'absent'}`
-        : 'no main',
+      'Skip link target can receive focus',
+      Boolean(target && document.activeElement === target),
+      target
+        ? `active element: ${document.activeElement.tagName.toLowerCase()}`
+        : 'no target',
     );
 
+    const section =
+      'article, aside, main, nav, section, [role=article], [role=complementary], [role=main], [role=navigation], [role=region]';
     for (const [role, sel] of [
-      ['banner', 'header, [role=banner]'],
-      ['contentinfo', 'footer, [role=contentinfo]'],
+      ['banner', 'header:not([role]), [role=banner]'],
+      ['contentinfo', 'footer:not([role]), [role=contentinfo]'],
     ]) {
-      const n = qa(sel).length;
+      const n = qa(sel).filter(
+        (el) => el.hasAttribute('role') || !el.parentElement?.closest(section),
+      ).length;
       add(`Exactly one ${role} landmark`, n === 1, `${n} found`);
     }
 
@@ -123,7 +137,9 @@ for (const url of urls) {
   const page = await (
     await browser.newContext({ viewport: { width: widths[0], height: 900 } })
   ).newPage();
-  await page.goto(url, { waitUntil: 'domcontentloaded' });
+  const response = await page.goto(url, { waitUntil: 'domcontentloaded' });
+  if (response && !response.ok())
+    throw new Error(`HTTP ${response.status()} at ${url}`);
   await page.waitForTimeout(400);
   const checks = await structure(page);
   await page.context().close();
@@ -133,7 +149,9 @@ for (const url of urls) {
       viewport: { width: w, height: 900 },
     });
     const p = await ctx.newPage();
-    await p.goto(url, { waitUntil: 'domcontentloaded' });
+    const response = await p.goto(url, { waitUntil: 'domcontentloaded' });
+    if (response && !response.ok())
+      throw new Error(`HTTP ${response.status()} at ${url}`);
     await p.waitForTimeout(400);
     const over = await p.evaluate(
       (w) => ({ scroll: document.documentElement.scrollWidth, view: w }),

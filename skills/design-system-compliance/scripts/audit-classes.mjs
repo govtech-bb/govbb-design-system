@@ -33,17 +33,16 @@
 
 import { readFileSync, readdirSync, existsSync, statSync } from 'node:fs';
 import { join, extname, resolve } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { projectRequire } from './project.mjs';
 
 const HELP = `Usage:
   node audit-classes.mjs <dir> [options]
 
 Options:
   --css <path>  Stylesheet to resolve names against. Without it, the script
-                looks for an installed @govtech-bb/frontend under <dir>, then
-                for a built dist/govbb.css in this repo. It always prints which
-                one it used, because a checkout can be behind the deployed site
-                and a local-only audit then reports real names as invented.
+                resolves @govtech-bb/frontend/css from the working directory
+                (including workspace ancestors). Run from the consumer project.
+                It always prints which stylesheet it used.
   --json        Emit results as JSON
   -h, --help
 
@@ -69,20 +68,20 @@ if (!dir || !existsSync(dir) || !statSync(dir).isDirectory()) {
 }
 
 /* Resolve the stylesheet, and say which one won. */
-const REPO = fileURLToPath(new URL('../../../', import.meta.url));
-const candidates = [
-  cssArg,
-  join(dir, 'node_modules/@govtech-bb/frontend/dist/govbb.css'),
-  join(REPO, 'packages/frontend/dist/govbb.css'),
-].filter(Boolean);
-const cssPath = candidates.find((p) => existsSync(p));
-
-if (!cssPath) {
+let cssPath;
+try {
+  if (ci !== -1 && (!cssArg || cssArg.startsWith('--'))) {
+    throw new Error('--css requires a file path.');
+  }
+  cssPath = cssArg
+    ? resolve(cssArg)
+    : projectRequire.resolve('@govtech-bb/frontend/css');
+  if (!statSync(cssPath).isFile()) throw new Error(`${cssPath} is not a file.`);
+} catch (error) {
   console.error(
-    'no stylesheet found to resolve names against. Tried:\n' +
-      candidates.map((c) => `  ${c}`).join('\n') +
-      '\nInstall @govtech-bb/frontend@alpha in the output directory, build the\n' +
-      'package (pnpm --filter @govtech-bb/frontend build), or pass --css.',
+    `Could not read the GovBB stylesheet: ${error.message}\n` +
+      'Run from the consumer project with @govtech-bb/frontend installed,\n' +
+      'or pass --css <path> to a built stylesheet explicitly.',
   );
   process.exit(2);
 }

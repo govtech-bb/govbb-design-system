@@ -5,78 +5,43 @@ problem belongs to:
 
 - **The design system's half** — what the component guarantees. Not a finding
   against the service. If it is genuinely broken, it is a finding against the
-  design system, filed as an issue there.
-- **The consumer's half** — what the service must wire up itself. This is where
-  nearly all real findings are.
+  design system, reported to that owner. Create an issue only when authorized.
+- **The consumer's half** — what the service must wire up itself. Verify this separately from the component itself.
 
-## Why this file does not list the components
+## Derive guarantees from the installed release
 
-An earlier version of this file enumerated every component, which JS modules
-existed, and what each one guaranteed. That was wrong in a way worth
-understanding, because the same temptation will recur.
+Fetch the GovBB `/llms.txt` index, then the relevant component Markdown and
+`/documentation/form-implementation.md`. Match that guidance to the consumer's
+resolved package versions; the live site is not versioned to each installation.
+If offline, use local guidance where available and name any limits.
 
-Those are all facts about the design system **as it was on the day the file was
-written**. Components get added, tokens get renamed, a component gains or loses a
-JS module. When that happens an enumerated list does not throw an error — it
-quietly starts giving wrong answers, in the most dangerous direction: a review
-built on it stops checking whatever was added since, and clears whatever was
-changed. A reviewer trusting a fixed list of "the components that need wiring"
-will not notice
-the fourth.
+Inspect these sources before assigning a finding:
 
-So this file carries **method and durable requirements**. Anything about the
-design system's current state gets read from the system itself, every time.
+1. **Installed frontend runtime:** follow the package's entry export to its
+   enhancement registry. It determines the available module names and how
+   initialisation works; do not keep a remembered list.
+2. **Installed CSS and tokens:** inspect component rules plus shared base,
+   focus and utility rules. A service may already receive forced-colors or
+   reduced-motion support from these files. Check the rendered cascade before
+   attributing a failure to the core component.
+3. **Installed React wrapper types/source:** check what props and generated IDs
+   it supplies. React wrappers own behaviour; handwritten enhanced HTML needs
+   the documented initialisation, scoped away from those wrappers.
+4. **Relevant published guidance:** check intended usage and consumer duties.
+   Record mismatches with installed code, distinguishing a version difference
+   from a documentation defect. WCAG requirements take precedence over a
+   conflicting recommendation; report the conflict with evidence.
 
-## Deriving the design system's half
-
-Three sources, in order of authority. Paths shift as the packages evolve, so each
-is described by what it is — if a location below is empty, find the equivalent
-rather than assuming the thing no longer exists.
-
-1. **The progressive-enhancement runtime's registry** — the frontend package's
-   entry point maps each module attribute value to the class that upgrades it, and
-   exports the init function that scans for them. The only authoritative answer to
-   "which components need JavaScript wiring". Read it; do not recall it. Currently
-   `packages/frontend/index.js`; otherwise follow the package's `main` export.
-2. **The component's stylesheet** — what it actually guarantees about focus,
-   borders, hit area, forced-colors handling and disabled state. Currently one
-   directory per component under `packages/frontend/src/components/`. Shared
-   behaviour (focus rings, base styles, tokens) lives in sibling files at the
-   package's style root rather than per component, so read those too before
-   concluding a component omits something.
-3. **The published guidance**, `/components/<name>.md` on the docs site. Every
-   page has a raw-markdown twin at that `.md` URL, so it can be read directly.
-   Prefer this over the repo where both cover the same ground: it is what service
-   teams are working from, and it is versioned with the release they installed.
-
-For form behaviour specifically, `/documentation/form-implementation.md` is the
-canonical contract — labels, error connection, error-summary behaviour,
-validation flow, submission state. Check the service against **what that page
-currently says**, not against a summary of it. If the service and that page
-disagree, the page wins; if the page and WCAG disagree, WCAG wins and that is a
-finding against the design system.
-
-Two habits that keep this pass honest:
-
-- **Read the component's CSS before claiming it lacks something.** Design systems
-  routinely handle forced-colors modes, focus rings and reduced motion in shared
-  files. Raising one of those as a service finding is the fastest way to lose a
-  team's attention.
-- **Check both consumer targets.** A component may be wired correctly in the
-  HTML/server-rendered idiom and incorrectly in React, or vice versa. React
-  wrappers typically carry their own behaviour and wire generated IDs
-  automatically, so the checks that matter there are about props passed, not
-  attributes present. Confirm which idiom the service uses first — the guidance
-  page and the wrapper source say what each provides.
+The owning team matters: a defect in shared component code or a published
+example belongs to the design system. Service overrides or incorrect wiring
+belong to the service. Missing enhancement with a working native fallback is
+not automatically a task blocker; severity follows the observed barrier.
 
 ## Deriving the consumer's half
 
-The rest of this file is organised by **kind of control**, not by component name.
-A text field is a text field whatever the design system calls it this year, and
-the duties below come from WCAG and from HTML and ARIA semantics — so they hold
-regardless of how the design system changes.
-
-For each kind: what the service must do, and the criterion it hangs on.
+Use these checks by control type. Where a particular technique or GovBB
+convention is named, distinguish it from WCAG's outcome requirement; do not
+report a convention mismatch as a criterion failure without the actual barrier.
 
 ### Any control that collects a value
 
@@ -98,10 +63,10 @@ For each kind: what the service must do, and the criterion it hangs on.
   the most common real defect in government forms: individually labelled radios
   with no legend leave someone with a list of options and no idea what the
   question was.
-- Controls in one group share a `name` — that is what makes them one group to
-  the browser and to assistive technology.
-- No pre-selected option where the answer matters. It biases the response and
-  hides that no choice was made.
+- Radio buttons in one choice group share a `name`; group labels come from
+  semantics such as a `fieldset` and `legend`, not the name attribute alone.
+- Check the relevant pattern before preselecting an answer. This is a service
+  content/data-quality convention, not automatically a WCAG failure.
 
 ### An error on a control
 
@@ -121,11 +86,11 @@ The highest-yield check in a review of any form-based service, and the one most
 often broken. Read the current requirements in
 `/documentation/form-implementation.md`, then verify against the running service:
 
-- The person is told the submission failed **without having to hunt for it**.
-  Focus must land somewhere that conveys the failure (SC 3.3.1). A submit that
-  appears to do nothing is a blocker.
-- Every error is reachable from that summary, and each link reaches the control
-  that caused it.
+- Identify each detected error in text (SC 3.3.1). GovBB's failed-submission
+  pattern uses an error summary and moves focus to it; verify that technique
+  when the service uses it. [SC 3.3.1](https://www.w3.org/WAI/WCAG22/Understanding/error-identification.html)
+  does not universally require moving focus.
+- When an error summary is used, each link reaches the control that caused it.
 - Entered values are preserved. Losing part-completed answers is a serious harm
   in a government service, not an inconvenience.
 - The summary is not present before anything has failed.
@@ -150,24 +115,30 @@ often broken. Read the current requirements in
 - Operable by keyboard alone, with a visible focus indicator (SC 2.1.1, 2.4.7).
   A `<div>` with a click handler is the single most common serious defect there
   is.
-- Content that is visually hidden must be genuinely hidden — `hidden` or
-  `display: none`, not just clipped — or it stays in the tab order and is
-  announced.
+- Closed/inactive content must leave the focus order and accessibility tree.
+  Use the component's documented hiding behaviour. Intentionally visually
+  hidden labels are different: they should remain available to assistive
+  technology.
 - No keyboard trap: focus can always leave, and anything that opens can be
   dismissed (SC 2.1.2).
 
 ### Navigation and page structure
 
-- A skip link as the **first** focusable element, whose target exists and can
-  receive focus. A skip link pointing at a missing ID is worse than none
-  (SC 2.4.1).
-- Real landmarks — one `<main>`, plus `header`, `nav`, `footer` — and a `<nav>`
-  carrying an accessible name where there is more than one.
+- Provide a way to [bypass repeated blocks (SC 2.4.1)](https://www.w3.org/WAI/WCAG22/Understanding/bypass-blocks.html). GovBB page templates use
+  a skip link as the first focusable element; check its target exists and can
+  receive focus. A page without repeated blocks is not automatically a WCAG
+  failure because it has no skip link.
+- Use meaningful landmarks for the structure that exists: `<main>` for main
+  content, and `header`, `nav`, `footer` where those regions are present. Name
+  multiple navigation landmarks so they are distinguishable. Do not demand
+  extra regions solely to satisfy a checklist.
 - The current page marked in any navigation that includes it
   (`aria-current="page"`).
-- Link text that describes its destination out of context (SC 2.4.4). A column
-  of identical "Change" links on a check-answers page is the classic failure;
-  each needs visually hidden text naming what it changes.
+- Link purpose must be clear from its text or programmatically determined
+  context (SC 2.4.4). Follow GovBB's summary-list guidance for distinct "Change"
+  links, including visually hidden context where the example supplies it.
+  [W3C's explanation](https://www.w3.org/WAI/WCAG22/Understanding/link-purpose-in-context.html)
+  distinguishes this from requiring every link to stand alone.
 - Navigation in the same order on every page, and help in the same relative
   place wherever it appears (SC 3.2.3, 3.2.6).
 

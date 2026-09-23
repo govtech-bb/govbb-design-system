@@ -24,6 +24,7 @@ jobs:
       - run: pnpm -r typecheck
       - run: pnpm test
       - run: pnpm build
+      - run: pnpm test:ai-docs
 
   storybook:
     runs-on: ubuntu-latest
@@ -36,6 +37,7 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm exec playwright install chromium --with-deps
+      - run: pnpm test:skills
       - run: pnpm storybook:typecheck
       - run: pnpm storybook:test
       - run: pnpm storybook:build

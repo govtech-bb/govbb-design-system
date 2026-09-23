@@ -16,8 +16,17 @@
  */
 
 import { createServer } from 'node:http';
-import { mkdtempSync, writeFileSync, mkdirSync, rmSync } from 'node:fs';
-import { join, dirname } from 'node:path';
+import {
+  mkdtempSync,
+  writeFileSync,
+  mkdirSync,
+  rmSync,
+  cpSync,
+  symlinkSync,
+  realpathSync,
+} from 'node:fs';
+import { join, dirname, resolve } from 'node:path';
+import { createRequire } from 'node:module';
 import { tmpdir } from 'node:os';
 import { fileURLToPath } from 'node:url';
 import { spawn } from 'node:child_process';
@@ -33,6 +42,20 @@ const ok = (name, passed, detail = '') => {
 
 /* ---------- fixtures ---------- */
 const root = mkdtempSync(join(tmpdir(), 'govbb-scripts-test-'));
+const installed = join(root, 'external-skill');
+cpSync(HERE, installed, { recursive: true });
+const consumer = join(root, 'consumer');
+const cwd = join(consumer, 'apps/service');
+mkdirSync(cwd, { recursive: true });
+mkdirSync(join(consumer, 'node_modules/@playwright'), { recursive: true });
+const require = createRequire(resolve(process.cwd(), 'package.json'));
+symlinkSync(
+  dirname(require.resolve('@playwright/test/package.json')),
+  join(consumer, 'node_modules/@playwright/test'),
+  'dir',
+);
+const empty = join(root, 'empty-consumer');
+mkdirSync(empty);
 const page = (body, head = '') =>
   `<!doctype html><html lang="en"><head><meta charset="utf-8">${head}</head><body>${body}</body></html>`;
 
@@ -40,6 +63,13 @@ const pages = {
   // Server-rendered: content present without script, real form, no inline handlers.
   '/good.html': page(`<main><h1>Apply</h1><p>${'Body copy. '.repeat(20)}</p>
     <form action="/next" method="post"><button type="submit">Continue</button></form></main>`),
+  '/self-submit.html':
+    page(`<main><h1>Apply</h1><form method="post"><button>Continue</button></form>
+    <form action="" id="empty-action"></form><button form="empty-action">Continue</button></main>`),
+  '/no-submit.html':
+    page(`<main><h1>Apply</h1><form action="/next"><button type="reset">Reset</button>
+    <fieldset disabled><button>Continue</button></fieldset></form>
+    <form action="javascript:submit()"><button>Continue</button></form></main>`),
   // Client-rendered: nothing without script, and the only submit path is a handler.
   '/spa.html': page(
     `<main><div id="app"></div>
@@ -63,6 +93,17 @@ const pages = {
   ),
   // No behavioural components at all — must pass, not error.
   '/plain.html': page(`<main><h1>Nothing behavioural here</h1></main>`),
+  '/layout.html':
+    page(`<a class="govbb-skip-link" href="#content">Skip to main content</a>
+    <header>Service</header><main id="content" tabindex="-1"><h1>Apply</h1>
+    <article><header>Section heading</header><footer>Section note</footer></article></main><footer>Government</footer>`),
+  '/layout-child.html':
+    page(`<a class="govbb-skip-link" href="#content">Skip to main content</a>
+    <div role="banner">Service</div><div role="main"><h1 id="content" tabindex="-1">Apply</h1></div><div role="contentinfo">Government</div>`),
+  '/layout-bad.html':
+    page(`<a class="govbb-skip-link" href="#outside">Skip to main content</a>
+    <header id="outside">Service</header><main><h1>Apply</h1><div style="width:2000px">Overflow</div></main>
+    <main><h1>Duplicate</h1></main><footer>Government</footer>`),
 };
 
 const server = createServer((req, res) => {
@@ -84,15 +125,45 @@ const base = `http://127.0.0.1:${server.address().port}`;
  * and every browser-driven check would time out and "fail", regardless of what
  * the script under test actually does.
  */
-const run = (script, args) =>
+const run = (script, args, options = {}) =>
   new Promise((resolve) => {
-    const child = spawn('node', [join(HERE, script), ...args]);
+    const child = spawn(process.execPath, [join(installed, script), ...args], {
+      cwd,
+      ...options,
+    });
     let stdout = '',
       stderr = '';
     child.stdout.on('data', (d) => (stdout += d));
     child.stderr.on('data', (d) => (stderr += d));
     child.on('close', (status) => resolve({ status, stdout, stderr }));
   });
+
+console.log('\nConsumer dependency resolution');
+{
+  const missing = await run('module-check.mjs', [`${base}/plain.html`], {
+    cwd: empty,
+  });
+  ok(
+    "missing consumer dependency cannot use the skill author's dependencies",
+    missing.status === 2 && /npm install -D playwright/.test(missing.stderr),
+  );
+  const noBrowser = await run('module-check.mjs', [`${base}/plain.html`], {
+    env: {
+      ...process.env,
+      PLAYWRIGHT_BROWSERS_PATH: join(root, 'missing-browsers'),
+    },
+  });
+  ok(
+    'missing Chromium fails with installation instructions',
+    noBrowser.status === 2 &&
+      /npx playwright install chromium/.test(noBrowser.stderr),
+  );
+  const missingPage = await run('module-check.mjs', [`${base}/missing.html`]);
+  ok(
+    'a missing page cannot pass as having no modules',
+    missingPage.status !== 0 && /HTTP 404/.test(missingPage.stderr),
+  );
+}
 
 /* ---------- pe-check ---------- */
 console.log('\npe-check.mjs — progressive enhancement');
@@ -102,6 +173,21 @@ console.log('\npe-check.mjs — progressive enhancement');
     'server-rendered page passes',
     good.status === 0,
     (good.stdout.match(/\d+ chars with JS → \d+ without/) || [''])[0],
+  );
+  const selfSubmit = await run('pe-check.mjs', [`${base}/self-submit.html`]);
+  ok(
+    'omitted and empty form actions self-submit, including an external submit control',
+    selfSubmit.status === 0,
+    selfSubmit.stderr,
+  );
+  const noSubmit = await run('pe-check.mjs', [`${base}/no-submit.html`]);
+  ok(
+    'reset and disabled buttons cannot submit',
+    noSubmit.status === 1 && /has no submit control/.test(noSubmit.stdout),
+  );
+  ok(
+    'javascript form action fails without script',
+    /has a javascript: action/.test(noSubmit.stdout),
   );
 
   const spa = await run('pe-check.mjs', [`${base}/spa.html`]);
@@ -149,6 +235,36 @@ console.log('\nmodule-check.mjs — behavioural wiring');
   );
 }
 
+console.log('\nlayout-check.mjs — semantic page structure');
+{
+  for (const path of ['layout.html', 'layout-child.html']) {
+    const result = await run('layout-check.mjs', [`${base}/${path}`, '--json']);
+    ok(
+      `valid landmarks and focusable skip target pass: ${path}`,
+      result.status === 0,
+      result.stderr,
+    );
+  }
+  const bad = await run('layout-check.mjs', [
+    `${base}/layout-bad.html`,
+    '--json',
+  ]);
+  const checks = JSON.parse(bad.stdout)[0].checks;
+  ok('invalid layout fails', bad.status === 1);
+  for (const name of [
+    'Exactly one main landmark',
+    'Exactly one h1',
+    'Skip link targets main content',
+    'Skip link target can receive focus',
+    'No horizontal overflow at 360px',
+  ]) {
+    ok(
+      `catches ${name.toLowerCase()}`,
+      checks.some((check) => check.name === name && !check.passed),
+    );
+  }
+}
+
 /* ---------- audit-classes ---------- */
 console.log('\naudit-classes.mjs — name resolution');
 {
@@ -178,6 +294,37 @@ console.log('\naudit-classes.mjs — name resolution');
     'index.html': `<button class="govbb-button">Go</button><ul class="govbb-list"></ul>`,
     'service.css': `.my-thing{margin-top:var(--govbb-t3)}`,
   });
+  const packageDir = join(consumer, 'node_modules/@govtech-bb/frontend');
+  mkdirSync(packageDir, { recursive: true });
+  writeFileSync(
+    join(packageDir, 'package.json'),
+    JSON.stringify({
+      name: '@govtech-bb/frontend',
+      exports: { './css': './styles.css' },
+    }),
+  );
+  writeFileSync(join(packageDir, 'styles.css'), css);
+  writeFileSync(
+    join(cwd, 'index.html'),
+    '<button class="govbb-button">Continue</button>',
+  );
+  const portable = await run('audit-classes.mjs', [cwd, '--json']);
+  ok(
+    'stylesheet resolves by package export from consumer workspace ancestor',
+    portable.status === 0 &&
+      JSON.parse(portable.stdout).stylesheet ===
+        realpathSync(join(packageDir, 'styles.css')),
+    portable.stderr,
+  );
+  const missingCss = await run('audit-classes.mjs', [
+    clean,
+    '--css',
+    'missing.css',
+  ]);
+  ok(
+    'missing explicit stylesheet fails rather than falling back',
+    missingCss.status === 2 && /Could not read/.test(missingCss.stderr),
+  );
   const r1 = await run('audit-classes.mjs', [
     clean,
     '--css',
