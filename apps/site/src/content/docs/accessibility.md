@@ -45,10 +45,10 @@ working from a 2.1 checklist will miss them. See
 Using the design system gets you a long way, and it does not get you all the
 way. Roughly:
 
-**The design system's half.** Hit areas on interactive controls, sensible
-heading and text sizing, and components whose markup carries the semantics they
-need. Focus indicator contrast and Windows High Contrast rendering are not yet
-reliable across every component, so check both in your service.
+**The design system's half.** Sensible heading and text sizing, and components
+whose markup carries the semantics they need. Target size, focus indicator
+contrast and Windows High Contrast rendering are not yet reliable across every
+component, so check all three in your service.
 
 **Your service's half.** Everything about _your_ content and _your_ journey:
 labels associated with their controls, errors connected to the fields they
@@ -72,7 +72,7 @@ a link makes sense out of context.
 So a clean automated run is a starting point, not a pass. Reading "0 violations"
 as "accessible" is the most common mistake in this area.
 
-These need a person to confirm, even where a tool can help with part of the check:
+Checks that need a person to confirm, even where a tool can help, include:
 
 - Zoom to 200%, and increased text spacing.
 - Reflow at 320px.
@@ -89,7 +89,7 @@ a review.
 Include people with access needs in your testing where you can. Conformance with
 WCAG 2.2 AA is the floor, not evidence that a service is usable.
 
-## Automated checking used here
+## Reviewing with the accessibility skill
 
 The design system publishes an
 [accessibility review skill](/ai-skills/accessibility-review/) that checks a page

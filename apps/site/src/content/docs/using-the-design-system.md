@@ -88,8 +88,8 @@ Every official Government of Barbados service should:
 - use components where they meet the user need and test them in the complete
   service journey
 - meet [WCAG 2.2 AA](https://www.w3.org/TR/WCAG22/) accessibility requirements —
-  see [Accessibility](/documentation/accessibility/) for what each criterion
-  means in practice, and how to check it
+  see [Accessibility](/documentation/accessibility/) for the standard and how to
+  check against it
 - use the GovBB design tokens for colour, typography and spacing
 
 ## Guidelines
