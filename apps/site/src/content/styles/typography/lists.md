@@ -67,6 +67,10 @@ columns. Use a table instead.
 Use the `--bullet` modifier for an unordered set of items, and the `--number`
 modifier (on an `<ol>`) when the order matters, such as the steps in a process.
 
+Introduce a bulleted list with a lead-in line ending in a colon. Start each
+item with a lowercase letter and leave off the full stop. Numbered lists need
+no lead-in, and each item is a full sentence ending in a full stop.
+
 ```html title="Bulleted and numbered lists"
 <ul class="govbb-list govbb-list--bullet">
   <li>Proof of address</li>

@@ -5,12 +5,16 @@
  * Components that need JS register here, keyed by their data-govbb-module value.
  * CSS-only components register nothing.
  */
+import { AddAnother } from './src/components/add-another/add-another.js';
+import { Combobox } from './src/components/combobox/combobox.js';
 import { FileUpload } from './src/components/file-upload/file-upload.js';
 import { Header } from './src/components/header/header.js';
 import { NumberInput } from './src/components/number-input/number-input.js';
 
 /** @type {Record<string, new (el: HTMLElement) => { destroy(): void }>} */
 const registry = {
+  'add-another': AddAnother,
+  combobox: Combobox,
   'file-upload': FileUpload,
   header: Header,
   'number-input': NumberInput,
@@ -33,4 +37,4 @@ export function initAll(root = document) {
   }
 }
 
-export { FileUpload, Header, NumberInput };
+export { AddAnother, Combobox, FileUpload, Header, NumberInput };

@@ -1,9 +1,10 @@
-/* Named breakpoints (design widths: mobile 375, tablet 800, desktop 1440).
-   @custom-media is inlined by Lightning CSS at build, so components reference
-   names instead of magic numbers:
+/* Named breakpoints. @custom-media is inlined by Lightning CSS at build, so
+   components reference names instead of magic numbers:
      @media (--tablet) { ... }   800px and up
      @media (--mobile) { ... }   below 800px
-   Mobile (375) is the floor — no query needed until something proves it does. */
+   Mobile (375) is the floor — no query needed until something proves it does.
+   Desktop starts at 1024, not the 1440 the comps are drawn at: 1280 and 1366
+   laptops are desktops and should not be served the middle tier. */
 @custom-media --tablet (width >= 50rem);
-@custom-media --desktop (width >= 90rem);
+@custom-media --desktop (width >= 64rem);
 @custom-media --mobile (width < 50rem);

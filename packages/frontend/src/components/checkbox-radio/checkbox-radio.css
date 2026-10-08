@@ -78,14 +78,16 @@
   cursor: not-allowed;
 }
 
-/* Control + copy. A per-option hint sits beneath its label instead of becoming
-   a third inline item; options without hints retain the same single-row
-   alignment. */
+/* Control + copy. The control sits against the label's first line (its block
+   padding centres one line of text on the 3rem box), so a label that wraps
+   grows downwards from the control instead of floating it mid-paragraph. A
+   per-option hint sits beneath its label instead of becoming a third inline
+   item; options without hints retain the same single-row alignment. */
 .govbb-checkbox-item,
 .govbb-radio-item {
   display: grid;
   grid-template-columns: 3rem minmax(0, 1fr);
-  align-items: center;
+  align-items: start;
   column-gap: 1.25rem; /* 20px — control↔copy */
 }
 
@@ -93,9 +95,13 @@
 .govbb-radio-item__label {
   grid-column: 2;
   grid-row: 1;
+  padding-block: calc(
+    (3rem - var(--govbb-line-height-base) * var(--govbb-font-size-body)) / 2
+  );
   font-size: var(--govbb-font-size-body);
   line-height: var(--govbb-line-height-base);
   color: var(--govbb-color-ink);
+  overflow-wrap: anywhere;
   cursor: pointer;
 }
 
@@ -107,7 +113,9 @@
 }
 
 .govbb-checkbox:disabled + .govbb-checkbox-item__label,
-.govbb-radio:disabled + .govbb-radio-item__label {
+.govbb-radio:disabled + .govbb-radio-item__label,
+.govbb-checkbox:disabled ~ .govbb-hint,
+.govbb-radio:disabled ~ .govbb-hint {
   opacity: var(--govbb-opacity-disabled);
   cursor: not-allowed;
 }

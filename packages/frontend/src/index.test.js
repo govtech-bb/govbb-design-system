@@ -41,19 +41,26 @@ describe('published CSS entry', () => {
 
   it('does not attach design-system spacing to text elements', async () => {
     const css = await readFile('src/base.css', 'utf8');
-    const textRules = [...css.matchAll(/:where\((?:h1[^)]*|p)\)\s*{([^}]*)}/g)];
 
-    expect(textRules).toHaveLength(2);
-    expect(
-      textRules.every(([, declarations]) =>
-        declarations.includes('margin-block: 0;'),
-      ),
-    ).toBe(true);
+    // Every base rule targeting a heading or paragraph: layout owns spacing,
+    // so none of them may reach for a spacing token.
+    const textRules = [
+      ...css.matchAll(/:where\(((?:h[1-6]|p)[^)]*)\)\s*{([^}]*)}/g),
+    ];
+
+    expect(textRules.length).toBeGreaterThan(2);
     expect(
       textRules.every(
-        ([, declarations]) => !declarations.includes('var(--govbb-space-'),
+        ([, , declarations]) => !declarations.includes('var(--govbb-space-'),
       ),
     ).toBe(true);
+
+    // The margin reset itself still has to be there, once per element group.
+    const resets = textRules.filter(([, , declarations]) =>
+      declarations.includes('margin-block: 0;'),
+    );
+
+    expect(resets).toHaveLength(2);
   });
 
   it('stacks both legacy and semantic footer-link markup', async () => {

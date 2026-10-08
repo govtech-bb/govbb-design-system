@@ -4,7 +4,7 @@
  * a live "change it once" control. The anatomy renders in an isolated iframe
  * with the real package CSS; the callouts are anchored to the button's box
  * edges (not hand-tuned page pixels), so they stay attached if the button's
- * size changes. Picking a swatch rewrites the --govbb-teal-00 primitive on
+ * size changes. Picking a swatch rewrites the --govbb-teal-80 primitive on
  * the iframe root: the button's fill, the fill callout's hex, and the other
  * components below all follow.
  *
@@ -15,7 +15,7 @@ import libraryCss from '@govtech-bb/frontend/css?raw';
 import { pick, remToPx } from '../lib/tokens';
 
 const [shipped, radius, fontBody, spaceS, spaceXm] = pick(
-  '--govbb-teal-00',
+  '--govbb-teal-80',
   '--govbb-radius',
   '--govbb-font-size-body',
   '--govbb-space-s',
@@ -26,7 +26,7 @@ const [shipped, radius, fontBody, spaceS, spaceXm] = pick(
 // pulled from the real ramp so the demo never shows an invented colour.
 const options = [
   { label: 'Teal', note: 'shipped', value: shipped.resolved },
-  ...pick('--govbb-blue-100', '--govbb-green-00', '--govbb-pink-00').map(
+  ...pick('--govbb-blue-40', '--govbb-green-80', '--govbb-pink-80').map(
     (t) => ({ label: t.name.replace('--govbb-', ''), note: '', value: t.resolved }),
   ),
 ];
@@ -155,7 +155,7 @@ const anatomyHtml = `
     <div class="chip chip--fill">
       <div class="chip__title">Fill</div>
       <code>--govbb-color-interactive</code>
-      <div class="chip__sub">&#8627; <code>--govbb-teal-00</code> <span data-anatomy-hex>${shipped.resolved}</span></div>
+      <div class="chip__sub">&#8627; <code>--govbb-teal-80</code> <span data-anatomy-hex>${shipped.resolved}</span></div>
     </div>
   </figure>
   <div class="follow">
@@ -178,7 +178,7 @@ const srcdoc = `<!doctype html><html lang="en"><head><meta charset="utf-8"><styl
 
   <div class="token-demo__controls">
     <span class="token-demo__label" id="token-demo-label">
-      Set <code>--govbb-teal-00</code> to
+      Set <code>--govbb-teal-80</code> to
     </span>
     <div
       role="group"
@@ -327,7 +327,7 @@ const srcdoc = `<!doctype html><html lang="en"><head><meta charset="utf-8"><styl
       button.addEventListener('click', () => {
         const value = button.dataset.demoValue ?? '';
         const doc = frame?.contentDocument;
-        doc?.documentElement.style.setProperty('--govbb-teal-00', value);
+        doc?.documentElement.style.setProperty('--govbb-teal-80', value);
         const hex = doc?.querySelector('[data-anatomy-hex]');
         if (hex) hex.textContent = value;
         buttons.forEach((b) =>

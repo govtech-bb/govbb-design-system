@@ -19,18 +19,18 @@
   gap: var(--govbb-space-xs);
   align-items: flex-start;
   padding: var(--govbb-space-xm) var(--govbb-space-s);
-  overflow-wrap: break-word;
+  overflow-wrap: anywhere; /* children are shrink-wrapped flex items */
   font-size: var(--govbb-font-size-body);
   line-height: var(--govbb-line-height-base);
   color: var(--govbb-color-ink);
-  background: var(--govbb-yellow-40);
-  border: 4px solid var(--govbb-yellow-100);
+  background: var(--govbb-yellow-20);
+  border: 4px solid var(--govbb-yellow-40);
 }
 
 .govbb-feedback__heading {
   margin: 0;
   font-size: var(--govbb-font-size-h3);
-  font-weight: 700;
+  font-weight: 600;
   line-height: var(--govbb-line-height-h3);
 }
 

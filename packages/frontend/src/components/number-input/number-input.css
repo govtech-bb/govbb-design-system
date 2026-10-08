@@ -8,7 +8,8 @@
   display: grid;
   grid-template-columns: 1fr 2.9375rem;
   align-items: center;
-  width: 11rem; /* 176px */
+  width: 100%;
+  max-width: 11rem; /* 176px; shrinks with a narrower column */
   background: var(--govbb-color-surface);
   border: var(--govbb-border-width-form) solid var(--govbb-color-ink);
   border-radius: var(--govbb-radius);
@@ -49,6 +50,7 @@
   padding-right: 2.9375rem;
   font: inherit;
   font-size: var(--govbb-font-size-body);
+  font-variant-numeric: tabular-nums;
   line-height: var(--govbb-line-height-base);
   color: var(--govbb-color-ink);
   background: none;

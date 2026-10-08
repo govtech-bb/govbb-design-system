@@ -3,66 +3,90 @@
  * semantic names; the ramp is the source they resolve to.
  */
 :root {
-  /* ---- Primitives ---- */
+  /* ---- Primitives ----
+     Mirrors the Figma variable ramp 1:1 (Colour collection, steps 10–90,
+     plus Neutral black/white). Names and hexes must match Figma — sync any
+     change there first. */
   --govbb-white-00: #fff;
   --govbb-black-00: #000;
-  --govbb-grey-00: #e0e4e9;
-  --govbb-mid-grey-00: #595959;
 
-  --govbb-teal-ink: #083a3d; /* hover text on dark surfaces (links sheet) */
-  --govbb-teal-05: #0a4549; /* pressed step between teal-ink and teal-00 */
-  --govbb-teal-00: #0e5f64;
+  --govbb-grey-10: #f5f6f7;
+  --govbb-grey-20: #e0e4e9;
+  --govbb-grey-30: #d9d9d9;
+  --govbb-grey-40: #b9c0c6;
+  --govbb-grey-50: #9aa2a9;
+  --govbb-grey-60: #757e85;
+  --govbb-grey-70: #595959;
+  --govbb-grey-80: #3d3d3d;
+
   --govbb-teal-10: #eaf9f9;
-  --govbb-teal-40: #ace6e9;
-  --govbb-teal-100: #30c0c8;
+  --govbb-teal-20: #ace6e9;
+  --govbb-teal-40: #30c0c8;
+  --govbb-teal-60: #1a777d;
+  --govbb-teal-80: #0e5f64;
+  --govbb-teal-90: #0a4549;
+  --govbb-teal-ink: #083a3d; /* not in the Figma ramp — hover text on dark surfaces (links sheet) */
 
-  --govbb-green-00: #00654a;
   --govbb-green-10: #e9f9f3;
-  --govbb-green-40: #a5e5ce;
-  --govbb-green-100: #1fbf84;
+  --govbb-green-20: #a5e5ce;
+  --govbb-green-40: #1fbf84;
+  --govbb-green-60: #109067;
+  --govbb-green-80: #00654a;
+  --govbb-green-90: #004d38;
 
-  --govbb-blue-00: #00164a;
   --govbb-blue-10: #e5e9f2;
-  --govbb-blue-40: #99a8cc;
-  --govbb-blue-100: #00267f;
+  --govbb-blue-20: #99a8cc;
+  --govbb-blue-40: #00267f;
+  --govbb-blue-60: #001e65;
+  --govbb-blue-80: #00164a;
+  --govbb-blue-90: #000e30;
 
-  --govbb-red-00: #a42c2c;
   --govbb-red-10: #fff0f0;
-  --govbb-red-40: #ffc4c4;
-  --govbb-red-100: #ff6b6b;
+  --govbb-red-20: #ffc4c4;
+  --govbb-red-40: #ff6b6b;
+  --govbb-red-60: #bf3e3e;
+  --govbb-red-80: #a42c2c;
+  --govbb-red-90: #961e1f;
 
-  --govbb-yellow-00: #e8a833;
   --govbb-yellow-10: #fff9e9;
-  --govbb-yellow-40: #ffe9a8;
-  --govbb-yellow-100: #ffc726;
+  --govbb-yellow-20: #ffe9a8;
+  --govbb-yellow-40: #ffc726;
+  --govbb-yellow-60: #f0b52c;
+  --govbb-yellow-80: #e8a833;
+  --govbb-yellow-90: #c98d2a;
 
-  --govbb-pink-00: #ad1157;
   --govbb-pink-10: #fff4fb;
-  --govbb-pink-40: #ffd4f0;
-  --govbb-pink-100: #ff94d9;
+  --govbb-pink-20: #ffd4f0;
+  --govbb-pink-40: #ff94d9;
+  --govbb-pink-60: #da5298;
+  --govbb-pink-80: #ad1157;
+  --govbb-pink-90: #820d42;
 
-  --govbb-purple-00: #4a235a;
-  --govbb-purple-40: #ddc0e9;
-  --govbb-purple-100: #a962c7;
+  --govbb-purple-10: #f6eff9;
+  --govbb-purple-20: #ddc0e9;
+  --govbb-purple-40: #a962c7;
+  --govbb-purple-60: #7a4396;
+  --govbb-purple-80: #4a235a;
+  --govbb-purple-90: #371944;
 
   /* ---- Brand & surfaces ---- */
-  --govbb-color-brand: var(--govbb-blue-100); /* ultramarine */
-  --govbb-color-brand-accent: var(--govbb-yellow-100); /* gold */
+  --govbb-color-brand: var(--govbb-blue-40); /* ultramarine */
+  --govbb-color-brand-accent: var(--govbb-yellow-40); /* gold */
   --govbb-color-ink: var(--govbb-black-00);
   --govbb-color-surface: var(--govbb-white-00);
-  --govbb-color-muted: var(--govbb-mid-grey-00);
+  --govbb-color-muted: var(--govbb-grey-70);
 
   /* ---- Interactive & form controls ---- */
   --govbb-color-interactive: var(
-    --govbb-teal-00
+    --govbb-teal-80
   ); /* primary action, checked fill */
-  --govbb-color-interactive-active: var(--govbb-teal-05);
-  --govbb-color-focus: var(--govbb-teal-100); /* focus ring */
-  --govbb-color-focus-danger: var(--govbb-red-100);
-  --govbb-color-error: var(--govbb-red-00); /* invalid state */
-  --govbb-color-neutral: var(--govbb-grey-00); /* secondary fill, dividers */
+  --govbb-color-interactive-active: var(--govbb-teal-90);
+  --govbb-color-focus: var(--govbb-teal-40); /* focus ring */
+  --govbb-color-focus-danger: var(--govbb-red-40);
+  --govbb-color-error: var(--govbb-red-80); /* invalid state */
+  --govbb-color-neutral: var(--govbb-grey-20); /* secondary fill, dividers */
   --govbb-color-highlight: var(--govbb-blue-10); /* selected surfaces */
-  --govbb-color-tertiary: var(--govbb-green-00); /* tertiary action */
+  --govbb-color-tertiary: var(--govbb-green-80); /* tertiary action */
 
   /* ---- Link states ---- */
 
@@ -92,22 +116,38 @@
     'Figtree', system-ui, -apple-system, 'Segoe UI', 'Roboto', 'Helvetica',
     'Arial', sans-serif;
 
-  /* Size ramp — mirrors the Figma type scale (see the .govbb-text-* utility
-     classes). Everything except display/h1/h2/h3 uses the base line-height. */
-  --govbb-font-size-display: 5rem;
-  --govbb-font-size-h1: 3.5rem;
-  --govbb-font-size-h2: 2.5rem;
-  --govbb-font-size-h3: 1.5rem;
-  --govbb-font-size-h4: 1.25rem;
-  --govbb-font-size-body-lg: 2rem;
+  /* No brand mono face; the system stacks render instantly. */
+  --govbb-font-mono:
+    ui-monospace, 'SF Mono', 'SFMono-Regular', 'Menlo', 'Consolas',
+    'Liberation Mono', monospace;
+
+  /* Size ramp, mobile-first: these are the small-screen values and the media
+     blocks below step them up.
+     Only display, h1 and h2 move. Everything from h3 down holds one size at
+     every width, because body sizes the text inside every control and a
+     responsive body resizes buttons and inputs on a breakpoint.
+     Line heights are unitless ratios; the comment carries the px they make.
+     Everything except display/h1/h2/h3 uses the base line-height. */
+  --govbb-font-size-display: 3rem; /* 48px */
+  --govbb-font-size-h1: 2.5rem; /* 40px */
+  --govbb-font-size-h2: 1.75rem; /* 28px */
+  --govbb-font-size-h3: 1.5rem; /* 24px */
+  --govbb-font-size-h4: 1.25rem; /* 20px */
+  --govbb-font-size-body-lg: 1.5rem; /* 24px */
   --govbb-font-size-body: 1.25rem; /* 20px */
-  --govbb-font-size-caption: 1rem;
-  --govbb-font-size-caption-sm: 0.75rem;
-  --govbb-line-height-display: 1;
-  --govbb-line-height-h1: 1.15;
-  --govbb-line-height-h2: 1.25;
-  --govbb-line-height-h3: 1.25;
+  --govbb-font-size-body-sm: 1rem; /* 16px */
+  --govbb-line-height-display: 1; /* 48px */
+  --govbb-line-height-h1: 1.2; /* 48px */
+  --govbb-line-height-h2: 1.2857; /* 36px */
+  --govbb-line-height-h3: 1.3333; /* 32px */
   --govbb-line-height-base: 1.5;
+
+  /* Large type only — body copy takes no tracking. */
+  --govbb-letter-spacing-heading: -0.015em;
+
+  /* ~66 characters at body size. In em, not ch: Figtree's zero is 0.64em
+     against an average letter of 0.48em, so 60ch renders nearer 99. */
+  --govbb-measure: 42em;
 
   /* ---- Spacing. s, xm, m are confirmed; xxs/xs are placeholders. ---- */
   --govbb-space-xxs: 0.25rem; /* 4px */
@@ -115,8 +155,34 @@
   --govbb-space-s: 1rem; /* 16px */
   --govbb-space-xm: 1.5rem; /* 24px */
   --govbb-space-m: 2rem; /* 32px */
-  --govbb-space-l: 4rem; /* placeholder pending Figma confirmation */
+  --govbb-space-ml: 3rem; /* 48px */
+  --govbb-space-l: 4rem;
   --govbb-space-xl: 8rem; /* desktop-frame page gutter */
 
   --govbb-radius: 4px;
+}
+
+/* Plain width queries, not the breakpoints.css names: tokens.css is also
+   published standalone, where nothing inlines @custom-media. Desktop applies
+   from 64rem so ordinary laptops get the widest tier, not the middle one. */
+@media (width >= 50rem) {
+  :root {
+    --govbb-font-size-display: 4rem; /* 64px */
+    --govbb-font-size-h1: 3rem; /* 48px */
+    --govbb-font-size-h2: 2rem; /* 32px */
+    --govbb-font-size-h3: 1.75rem; /* 28px */
+    --govbb-line-height-h1: 1.1667; /* 56px */
+    --govbb-line-height-h2: 1.25; /* 40px */
+    --govbb-line-height-h3: 1.2857; /* 36px */
+  }
+}
+
+@media (width >= 64rem) {
+  :root {
+    --govbb-font-size-display: 5rem; /* 80px */
+    --govbb-font-size-h1: 3.5rem; /* 56px */
+    --govbb-font-size-h2: 2.5rem; /* 40px */
+    --govbb-line-height-h1: 1.1429; /* 64px */
+    --govbb-line-height-h2: 1.2; /* 48px */
+  }
 }

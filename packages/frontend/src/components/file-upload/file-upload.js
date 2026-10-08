@@ -34,6 +34,7 @@ export class FileUpload {
       const name = this.document.createElement('span');
       name.className = 'govbb-file-upload__name';
       name.textContent = file.name;
+      name.title = file.name; // the CSS clips it; hover gets the whole name
       const remove = this.document.createElement('button');
       remove.className =
         'govbb-button govbb-button--text govbb-button--negative';

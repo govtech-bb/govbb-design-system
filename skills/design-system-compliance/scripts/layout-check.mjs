@@ -1,0 +1,190 @@
+#!/usr/bin/env node
+/**
+ * Page-structure checks for the design-system-compliance skill.
+ *
+ * Every problem this finds is invisible to a class audit and to looking at a
+ * screenshot, because none of them is a class error and none of them changes
+ * how the page looks. They are all about where things sit relative to the
+ * landmarks — which is exactly the class of defect that reaches users, since
+ * the page renders perfectly the whole time.
+ *
+ * It deliberately checks only things the design system itself publishes or that
+ * WCAG requires — landmarks, a skip link that resolves, no horizontal overflow.
+ * Where the site's own pages disagree with each other about page structure, that
+ * is a finding for the design team, not something for this script to adjudicate:
+ * a check that enforces one reading would fail every service following the
+ * other.
+ *
+ * Checks run against the rendered DOM, not the source, so they see what a
+ * template actually produced.
+ *
+ *   node layout-check.mjs http://localhost:8102/ http://localhost:8102/form.html
+ *   node layout-check.mjs http://localhost:8102/ --widths 360,1280
+ */
+
+import { launchBrowser } from './project.mjs';
+
+const HELP = `Usage:
+  node layout-check.mjs <url> [more urls…] [options]
+
+Options:
+  --widths <list>  Comma-separated viewport widths (default 360,1280)
+  --json           Emit results as JSON
+  -h, --help
+
+Checks per page:
+  · exactly one h1
+  · the skip link's href resolves to an element that exists
+  · the skip target is focusable and is main or a descendant of main
+  · one each of banner / main / contentinfo landmarks
+  · no horizontal overflow at any width
+`;
+
+const args = process.argv.slice(2);
+if (args.includes('-h') || args.includes('--help') || args.length === 0) {
+  console.log(HELP);
+  process.exit(args.length === 0 ? 2 : 0);
+}
+const asJson = args.includes('--json');
+let widths = [360, 1280];
+const wi = args.indexOf('--widths');
+if (wi !== -1 && args[wi + 1]) widths = args[wi + 1].split(',').map(Number);
+if (widths.some((width) => !Number.isInteger(width) || width <= 0)) {
+  console.error('--widths must contain positive integer viewport widths.');
+  process.exit(2);
+}
+const urls = args.filter(
+  (a, i) => !a.startsWith('--') && args[i - 1] !== '--widths',
+);
+if (!urls.length) {
+  console.error('Provide at least one URL.');
+  process.exit(2);
+}
+
+const browser = await launchBrowser();
+
+/* Structure is width-independent, so it is checked once at the first width;
+   only overflow is re-checked at each width. */
+async function structure(page) {
+  return page.evaluate(() => {
+    const out = [];
+    const add = (name, passed, evidence) =>
+      out.push({ name, passed, evidence });
+    const q = (s) => document.querySelector(s);
+    const qa = (s) => [...document.querySelectorAll(s)];
+
+    const h1s = qa('h1');
+    add('Exactly one h1', h1s.length === 1, `${h1s.length} found`);
+
+    const skip = q('.govbb-skip-link, a[href^="#"][class*="skip"]');
+    const targetId = skip
+      ? (skip.getAttribute('href') || '').replace(/^#/, '')
+      : null;
+    const target = targetId ? document.getElementById(targetId) : null;
+    add(
+      'Skip link points at an element that exists',
+      Boolean(skip && target),
+      !skip
+        ? 'no skip link found'
+        : target
+          ? `#${targetId}`
+          : `#${targetId} does not exist`,
+    );
+
+    const mains = qa('main:not([role]), [role=main]');
+    const main = mains[0];
+    add(
+      'Exactly one main landmark',
+      mains.length === 1,
+      `${mains.length} found`,
+    );
+    add(
+      'Skip link targets main content',
+      Boolean(main && target && main.contains(target)),
+      !main || !target
+        ? 'cannot check'
+        : main.contains(target)
+          ? 'yes'
+          : 'target is outside main',
+    );
+    target?.focus();
+    add(
+      'Skip link target can receive focus',
+      Boolean(target && document.activeElement === target),
+      target
+        ? `active element: ${document.activeElement.tagName.toLowerCase()}`
+        : 'no target',
+    );
+
+    const section =
+      'article, aside, main, nav, section, [role=article], [role=complementary], [role=main], [role=navigation], [role=region]';
+    for (const [role, sel] of [
+      ['banner', 'header:not([role]), [role=banner]'],
+      ['contentinfo', 'footer:not([role]), [role=contentinfo]'],
+    ]) {
+      const n = qa(sel).filter(
+        (el) => el.hasAttribute('role') || !el.parentElement?.closest(section),
+      ).length;
+      add(`Exactly one ${role} landmark`, n === 1, `${n} found`);
+    }
+
+    return out;
+  });
+}
+
+const results = [];
+for (const url of urls) {
+  const page = await (
+    await browser.newContext({ viewport: { width: widths[0], height: 900 } })
+  ).newPage();
+  const response = await page.goto(url, { waitUntil: 'domcontentloaded' });
+  if (response && !response.ok())
+    throw new Error(`HTTP ${response.status()} at ${url}`);
+  await page.waitForTimeout(400);
+  const checks = await structure(page);
+  await page.context().close();
+
+  for (const w of widths) {
+    const ctx = await browser.newContext({
+      viewport: { width: w, height: 900 },
+    });
+    const p = await ctx.newPage();
+    const response = await p.goto(url, { waitUntil: 'domcontentloaded' });
+    if (response && !response.ok())
+      throw new Error(`HTTP ${response.status()} at ${url}`);
+    await p.waitForTimeout(400);
+    const over = await p.evaluate(
+      (w) => ({ scroll: document.documentElement.scrollWidth, view: w }),
+      w,
+    );
+    checks.push({
+      name: `No horizontal overflow at ${w}px`,
+      passed: over.scroll <= over.view + 1,
+      evidence: `content ${over.scroll}px in a ${over.view}px viewport`,
+    });
+    await ctx.close();
+  }
+  results.push({ url, checks });
+}
+await browser.close();
+
+if (asJson) {
+  console.log(JSON.stringify(results, null, 2));
+} else {
+  let failed = 0;
+  for (const { url, checks } of results) {
+    console.log(`\n${url}`);
+    for (const c of checks) {
+      if (!c.passed) failed++;
+      console.log(
+        `  ${c.passed ? 'ok  ' : 'FAIL'}  ${c.name}\n          ${c.evidence}`,
+      );
+    }
+  }
+  console.log(
+    failed
+      ? `\n${failed} check(s) failed across ${results.length} page(s)\n`
+      : `\nAll checks passed across ${results.length} page(s)\n`,
+  );
+}
+process.exit(results.some((r) => r.checks.some((c) => !c.passed)) ? 1 : 0);

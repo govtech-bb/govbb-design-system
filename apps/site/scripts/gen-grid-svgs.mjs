@@ -12,7 +12,7 @@ import { writeFileSync } from 'node:fs';
 const RENDER_W = 640; // the article column width the svg will render at
 const TRACK = '#e5e9f2'; // blue-10
 const TRACK_EDGE = '#99a8cc'; // blue-40
-const INK = '#00267f'; // blue-100
+const INK = '#00267f'; // blue-40
 const FRAME_EDGE = '#e0e4e9'; // grey-00
 const BG = '#f8f9fa';
 

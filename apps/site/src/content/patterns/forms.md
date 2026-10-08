@@ -16,7 +16,7 @@ for submission, state and validation code.
 ## Preview
 
 ```html title="A short, structured form"
-<main class="govbb-width-container" id="main-content">
+<main class="govbb-width-container govbb-main-wrapper" id="main-content">
   <a class="govbb-back-button" href="/service/previous-step/">Back</a>
   <form action="/service/contact-details/" method="post" novalidate>
     <h1 class="govbb-text-h1">How can we contact you?</h1>
@@ -48,7 +48,15 @@ for submission, state and validation code.
       />
     </div>
 
-    <button class="govbb-button" type="submit">Continue</button>
+    <div class="govbb-button-group">
+      <a
+        class="govbb-button govbb-button--secondary"
+        href="/service/previous-step/"
+      >
+        Back
+      </a>
+      <button class="govbb-button" type="submit">Continue</button>
+    </div>
   </form>
 </main>
 ```
@@ -104,9 +112,11 @@ empty elements.
 
 ## Actions
 
-Give each form one primary submission action. Put it after the final field,
-aligned with the form content, and use a label that describes the next step:
-“Continue”, “Check answers” or “Submit application”.
+Give each form one primary submission action. Put it after the final field in a
+[button group](/components/button/), aligned with the form content, and use a
+label that describes the next step: “Continue”, “Check answers” or “Submit
+application”. In a multi-page journey the group also holds Back, as a secondary
+button before the primary one, so the two ways out of the page sit together.
 
 Use secondary buttons for genuine alternative form operations, such as saving
 a draft. Use links for navigation. Put “Cancel” after the primary action in

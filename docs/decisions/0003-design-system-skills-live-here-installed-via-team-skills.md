@@ -2,7 +2,33 @@
 
 **Date:** 2026-08-06
 **Status:** Accepted — amended 2026-08-06 to move the component-authoring skill
-to a private repository (see [Amendment](#amendment-the-component-authoring-skill-is-not-hosted-here)).
+to a private repository; public distribution superseded 2026-09-22 by
+[the skills CLI amendment](#amendment-public-skills-use-npx-skills).
+
+## Amendment: public skills use npx skills
+
+**Date:** 2026-09-22
+
+The public consumer skills remain in this repository and install only through
+`npx skills add govtech-bb/govbb-design-system`, with project installation as
+the documented default. Each skill includes its own supporting resources;
+helpers resolve tooling and package exports from the consumer project. The
+website previews the same entrypoints and links supporting files to GitHub.
+
+The published set is `design-system-compliance` and `accessibility-review`.
+Both remain experimental. Design critique and private contributor tooling are
+outside this release. `/llms.txt` provides discovery, generated from the same
+collections as the site; it does not duplicate a manually maintained inventory.
+
+Before removing the local plugin manifest, the default branch of
+`govtech-bb/team-skills` was checked through GitHub: its marketplace lists only
+`bb`, and its README does not advertise `govbb`. There is no external `govbb`
+entry to retire. The local `skills/.claude-plugin/plugin.json` is removed.
+Existing users of an earlier plugin installation should install with the CLI,
+verify discovery, and remove the duplicate plugin through their plugin manager.
+
+The remaining sections preserve the original decision and its reasoning; their
+public marketplace installation instructions are historical.
 
 ## Context
 

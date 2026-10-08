@@ -1,6 +1,7 @@
 import { cx } from 'class-variance-authority';
 import {
   forwardRef,
+  useId,
   type ReactNode,
   type TableHTMLAttributes,
   type TdHTMLAttributes,
@@ -13,10 +14,10 @@ export interface TableProps extends TableHTMLAttributes<HTMLTableElement> {
   /**
    * Wide tables: wraps the table in the govbb-table-container scroll region
    * (tabindex 0 + role region) so keyboard users can reach and scroll it.
-   * Labelled by `scrollLabel`, falling back to a string `caption`.
+   * Labelled by `scrollLabel`, falling back to the `caption` element.
    */
   scrollable?: boolean;
-  /** Accessible name for the scroll region; required if `caption` isn't a string. */
+  /** Accessible name for the scroll region; defaults to the caption. */
   scrollLabel?: string;
 }
 
@@ -29,10 +30,19 @@ export const Table = forwardRef<HTMLTableElement, TableProps>(function Table(
   { caption, scrollable, scrollLabel, className, children, ...props },
   ref,
 ) {
+  const captionId = useId();
+  // The scroll region borrows the caption element as its accessible name
+  // unless a dedicated scrollLabel is given.
+  const labelledBy =
+    scrollable && scrollLabel == null && caption != null
+      ? captionId
+      : undefined;
   const table = (
     <table ref={ref} className={cx('govbb-table', className)} {...props}>
       {caption != null && (
-        <caption className="govbb-table__caption">{caption}</caption>
+        <caption id={labelledBy} className="govbb-table__caption">
+          {caption}
+        </caption>
       )}
       {children}
     </table>
@@ -43,9 +53,8 @@ export const Table = forwardRef<HTMLTableElement, TableProps>(function Table(
       className="govbb-table-container"
       tabIndex={0}
       role="region"
-      aria-label={
-        scrollLabel ?? (typeof caption === 'string' ? caption : undefined)
-      }
+      aria-label={scrollLabel}
+      aria-labelledby={labelledBy}
     >
       {table}
     </div>

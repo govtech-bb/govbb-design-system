@@ -10,6 +10,7 @@
 .govbb-error-summary__title {
   margin: 0;
   font-size: var(--govbb-font-size-body);
+  letter-spacing: normal;
   line-height: var(--govbb-line-height-base);
   font-weight: 700;
   color: var(--govbb-color-ink);

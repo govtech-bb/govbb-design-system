@@ -1,14 +1,16 @@
-/* Header — the gold site header holding the gov.bb logo (the link home),
+/* Header — the white site header holding the gov.bb logo (the link home),
    optional consumer-provided controls, and the site menu. Renders on every
    page, directly below the official banner. The logo, controls, and nav share
-   one width container so they form one row when space permits. On narrower
-   containers the nav becomes a full-width tinted panel below the logo/Menu
-   row. The header module (data-govbb-module="header") reveals the toggle after
-   enhancement; without JavaScript, the navigation remains available. */
+   one width container so they form one row when space permits. A hairline rule
+   closes the band against the page. On narrower containers the nav becomes a
+   full-width tinted panel below the logo/Menu row. The header module
+   (data-govbb-module="header") reveals the toggle after enhancement; without
+   JavaScript, the navigation remains available. */
 
 .govbb-header {
   color: var(--govbb-color-ink);
-  background: var(--govbb-color-brand-accent);
+  background: var(--govbb-color-surface);
+  border-block-end: 1px solid var(--govbb-blue-20);
   container-type: inline-size;
 }
 
@@ -43,7 +45,7 @@
 }
 
 /* Layout only — visual styling and interaction colours come from the
-   govbb-button--text variant. */
+   govbb-button--ghost variant. */
 .govbb-header__toggle {
   flex: none;
   min-block-size: 2.75rem;
@@ -97,6 +99,11 @@
     height: 2.1875rem; /* 35px */
   }
 
+  /* The logo keeps its width; navigation wraps onto further rows instead. */
+  .govbb-header__home {
+    flex: none;
+  }
+
   .govbb-header__controls {
     margin-inline-start: auto;
   }
@@ -112,9 +119,9 @@
   }
 
   .govbb-header__nav-inner {
-    flex-direction: row;
+    flex-flow: row wrap;
     align-items: center;
-    gap: var(--govbb-space-l);
+    gap: var(--govbb-space-s) var(--govbb-space-l);
     padding-block: 0;
   }
 

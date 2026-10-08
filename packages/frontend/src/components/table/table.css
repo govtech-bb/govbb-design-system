@@ -11,10 +11,12 @@
 .govbb-table-container {
   width: 100%;
   overflow-x: auto;
+  contain: inline-size; /* a scroll region's width must not come from its table */
 }
 
 .govbb-table {
   width: 100%;
+  table-layout: auto; /* the container scrolls; prose's fixed fallback is not ours */
   border-collapse: collapse;
   font-size: var(--govbb-font-size-body);
   line-height: var(--govbb-line-height-base);
@@ -41,7 +43,7 @@
 /* Navy rule closing off the header row. Keys off the semantic <thead> the
    markup already has, so a correct table gets it without an extra class. */
 .govbb-table thead .govbb-table__header {
-  border-bottom-color: var(--govbb-blue-00);
+  border-bottom-color: var(--govbb-blue-80);
 }
 
 /* Row headers (<th scope="row">) — a highlighted first column, with the

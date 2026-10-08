@@ -1,0 +1,38 @@
+/* Service heading — the block that opens a form page: the service the page
+   belongs to, the question as the page heading, and an optional line of
+   supporting detail. The heading keeps its own type utility so the element and
+   its size stay independent.
+
+   <div class="govbb-service-heading">
+     <p class="govbb-service-heading__service">Redirect my business</p>
+     <h1 class="govbb-text-h1">Tell us what position you hold in the business</h1>
+     <p class="govbb-service-heading__description">
+       We ask so we can check you are allowed to make this request.
+     </p>
+   </div> */
+
+.govbb-service-heading {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--govbb-space-s);
+}
+
+/* Service name — quiet, and tied to the page by a rule rather than a heading
+   level, so it never competes with the question for the outline. */
+.govbb-service-heading__service {
+  margin: 0;
+  padding-block: var(--govbb-space-xs);
+  padding-inline-start: var(--govbb-space-s);
+  border-inline-start: var(--govbb-space-xxs) solid var(--govbb-blue-20);
+  font-size: var(--govbb-font-size-body);
+  line-height: var(--govbb-line-height-base);
+  color: var(--govbb-color-muted);
+}
+
+.govbb-service-heading__description {
+  margin: 0;
+  font-size: var(--govbb-font-size-body);
+  line-height: var(--govbb-line-height-base);
+  color: var(--govbb-color-ink);
+}

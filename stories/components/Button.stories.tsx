@@ -13,7 +13,7 @@ const meta = {
   argTypes: {
     variant: {
       control: 'select',
-      options: ['primary', 'secondary', 'tertiary', 'text'],
+      options: ['primary', 'secondary', 'tertiary', 'ghost', 'text'],
     },
   },
   args: {
@@ -30,6 +30,20 @@ export const Primary: Story = {};
 export const Secondary: Story = {
   args: {
     variant: 'secondary',
+  },
+};
+
+export const Ghost: Story = {
+  args: {
+    children: 'Cancel',
+    variant: 'ghost',
+  },
+};
+
+export const Text: Story = {
+  args: {
+    children: 'Remove',
+    variant: 'text',
   },
 };
 

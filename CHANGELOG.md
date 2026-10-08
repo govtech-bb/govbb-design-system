@@ -1,5 +1,191 @@
 # Changelog
 
+## 1.0.0-alpha.29 (2026-08-27)
+
+### combobox
+- Keep the option nodes when a re-render changes nothing by @AaronHarris
+## 1.0.0-alpha.28 (2026-08-27)
+
+### add-another
+- Add the add another component by @AaronHarris
+
+### button
+- Add the ghost variant and drop the padding from text buttons by @AaronHarris
+- Drop the baseline for the renamed variants section by @AaronHarris
+
+### checkbox
+- Keep the control on the first line and dim disabled hints by @AaronHarris
+
+### combobox
+- Add the combobox component by @AaronHarris
+- Offer free-text suggestions over an input and datalist by @AaronHarris
+
+### feedback
+- Break unbreakable words inside the box by @AaronHarris
+
+### file-upload
+- Wrap the action under the copy and shrink with the column by @AaronHarris
+
+### form
+- Treat empty label, hint and error strings as absent by @AaronHarris
+- Wrap unbreakable words in labels, legends, hints and errors by @AaronHarris
+
+### header
+- Wrap the navigation instead of shrinking the logo by @AaronHarris
+- Use the ghost button for the menu toggle by @AaronHarris
+
+### input
+- Stack the prefix and suffix when the field runs out of room by @AaronHarris
+
+### number-input
+- Shrink with a narrower column by @AaronHarris
+
+### prose
+- Keep the horizontal rule left-aligned by @AaronHarris
+
+### search
+- Let the field shrink and the button grow with its label by @AaronHarris
+- Fall back to "Search" when a label is empty by @AaronHarris
+
+### summary-list
+- Wrap long values and cap the actions column by @AaronHarris
+
+### summary-section
+- Align the header action with the first line of the title by @AaronHarris
+
+### table
+- Let the scroll container shrink with its column by @AaronHarris
+
+### typography
+- Add the govbb-text-break-word utility by @AaronHarris
+
+### General
+- Update visual regression baselines by @github-actions[bot]
+- Update visual regression baselines by @github-actions[bot]
+- Update visual regression baselines by @github-actions[bot]
+- Update visual regression baselines by @github-actions[bot]
+- Release v1.0.0-alpha.28 by @github-actions[bot]
+## 1.0.0-alpha.27 (2026-08-25)
+
+### header
+- Make the header white with a hairline rule by @AaronHarris
+- Assert the white band and hairline rule by @AaronHarris
+
+### General
+- Update visual regression baselines by @github-actions[bot]
+- Release v1.0.0-alpha.27 by @github-actions[bot]
+## 1.0.0-alpha.26 (2026-08-25)
+
+### fonts
+- Ship Figtree italic instead of slanting the roman by @AaronHarris
+
+### link
+- Scale underlines and add tabular figures where digits change by @AaronHarris
+
+### prose
+- Add the long-form content component by @AaronHarris
+- Count the prose playground section by @AaronHarris
+
+### tokens
+- **Breaking:** Tier the type scale by design width by @AaronHarris
+
+### typography
+- Move the story off the renamed caption size by @AaronHarris
+
+### General
+- Update visual regression baselines by @github-actions[bot]
+- Release v1.0.0-alpha.26 by @github-actions[bot]
+## 1.0.0-alpha.25 (2026-08-24)
+
+### frontend
+- Add a generated Tailwind theme export by @AaronHarris
+
+### General
+- Release v1.0.0-alpha.25 by @github-actions[bot]
+## 1.0.0-alpha.24 (2026-08-24)
+
+### breadcrumbs
+- Keep crumb links styled under a consumer's CSS reset by @AaronHarris
+
+### General
+- Bundle the compliance skill's mechanical checks as scripts by @Tarika
+- Release v1.0.0-alpha.24 by @github-actions[bot]
+## 1.0.0-alpha.23 (2026-08-21)
+
+### service-list
+- Render item links with a custom link component by @AaronHarris
+
+### summary-list
+- Render change links with a custom link component by @AaronHarris
+
+### summary-section
+- Let the page turn off the spacing between sections by @AaronHarris
+
+### General
+- Update visual regression baselines by @github-actions[bot]
+- Release v1.0.0-alpha.23 by @github-actions[bot]
+## 1.0.0-alpha.22 (2026-08-21)
+
+### button
+- Space button groups 24px apart by @AaronHarris
+
+### date-input
+- Explain the fieldset's explicit group role by @AaronHarris
+
+### file-upload
+- Always give remove buttons an accessible name by @AaronHarris
+
+### form
+- Mark optional fields with an (optional) label suffix by @AaronHarris
+
+### header
+- Read the hydration signal with useSyncExternalStore by @AaronHarris
+
+### input
+- Add prefix and suffix adornments by @AaronHarris
+
+### layout
+- Keep the width container full width inside the page column by @AaronHarris
+
+### service-heading
+- Add the service heading component by @AaronHarris
+
+### site
+- Publish the AI skills section from the skills themselves by @Tarika
+- Replace widened lookups with maps and new Function with a vite-ignored import by @AaronHarris
+- Apply the search result styles to runtime-rendered results by @Tarika
+- Keep the design system focus state on search result links by @Tarika
+- Centre the primary nav past the width container cap by @Tarika
+
+### table
+- Label the scroll region with the caption element by @AaronHarris
+
+### tokens
+- Rename the colour ramp to figma's 10-90 steps and fill the gaps by @AaronHarris
+
+### General
+- Add an accessibility-review skill for WCAG 2.2 AA reviews by @Tarika
+- Make the govbb plugin load on older Claude Code versions by @Tarika
+- Stop the plugin description naming skills that do not exist by @Tarika
+- Remove the ambiguous regex CodeQL flagged in the focus walk by @Tarika
+- Pick the newest axe-core in the pnpm store, not the last alphabetically by @Tarika
+- Trace repeated accessibility defects to their shared source by @Tarika
+- Plan the design-system AI skills and record where they live by @Tarika
+- Add the design-system-compliance skill by @Tarika
+- Add the skill eval harness and its grader by @Tarika
+- Stop the eval grader passing checks it never performed by @Tarika
+- Stop the eval grader crashing on a symlinked node_modules by @Tarika
+- Remove the skill eval harness by @Tarika
+- Teach the compliance skill where things go on a page by @Tarika
+- Use import.meta.dirname in the vitest config by @AaronHarris
+- Read svg-safe class names in the focus-order script by @AaronHarris
+- Drop the unused prop-types dependency by @AaronHarris
+- Keep the compliance skill from overruling the docs site by @Tarika
+- Move the compliance skill's reference material out of SKILL.md by @Tarika
+- Align the form templates with the pattern library by @AaronHarris
+- Install the packages from the alpha tag by @AaronHarris
+- Update visual regression baselines by @github-actions[bot]
+- Release v1.0.0-alpha.22 by @github-actions[bot]
 ## 1.0.0-alpha.21 (2026-07-28)
 
 ### button
@@ -17,6 +203,7 @@
 
 ### General
 - Update visual regression baselines by @github-actions[bot]
+- Release v1.0.0-alpha.21 by @github-actions[bot]
 ## 1.0.0-alpha.20 (2026-07-28)
 
 ### header
@@ -450,5 +637,6 @@ Co-authored-by: Copilot Autofix powered by AI <62310815+github-advanced-security
 - Publish via OIDC trusted publishing and target 1.x alpha releases by @AaronHarris
 - Add per-PR Amplify preview workflow by @LaronGovT
 - Simplify form component structure and improve accessibility by @AaronHarris
+- Explain why we don't use placeholder text in fields by @Work
 - Release v1.0.0-alpha.18 by @github-actions[bot]
 <!-- generated by git-cliff -->

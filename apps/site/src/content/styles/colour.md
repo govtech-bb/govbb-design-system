@@ -32,7 +32,7 @@ records which semantic token, if any, aliases the shade.
 ### Neutrals
 
 ```token-table
-tokens: pick --govbb-white-00 --govbb-black-00 --govbb-grey-00 --govbb-mid-grey-00
+tokens: pick --govbb-white-00 --govbb-black-00 --govbb-grey-20 --govbb-grey-70
 kind: color
 contrast: true
 notes: aliased-by
@@ -116,6 +116,6 @@ Every text and background combination must meet
 4.5:1 for body text, 3:1 for large text and interface graphics. The "on
 white" column above shows each shade's computed ratio against a white
 background. As a rule the dark `00` shades pass as text on white (except
-`--govbb-yellow-00`); the pale `10` and `40` tints and the vivid `100` shades
+`--govbb-yellow-80`); the pale `10` and `40` tints and the vivid `100` shades
 do not, so treat those as backgrounds and accents. Check any combination the
 ratios above do not already cover before you ship it.

@@ -8,7 +8,7 @@ group: Authentication
 ## Preview
 
 ```html title="Reset your password"
-<main class="govbb-width-container" id="main-content">
+<main class="govbb-width-container govbb-main-wrapper" id="main-content">
   <a class="govbb-back-button" href="/account/sign-in/">Back</a>
 
   <h1 class="govbb-text-h1">Reset your password</h1>

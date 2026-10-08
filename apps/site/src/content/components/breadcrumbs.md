@@ -11,15 +11,17 @@ group: Navigation
 <nav class="govbb-breadcrumbs" aria-label="Breadcrumb">
   <ol class="govbb-breadcrumbs__list">
     <li class="govbb-breadcrumbs__item">
-      <a class="govbb-breadcrumbs__link" href="/">Home</a>
+      <a class="govbb-link govbb-breadcrumbs__link" href="/">Home</a>
     </li>
     <li class="govbb-breadcrumbs__item">
-      <a class="govbb-breadcrumbs__link" href="/travel">
+      <a class="govbb-link govbb-breadcrumbs__link" href="/travel">
         Travel and identification
       </a>
     </li>
     <li class="govbb-breadcrumbs__item">
-      <a class="govbb-breadcrumbs__link" href="/travel/passports">Passports</a>
+      <a class="govbb-link govbb-breadcrumbs__link" href="/travel/passports"
+        >Passports</a
+      >
     </li>
   </ol>
 </nav>
@@ -92,16 +94,23 @@ first and last items in the trail; on larger screens the full trail returns.
 >
   <ol class="govbb-breadcrumbs__list">
     <li class="govbb-breadcrumbs__item">
-      <a class="govbb-breadcrumbs__link" href="/">Home</a>
+      <a class="govbb-link govbb-breadcrumbs__link" href="/">Home</a>
     </li>
     <li class="govbb-breadcrumbs__item">
-      <a class="govbb-breadcrumbs__link" href="/business">Business</a>
+      <a class="govbb-link govbb-breadcrumbs__link" href="/business"
+        >Business</a
+      >
     </li>
     <li class="govbb-breadcrumbs__item">
-      <a class="govbb-breadcrumbs__link" href="/business/licences">Licences</a>
+      <a class="govbb-link govbb-breadcrumbs__link" href="/business/licences"
+        >Licences</a
+      >
     </li>
     <li class="govbb-breadcrumbs__item">
-      <a class="govbb-breadcrumbs__link" href="/business/licences/liquor">
+      <a
+        class="govbb-link govbb-breadcrumbs__link"
+        href="/business/licences/liquor"
+      >
         Liquor licences
       </a>
     </li>

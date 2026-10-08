@@ -8,7 +8,7 @@ group: Service pages
 ## Preview
 
 ```html title="Application complete"
-<main class="govbb-width-container" id="main-content">
+<main class="govbb-width-container govbb-main-wrapper" id="main-content">
   <h1 class="govbb-text-display">Application complete</h1>
   <p class="govbb-text-body-lg">
     Your reference number<br /><strong>HDJ2123F</strong>

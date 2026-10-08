@@ -1,3 +1,18 @@
+export { Accordion, AccordionSection } from './accordion/accordion';
+export type {
+  AccordionProps,
+  AccordionSectionProps,
+} from './accordion/accordion';
+export { AddAnother, AddAnotherItem } from './add-another/add-another';
+export type {
+  AddAnotherItemProps,
+  AddAnotherProps,
+} from './add-another/add-another';
+export { Autocomplete } from './autocomplete/autocomplete';
+export type {
+  AutocompleteProps,
+  AutocompleteSuggestion,
+} from './autocomplete/autocomplete';
 export { BackButton } from './back-button/back-button';
 export type { BackButtonProps } from './back-button/back-button';
 export { Breadcrumbs } from './breadcrumbs/breadcrumbs';
@@ -8,6 +23,8 @@ export { ButtonGroup } from './button-group/button-group';
 export type { ButtonGroupProps } from './button-group/button-group';
 export { Checkbox, CheckboxGroup } from './checkbox/checkbox';
 export type { CheckboxProps, CheckboxGroupProps } from './checkbox/checkbox';
+export { Combobox } from './combobox/combobox';
+export type { ComboboxProps } from './combobox/combobox';
 export {
   DateInput,
   formatDateInput,
@@ -59,8 +76,12 @@ export { Search } from './search/search';
 export type { SearchProps } from './search/search';
 export { Select } from './select/select';
 export type { SelectOption, SelectProps } from './select/select';
+export { ServiceHeading } from './service-heading/service-heading';
+export type { ServiceHeadingProps } from './service-heading/service-heading';
 export { ServiceList, ServiceListItem } from './service-list/service-list';
 export type {
+  ServiceListLinkRenderer,
+  ServiceListLinkRenderProps,
   ServiceListProps,
   ServiceListItemProps,
 } from './service-list/service-list';
@@ -72,6 +93,8 @@ export { StatusBanner } from './status-banner/status-banner';
 export type { StatusBannerProps } from './status-banner/status-banner';
 export { SummaryList } from './summary-list/summary-list';
 export type {
+  SummaryListLinkRenderer,
+  SummaryListLinkRenderProps,
   SummaryListAction,
   SummaryListProps,
   SummaryListRow,

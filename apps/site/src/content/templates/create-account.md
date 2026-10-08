@@ -8,7 +8,7 @@ group: Authentication
 ## Preview
 
 ```html title="Create an account"
-<main class="govbb-width-container" id="main-content">
+<main class="govbb-width-container govbb-main-wrapper" id="main-content">
   <h1 class="govbb-text-h1">Create an account</h1>
 
   <form action="/account/create/" method="post" novalidate>

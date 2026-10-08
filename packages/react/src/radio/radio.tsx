@@ -11,7 +11,7 @@ import {
   type ReactElement,
   type ReactNode,
 } from 'react';
-import { ErrorMessage, Fieldset, Hint } from '../form/form';
+import { ErrorMessage, Fieldset, Hint, has } from '../form/form';
 import type { FieldFeedback } from '../form/field';
 
 export interface RadioProps extends Omit<
@@ -44,10 +44,8 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(function Radio(
 ) {
   const autoId = useId();
   const inputId = id ?? autoId;
-  const descriptionId =
-    description != null ? `${inputId}-description` : undefined;
-  const conditionalId =
-    conditional != null ? `${inputId}-conditional` : undefined;
+  const descriptionId = has(description) ? `${inputId}-description` : undefined;
+  const conditionalId = has(conditional) ? `${inputId}-conditional` : undefined;
   return (
     <>
       <div className="govbb-radio-item">
@@ -63,13 +61,13 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(function Radio(
         <label className="govbb-radio-item__label" htmlFor={inputId}>
           {label}
         </label>
-        {description != null && (
+        {has(description) && (
           <span className="govbb-hint" id={descriptionId}>
             {description}
           </span>
         )}
       </div>
-      {conditional != null && (
+      {has(conditional) && (
         <div className="govbb-radio-item__conditional" id={conditionalId}>
           {conditional}
         </div>
@@ -112,8 +110,8 @@ export const RadioGroup = forwardRef<HTMLFieldSetElement, RadioGroupProps>(
     ref,
   ) {
     const id = useId();
-    const descriptionId = description != null ? `${id}-description` : undefined;
-    const errorId = error != null ? `${id}-error` : undefined;
+    const descriptionId = has(description) ? `${id}-description` : undefined;
+    const errorId = has(error) ? `${id}-error` : undefined;
     return (
       <Fieldset
         ref={ref}
@@ -121,8 +119,8 @@ export const RadioGroup = forwardRef<HTMLFieldSetElement, RadioGroupProps>(
         aria-describedby={cx(descriptionId, errorId, describedBy) || undefined}
         {...props}
       >
-        {description != null && <Hint id={descriptionId}>{description}</Hint>}
-        {error != null && (
+        {has(description) && <Hint id={descriptionId}>{description}</Hint>}
+        {has(error) && (
           <ErrorMessage id={errorId} role="alert">
             {error}
           </ErrorMessage>

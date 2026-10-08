@@ -18,6 +18,8 @@
     "site:build": "pnpm --filter @govbb/site build",
     "lint": "oxlint && stylelint \"packages/*/src/**/*.css\"",
     "test": "pnpm -r test",
+    "test:ai-docs": "node apps/site/scripts/check-ai-docs.mjs",
+    "test:skills": "node skills/design-system-compliance/scripts/scripts.test.mjs && node skills/accessibility-review/scripts/scripts.test.mjs",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "changelog": "git-cliff --output CHANGELOG.md",
@@ -42,20 +44,19 @@
     "@storybook/react-vite": "^10.5.2",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
-    "@vitest/browser-playwright": "4.1.9",
-    "@vitest/coverage-v8": "4.1.9",
+    "@vitest/browser-playwright": "4.1.11",
+    "@vitest/coverage-v8": "4.1.11",
     "git-cliff": "^2.13.1",
     "lefthook": "^2.1.9",
     "oxlint": "^1.71.0",
     "playwright": "^1.61.1",
     "prettier": "^3.9.3",
-    "prop-types": "^15.8.1",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
     "storybook": "^10.5.2",
     "stylelint": "^17.14.0",
     "stylelint-config-standard": "^40.0.0",
     "typescript": "^5.7.0",
-    "vitest": "4.1.9"
+    "vitest": "4.1.11"
   }
 }

@@ -8,7 +8,7 @@ behaviour React consumers expect (refs, controlled inputs, callbacks).
 ## Install
 
 ```bash
-pnpm add @govtech-bb/react @govtech-bb/frontend
+pnpm add @govtech-bb/react@alpha @govtech-bb/frontend@alpha
 ```
 
 `react >= 18` is a peer dependency. This package ships no CSS of its own —
@@ -50,8 +50,8 @@ component's own classes.
 
 ## Components
 
-BackButton · Breadcrumbs · Button / LinkButton · ButtonGroup · Checkbox ·
-DateInput ·
+AddAnother / AddAnotherItem · Autocomplete · BackButton · Breadcrumbs · Button / LinkButton · ButtonGroup · Checkbox ·
+Combobox · DateInput ·
 ErrorMessage · ErrorSummary · Feedback · Fieldset · FileUpload ·
 Footer / FooterLink · FormGroup · Header · Heading / Text · Hint ·
 Input / TextArea · Label · Link · List · NumberInput · OfficialBanner ·

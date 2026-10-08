@@ -8,7 +8,7 @@ group: Authentication
 ## Preview
 
 ```html title="Sign in"
-<main class="govbb-width-container" id="main-content">
+<main class="govbb-width-container govbb-main-wrapper" id="main-content">
   <h1 class="govbb-text-h1">Sign in</h1>
 
   <form action="/account/sign-in/" method="post" novalidate>

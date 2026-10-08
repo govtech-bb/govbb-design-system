@@ -15,8 +15,18 @@ export async function getStaticPaths() {
 }
 
 const { entry } = Astro.props;
-const { Content, headings } = await render(entry);
+const { headings } = await render(entry);
 const { title, status, requires } = entry.data.metadata;
+const source = skillSource(entry.id);
+if (entry.rendered?.html === undefined) {
+  throw new Error(`${entry.id}: skill instructions were not rendered`);
+}
+// Code examples contain escaped tags; only actual Markdown anchors are rewritten.
+const instructions = entry.rendered.html.replace(/<a href="([^"]+)"/g, (anchor, href) =>
+  /^(?:[a-z][a-z\d+.-]*:|[/#?])/i.test(href)
+    ? anchor
+    : `<a href="${new URL(href, source.sourceUrl)}"`,
+);
 
 const onThisPage = headings
   .filter((h) => h.depth === 2)
@@ -34,7 +44,7 @@ const neighbors = getContentNeighbors(
 
 const meta = [
   { label: 'Status', value: status === 'supported' ? 'Supported' : 'Experimental' },
-  { label: 'Invoke', value: `/govbb:${entry.data.name}` },
+  { label: 'Skill name', value: entry.data.name },
 ];
 if (requires.length) meta.push({ label: 'Needs', value: requires.join(', ') });
 ---
@@ -46,25 +56,28 @@ if (requires.length) meta.push({ label: 'Needs', value: requires.join(', ') });
   pageTitle={title}
   sidebarGroups={await getAiSkillsSidebar()}
   sidebarLabel="AI skills"
-  source={skillSource(entry.id)}
+  source={source}
   onThisPage={onThisPage}
   breadcrumbs={[{ label: 'AI skills', href: '/ai-skills/' }]}
   meta={meta}
   previous={neighbors.previous}
   next={neighbors.next}
 >
-  <div class="govbb-prose govbb-prose--article">
+  <div class="govbb-prose">
     <h2 id="when-to-use-it">When to use it</h2>
     <p>{entry.data.description}</p>
 
     <h2 id="install">Install</h2>
     <p>
-      If you are at GovTech, this skill comes with the <code>govbb</code> plugin
-      from the team marketplace — see
-      <a href="/ai-skills/#install">the overview</a> for that route. To take just
-      this skill, from any repository:
+      Run this from your service project's directory, then choose your coding
+      assistant. It installs this skill and its supporting files into the project:
     </p>
     <pre tabindex="0"><code>{skillsCliCommand(entry.id)}</code></pre>
+    <p>
+      Ask your assistant to use <code>{entry.data.name}</code> for the task.
+      See <a href="/ai-skills/#install">installation guidance</a> if you are
+      moving from the previous plugin installation.
+    </p>
     {
       requires.length > 0 && (
         <p>
@@ -82,6 +95,10 @@ if (requires.length) meta.push({ label: 'Needs', value: requires.join(', ') });
       relying on the output can see exactly what standard was applied, and
       challenge it.
     </p>
-    <Content />
+    <p>
+      The Markdown preview contains these main instructions only. The complete
+      installation includes the <a href={`https://github.com/govtech-bb/govbb-design-system/tree/main/skills/${entry.id}`}>supporting references and scripts</a>.
+    </p>
+    <Fragment set:html={instructions} />
   </div>
 </ArticleLayout>

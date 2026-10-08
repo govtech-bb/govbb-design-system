@@ -50,7 +50,7 @@
 }
 
 .govbb-status-banner--beta {
-  background: var(--govbb-yellow-40);
+  background: var(--govbb-yellow-20);
 }
 
 .govbb-status-banner--migrated {

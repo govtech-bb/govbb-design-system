@@ -18,3 +18,30 @@ export class Header {
   constructor(el: HTMLElement);
   destroy(): void;
 }
+
+/**
+ * Filterable listbox for `.govbb-combobox` (`data-govbb-module="combobox"`): over a
+ * native <select> (value stays one of its options) or over a text <input> with a
+ * <datalist> (free text; the datalist's options are the suggestions). Choosing
+ * an option fires input + change on the value-carrying element, then a bubbling
+ * `govbb-combobox-select` CustomEvent (detail: index, value, label) on the root.
+ */
+export class Combobox {
+  constructor(el: HTMLElement);
+  /** Re-read the wrapped control: mirror a select's state onto the enhanced
+   *  input and re-render the list from the current options. */
+  sync(): void;
+  destroy(): void;
+}
+
+/**
+ * Repeatable group of fields for `.govbb-add-another` (`data-govbb-module="add-another"`):
+ * Add clones a blank copy of the first item, Remove drops one, items are renumbered
+ * from their `%index%` template attributes (data-name, data-id, data-for,
+ * data-describedby, data-controls, data-labelledby). Fires `govbb-add-another-add`
+ * (detail: item, index) and `govbb-add-another-remove` (detail: index) on the root.
+ */
+export class AddAnother {
+  constructor(el: HTMLElement);
+  destroy(): void;
+}

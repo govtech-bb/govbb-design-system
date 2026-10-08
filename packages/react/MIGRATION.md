@@ -80,20 +80,24 @@ The alpha package also re-exported `cn`. That utility is no longer part of the
 design-system API; use your application's existing class-name utility or
 `class-variance-authority` directly.
 
-## Button: `link` variant renamed to `text`
+## Button: `link` variant renamed; `ghost` keeps the padding, `text` is flush
 
 ```tsx
 // Before
 <Button variant="link">Cancel</Button>
 
-// After
-<Button variant="text">Cancel</Button>
+// After, next to other buttons (same box, transparent)
+<Button variant="ghost">Cancel</Button>
+
+// After, where space is tight (no padding, sits flush)
+<Button variant="text">Remove</Button>
 ```
 
-Other variants (`primary`, `secondary`, `tertiary`) are unchanged. New boolean
-variants: `negative` (danger, primary and text only) and `inverse` (dark
-backgrounds). `type` now defaults to `"button"`, so add `type="submit"` on
-submit buttons.
+`text` has no padding, so a `text` button beside a primary one no longer lines
+up: use `ghost` there. Other variants (`primary`, `secondary`, `tertiary`) are
+unchanged. New boolean variants: `negative` (danger; primary, ghost and text)
+and `inverse` (dark backgrounds). `type` now defaults to `"button"`, so add
+`type="submit"` on submit buttons.
 
 ## Link and LinkButton
 

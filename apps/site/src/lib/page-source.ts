@@ -8,13 +8,13 @@ const GITHUB_COMPONENT_BASE =
   'https://github.com/govtech-bb/govbb-design-system/blob/main/packages/frontend/src/components';
 
 /** Guidance pages that share a single canonical component stylesheet. */
-const COMPONENT_CSS_OVERRIDES: Record<string, string> = {
-  checkbox: 'checkbox-radio/checkbox-radio.css',
-  radio: 'checkbox-radio/checkbox-radio.css',
-  fieldset: 'form/form.css',
-  form: 'form/form.css',
-  label: 'form/form.css',
-};
+const COMPONENT_CSS_OVERRIDES = new Map([
+  ['checkbox', 'checkbox-radio/checkbox-radio.css'],
+  ['radio', 'checkbox-radio/checkbox-radio.css'],
+  ['fieldset', 'form/form.css'],
+  ['form', 'form/form.css'],
+  ['label', 'form/form.css'],
+]);
 
 /** Each article section's content directory and the URL base it serves from.
     They match except documentation, whose collection lives in content/docs. */
@@ -24,6 +24,7 @@ const SECTIONS = {
   styles: { contentDir: 'styles', urlBase: '/styles' },
   templates: { contentDir: 'templates', urlBase: '/templates' },
   documentation: { contentDir: 'docs', urlBase: '/documentation' },
+  'design-log': { contentDir: 'design-log', urlBase: '/design-log' },
 } as const;
 
 export interface PageSource {
@@ -52,7 +53,7 @@ export function pageSource(
 /** Storybook uses the title `Components/<entry id>` for component docs, which
     produces a stable `components-<entry-id>--docs` route. */
 export function componentPageSource(id: string): PageSource {
-  const cssPath = COMPONENT_CSS_OVERRIDES[id] ?? `${id}/${id}.css`;
+  const cssPath = COMPONENT_CSS_OVERRIDES.get(id) ?? `${id}/${id}.css`;
   return {
     ...pageSource('components', id),
     sourceUrl: `${GITHUB_COMPONENT_BASE}/${cssPath}`,
@@ -64,11 +65,26 @@ export function componentPageSource(id: string): PageSource {
     title and lede, so the file stands alone when pasted into an AI. */
 export function entryMarkdown(entry: {
   body?: string;
-  data: { title: string; lede?: string; description?: string };
+  data: {
+    title: string;
+    lede?: string;
+    description?: string;
+    summary?: string;
+    date?: Date;
+    kind?: string;
+    author?: string;
+  };
 }): string {
-  const intro = entry.data.lede ?? entry.data.description;
+  const intro = entry.data.lede ?? entry.data.description ?? entry.data.summary;
+  const metadata = [
+    entry.data.date && `Date: ${entry.data.date.toISOString().slice(0, 10)}`,
+    entry.data.kind && `Kind: ${entry.data.kind}`,
+    entry.data.author && `Author: ${entry.data.author}`,
+  ]
+    .filter(Boolean)
+    .join('\n');
   return (
-    [`# ${entry.data.title}`, intro, entry.body?.trim()]
+    [`# ${entry.data.title}`, intro, metadata, entry.body?.trim()]
       .filter(Boolean)
       .join('\n\n') + '\n'
   );

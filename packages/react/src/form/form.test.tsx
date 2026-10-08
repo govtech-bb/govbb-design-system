@@ -23,6 +23,15 @@ describe('form scaffolding', () => {
     );
   });
 
+  it('Label appends the (optional) suffix only when optional is set', () => {
+    const { container, rerender } = render(<Label optional>Middle name</Label>);
+    const suffix = container.querySelector('.govbb-label__optional')!;
+    expect(suffix.textContent).toBe('(optional)');
+    expect(suffix.parentElement!.className).toBe('govbb-label');
+    rerender(<Label>Middle name</Label>);
+    expect(container.querySelector('.govbb-label__optional')).toBeNull();
+  });
+
   it('Fieldset renders an optional legend', () => {
     const { container } = render(<Fieldset legend="Where do you live?" />);
     const fieldset = screen.getByRole('group', { name: 'Where do you live?' });

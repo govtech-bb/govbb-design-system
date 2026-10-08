@@ -13,8 +13,12 @@ twice. Use `@govtech-bb/frontend` for framework-agnostic HTML, or add the thin
 ## Install for HTML or server-rendered services
 
 ```sh
-pnpm add @govtech-bb/frontend
+pnpm add @govtech-bb/frontend@alpha
 ```
+
+Every 1.0 build so far is a prerelease, published under the `alpha` npm tag.
+Ask for that tag explicitly: a bare install resolves `latest`, which still
+points at an older build.
 
 Import the complete stylesheet once:
 
@@ -35,7 +39,7 @@ initAll();
 ## Install for React services
 
 ```sh
-pnpm add @govtech-bb/frontend @govtech-bb/react
+pnpm add @govtech-bb/frontend@alpha @govtech-bb/react@alpha
 ```
 
 Import the stylesheet once at the application root, then import components from
@@ -59,6 +63,23 @@ Use semantic tokens such as `--govbb-color-brand` and `--govbb-space-s` in
 service CSS. Tailwind applications can reference them directly with arbitrary
 values such as `bg-[var(--govbb-color-brand)]`; the design-system core does not
 require Tailwind.
+
+## Build with an AI assistant
+
+Give your assistant the [AI documentation index](/llms.txt), then ask it to
+read the linked Markdown pages relevant to your task. The index identifies the
+package versions used for these docs; implementation details must also match
+your project's installed version.
+
+Install the GovBB skills from your service project's directory:
+
+```sh
+npx skills add govtech-bb/govbb-design-system
+```
+
+Choose your coding assistant and the skills you need. The [AI skills guide](/ai-skills/)
+explains each skill's purpose, prerequisites and installation. Review generated
+code and test your complete service journey before release.
 
 ## Standards
 

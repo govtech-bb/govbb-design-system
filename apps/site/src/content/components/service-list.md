@@ -57,10 +57,10 @@ link, an optional one-line description and an optional tag naming the kind of
 service, such as "Digital service" or "Information service".
 
 It has two looks. The default, for listings of categories, gives entries big
-bold green names: heading-three size on small screens, stepping up to the
-large body size from tablet width. The signpost look, for the service links
-inside a category, keeps names at the quiet body size in the standard teal
-link colour, with a divider that thickens from 2px to 4px from tablet width.
+bold green names at heading-three size. The signpost look, for the service
+links inside a category, keeps names at the quiet body size in the standard
+teal link colour, with a divider that thickens from 2px to 4px from tablet
+width.
 
 ## Whole-card click target
 
@@ -168,3 +168,9 @@ In React each item accepts a `linkComponent`, the same adapter pattern as the
 [link](/components/link/) component, so a single-page app can navigate without
 a full page load. Anchor attributes, including analytics data attributes, are
 spread onto the link.
+
+Some routers' links take something other than `href` — TanStack Router's takes
+`to` — so `linkComponent` will not type-check against them. Use `renderLink`
+instead: it is called with `{ href, className, children }`, where `children` is
+the service name, and you render whatever the router needs. It takes precedence
+over `linkComponent`.

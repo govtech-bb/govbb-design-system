@@ -22,6 +22,8 @@
  *   node focus-order.mjs http://localhost:4321/ --max-tabs 40
  */
 
+import { launchBrowser } from './project.mjs';
+
 const HELP = `Usage:
   node focus-order.mjs <url> [options]
 
@@ -80,12 +82,13 @@ const DESCRIBE = () => {
     .trim()
     .slice(0, 70);
 
+  // getAttribute('class') rather than .className: on SVG elements .className
+  // is an SVGAnimatedString, not a string.
+  const elClass = el.getAttribute('class');
   const selector =
     el.tagName.toLowerCase() +
     (el.id ? `#${el.id}` : '') +
-    (typeof el.className === 'string' && el.className
-      ? '.' + el.className.trim().split(/\s+/).slice(0, 2).join('.')
-      : '');
+    (elClass ? '.' + elClass.trim().split(/\s+/).slice(0, 2).join('.') : '');
 
   const inViewport =
     rect.width > 0 &&
@@ -105,12 +108,11 @@ const DESCRIBE = () => {
     );
     const top = document.elementFromPoint(x, y);
     if (top && top !== el && !el.contains(top) && !top.contains(el)) {
+      const topClass = top.getAttribute('class');
       obscuredBy =
         top.tagName.toLowerCase() +
         (top.id ? `#${top.id}` : '') +
-        (typeof top.className === 'string' && top.className
-          ? '.' + top.className.trim().split(/\s+/)[0]
-          : '');
+        (topClass ? '.' + topClass.trim().split(/\s+/)[0] : '');
     }
   }
 
@@ -212,28 +214,17 @@ if (opts.help || !opts.url) {
   process.exit(opts.help ? 0 : 1);
 }
 
-let chromium;
-try {
-  ({ chromium } = await import('playwright'));
-} catch {
-  try {
-    ({ chromium } = await import('@playwright/test'));
-  } catch {
-    console.error(
-      'Could not load Playwright.\n' +
-        'Install it with:  pnpm add -D playwright && npx playwright install chromium\n' +
-        'Report this in the review as "keyboard pass could not run" rather than guessing.',
-    );
-    process.exit(1);
-  }
-}
-
-const browser = await chromium.launch();
+const browser = await launchBrowser();
 try {
   const page = await browser.newPage({
     viewport: { width: opts.width, height: opts.height },
   });
-  await page.goto(opts.url, { waitUntil: 'networkidle', timeout: 30_000 });
+  const response = await page.goto(opts.url, {
+    waitUntil: 'networkidle',
+    timeout: 30_000,
+  });
+  if (response && !response.ok())
+    throw new Error(`HTTP ${response.status()} at ${opts.url}`);
   if (opts.wait) await page.waitForTimeout(opts.wait);
 
   console.log(`# Focus walk: ${opts.url}`);

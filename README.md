@@ -2,7 +2,7 @@
 
 The design system for official Government of Barbados websites — design tokens
 and CSS components compiled to a single stylesheet, plus the documentation
-site published at **design-system.gov.bb**.
+site published at **design-system.service.alpha.gov.bb**.
 
 The design system is **CSS-first and framework-agnostic**: vanilla CSS (no
 Sass, no Tailwind, no StyleX), bundled and minified with
@@ -54,11 +54,32 @@ pnpm storybook:build # static workshop build → storybook-static/
 pnpm storybook:test  # story interactions + accessibility in Chromium
 pnpm storybook:typecheck # type-check Storybook configuration and stories
 pnpm lint         # oxlint + stylelint
+pnpm test:ai-docs # check the generated AI index and Markdown after building
+pnpm test:skills  # helper checks; requires Playwright Chromium
 pnpm format       # prettier --write .
 ```
 
 Browser support comes from the `browserslist` field in `package.json`;
 Lightning CSS downlevels modern syntax to match.
+
+## Building with AI
+
+Start an assistant at the [AI documentation index](https://design-system.service.alpha.gov.bb/llms.txt).
+It links to individual Markdown pages, including token values and dated design
+decisions. The index identifies the package versions used to build the docs;
+check your installed version before copying an API, class or token.
+
+Install the consumer skills from your service project's directory:
+
+```sh
+npx skills add govtech-bb/govbb-design-system --list
+npx skills add govtech-bb/govbb-design-system
+```
+
+Choose your assistant and skills in the installer. The two public skills cover
+GovBB UI building/conversion/review and accessibility review. See the
+[AI skills guide](https://design-system.service.alpha.gov.bb/ai-skills/) for
+prerequisites and migration from the former plugin installation.
 
 ## Using the compiled CSS
 

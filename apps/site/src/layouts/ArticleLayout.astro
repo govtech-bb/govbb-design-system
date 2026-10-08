@@ -46,6 +46,7 @@ const {
   description={description}
   section={section}
   skipTarget="#article-content"
+  markdownUrl={source?.markdownUrl}
 >
   <div class="govbb-width-container govbb-article">
     <Sidebar groups={sidebarGroups} ariaLabel={sidebarLabel} />
@@ -58,7 +59,7 @@ const {
                 {breadcrumbs.map((item) => (
                   <li class="govbb-breadcrumbs__item">
                     {item.href ? (
-                      <a class="govbb-breadcrumbs__link" href={item.href}>{item.label}</a>
+                      <a class="govbb-link govbb-breadcrumbs__link" href={item.href}>{item.label}</a>
                     ) : (
                       <span>{item.label}</span>
                     )}

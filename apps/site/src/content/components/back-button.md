@@ -60,3 +60,11 @@ browser's back button.
 
 Place it near the top of the page, before the page title and main task. Make it
 work without JavaScript wherever possible.
+
+### Not on form pages
+
+A page with a form to submit pairs Back with Continue in a
+[button group](/components/button/) after the last field - Back as a secondary
+button, Continue as the primary one. Use this component on pages with nothing to
+submit: guidance, a confirmation, a signpost. See the
+[single question page](/templates/single-question-page/).

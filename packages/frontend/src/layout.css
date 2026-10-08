@@ -36,10 +36,24 @@
   padding-inline: var(--govbb-page-gutter);
 }
 
+/* Auto inline margins are what centre the container past the cap, but auto
+   cross-axis margins also cancel a flex item's stretch — so inside the
+   .govbb-page column the container would shrink-wrap its content and drift off
+   the gutter the header and footer sit on. Keep it filling the page; the cap
+   and the auto margins still centre it. */
+.govbb-page > .govbb-width-container {
+  inline-size: 100%;
+}
+
 /* Vertical breathing room for the <main> landmark. */
 .govbb-main-wrapper {
   display: block;
   padding-block: var(--govbb-space-xm);
+}
+
+/* Direct children only, so component internals keep their own widths. */
+.govbb-main-wrapper > :where(p, ul, ol, dl) {
+  max-inline-size: var(--govbb-measure);
 }
 
 /*
@@ -56,6 +70,14 @@
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
   column-gap: var(--govbb-space-m);
+}
+
+/* Stacked columns need no gutter, and 11 of them come to 352px — wider than
+   a 320px screen before any content is measured. */
+@media (--mobile) {
+  .govbb-grid-row {
+    column-gap: 0;
+  }
 }
 
 /* The -from-desktop variants hold full width through tablet and only take

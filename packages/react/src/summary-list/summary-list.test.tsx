@@ -137,4 +137,34 @@ describe('SummaryList', () => {
     );
     await expectNoAxeViolations(container);
   });
+
+  it('renders actions with renderLink when given one', () => {
+    render(
+      <SummaryList
+        renderLink={({ href, className, children }) => (
+          <a className={className} data-router="true" href={href}>
+            {children}
+          </a>
+        )}
+        rows={[
+          {
+            key: 'Name',
+            value: 'Alex Nurse',
+            actions: { href: '/name', label: 'Change' },
+          },
+        ]}
+        section={{
+          title: 'About you',
+          action: { href: '/about', label: 'Change' },
+        }}
+      />,
+    );
+
+    const links = screen.getAllByRole('link', { name: /Change/ });
+    expect(links).toHaveLength(2);
+    for (const link of links) {
+      expect(link.dataset.router).toBe('true');
+      expect(link.className).toBe('govbb-link');
+    }
+  });
 });

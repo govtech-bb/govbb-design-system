@@ -1,7 +1,12 @@
 /* Text input + textarea — <input class="govbb-input"> or
    <textarea class="govbb-textarea">. One recipe: the border and states live on
-   the field itself, no wrapper (fields carry no adornments); the textarea adds
-   only its sizing behaviour. */
+   the field itself; the textarea adds only its sizing behaviour.
+
+   Prefix/suffix adornments (£, per day, …) use the same shape as
+   number-input: a .govbb-input-wrapper takes over the border and states via
+   :has(), the field inside goes borderless, and .govbb-input__prefix /
+   .govbb-input__suffix render as tinted cells. Adornments are aria-hidden in
+   markup — the label/hint must carry their meaning for screen readers. */
 
 .govbb-input,
 .govbb-textarea {
@@ -43,4 +48,86 @@
 .govbb-textarea:disabled {
   opacity: var(--govbb-opacity-disabled);
   cursor: not-allowed;
+}
+
+/* Prefix/suffix: the wrapper takes over border, radius and states. The three
+   parts are flex items: once the field would drop under 8rem the adornments
+   wrap onto rows of their own and fill them (GOV.UK's stacked layout for
+   narrow screens, driven by the container rather than the viewport). Their
+   dividers are outlines, so they land on whichever side meets the field, and
+   the wrapper clips them to its rounded corners. */
+
+.govbb-input-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  width: 100%;
+  overflow: clip;
+  background: var(--govbb-color-surface);
+  border: var(--govbb-border-width-form) solid var(--govbb-color-ink);
+  border-radius: var(--govbb-radius);
+  transition:
+    box-shadow 0.2s,
+    border-color 0.2s;
+}
+
+.govbb-input-wrapper:hover {
+  box-shadow: var(--govbb-shadow-form-hover);
+}
+
+.govbb-input-wrapper:has([aria-invalid='true']) {
+  border-color: var(--govbb-color-error);
+}
+
+.govbb-input-wrapper:has(.govbb-input:disabled, [aria-invalid='true']) {
+  box-shadow: none;
+}
+
+/* Keyboard focus ring: shared rule in focus.css. Because focus.css is
+   imported after this file, it also restores the ring that the
+   box-shadow:none above clears for invalid fields (WCAG 2.4.7). */
+
+.govbb-input-wrapper:has(.govbb-input:disabled) {
+  opacity: var(--govbb-opacity-disabled);
+  cursor: not-allowed;
+}
+
+.govbb-input-wrapper > .govbb-input {
+  /* The huge grow factor keeps the adornments at their own width while they
+     share a row with the field; alone on a row they are the only item that
+     grows, so they fill it. */
+  flex: 1000000 1 8rem;
+  min-width: 0;
+  background: none;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none; /* hover shadow renders on the wrapper, not the field */
+}
+
+/* The wrapper already fades via :has(:disabled) — don't dim twice. */
+.govbb-input-wrapper > .govbb-input:disabled {
+  opacity: 1;
+}
+
+.govbb-input__prefix,
+.govbb-input__suffix {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: center;
+  min-width: 0;
+  padding: var(--govbb-space-xs) var(--govbb-space-s);
+  font-size: var(--govbb-font-size-body);
+  line-height: var(--govbb-line-height-base);
+  color: var(--govbb-color-ink);
+  background: color-mix(
+    in srgb,
+    var(--govbb-color-neutral) 50%,
+    var(--govbb-color-surface)
+  );
+  outline: var(--govbb-border-width-form) solid var(--govbb-color-ink);
+}
+
+.govbb-input-wrapper:has([aria-invalid='true'])
+  :is(.govbb-input__prefix, .govbb-input__suffix) {
+  outline-color: var(--govbb-color-error);
 }

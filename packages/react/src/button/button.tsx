@@ -22,6 +22,9 @@ const button = cva('govbb-button', {
       primary: '',
       secondary: 'govbb-button--secondary',
       tertiary: 'govbb-button--tertiary',
+      /** Transparent, keeps the padding: lines up with the other variants. */
+      ghost: 'govbb-button--ghost',
+      /** Transparent and flush (no padding), for tight spots like table cells. */
       text: 'govbb-button--text',
     },
     /** Danger variant (primary and text only). */

@@ -40,12 +40,57 @@ describe('Input', () => {
     expect(screen.getByRole('textbox', { name: 'Phone' }).id).toBe('mobile');
   });
 
+  it('treats empty label, description and error as absent', () => {
+    const { container } = render(
+      <Input aria-label="Name" label="" description="" error="" />,
+    );
+    expect(container.querySelector('.govbb-form-group')).toBeNull();
+    const input = screen.getByRole('textbox', { name: 'Name' });
+    expect(input.getAttribute('aria-invalid')).toBeNull();
+    expect(input.getAttribute('aria-describedby')).toBeNull();
+  });
+
   it('self-composes label and error when given them', () => {
     render(<Input label="Average weekly pay" error="Enter your pay" />);
     const input = screen.getByRole('textbox', { name: 'Average weekly pay' });
     const error = screen.getByText('Enter your pay');
     expect(input.getAttribute('aria-describedby')).toBe(error.id);
     expect(input.getAttribute('aria-invalid')).toBe('true');
+  });
+
+  it('marks the label (optional) only on an explicit required={false}', () => {
+    const { container, rerender } = render(
+      <Input label="Middle name" required={false} />,
+    );
+    expect(container.querySelector('.govbb-label__optional')!.textContent).toBe(
+      '(optional)',
+    );
+    expect(
+      screen.getByRole('textbox', { name: 'Middle name (optional)' }),
+    ).toBeTruthy();
+    rerender(<Input label="Middle name" />);
+    expect(container.querySelector('.govbb-label__optional')).toBeNull();
+    rerender(<Input label="Middle name" required />);
+    expect(container.querySelector('.govbb-label__optional')).toBeNull();
+  });
+
+  it('wraps the field with aria-hidden prefix/suffix cells when given them', () => {
+    const { container } = render(
+      <Input label="Cost, in dollars" prefix="$" suffix="per day" />,
+    );
+    const wrapper = container.querySelector('.govbb-input-wrapper')!;
+    const prefix = wrapper.querySelector('.govbb-input__prefix')!;
+    const suffix = wrapper.querySelector('.govbb-input__suffix')!;
+    expect(prefix.textContent).toBe('$');
+    expect(prefix.getAttribute('aria-hidden')).toBe('true');
+    expect(suffix.textContent).toBe('per day');
+    expect(suffix.getAttribute('aria-hidden')).toBe('true');
+    expect(wrapper.contains(screen.getByRole('textbox'))).toBe(true);
+  });
+
+  it('renders no wrapper without prefix/suffix', () => {
+    const { container } = render(<Input aria-label="Name" />);
+    expect(container.querySelector('.govbb-input-wrapper')).toBeNull();
   });
 
   it('keeps the description when an error is shown and announces both', () => {
@@ -98,6 +143,7 @@ it('has no axe violations', async () => {
     <>
       <Label htmlFor="in">Email</Label>
       <Input id="in" type="email" />
+      <Input label="Cost, in dollars" prefix="$" suffix="per day" />
       <Label htmlFor="ta">Message</Label>
       <TextArea id="ta" rows={5} />
     </>,

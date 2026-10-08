@@ -7,7 +7,7 @@ import pagefind from 'astro-pagefind';
 // astro-pagefind builds a static search index over the site (served at
 // /pagefind/) and powers the /search/ results.
 export default defineConfig({
-  site: 'https://design-system.gov.bb',
+  site: 'https://design-system.service.alpha.gov.bb',
   integrations: [pagefind()],
   vite: { build: { assetsInlineLimit: 0 } },
   markdown: {
