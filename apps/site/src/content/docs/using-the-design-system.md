@@ -115,6 +115,7 @@ service. Content, validation, integrations and the surrounding journey can
 introduce new barriers.
 
 Every service team remains responsible for testing its complete implementation
-against WCAG 2.2 AA, including its content, validation and surrounding journey.
+against the [accessibility standard](/documentation/accessibility/), including its
+content, validation and surrounding journey.
 Teams can follow dated decisions in the [changelog](/changelog/) or
 [report a problem with the guidance](/support/).
