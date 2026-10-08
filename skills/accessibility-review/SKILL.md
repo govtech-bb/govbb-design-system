@@ -52,7 +52,9 @@ or state that the review is source-only.
 
 For GovBB interfaces, inspect the rendering stack and resolved package versions.
 Fetch `https://design-system.service.alpha.gov.bb/llms.txt`, then only relevant
-component, pattern and documentation Markdown pages. Read dated design decisions
+component, pattern and documentation Markdown pages. Always fetch
+`https://design-system.service.alpha.gov.bb/documentation/accessibility.md`: it
+states the conformance target services are held to. Read dated design decisions
 when they bear on the task; research and notes are not automatically requirements.
 The index's versions describe its documentation build. Live guidance is **not**
 pinned to the consumer's installed release: verify contracts in its installed
@@ -127,7 +129,8 @@ or a running page must produce a clear **not tested** limitation, never a pass.
 
 ## Report
 
-Start with scope/states, standard, evidence actually obtained, installed versions
+Start with scope/states, the standard as the accessibility page states it (or
+that the page was unreachable), evidence actually obtained, installed versions
 when relevant, and what was not covered. Order findings by user impact: blocks
 a task, degrades the experience, then minor. Preserve every confirmed finding;
 compress wording rather than omitting evidence.
