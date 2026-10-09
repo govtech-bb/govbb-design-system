@@ -742,6 +742,11 @@ they do not move when the design system does:
   how to tag evidence, what not to claim, the report structure.
 - Judgement about what matters and why.
 
+Write an external requirement down by linking to it or quoting it exactly, never
+by summarising it. A one-line summary of a WCAG criterion drops the alternatives
+and exceptions that let a page pass, and a review skill then reports failures the
+standard does not.
+
 These must be resolved at run time, every time:
 
 - Which components, patterns, templates or tokens exist, and what they are called.
