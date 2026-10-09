@@ -90,8 +90,10 @@ the table shows, and use `scope="col"` on column headers.
 
 ### Make comparison effortless
 
-Use a descriptive caption, short headers and consistent formats within each
-column. Left-align text and right-align numbers that users compare as values.
+Use a descriptive caption, short headers in
+[sentence case](/styles/text-case/) and consistent formats within
+each column. Left-align text and right-align numbers that users compare as
+values.
 
 ### Keep the structure semantic at every width
 

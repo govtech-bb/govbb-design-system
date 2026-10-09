@@ -16,7 +16,7 @@ const meta = {
         <Link href="#services" noVisited>
           Services
         </Link>
-        <LinkButton href="#assistant">Ask Assistant</LinkButton>
+        <LinkButton href="#assistant">Ask assistant</LinkButton>
       </>
     ),
   },
@@ -29,7 +29,7 @@ export const Default: Story = {
     const header = canvasElement.querySelector('.govbb-header');
     const nav = canvas.getByRole('navigation', { name: 'Menu' });
     const services = canvas.getByRole('link', { name: 'Services' });
-    const assistant = canvas.getByRole('link', { name: 'Ask Assistant' });
+    const assistant = canvas.getByRole('link', { name: 'Ask assistant' });
     const inner = canvasElement.querySelector('.govbb-header__inner');
     const navInner = canvasElement.querySelector('.govbb-header__nav-inner');
 
@@ -77,7 +77,7 @@ export const MenuToggle: Story = {
     await expect(navInner).toHaveStyle({ flexDirection: 'column' });
 
     const services = canvas.getByRole('link', { name: 'Services' });
-    const assistant = canvas.getByRole('link', { name: 'Ask Assistant' });
+    const assistant = canvas.getByRole('link', { name: 'Ask assistant' });
     await expect(assistant.getBoundingClientRect().top).toBeLessThan(
       services.getBoundingClientRect().top,
     );

@@ -60,6 +60,8 @@ describes the action it performs.
 
 ## Best practices
 
+Write button text in [sentence case](/styles/text-case/).
+
 <div class="govbb-practice-grid">
   <article class="govbb-practice">
     <div class="govbb-practice__preview">

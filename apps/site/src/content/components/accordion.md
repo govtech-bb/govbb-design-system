@@ -336,8 +336,9 @@ import { Accordion, AccordionSection } from '@govtech-bb/react';
 ### Write headings users can choose between
 
 The heading is the only thing a user sees before they open a section, so it
-has to describe what is inside. Front-load the words that distinguish one
-section from the next.
+has to describe what is inside. Write it in
+[sentence case](/styles/text-case/) and front-load the words that
+distinguish one section from the next.
 
 ### Keep sections independent
 

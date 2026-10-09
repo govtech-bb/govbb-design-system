@@ -2,7 +2,7 @@
 title: Form fields
 description: Shared anatomy, content, states and validation rules for every form control.
 lede: Build clear, consistent and accessible fields across government services.
-order: 6
+order: 7
 examples: true
 ---
 

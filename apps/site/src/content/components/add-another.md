@@ -129,8 +129,9 @@ page again; with it the change happens on the page.
 
 ### Name the item
 
-Give the entries a short, singular name in sentence case, such as "Person",
-"Payment" or "Previous address", with `data-item-label` in HTML or `itemLabel`
+Give the entries a short, singular name in
+[sentence case](/styles/text-case/), such as "Person", "Payment" or
+"Previous address", with `data-item-label` in HTML or `itemLabel`
 in React. It numbers every legend ("Person 2 of 3") and button ("Remove person
 2", "Add another person"), so users and screen readers know which entry they
 are on. Keep it to a word or two: it is printed inside the buttons, which do

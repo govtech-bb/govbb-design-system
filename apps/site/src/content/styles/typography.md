@@ -46,9 +46,10 @@ Display, h1 and h2 step up with the viewport across three tiers. Everything
 from h3 down holds one size at every width:
 body drives the type inside buttons, inputs and labels, so a responsive body
 would resize every control on a breakpoint, and the steps just above body stay
-pinned so they never collapse into it. Display and h1
+pinned so they never collapse into it. Display, h1 and h2
 also carry a slight negative tracking (`--govbb-letter-spacing-heading`), which
-large type needs and body text does not.
+large type needs and body text does not. Do not add letter-spacing to other
+text: see [text case](/styles/text-case/).
 
 The display class is bold (700), the heading classes are semibold (600), and
 the body classes are regular (400). Where a run of body text needs visual bolding,

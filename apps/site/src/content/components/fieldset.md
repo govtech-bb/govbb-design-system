@@ -102,8 +102,9 @@ outer `.govbb-form-group`; include that wrapper explicitly when writing HTML.
 ## How it works
 
 The first child of the fieldset must be a legend. Write the legend as a clear
-question or group name. Every control inside the fieldset still needs its own
-label; the legend does not replace those labels.
+question or group name, in [sentence case](/styles/text-case/). Every
+control inside the fieldset still needs its own label; the legend does not
+replace those labels.
 
 Keep the fieldset inside a `.govbb-form-group` so it follows the same vertical
 rhythm as other form controls. Nested inputs can each use their own form group
