@@ -31,7 +31,7 @@ group: Page furniture
         <a class="govbb-link govbb-link--no-visited" href="/services">
           Services
         </a>
-        <a class="govbb-button" href="/assistant">Ask Assistant</a>
+        <a class="govbb-button" href="/assistant">Ask assistant</a>
       </div>
     </nav>
   </div>
@@ -49,7 +49,7 @@ import { Header, Link, LinkButton } from '@govtech-bb/react';
       <Link href="/services" noVisited>
         Services
       </Link>
-      <LinkButton href="/assistant">Ask Assistant</LinkButton>
+      <LinkButton href="/assistant">Ask assistant</LinkButton>
     </>
   }
 />;

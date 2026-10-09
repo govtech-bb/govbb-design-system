@@ -70,7 +70,8 @@ prevent completion.
 
 ## Writing the summary
 
-Write the summary as a descriptive noun phrase, such as _"What is a parish?"_,
+Write the summary as a descriptive noun phrase in
+[sentence case](/styles/text-case/), such as _"What is a parish?"_,
 rather than a vague label like _"More info"_. The summary is built on the native
 `<details>` element, so keyboard and screen reader behaviour work without any
 extra scripting.

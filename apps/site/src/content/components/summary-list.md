@@ -241,9 +241,10 @@ a router link.
 
 ### Use clear keys and complete values
 
-Choose short labels such as “Date of birth” and show the value exactly as users
-need to verify it. Long values such as email addresses and references wrap
-inside their column. Group multiple summary lists under meaningful headings.
+Choose short keys in [sentence case](/styles/text-case/), such as
+“Date of birth”, and show the value exactly as users need to verify it. Long
+values such as email addresses and references wrap inside their column. Group
+multiple summary lists under meaningful headings.
 
 ### Give every action context
 

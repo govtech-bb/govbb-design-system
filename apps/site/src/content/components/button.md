@@ -67,7 +67,7 @@ describes the action it performs.
       <button class="govbb-button" type="button">Save changes</button>
     </div>
     <h3>Use a clear action label</h3>
-    <p>Specific labels help users understand the outcome before they act.</p>
+    <p>Specific labels in <a href="/styles/text-case/">sentence case</a> help users understand the outcome before they act.</p>
   </article>
   <article class="govbb-practice">
     <div class="govbb-practice__preview">

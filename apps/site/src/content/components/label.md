@@ -74,8 +74,9 @@ label to focus the control and gives assistive technology a reliable name.
 
 ### Write short, direct label text
 
-Use sentence case, put the important words first and do not end labels with a
-colon. Put examples, format rules and explanations in hint text instead.
+Use [sentence case](/styles/text-case/), put the important words
+first and do not end labels with a colon. Put examples, format rules and
+explanations in hint text instead.
 
 ## Writing label text
 
