@@ -1,7 +1,8 @@
 ---
 name: accessibility-review
 description: >-
-  Review pages, components or service journeys against WCAG 2.2 AA and GovBB
+  Review pages, components or service journeys against the WCAG conformance
+  target on the GovBB Design System's accessibility page and GovBB
   accessibility contracts, separating verified findings from judgement and
   manual testing. Use when an accessibility review is requested or a specific
   accessibility defect needs investigation, not for unrelated UI or repository
@@ -129,11 +130,12 @@ or a running page must produce a clear **not tested** limitation, never a pass.
 
 ## Report
 
-Start with scope/states, the standard as the accessibility page states it (or
-that the page was unreachable), evidence actually obtained, installed versions
-when relevant, and what was not covered. Order findings by user impact: blocks
-a task, degrades the experience, then minor. Preserve every confirmed finding;
-compress wording rather than omitting evidence.
+Start with scope/states, the conformance target quoted from the accessibility
+page (or that the page was unreachable, without assuming a level), evidence
+actually obtained, installed versions when relevant, and what was not covered.
+Order findings by user impact: blocks a task, degrades the experience, then
+minor. Preserve every confirmed finding; compress wording rather than omitting
+evidence.
 
 Each numbered finding includes:
 

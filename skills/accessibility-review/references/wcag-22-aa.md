@@ -1,10 +1,13 @@
-# WCAG 2.2 level AA, organised for reviewing a government service
+# Testing WCAG 2.2 A and AA criteria in a government service
 
 Not a restatement of the specification — a working checklist that says, for each
 criterion, **what it means for a form-based government service** and **how you
-can tell**. Level A and AA are the target. This checklist gives common
-techniques, not every exception or permitted implementation; verify a claimed
-failure against the [WCAG 2.2 specification](https://www.w3.org/TR/WCAG22/).
+can tell**. The conformance target is whatever the
+[accessibility page](https://design-system.service.alpha.gov.bb/documentation/accessibility.md)
+states. If it names a version or level this checklist does not cover, say so in
+the report and work from the W3C specification instead. This checklist gives
+common techniques, not every exception or permitted implementation; verify a
+claimed failure against the [WCAG 2.2 specification](https://www.w3.org/TR/WCAG22/).
 Keep GovBB conventions separate from criterion failures.
 
 The `Method` column is the best evidence normally available. If you cannot obtain
