@@ -1,7 +1,8 @@
 ---
 name: accessibility-review
 description: >-
-  Review pages, components or service journeys against WCAG 2.2 AA and GovBB
+  Review pages, components or service journeys against the WCAG conformance
+  target on the GovBB Design System's accessibility page and GovBB
   accessibility contracts, separating verified findings from judgement and
   manual testing. Use when an accessibility review is requested or a specific
   accessibility defect needs investigation, not for unrelated UI or repository
@@ -61,9 +62,12 @@ pinned to the consumer's installed release: verify contracts in its installed
 CSS, types and runtime and report differences.
 
 If the index is unavailable, use `/sitemap/` and linked Markdown pages. Offline,
-use guidance in a local GovBB checkout (`apps/site/src/content/`) and the
-consumer's installed sources. With packages alone, mark missing usage guidance;
-with neither, review generic semantics without inventing GovBB guarantees.
+use guidance in a local GovBB checkout (`apps/site/src/content/`, where
+`docs/accessibility.md` is the accessibility page) and the consumer's installed
+sources. With packages alone, mark missing usage guidance; with neither, review
+generic semantics without inventing GovBB guarantees. With no copy of the
+accessibility page, do not assume a target: review against the checklist's
+criteria and mark conformance findings as unconfirmed against the target.
 
 ## Review passes
 
@@ -129,11 +133,12 @@ or a running page must produce a clear **not tested** limitation, never a pass.
 
 ## Report
 
-Start with scope/states, the standard as the accessibility page states it (or
-that the page was unreachable), evidence actually obtained, installed versions
-when relevant, and what was not covered. Order findings by user impact: blocks
-a task, degrades the experience, then minor. Preserve every confirmed finding;
-compress wording rather than omitting evidence.
+Start with scope/states, the conformance target quoted from the accessibility
+page and whether the live or a local copy was read (or that neither was
+available), evidence actually obtained, installed versions when relevant, and
+what was not covered. Order findings by user impact: blocks a task, degrades the
+experience, then minor. Preserve every confirmed finding; compress wording
+rather than omitting evidence.
 
 Each numbered finding includes:
 
