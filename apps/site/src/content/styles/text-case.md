@@ -1,14 +1,16 @@
 ---
 title: Text case
 description: Use sentence case for all interface text, and keep capitals for the words that need them.
-order: 7
+order: 6
 lede: Sentence case everywhere, with capitals only where the words need them.
 ---
 
 ## Use sentence case
 
 Write interface text in sentence case: capitalise the first word and any
-proper names, and nothing else. This applies to:
+proper names. Keep other capitals only where
+[the words need them](#keep-capitals-where-the-words-need-them). This applies
+to:
 
 - headings, captions and eyebrows
 - labels, legends and hint text
