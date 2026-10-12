@@ -46,12 +46,12 @@ report a convention mismatch as a criterion failure without the actual barrier.
 ### Any control that collects a value
 
 - An accessible name, from a real `<label for>`, a `<legend>`, or `aria-label`
-  where no visible label exists (SC 3.3.2, 4.1.2). **Placeholder text is not a
-  label** — it disappears on entry, is often low-contrast, and is not reliably
-  announced.
+  where no visible label exists (SC 3.3.2, 4.1.2). Do not count placeholder
+  text as the label: it disappears on entry, is often low-contrast, and is not
+  reliably announced. GovBB avoids it altogether, which is a convention.
 - A `name` attribute, or the value never reaches a normal submission.
-- `autocomplete` where a token exists for the data — name, email, tel, address,
-  postal code, birthday (SC 1.3.5). Cheap, and routinely missed.
+- `autocomplete` on fields for the user's own details — name, email, tel,
+  address, postal code, birthday (SC 1.3.5). Cheap, and routinely missed.
 - A `type` matching the data, so touch keyboards are useful.
 - Enough hit area: 24×24px minimum, or spacing that keeps a 24px circle on each
   target from overlapping its neighbour (SC 2.5.8). Inline links in prose are
@@ -70,9 +70,11 @@ report a convention mismatch as a criterion failure without the actual barrier.
 
 ### An error on a control
 
-- Connected **programmatically**, not just visually: `aria-describedby` on the
-  control pointing at the message's `id`, and `aria-invalid` on the control
-  (SC 1.3.1, 3.3.1). Red text alone is not a connection.
+- Identified and described in text (SC 3.3.1), and connected
+  **programmatically** to its control, not just visually (SC 1.3.1). Red text
+  alone is neither. GovBB's wiring is `aria-describedby` on the control pointing
+  at the message's `id`, plus `aria-invalid` on the control; another technique
+  that exposes the relationship is a convention mismatch, not a failure.
 - Announced if it appears after the initial render — a live region, or focus
   moved somewhere that conveys it (SC 4.1.3).
 - Worded so someone can recover: what to do, not what went wrong (SC 3.3.3).

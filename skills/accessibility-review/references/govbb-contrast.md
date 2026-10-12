@@ -23,8 +23,8 @@ Use computed colours for the actual element and backdrop when checking a page.
 ## Choose the threshold from rendered text
 
 - Normal text needs 4.5:1; large text needs 3:1.
-- Large means at least 24 CSS px regular or 14pt bold (approximately 18.67 CSS
-  px). Measure actual size/weight; a token name or heading level proves neither.
+- Large means at least 18pt regular (24 CSS px) or 14pt bold (approximately
+  18.67 CSS px). Measure actual size/weight; a token name or heading level proves neither.
 - Relevant control boundaries, meaningful graphics and authored focus
   indicators need 3:1 under SC 1.4.11. Read its applicability and exceptions
   before reporting a particular visual boundary as required.
