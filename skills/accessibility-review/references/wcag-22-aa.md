@@ -9,8 +9,11 @@ Keep GovBB conventions separate from criterion failures.
 The `Method` column is the best evidence normally available. If you cannot obtain
 it, the finding is `needs-manual-test`, not a pass.
 
-Each criterion links to its W3C Understanding page, which is the authority on
-what passes and what fails: read it before reporting a failure. `Notes` add only
+Each criterion links to its W3C Understanding page. The authority on what
+passes and what fails is the success criterion's own text, quoted at the top of
+that page and in the [WCAG 2.2 specification](https://www.w3.org/TR/WCAG22/);
+the rest of the page and its techniques explain it but are not requirements.
+Read the criterion before reporting a failure. `Notes` add only
 what is specific to GovBB, form services or this skill's tools. If the W3C pages
 are unreachable, report a suspected failure as not checked against the
 specification.
@@ -43,7 +46,7 @@ a plain defect.
 | [1.3.3 Sensory Characteristics][1.3.3]     | A     | `judgement`                 |                                                                                                            |
 | [1.3.4 Orientation][1.3.4]                 | AA    | `structural`                |                                                                                                            |
 | [1.3.5 Identify Input Purpose][1.3.5]      | AA    | `structural`                | Cheap to fix and routinely missed on government forms.                                                     |
-| [1.4.1 Use of Colour][1.4.1]               | A     | `judgement`                 |                                                                                                            |
+| [1.4.1 Use of Colour][1.4.1]               | A     | `judgement`                 | Links without an underline break a GovBB convention and may also fail this criterion; check both.          |
 | [1.4.2 Audio Control][1.4.2]               | A     | `structural`                |                                                                                                            |
 | [1.4.3 Contrast (Minimum)][1.4.3]          | AA    | `computed`                  | Measure the rendered text size before choosing a threshold; see `govbb-contrast.md`.                       |
 | [1.4.4 Resize Text][1.4.4]                 | AA    | `needs-manual-test`         | Fixed pixel heights on text containers are the usual cause.                                                |
@@ -60,7 +63,7 @@ a plain defect.
 | [2.1.1 Keyboard][2.1.1]                                        | A     | `focus-order.mjs` + `structural`          | Inspect actual behaviour, not just the markup.                                                                                                |
 | [2.1.2 No Keyboard Trap][2.1.2]                                | A     | `focus-order.mjs` detects same-node-twice |                                                                                                                                               |
 | [2.1.4 Character Key Shortcuts][2.1.4]                         | A     | `structural`                              |                                                                                                                                               |
-| [2.2.1 Timing Adjustable][2.2.1]                               | A     | `structural`                              | Keeping answers when a session times out is a GovBB convention, not part of this criterion; see below.                                        |
+| [2.2.1 Timing Adjustable][2.2.1]                               | A     | `structural`                              | Keeping answers when a session times out is 2.2.5 (AAA), not part of this criterion; see below.                                               |
 | [2.2.2 Pause, Stop, Hide][2.2.2]                               | A     | `structural`                              |                                                                                                                                               |
 | [2.3.1 Three Flashes or Below Threshold][2.3.1]                | A     | `structural`                              |                                                                                                                                               |
 | [2.4.1 Bypass Blocks][2.4.1]                                   | A     | axe partially; `structural`               |                                                                                                                                               |
@@ -80,21 +83,21 @@ a plain defect.
 
 ## 3. Understandable
 
-| Criterion                                                           | Level | Method                          | Notes                                                              |
-| ------------------------------------------------------------------- | ----- | ------------------------------- | ------------------------------------------------------------------ |
-| [3.1.1 Language of Page][3.1.1]                                     | A     | axe                             |                                                                    |
-| [3.1.2 Language of Parts][3.1.2]                                    | AA    | `structural`                    |                                                                    |
-| [3.2.1 On Focus][3.2.1]                                             | A     | `structural`                    |                                                                    |
-| [3.2.2 On Input][3.2.2]                                             | A     | `structural`                    |                                                                    |
-| [3.2.3 Consistent Navigation][3.2.3]                                | AA    | `structural`                    |                                                                    |
-| [3.2.4 Consistent Identification][3.2.4]                            | AA    | `structural`                    |                                                                    |
-| **[3.2.6 Consistent Help][3.2.6]** (new in 2.2)                     | A     | `structural` across pages       |                                                                    |
-| [3.3.1 Error Identification][3.3.1]                                 | A     | axe partially; `structural`     | See the error contracts in `component-contracts.md`.               |
-| [3.3.2 Labels or Instructions][3.3.2]                               | A     | axe partially                   | Avoiding placeholder text is a GovBB convention; see below.        |
-| [3.3.3 Error Suggestion][3.3.3]                                     | AA    | `judgement`                     |                                                                    |
-| [3.3.4 Error Prevention (Legal, Financial, Data)][3.3.4]            | AA    | `structural`                    | A check-answers page is the usual way a form service meets this.   |
-| **[3.3.7 Redundant Entry][3.3.7]** (new in 2.2)                     | A     | `structural` across the journey | A check-answers page re-displaying answers is not redundant entry. |
-| **[3.3.8 Accessible Authentication (Minimum)][3.3.8]** (new in 2.2) | AA    | `structural`                    |                                                                    |
+| Criterion                                                           | Level | Method                          | Notes                                                                                                       |
+| ------------------------------------------------------------------- | ----- | ------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| [3.1.1 Language of Page][3.1.1]                                     | A     | axe                             |                                                                                                             |
+| [3.1.2 Language of Parts][3.1.2]                                    | AA    | `structural`                    |                                                                                                             |
+| [3.2.1 On Focus][3.2.1]                                             | A     | `structural`                    |                                                                                                             |
+| [3.2.2 On Input][3.2.2]                                             | A     | `structural`                    |                                                                                                             |
+| [3.2.3 Consistent Navigation][3.2.3]                                | AA    | `structural`                    |                                                                                                             |
+| [3.2.4 Consistent Identification][3.2.4]                            | AA    | `structural`                    |                                                                                                             |
+| **[3.2.6 Consistent Help][3.2.6]** (new in 2.2)                     | A     | `structural` across pages       |                                                                                                             |
+| [3.3.1 Error Identification][3.3.1]                                 | A     | axe partially; `structural`     | See the error contracts in `component-contracts.md`.                                                        |
+| [3.3.2 Labels or Instructions][3.3.2]                               | A     | axe partially                   | A placeholder on its own is not a label. Avoiding placeholders altogether is a GovBB convention; see below. |
+| [3.3.3 Error Suggestion][3.3.3]                                     | AA    | `judgement`                     |                                                                                                             |
+| [3.3.4 Error Prevention (Legal, Financial, Data)][3.3.4]            | AA    | `structural`                    | A check-answers page is the usual way a form service meets this.                                            |
+| **[3.3.7 Redundant Entry][3.3.7]** (new in 2.2)                     | A     | `structural` across the journey | A check-answers page re-displaying answers is not redundant entry.                                          |
+| **[3.3.8 Accessible Authentication (Minimum)][3.3.8]** (new in 2.2) | AA    | `structural`                    |                                                                                                             |
 
 ## 4. Robust
 
@@ -108,8 +111,6 @@ a plain defect.
 Recommend these, but report them as GovBB guidance rather than WCAG failures.
 Check the linked page for what it currently says.
 
-- Keep part-completed answers when a session times out. This is
-  [2.2.5 Re-authenticating][2.2.5] (AAA), not part of 2.2.1.
 - Prefix the page title with "Error:" when a page shows validation errors —
   [Error summary](https://design-system.service.alpha.gov.bb/components/error-summary.md).
 - Underline links in body content —
@@ -124,6 +125,11 @@ Check the linked page for what it currently says.
   [Service heading](https://design-system.service.alpha.gov.bb/components/service-heading.md).
 - Do not use placeholder text —
   [Why we don't use placeholder text](https://design-system.service.alpha.gov.bb/design-log/placeholder-text.md).
+
+Keeping part-completed answers when a session times out is
+[2.2.5 Re-authenticating][2.2.5], which is AAA and outside the AA target. No GovBB
+page states it either. Recommend it, but report it as neither a WCAG failure nor
+a GovBB convention.
 
 ## Criteria axe cannot help with
 

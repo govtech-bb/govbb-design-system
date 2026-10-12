@@ -53,9 +53,8 @@ report a convention mismatch as a criterion failure without the actual barrier.
 - `autocomplete` on fields for the user's own details — name, email, tel,
   address, postal code, birthday (SC 1.3.5). Cheap, and routinely missed.
 - A `type` matching the data, so touch keyboards are useful.
-- Enough hit area: 24×24px minimum, or spacing that keeps a 24px circle on each
-  target from overlapping its neighbour (SC 2.5.8). Inline links in prose are
-  exempt.
+- Enough hit area for SC 2.5.8, measured at the rendered size. Check the
+  criterion's spacing option and exceptions before reporting a small target.
 
 ### A group of related controls
 
@@ -77,9 +76,9 @@ report a convention mismatch as a criterion failure without the actual barrier.
   that exposes the relationship is a convention mismatch, not a failure.
 - Announced if it appears after the initial render — a live region, or focus
   moved somewhere that conveys it (SC 4.1.3).
-- Worded so someone can recover: what to do, not what went wrong (SC 3.3.3).
-  "Enter an email address in the correct format, like name@example.com" over
-  "Invalid email".
+- Describes the error in text (SC 3.3.1) and, where a fix is known, says how to
+  fix it (SC 3.3.3). "Enter an email address in the correct format, like
+  name@example.com" over "Invalid email".
 - Not signalled by colour alone (SC 1.4.1).
 
 ### A failed form submission
@@ -147,8 +146,10 @@ often broken. Read the current requirements in
 ### High-stakes steps — payment, final submission, anything irreversible
 
 - Reversible, checked, or confirmed before it commits (SC 3.3.4).
-- Errors recoverable without re-entering everything (SC 3.3.7).
-- Timeouts warned and extendable (SC 2.2.1), and session expiry that does not
-  silently destroy entered answers.
-- No cognitive test in authentication without an alternative, and paste must work
-  in password and code fields (SC 3.3.8).
+- Time limits that meet SC 2.2.1. Keeping answers when a session expires is a
+  recommendation (2.2.5, AAA), not part of 2.2.1.
+- Answers kept after a failed submission, so people fix the error rather than
+  re-enter everything. This is GovBB guidance
+  (`/documentation/form-implementation.md`), not a WCAG criterion.
+- Authentication that meets SC 3.3.8. Check that paste works in password and
+  code fields; blocking paste is a common way it fails.
