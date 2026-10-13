@@ -31,6 +31,16 @@ the version named above applies. If the new version measures conformance
 differently, as the WCAG 3 drafts do, this page will also say which level to
 meet.
 
+## Version history
+
+Each version applies from its date until the next one starts. Contracts and
+assessments that refer to this page are held to the version that applied on
+their date.
+
+| From           | Services must meet |
+| -------------- | ------------------ |
+| 8 October 2026 | WCAG 2.2 level AA  |
+
 ## What the design system gives you, and what it does not
 
 Using the design system gets you a long way, and it does not get you all the
