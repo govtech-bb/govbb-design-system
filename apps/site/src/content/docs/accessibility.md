@@ -10,22 +10,6 @@ each one requires, are in the W3C specification. Check your work against
 [How to Meet WCAG 2.2](https://www.w3.org/WAI/WCAG22/quickref/), the W3C's
 quick reference, with its filter set to levels A and AA.
 
-## What this page is, and is not
-
-This is **the conformance target for services built with this design system.**
-It is a commitment GovTech makes about the work it produces and supports.
-
-It is **not** national policy. There is no wider Government of Barbados
-accessibility policy at the time of writing, which is why this page exists — but
-that absence does not make a design system's documentation into government
-policy. If a government-wide standard is written later it should supersede or
-absorb this page, and this page is deliberately written so it can be absorbed
-without contradiction.
-
-Two things are out of scope here, because they are policy instruments rather
-than technical requirements: **accessibility statements** and **procurement
-obligations.** Both need authority this page does not claim.
-
 ## Why AA, and why 2.2
 
 **AA is the level nearly every government digital standard settles on.** A is
