@@ -8,6 +8,9 @@ GovBB Design System — **CSS-first, framework-agnostic** (vanilla CSS + custom
 properties; no Sass, no Tailwind, no StyleX). **Node 24**, **pnpm 11** via
 Corepack.
 
+Accessibility target: the WCAG version and level named on the
+[accessibility page](./apps/site/src/content/docs/accessibility.md).
+
 ```bash
 corepack enable && pnpm install   # deps + git hooks
 ```
