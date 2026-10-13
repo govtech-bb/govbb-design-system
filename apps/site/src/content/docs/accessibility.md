@@ -40,6 +40,13 @@ furniture, all of which matter in transactional government services. A team
 working from a 2.1 checklist will miss them. See
 [What's new in WCAG 2.2](https://www.w3.org/WAI/standards-guidelines/wcag/new-in-22/).
 
+**This page follows the latest version of WCAG.** When W3C publishes a new
+version as a Recommendation, this page will be updated to name it, with a date
+from which services must meet it, so teams have time to move. Until that date,
+the version named above applies. If the new version measures conformance
+differently, as the WCAG 3 drafts do, this page will also say which level to
+meet.
+
 ## What the design system gives you, and what it does not
 
 Using the design system gets you a long way, and it does not get you all the
