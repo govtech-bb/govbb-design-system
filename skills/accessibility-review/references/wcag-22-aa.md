@@ -63,7 +63,7 @@ a plain defect.
 | [2.1.1 Keyboard][2.1.1]                                        | A     | `focus-order.mjs` + `structural`          | Inspect actual behaviour, not just the markup.                                                                                                |
 | [2.1.2 No Keyboard Trap][2.1.2]                                | A     | `focus-order.mjs` detects same-node-twice |                                                                                                                                               |
 | [2.1.4 Character Key Shortcuts][2.1.4]                         | A     | `structural`                              |                                                                                                                                               |
-| [2.2.1 Timing Adjustable][2.2.1]                               | A     | `structural`                              | Keeping answers when a session times out is 2.2.5 (AAA), not part of this criterion; see below.                                               |
+| [2.2.1 Timing Adjustable][2.2.1]                               | A     | `structural`                              | Keeping answers when a session times out is a recommendation, not part of this criterion; see below.                                          |
 | [2.2.2 Pause, Stop, Hide][2.2.2]                               | A     | `structural`                              |                                                                                                                                               |
 | [2.3.1 Three Flashes or Below Threshold][2.3.1]                | A     | `structural`                              |                                                                                                                                               |
 | [2.4.1 Bypass Blocks][2.4.1]                                   | A     | axe partially; `structural`               |                                                                                                                                               |
@@ -88,7 +88,7 @@ a plain defect.
 | [3.1.1 Language of Page][3.1.1]                                     | A     | axe                             |                                                                                                             |
 | [3.1.2 Language of Parts][3.1.2]                                    | AA    | `structural`                    |                                                                                                             |
 | [3.2.1 On Focus][3.2.1]                                             | A     | `structural`                    |                                                                                                             |
-| [3.2.2 On Input][3.2.2]                                             | A     | `structural`                    |                                                                                                             |
+| [3.2.2 On Input][3.2.2]                                             | A     | `structural`                    | An auto-advancing radio group is the usual trap in a form service.                                          |
 | [3.2.3 Consistent Navigation][3.2.3]                                | AA    | `structural`                    |                                                                                                             |
 | [3.2.4 Consistent Identification][3.2.4]                            | AA    | `structural`                    |                                                                                                             |
 | **[3.2.6 Consistent Help][3.2.6]** (new in 2.2)                     | A     | `structural` across pages       |                                                                                                             |
@@ -101,10 +101,10 @@ a plain defect.
 
 ## 4. Robust
 
-| Criterion                        | Level | Method                      | Notes                                                                                        |
-| -------------------------------- | ----- | --------------------------- | -------------------------------------------------------------------------------------------- |
-| [4.1.2 Name, Role, Value][4.1.2] | A     | axe partially; `structural` | Custom widgets usually fail here; native elements rarely do.                                 |
-| [4.1.3 Status Messages][4.1.3]   | AA    | `structural`                | Over-use is its own problem: a `role="alert"` on every page load trains people to ignore it. |
+| Criterion                        | Level | Method                      | Notes                                                                                                                    |
+| -------------------------------- | ----- | --------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| [4.1.2 Name, Role, Value][4.1.2] | A     | axe partially; `structural` | Custom widgets usually fail here; native elements rarely do. Check that they expose state such as expanded and selected. |
+| [4.1.3 Status Messages][4.1.3]   | AA    | `structural`                | Over-use is its own problem: a `role="alert"` on every page load trains people to ignore it.                             |
 
 ## GovBB conventions, not criterion failures
 
@@ -115,7 +115,8 @@ Check the linked page for what it currently says.
   [Error summary](https://design-system.service.alpha.gov.bb/components/error-summary.md).
 - Underline links in body content —
   [Link](https://design-system.service.alpha.gov.bb/components/link.md).
-- Start each page with a skip link —
+- Use a skip link on every page that repeats navigation or other content before
+  the main task —
   [Skip link](https://design-system.service.alpha.gov.bb/components/skip-link.md).
 - Connect hints and error messages to their field with `aria-describedby`, and
   set `aria-invalid` on a field in error —
@@ -126,10 +127,9 @@ Check the linked page for what it currently says.
 - Do not use placeholder text —
   [Why we don't use placeholder text](https://design-system.service.alpha.gov.bb/design-log/placeholder-text.md).
 
-Keeping part-completed answers when a session times out is
-[2.2.5 Re-authenticating][2.2.5], which is AAA and outside the AA target. No GovBB
-page states it either. Recommend it, but report it as neither a WCAG failure nor
-a GovBB convention.
+Keeping part-completed answers when a session times out is not a WCAG AA
+requirement, and no GovBB page states it. Recommend it, but report it as neither
+a WCAG failure nor a GovBB convention.
 
 ## Criteria axe cannot help with
 
@@ -139,7 +139,7 @@ regardless of a clean axe run.
 
 - **1.4.4 / 1.4.12** — zoom to 200%, and increased text spacing.
 - **1.4.10** — reflow at 320px.
-- **2.2.1** — session timeout warning and extension.
+- **2.2.1** — time limits, such as a session timeout.
 - **2.4.3** — whether tab order matches _reading_ order (a machine can see the
   order, not whether it is right).
 - **2.5.3** — visible label vs accessible name, for voice control.
@@ -171,7 +171,6 @@ regardless of a clean axe run.
 [2.1.4]: https://www.w3.org/WAI/WCAG22/Understanding/character-key-shortcuts
 [2.2.1]: https://www.w3.org/WAI/WCAG22/Understanding/timing-adjustable
 [2.2.2]: https://www.w3.org/WAI/WCAG22/Understanding/pause-stop-hide
-[2.2.5]: https://www.w3.org/WAI/WCAG22/Understanding/re-authenticating
 [2.3.1]: https://www.w3.org/WAI/WCAG22/Understanding/three-flashes-or-below-threshold
 [2.4.1]: https://www.w3.org/WAI/WCAG22/Understanding/bypass-blocks
 [2.4.2]: https://www.w3.org/WAI/WCAG22/Understanding/page-titled

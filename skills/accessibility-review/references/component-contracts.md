@@ -45,8 +45,9 @@ report a convention mismatch as a criterion failure without the actual barrier.
 
 ### Any control that collects a value
 
-- An accessible name, from a real `<label for>`, a `<legend>`, or `aria-label`
-  where no visible label exists (SC 3.3.2, 4.1.2). Do not count placeholder
+- A visible label or instructions (SC 3.3.2) and an accessible name (SC 4.1.2),
+  usually both from a real `<label for>` or a `<legend>`. An `aria-label` gives
+  a name but nothing visible, so it meets 4.1.2 only. Do not count placeholder
   text as the label: it disappears on entry, is often low-contrast, and is not
   reliably announced. GovBB avoids it altogether, which is a convention.
 - A `name` attribute, or the value never reaches a normal submission.
@@ -76,9 +77,8 @@ report a convention mismatch as a criterion failure without the actual barrier.
   that exposes the relationship is a convention mismatch, not a failure.
 - Announced if it appears after the initial render — a live region, or focus
   moved somewhere that conveys it (SC 4.1.3).
-- Describes the error in text (SC 3.3.1) and, where a fix is known, says how to
-  fix it (SC 3.3.3). "Enter an email address in the correct format, like
-  name@example.com" over "Invalid email".
+- Where a fix is known, says how to fix it (SC 3.3.3). "Enter an email address
+  in the correct format, like name@example.com" over "Invalid email".
 - Not signalled by colour alone (SC 1.4.1).
 
 ### A failed form submission
@@ -145,11 +145,9 @@ often broken. Read the current requirements in
 
 ### High-stakes steps — payment, final submission, anything irreversible
 
-- Reversible, checked, or confirmed before it commits (SC 3.3.4).
+- For legal commitments, financial transactions, changes to the user's stored
+  data or test answers, meets SC 3.3.4.
 - Time limits that meet SC 2.2.1. Keeping answers when a session expires is a
-  recommendation (2.2.5, AAA), not part of 2.2.1.
-- Answers kept after a failed submission, so people fix the error rather than
-  re-enter everything. This is GovBB guidance
-  (`/documentation/form-implementation.md`), not a WCAG criterion.
+  recommendation, not part of 2.2.1.
 - Authentication that meets SC 3.3.8. Check that paste works in password and
   code fields; blocking paste is a common way it fails.
