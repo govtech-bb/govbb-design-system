@@ -519,8 +519,8 @@ that passes `pnpm lint`, plus an honest list of unconverted items.
 
 ### 4.2 `accessibility-review` — public
 
-**Job.** Review an interface against WCAG 2.2 AA and GovBB's own accessibility
-contracts.
+**Job.** Review an interface against the WCAG target on GovBB's accessibility
+page and GovBB's own accessibility contracts.
 
 **Approach.** Tooling first, judgement second — and never blur the two. The
 skill's most important discipline is separating *machine-verified* findings from
@@ -536,7 +536,7 @@ worthless.
    linkage, `fieldset`/`legend` for grouped inputs, skip link presence.
 3. **Contrast pass** — compute ratios from the actual token values in
    `tokens.css`. Compute, don't estimate.
-4. **Component-contract pass.** `references/component-a11y-contracts.md`
+4. **Component-contract pass.** `references/component-contracts.md`
    records what each GovBB component guarantees *and what the consumer must
    still do* (e.g. Header/FileUpload/NumberInput need
    `data-govbb-module` + `initAll()` or they degrade; a checkbox group needs a
@@ -738,8 +738,10 @@ stated.
 **The line between statable and resolvable.** These are safe to write down, since
 they do not move when the design system does:
 
-- Requirements from external standards — WCAG criteria and thresholds, HTML and
-  ARIA semantics, native element behaviour.
+- HTML and ARIA semantics, and native element behaviour. External standards
+  such as WCAG are not on this list: they change between versions, so link to
+  the version the accessibility page names. Write a number from one down only
+  where a script needs it, and keep it in that script.
 - Method, ordering and reporting discipline — how to establish what is testable,
   how to tag evidence, what not to claim, the report structure.
 - Judgement about what matters and why.

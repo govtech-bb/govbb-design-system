@@ -55,8 +55,8 @@ report a convention mismatch as a criterion failure without the actual barrier.
   failure: a voice control user says what they see and nothing happens.
 - A `name` attribute, or the value never reaches a normal submission.
 - `autocomplete` on fields about the user that match a purpose in SC 1.3.5's
-  list of input purposes. Cheap, and routinely missed. A field with no matching
-  purpose, such as a national ID number, is outside the criterion.
+  list of input purposes. Cheap, and routinely missed. Check a field against
+  that list before reporting it missing.
 - A `type` matching the data, so touch keyboards are useful.
 - Enough hit area for SC 2.5.8, measured at the rendered size. Check the
   criterion's spacing option and exceptions before reporting a small target.
@@ -99,8 +99,8 @@ often broken. Read the current requirements in
 
 - Identify each detected error in text (SC 3.3.1). GovBB's failed-submission
   pattern uses an error summary and moves focus to it; verify that technique
-  when the service uses it. [SC 3.3.1](https://www.w3.org/WAI/WCAG22/Understanding/error-identification.html)
-  does not universally require moving focus.
+  when the service uses it, but read 3.3.1's text before reporting a missing
+  focus move as a failure of it.
 - When an error summary is used, each link reaches the control that caused it.
 - Entered values are preserved. Losing part-completed answers is a serious harm
   in a government service, not an inconvenience.
@@ -136,29 +136,28 @@ often broken. Read the current requirements in
 
 ### Navigation and page structure
 
-- Provide a way to [bypass repeated blocks (SC 2.4.1)](https://www.w3.org/WAI/WCAG22/Understanding/bypass-blocks.html). GovBB page templates use
-  a skip link as the first focusable element; check its target exists and can
-  receive focus. A page without repeated blocks is not automatically a WCAG
-  failure because it has no skip link.
+- A way to bypass repeated blocks that meets SC 2.4.1. GovBB page templates
+  use a skip link as the first focusable element; check its target exists and
+  can receive focus. A missing skip link is a GovBB convention; see below.
 - Use meaningful landmarks for the structure that exists: `<main>` for main
   content, and `header`, `nav`, `footer` where those regions are present. Name
   multiple navigation landmarks so they are distinguishable. Do not demand
   extra regions solely to satisfy a checklist.
 - The current page marked in any navigation that includes it
   (`aria-current="page"`).
-- Link purpose must be clear from its text or programmatically determined
-  context (SC 2.4.4). Follow GovBB's summary-list guidance for distinct "Change"
-  links, including visually hidden context where the example supplies it.
-  [W3C's explanation](https://www.w3.org/WAI/WCAG22/Understanding/link-purpose-in-context.html)
-  distinguishes this from requiring every link to stand alone.
+- Link purpose that meets SC 2.4.4; read how the criterion treats a link's
+  context before reporting a link that is unclear on its own. Follow GovBB's
+  summary-list guidance for distinct "Change" links, including visually hidden
+  context where the example supplies it.
 - Navigation and help repeated across pages that meet SC 3.2.3 and 3.2.6.
   Compare pages across the journey; one page cannot show either.
 
-### High-stakes steps — payment, submission, changing or deleting saved data
+### High-stakes steps
 
-- Submissions that meet SC 3.3.4 where it applies: read its scope before
-  reporting. A check-answers page is the usual way a form service meets it, and
-  re-displaying answers there is not redundant entry under SC 3.3.7.
+- Submissions that meet SC 3.3.4 where it applies: read its scope, not this
+  heading, to decide which steps it covers. A check-answers page is the usual
+  way a form service meets it. Read SC 3.3.7 before reporting the answers it
+  re-displays as redundant entry.
 - Time limits that meet SC 2.2.1. Keeping answers when a session expires is a
   recommendation; see below.
 - Authentication that meets SC 3.3.8. Check that paste works in password and
@@ -189,6 +188,7 @@ it currently says.
 - Do not use placeholder text —
   [Why we don't use placeholder text](https://design-system.service.alpha.gov.bb/design-log/placeholder-text.md).
 
-Keeping part-completed answers when a session times out is not a WCAG AA
-requirement, and no GovBB page states it. Recommend it, but report it as neither
-a WCAG failure nor a GovBB convention.
+Keeping part-completed answers when a session times out is not stated on any
+GovBB page. Recommend it. Report it as a failure only under a criterion at the
+target's version and level that requires it, and otherwise as neither a WCAG
+failure nor a GovBB convention.

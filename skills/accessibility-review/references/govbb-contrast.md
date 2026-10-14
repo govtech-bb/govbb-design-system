@@ -22,15 +22,16 @@ Use computed colours for the actual element and backdrop when checking a page.
 
 ## Choose the threshold from rendered text
 
-- Normal text needs 4.5:1; large text needs 3:1.
-- Large means at least 18pt regular (24 CSS px) or 14pt bold (approximately
-  18.67 CSS px). Measure actual size/weight; a token name or heading level proves neither.
-- Relevant control boundaries, meaningful graphics and authored focus
-  indicators need 3:1 under SC 1.4.11. Read its applicability and exceptions
-  before reporting a particular visual boundary as required.
+`contrast.mjs` holds the ratios and the large-text sizes, taken from SC 1.4.3,
+SC 1.4.11 and the definition of large-scale text in WCAG 2. The script is the
+only copy of these numbers in this skill: if the target's version changes
+them, change the script. It prints the threshold it applied.
 
-Pass the actual `--size` and `--weight`, or `--non-text`. With no size, the
-helper applies the stricter normal-text threshold. Inspect what it reports;
+Pass the actual `--size` and `--weight`, or `--non-text`. Measure the rendered
+size and weight; a token name or heading level proves neither. With no size, the
+helper applies the stricter normal-text threshold. Read SC 1.4.11's
+applicability and exceptions before reporting a particular visual boundary as
+required. Inspect what it reports;
 do not round a failing contrast ratio up to a pass.
 
 ## Check the real pairing
@@ -39,9 +40,10 @@ Check text on its actual background, including error tints and local overrides.
 The same colour may pass on one surface and fail on another. For focus rings,
 inspect the complete indicator, control and surrounding page; a single token
 pair is not enough to decide whether a multi-colour indicator meets the
-requirement. Use [W3C's non-text contrast guidance](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html)
-for adjacent colours and the relevant component state. Do not silently apply
-AAA Focus Appearance requirements as AA failures.
+requirement. W3C's Understanding document for SC 1.4.11, in the target's
+version, explains adjacent colours and component states. Do not report a
+criterion above the target's level, such as an enhanced focus requirement, as
+a failure.
 
 Read which tokens a control's border and focus styles actually use. A palette
 pairing is evidence only for that pair; it does not prove every control passes.

@@ -67,8 +67,8 @@ use guidance in a local GovBB checkout (`apps/site/src/content/`, where
 sources. With packages alone, mark missing usage guidance; with neither, review
 generic semantics without inventing GovBB guarantees. With no copy of the
 accessibility page, do not assume a target: review against levels A and AA of
-the current WCAG Recommendation and mark conformance findings as unconfirmed
-against the target.
+the latest WCAG 2 Recommendation you can confirm, name that version in the
+report, and mark conformance findings as unconfirmed against the target.
 
 ## Use the criteria themselves
 
@@ -79,9 +79,11 @@ version and its quick reference, which filters by level.
 Read a criterion's own text, including its exceptions, before reporting a
 failure against it. Understanding documents and techniques explain the
 criteria but are not requirements. Cite the criterion's number and name; do not
-restate it from memory. Check that the criterion exists in that version: SC
-4.1.1 Parsing was removed in 2.2, so report duplicate IDs under 4.1.2 where they
-break an accessible name, or as a plain defect. If the specification is
+restate it from memory. Check that the criterion exists in that version and is
+within the target's level; criteria are added, removed and moved between
+versions (WCAG 2.2 removed 4.1.1 Parsing, for example). Where the target has no
+criterion for a problem, report it under one that does apply, or as a plain
+defect. If the specification is
 unreachable, say so in the report and mark conformance findings as unconfirmed
 against the criterion.
 
@@ -114,8 +116,8 @@ the GovBB conventions to report separately from criterion failures.
    conveyed without colour alone, timeouts, preserved answers and accessible
    authentication. Tag usability judgements separately from conformance findings.
 6. **Manual coverage:** record checks still needed, whatever axe reported:
-   screen reader announcements, voice control, zoom to 200% and text spacing
-   (fixed-height text containers are the usual cause), reflow at 320px, time
+   screen reader announcements, voice control, zoom and text spacing
+   (fixed-height text containers are the usual cause), reflow, time
    limits, whether tab order matches reading order, whether error messages help
    someone recover, consistency across the journey, information asked for again
    after it was given (SC 3.3.7), captions and transcripts,
