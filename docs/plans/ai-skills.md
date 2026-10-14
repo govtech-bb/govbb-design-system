@@ -741,18 +741,18 @@ stated.
 they do not move when the design system does:
 
 - HTML and ARIA semantics, and native element behaviour. External standards
-  such as WCAG are not on this list: they change between versions, so link to
-  the version the accessibility page names. Cite a criterion by its number and
-  name, and check it exists in that version. Keep threshold values, such as
-  contrast ratios, only in the script that needs them.
+  such as WCAG are not on this list: they change between versions. A skill names
+  no criteria; it fetches the version the accessibility page names and builds
+  its checklist from it at run time. A threshold a script needs, such as a
+  contrast ratio, lives only in that script and is checked against the
+  fetched standard.
 - Method, ordering and reporting discipline — how to establish what is testable,
   how to tag evidence, what not to claim, the report structure.
 - Judgement about what matters and why.
 
-Write an external requirement down by linking to it or quoting it exactly, never
-by summarising it. A one-line summary of a WCAG criterion drops the alternatives
-and exceptions that let a page pass, and a review skill then reports failures the
-standard does not.
+Do not write an external requirement into a skill at all, even as a summary. A
+one-line summary of a WCAG criterion drops the alternatives and exceptions that
+let a page pass, and a review skill then reports failures the standard does not.
 
 These must be resolved at run time, every time:
 

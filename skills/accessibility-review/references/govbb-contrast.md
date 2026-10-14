@@ -22,16 +22,17 @@ Use computed colours for the actual element and backdrop when checking a page.
 
 ## Choose the threshold from rendered text
 
-`contrast.mjs` holds the ratios and the large-text sizes, taken from SC 1.4.3,
-SC 1.4.11 and the definition of large-scale text in WCAG 2. The script is the
-only copy of these numbers in this skill: if the target's version changes
-them, change the script. It prints the threshold it applied.
+`contrast.mjs` holds the contrast ratios and large-text sizes and prints the
+threshold it applied. It is the only copy of these numbers in this skill. Check
+them against the contrast criteria in the WCAG checklist: if they differ, the
+script is out of date, so report the result as unconfirmed rather than trust
+it.
 
 Pass the actual `--size` and `--weight`, or `--non-text`. Measure the rendered
 size and weight; a token name or heading level proves neither. With no size, the
-helper applies the stricter normal-text threshold. Read SC 1.4.11's
-applicability and exceptions before reporting a particular visual boundary as
-required. Inspect what it reports;
+helper applies the stricter normal-text threshold. Read the checklist's
+non-text contrast criterion, including where it applies and its exceptions,
+before reporting a particular visual boundary as required. Inspect what it reports;
 do not round a failing contrast ratio up to a pass.
 
 ## Check the real pairing
@@ -40,10 +41,10 @@ Check text on its actual background, including error tints and local overrides.
 The same colour may pass on one surface and fail on another. For focus rings,
 inspect the complete indicator, control and surrounding page; a single token
 pair is not enough to decide whether a multi-colour indicator meets the
-requirement. W3C's Understanding document for SC 1.4.11, in the target's
-version, explains adjacent colours and component states. Do not report a
-criterion above the target's level, such as an enhanced focus requirement, as
-a failure.
+requirement. W3C's Understanding document for that criterion, in the target's
+version, explains adjacent colours and component states. Only criteria in the
+checklist are failures; an enhanced requirement above the target's level is
+not.
 
 Read which tokens a control's border and focus styles actually use. A palette
 pairing is evidence only for that pair; it does not prove every control passes.
@@ -55,8 +56,8 @@ and composite it before computing. The helper rejects alpha-channel colours
 because the backdrop is unknown. If it cannot be established, mark the case
 `needs-manual-test`; an axe `incomplete` result is not a pass.
 
-Read the exceptions in SC 1.4.3 Contrast (Minimum) and SC 1.4.11 Non-text
-Contrast at the target's version before reporting a failure. Separate a
+Read the exceptions in the checklist's contrast criteria before reporting a
+failure. Separate a
 usability concern from a claimed contrast failure when an exception applies.
 
 ## Reproducible findings

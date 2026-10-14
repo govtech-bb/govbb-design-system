@@ -66,35 +66,38 @@ use guidance in a local GovBB checkout (`apps/site/src/content/`, where
 `docs/accessibility.md` is the accessibility page) and the consumer's installed
 sources. With packages alone, mark missing usage guidance; with neither, review
 generic semantics without inventing GovBB guarantees. With no copy of the
-accessibility page, do not assume a target: review against levels A and AA of
-the latest WCAG 2 Recommendation you can confirm (A and AA are WCAG 2 levels),
-name that version in the report, and mark conformance findings as unconfirmed
-against the target. If no version can be confirmed, name the version assumed
-and say it was not confirmed.
+accessibility page, do not assume a target: build the checklist below from the
+latest WCAG Recommendation at the level services are usually held to, name the
+version and level in the report, and mark conformance findings as unconfirmed
+against the target.
 
-## Use the criteria themselves
+## Build the WCAG checklist from the standard
 
-The success criteria at the target's version and level are the requirements.
-Find them in the W3C specification for that version; W3C's
+This skill names no WCAG criteria, so it cannot drift from the standard. At the
+start of every review, fetch the W3C specification for the version the
+accessibility page names (W3C's
 [WCAG overview](https://www.w3.org/WAI/standards-guidelines/wcag/) links each
-version and its quick reference, which filters by level.
-Read a criterion's own text, including its exceptions, before reporting a
-failure against it. Understanding documents and techniques explain the
-criteria but are not requirements. Cite the criterion's number and name; do not
-restate it from memory. Check that the criterion exists in that version and is
-within the target's level; criteria are added, removed and moved between
-versions (WCAG 2.2 removed 4.1.1 Parsing, for example). Where the target has no
-criterion for a problem, report it under one that does apply, or as a plain
-defect. If the specification is
-unreachable, say so in the report and mark conformance findings as unconfirmed
-against the criterion.
+version) and build the review's checklist from it: every success criterion at
+the target's level, with the number, name, level and full text the
+specification gives, exceptions included.
+
+Judge every conformance finding against a criterion's text in that checklist,
+and cite it as the specification does. Understanding documents and techniques
+explain the criteria but are not requirements. Never add a criterion from
+memory: if a problem matches nothing in the checklist, report it as a plain
+defect or a GovBB convention.
+
+If the specification cannot be fetched, there is no checklist. Say so in the
+report, review GovBB contracts and conventions only, and mark every conformance
+finding as unconfirmed against WCAG.
 
 ## Review passes
 
 Run only passes relevant to the requested review, and state any unavailable
 checks. Read [component contracts](references/component-contracts.md) before
 reviewing GovBB wiring: it covers the consumer's duties by kind of control, and
-the GovBB conventions to report separately from criterion failures.
+the GovBB conventions to report separately from criterion failures. It names
+what to check, not what WCAG requires; the checklist decides that.
 
 1. **Automated:** run axe on the pages and states in scope. Include violations
    and unresolved `incomplete` results. Record failed scans as not tested.
@@ -113,8 +116,8 @@ the GovBB conventions to report separately from criterion failures.
 4. **Keyboard and focus:** inspect focus order, reachability, visible focus,
    overlay dismissal and task completion. The focus helper reports heuristics,
    including centre-point occlusion; confirm the actual barrier before calling
-   it a WCAG failure. Read SC 2.4.11 Focus Not Obscured (Minimum) before
-   reporting overlap as a failure of it.
+   it a WCAG failure, and check the checklist's text on obscured focus before
+   reporting overlap as one.
 5. **Content and recovery:** check useful error instructions, information
    conveyed without colour alone, timeouts, preserved answers and accessible
    authentication. Tag usability judgements separately from conformance findings.
@@ -123,11 +126,10 @@ the GovBB conventions to report separately from criterion failures.
    (fixed-height text containers are the usual cause), reflow, time
    limits, whether tab order matches reading order, whether error messages help
    someone recover, consistency across the journey, information asked for again
-   after it was given (SC 3.3.7 Redundant Entry), captions and transcripts,
+   after it was given, captions and transcripts,
    and any states not reached. Do not claim that a browser script verifies
    assistive-technology announcement quality.
-7. **Criteria coverage:** go through every criterion at the target's version
-   and level in its quick reference, not only those named in this skill. Mark
+7. **Checklist coverage:** go through every criterion in the checklist. Mark
    each one checked, not applicable to the surface reviewed, or still needing a
    manual test, and carry the untested ones into the manual-test tasks.
 
@@ -165,7 +167,7 @@ or a running page must produce a clear **not tested** limitation, never a pass.
 
 Start with scope/states, the conformance target quoted from the accessibility
 page and whether the live or a local copy was read (or that neither was
-available), evidence actually obtained, installed versions when relevant, and
+available), the specification the checklist was built from, evidence actually obtained, installed versions when relevant, and
 what was not covered. Order findings by user impact: blocks a task, degrades the
 experience, then minor. Preserve every confirmed finding; compress wording
 rather than omitting evidence.
