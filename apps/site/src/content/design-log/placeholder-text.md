@@ -25,7 +25,8 @@ little, and the fix is to improve them, not to add a placeholder.
 - It **looks like a prefilled answer**, so people skip the field or try to
   delete text that was never really there.
 - It is **commonly rendered with weak contrast**, so it fails
-  [WCAG 2.2 AA](https://www.w3.org/TR/WCAG22/) and is hard to read.
+  [SC 1.4.3 Contrast (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html)
+  and is hard to read.
 - Used **instead of a label**, it leaves the field with no accessible name, so
   screen readers cannot announce what the field is for.
 
