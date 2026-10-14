@@ -88,7 +88,8 @@ application"` on a button reading "Continue" is the usual problem: a voice
 - A message that helps the user fix the problem; check the WCAG checklist,
   including its exceptions, before reporting one that does not. "Enter an email address in the correct format, like name@example.com"
   over "Invalid email".
-- An error state that does not rely on colour alone.
+- How an error state is shown. Check it against the checklist if colour is
+  the only signal.
 
 ### A failed form submission
 
@@ -119,9 +120,9 @@ often broken. Read the current requirements in
 
 ### Anything hand-built rather than native
 
-- Name, role and value exposed, with state such as `aria-expanded` and
-  `aria-current` kept in sync. Native elements give this for free; custom
-  widgets are where it breaks.
+- What assistive technology is told about the widget, with state such as
+  `aria-expanded` and `aria-current` kept in sync. Native elements give this
+  for free; custom widgets are where it breaks.
 - Operable by keyboard, with visible focus. A `<div>` with a click handler is
   the single most common serious defect there is.
 - A focus order that follows the meaning of the page. Positive `tabindex` is
@@ -130,14 +131,15 @@ often broken. Read the current requirements in
   Use the component's documented hiding behaviour. Intentionally visually
   hidden labels are different: they should remain available to assistive
   technology.
-- No keyboard trap. Check too that anything that opens can be closed from the
-  keyboard.
+- Whether focus can always leave the widget. Check too that anything that
+  opens can be closed from the keyboard.
 
 ### Navigation and page structure
 
-- A way to bypass repeated blocks. GovBB page templates use a skip link as the
-  first focusable element; check its target exists and can receive focus. A
-  missing skip link is a GovBB convention; see below.
+- How a keyboard user gets past content repeated on every page. GovBB page
+  templates use a skip link as the first focusable element; check its target
+  exists and can receive focus. A missing skip link is a GovBB convention; see
+  below.
 - Use meaningful landmarks for the structure that exists: `<main>` for main
   content, and `header`, `nav`, `footer` where those regions are present. Name
   multiple navigation landmarks so they are distinguishable. Do not demand

@@ -67,9 +67,9 @@ use guidance in a local GovBB checkout (`apps/site/src/content/`, where
 sources. With packages alone, mark missing usage guidance; with neither, review
 generic semantics without inventing GovBB guarantees. With no copy of the
 accessibility page there is no target: ask the user for the WCAG version and
-level. If they cannot say, build the checklist from the latest Recommendation,
-state in the report that the target was assumed, and mark conformance findings
-as unconfirmed against the target.
+level. If they cannot say, build the checklist with `--version latest --level
+AA`, state in the report that both the version and the level were assumed, and
+mark conformance findings as unconfirmed against the target.
 
 ## Build the WCAG checklist from the standard
 
@@ -86,8 +86,9 @@ node "$govbb_skill_dir/scripts/wcag-checklist.mjs" --version <version> --level <
 The helper quotes every success criterion at that level and the levels below
 it, word for word with its exceptions and notes, leaves out criteria the
 specification marks obsolete or removed, and adds the glossary definitions the
-criteria use. It prints a count per level and refuses to write a checklist it
-could not parse completely. Read the file it writes; do not summarise it.
+criteria use. It prints a count per level, and refuses drafts, a saved copy of
+a different version than asked for, and anything it could not parse completely.
+Read the file it writes; do not summarise it.
 
 Judge every conformance finding against a criterion's text and glossary terms
 in that checklist, and cite it as the checklist does. Understanding documents
@@ -96,10 +97,11 @@ criterion from memory: if a problem matches nothing in the checklist, report it
 as a plain defect or a GovBB convention.
 
 If the helper cannot fetch the specification, pass `--file` with a saved copy
-when the user has one. With no copy there is no checklist: say so in the
-report, review GovBB contracts and conventions, and describe any likely WCAG
-problem as unconfirmed without citing a criterion. If the helper reports the
-checklist incomplete, treat it the same way.
+when the user has one, keeping `--version` so the copy is checked. Exit status
+3 is a usage or write error: fix the command and run it again. Exit status 1
+or 2 means there is no checklist: say so in the report with the helper's
+message, review GovBB contracts and conventions, and describe any likely WCAG
+problem as unconfirmed without citing a criterion.
 
 ## Review passes
 
@@ -128,8 +130,9 @@ what to check, not what WCAG requires; the checklist decides that.
    including centre-point occlusion; confirm the actual barrier before calling
    it a WCAG failure, and find the checklist criterion that covers it, if
    any.
-5. **Content and recovery:** check useful error instructions, information
-   conveyed without colour alone, timeouts, preserved answers and sign-in. Tag usability judgements separately from conformance findings.
+5. **Content and recovery:** check error messages, time limits, preserved
+   answers and sign-in against the checklist and the contracts. Tag usability
+   judgements separately from conformance findings.
 6. **Checklist coverage:** go through every criterion in the checklist,
    whatever axe reported. Mark each one checked, not applicable to the surface
    reviewed, or still needing a manual test, and carry the untested ones into

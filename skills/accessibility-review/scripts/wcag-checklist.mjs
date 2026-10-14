@@ -25,9 +25,28 @@ Options:
   --level <level>   Target conformance level; lower levels are included
   --out <path>      Write the checklist here instead of standard output
   -h, --help
+
+Exit status: 0 checklist written; 1 specification parsed incompletely;
+2 no usable specification (unreadable, wrong version, not a W3C
+Recommendation, or markup this helper does not support); 3 usage or write
+error.
 `;
 
 const LEVELS = ['A', 'AA', 'AAA'];
+
+function usage(message) {
+  console.error(`${message}\n\n${HELP}`);
+  process.exit(3);
+}
+
+/** No usable specification: there is no checklist. */
+function noSpec(message) {
+  console.error(
+    `${message}\nThere is no checklist. Pass --file with a saved copy of the ` +
+      'right specification, or report conformance findings as unconfirmed.',
+  );
+  process.exit(2);
+}
 
 function parseArgs(argv) {
   const opts = {};
@@ -44,27 +63,26 @@ function parseArgs(argv) {
       '--level': 'level',
       '--out': 'out',
     }[arg];
-    if (!key || argv[i + 1] === undefined) {
-      console.error(`Unknown or incomplete option: ${arg}\n\n${HELP}`);
-      process.exit(2);
-    }
+    if (!key || argv[i + 1] === undefined)
+      usage(`Unknown or incomplete option: ${arg}`);
     opts[key] = argv[++i];
   }
+  if (!LEVELS.includes(opts.level))
+    usage(`--level must be one of ${LEVELS.join(', ')}, in capitals.`);
+  if (!(opts.version || opts.url || opts.file))
+    usage('Give --version, --url or --file.');
   if (
-    !LEVELS.includes(opts.level) ||
-    !(opts.version || opts.url || opts.file)
-  ) {
-    console.error(HELP);
-    process.exit(2);
-  }
+    opts.version &&
+    opts.version !== 'latest' &&
+    !/^\d+\.\d+$/.test(opts.version)
+  )
+    usage(`"${opts.version}" is not a WCAG version such as 2.2, or "latest".`);
   return opts;
 }
 
 function specUrl({ version, url }) {
   if (url) return url;
   if (version === 'latest') return 'https://www.w3.org/TR/WCAG/';
-  if (!/^\d+\.\d+$/.test(version))
-    throw new Error(`"${version}" is not a WCAG version such as 2.2.`);
   return `https://www.w3.org/TR/WCAG${version.replace('.', '')}/`;
 }
 
@@ -89,20 +107,49 @@ const decode = (s) =>
       : (ENTITIES[e.toLowerCase()] ?? m),
   );
 
+/** Numbers ordered-list items and indents nested lists, so references such
+ *  as "both 1 and 2 must be satisfied" keep their meaning. */
+function markLists(html) {
+  const stack = [];
+  return html.replace(/<(\/?)(ol|ul|li)\b[^>]*>/g, (_, close, tag) => {
+    if (tag === 'li') {
+      if (close || !stack.length) return '';
+      const list = stack.at(-1);
+      list.n += 1;
+      const indent = '\uE000'.repeat(stack.length - 1);
+      return `\n${indent}${list.ordered ? `${list.n}.` : '-'}\uE001`;
+    }
+    if (close) stack.pop();
+    else stack.push({ ordered: tag === 'ol', n: 0 });
+    return '\n';
+  });
+}
+
+/** Removes tags until none are left, so a tag split by another tag
+ *  (`<scr<b>ipt>`) cannot survive a single pass. Entities are decoded after
+ *  this, so `&lt;` in the specification stays literal text. */
+function stripTags(html) {
+  let previous;
+  do {
+    previous = html;
+    html = html.replace(/<[^<>]*>/g, '');
+  } while (html !== previous);
+  return html.replace(/[<>]/g, '');
+}
+
 /** Markdown-ish text that keeps every word of the source. */
 function toText(html) {
   return decode(
-    html
-      .replace(/\s+/g, ' ')
-      .replace(
-        /<div role="heading" class="note-title[^>]*>.*?<span>(.*?)<\/span><\/div>/g,
-        '\n\n$1: ',
-      )
-      .replace(/<dt[^>]*>/g, '\n\n**')
-      .replace(/<\/dt>/g, '**\n')
-      .replace(/<li[^>]*>/g, '\n- ')
-      .replace(/<(p|div|dl|ul|ol|dd)[^>]*>/g, '\n\n')
-      .replace(/<[^>]+>/g, ''),
+    stripTags(
+      markLists(html.replace(/\s+/g, ' '))
+        .replace(
+          /<div role="heading" class="note-title[^>]*>.*?<span>(.*?)<\/span><\/div>/g,
+          '\n\n$1: ',
+        )
+        .replace(/<dt[^>]*>/g, '\n\n**')
+        .replace(/<\/dt>/g, '**\n')
+        .replace(/<(p|div|dl|dd)[^>]*>/g, '\n\n'),
+    ),
   )
     .split('\n')
     .map((line) => line.trim())
@@ -111,7 +158,9 @@ function toText(html) {
     .replace(/ +\*\*\n/g, '**\n')
     .replace(/\n{3,}/g, '\n\n')
     .replace(/^(Note[^:\n]*): *\n\n/gm, '$1: ')
-    .replace(/\n\n(?=- )/g, '\n')
+    .replace(/\uE001\s*/g, ' ')
+    .replace(/\n+(?=\uE000*(?:\d+\.|-) )/g, '\n')
+    .replace(/\uE000/g, '   ')
     .trim();
 }
 
@@ -126,14 +175,12 @@ function parseSpec(html) {
     html.match(/<p id="w3c-state">([\s\S]*?)<\/p>/)?.[1] ?? '',
   );
 
-  const starts = [
-    ...html.matchAll(/<section id="([^"]+)" class="guideline">/g),
-  ];
+  // Criteria and guidelines write their attributes in different orders, so
+  // end each body at the next section of any kind, not the next criterion.
+  const starts = [...html.matchAll(/<section\b[^>]*>/g)];
   const criteria = [];
   for (const [i, start] of starts.entries()) {
-    const end =
-      starts[i + 1]?.index ?? html.indexOf('<section', start.index + 1);
-    const body = html.slice(start.index, end === -1 ? undefined : end);
+    const body = html.slice(start.index, starts[i + 1]?.index);
     const heading = body.match(
       /<bdi class="secno">Success Criterion ([\d.]+)\s*<\/bdi>([\s\S]*?)<\/h\d>/,
     );
@@ -145,9 +192,10 @@ function parseSpec(html) {
     const content = body
       .replace(/<div class="header-wrapper">[\s\S]*?<\/div>/, '')
       .replace(/<div class="doclinks">[\s\S]*?<\/div>/, '')
-      .replace(/<p class="conformance-level">[\s\S]*?<\/p>/, '');
+      .replace(/<p class="conformance-level">[\s\S]*?<\/p>/, '')
+      .replace(/<p class="change">[\s\S]*?<\/p>/g, '');
     criteria.push({
-      id: start[1],
+      id: start[0].match(/id="([^"]+)"/)?.[1],
       number: heading[1],
       name,
       level,
@@ -170,7 +218,9 @@ function parseSpec(html) {
     for (const entry of entries) {
       const id = entry.match(/<dfn id="([^"]+)"/)[1];
       const term = toText(entry.match(/<dt[^>]*>([\s\S]*?)<\/dt>/)?.[1] ?? id);
-      const definition = entry.slice(entry.indexOf('</dt>') + 5);
+      const definition = entry
+        .slice(entry.indexOf('</dt>') + 5)
+        .replace(/<p class="change">[\s\S]*?<\/p>/g, '');
       glossary.set(id, {
         term,
         text: toText(definition),
@@ -257,15 +307,26 @@ try {
     html = await res.text();
   }
 } catch (err) {
-  console.error(
-    `Could not read the specification: ${err.message}\n` +
-      'There is no checklist. Pass --file with a saved copy of the specification, ' +
-      'or report conformance findings as unconfirmed.',
-  );
-  process.exit(2);
+  noSpec(`Could not read the specification: ${err.message}`);
 }
 
 const spec = parseSpec(html);
+if (spec.headings === 0)
+  noSpec(
+    `${spec.title} has no success criteria in the WCAG 2 markup this helper reads. ` +
+      'Its version is not supported yet.',
+  );
+if (
+  opts.version &&
+  opts.version !== 'latest' &&
+  !new RegExp(`\\b${opts.version.replace('.', '\\.')}\\b`).test(spec.title)
+)
+  noSpec(`Asked for WCAG ${opts.version}, but ${source} is "${spec.title}".`);
+if (!/^W3C Recommendation\b/.test(spec.status))
+  noSpec(
+    `${source} is "${spec.status || 'of unknown status'}", not a W3C Recommendation. ` +
+      'Drafts can change, so they are not used as the checklist.',
+  );
 const result = buildChecklist(spec, opts.level);
 if (result.problems.length) {
   console.error(
@@ -275,7 +336,12 @@ if (result.problems.length) {
 }
 const output = render(spec, source, opts.level, result);
 if (opts.out) {
-  writeFileSync(opts.out, output);
+  try {
+    writeFileSync(opts.out, output);
+  } catch (err) {
+    console.error(`Could not write ${opts.out}: ${err.message}`);
+    process.exit(3);
+  }
   console.log(
     `Wrote ${opts.out}: ${result.included.length} success criteria (${result.counts.join(', ')}), ` +
       `${result.terms.length} glossary terms, from ${spec.title}.`,

@@ -220,44 +220,60 @@ try {
     'PASS focus walk distinguishes nodes and transparent rings; tooling failures are actionable',
   );
 
+  // Mirrors the W3C markup: criteria write id before class, guidelines and
+  // principles write class before id and sit between criteria.
   const sc = (id, number, name, level, body) =>
     `<section id="${id}" class="guideline"><div class="header-wrapper"><h4 id="x-${id}"><bdi class="secno">Success Criterion ${number} </bdi>${name}</h4></div>` +
-    `<div class="doclinks"><a href="#">Understanding</a></div>` +
+    `<div class="doclinks"><a href="#">Understanding ${name}</a></div>` +
     (level ? `<p class="conformance-level">(Level ${level})</p>` : '') +
     `${body}</section>`;
-  const spec = (criteria) =>
-    `<html><head><title>WCAG 9.9</title></head><body><p id="w3c-state">W3C Recommendation <time>1 January 2030</time></p>` +
-    `<section id="perceivable" class="guideline"><h3>Guideline 1.1</h3>${criteria}</section>` +
+  const guideline = (id, heading, criteria) =>
+    `<section class="guideline" id="${id}"><div class="header-wrapper"><h3><bdi class="secno">Guideline ${heading} </bdi>Heading ${heading}</h3></div>` +
+    `<div class="doclinks"><a href="#">Understanding guideline ${heading}</a></div><p>Guideline statement ${heading}.</p>${criteria}</section>`;
+  const spec = (
+    criteria,
+    { title = 'WCAG 9.9', state = 'W3C Recommendation' } = {},
+  ) =>
+    `<html><head><title>${title}</title></head><body><p id="w3c-state">${state} <time>1 January 2030</time></p>` +
+    `<section class="principle" id="perceivable"><h2>1. Perceivable</h2><p>Principle statement.</p>${criteria}</section>` +
     `<section id="glossary"><dl>` +
-    `<dt><dfn id="dfn-large">large</dfn></dt><dd><p>at least 18 <a href="#dfn-point">point</a></p></dd>` +
-    `<dt class="new"><dfn id="dfn-point">point</dfn></dt><dd><p>a unit &amp; a size</p></dd>` +
+    `<dt><dfn id="dfn-large">large</dfn></dt><dd><p>at least 18 <a href="#dfn-point">point</a>, where both 1 and 2 hold:</p>` +
+    `<ol><li><p>first condition</p></li><li><p>second condition, one of:</p><ol><li>option a</li><li>option b</li></ol></li></ol></dd>` +
+    `<dt class="new"><dfn id="dfn-point">point</dfn></dt><dd><p class="change">New</p><p>a unit &amp; a size &lt;= 1</p></dd>` +
     `<dt><dfn id="dfn-unused">unused</dfn></dt><dd><p>never referenced</p></dd>` +
     `</dl></section></body></html>`;
   const complete = join(root, 'spec.html');
-  writeFileSync(
-    complete,
-    spec(
+  const criteria =
+    guideline(
+      'one-g',
+      '1.1',
       sc(
         'one',
         '1.1.1',
         'First',
         'A',
         '<p>Text is <a href="#dfn-large">large</a>.</p>',
+      ),
+    ) +
+    guideline(
+      'two-g',
+      '1.2',
+      sc(
+        'two',
+        '1.2.1',
+        'Second',
+        'AA',
+        '<p class="change">New</p><p>Second text.</p><dl><dt>Exception</dt><dd><p>Unless essential.</p></dd></dl>',
       ) +
-        sc(
-          'two',
-          '1.1.2',
-          'Second',
-          'AA',
-          '<p>Second text.</p><dl><dt>Exception</dt><dd><p>Unless essential.</p></dd></dl>',
-        ) +
-        sc('three', '1.1.3', 'Third', 'AAA', '<p>Third text.</p>') +
-        sc('old', '1.1.4', 'Old (Obsolete and removed)', '', '<p>Removed.</p>'),
-    ),
-  );
+        sc('three', '1.2.2', 'Third', 'AAA', '<p>Third text.</p>') +
+        sc('old', '1.2.3', 'Old (Obsolete and removed)', '', '<p>Removed.</p>'),
+    );
+  writeFileSync(complete, spec(criteria));
   const checklist = await run('wcag-checklist.mjs', [
     '--file',
     complete,
+    '--version',
+    '9.9',
     '--level',
     'AA',
   ]);
@@ -268,12 +284,53 @@ try {
   );
   assert.match(
     checklist.stdout,
-    /Left out as obsolete or removed: 1\.1\.4 Old/,
+    /Left out as obsolete or removed: 1\.2\.3 Old/,
   );
-  assert.match(checklist.stdout, /## 1\.1\.1 First \(Level A\)/);
-  assert.match(checklist.stdout, /\*\*Exception\*\*\n\nUnless essential\./);
-  assert.match(checklist.stdout, /### point\n\na unit & a size/);
-  assert.doesNotMatch(checklist.stdout, /1\.1\.3|Understanding|unused/);
+  assert.match(
+    checklist.stdout,
+    /## 1\.1\.1 First \(Level A\)\n\nText is large\.\n\n## 1\.2\.1/,
+  );
+  assert.match(
+    checklist.stdout,
+    /## 1\.2\.1 Second \(Level AA\)\n\nSecond text\.\n\n\*\*Exception\*\*\n\nUnless essential\./,
+  );
+  assert.match(
+    checklist.stdout,
+    /hold:\n1\. first condition\n2\. second condition, one of:\n {3}1\. option a\n {3}2\. option b/,
+  );
+  assert.match(checklist.stdout, /### point\n\na unit & a size <= 1/);
+  assert.doesNotMatch(
+    checklist.stdout,
+    /1\.2\.2|Understanding|Guideline|Principle|unused|^New$/m,
+  );
+
+  for (const [label, file, args, pattern] of [
+    [
+      'wrong version',
+      spec(criteria),
+      ['--version', '9.8'],
+      /Asked for WCAG 9\.8/,
+    ],
+    [
+      'draft',
+      spec(criteria, { state: "W3C Editor's Draft" }),
+      [],
+      /not a W3C Recommendation/,
+    ],
+    ['unsupported markup', spec(''), [], /not supported/],
+  ]) {
+    writeFileSync(complete, file);
+    const result = await run('wcag-checklist.mjs', [
+      '--file',
+      complete,
+      '--level',
+      'AA',
+      ...args,
+    ]);
+    assert.equal(result.status, 2, label);
+    assert.match(result.stderr, pattern, label);
+    assert.match(result.stderr, /There is no checklist/, label);
+  }
   writeFileSync(
     complete,
     spec(sc('one', '1.1.1', 'First', '', '<p>No level.</p>')),
@@ -297,8 +354,24 @@ try {
   ]);
   assert.equal(unreadable.status, 2);
   assert.match(unreadable.stderr, /There is no checklist/);
+  writeFileSync(complete, spec(criteria));
+  for (const [args, pattern] of [
+    [['--level', 'aa'], /--level must be one of/],
+    [
+      ['--level', 'AA', '--out', join(root, 'missing', 'x.md')],
+      /Could not write/,
+    ],
+  ]) {
+    const result = await run('wcag-checklist.mjs', [
+      '--file',
+      complete,
+      ...args,
+    ]);
+    assert.equal(result.status, 3);
+    assert.match(result.stderr, pattern);
+  }
   console.log(
-    'PASS wcag checklist includes lower levels, skips obsolete criteria, follows glossary terms and fails when incomplete',
+    'PASS wcag checklist quotes criteria only, keeps list numbering, follows glossary terms and refuses wrong, draft or incomplete specifications',
   );
 } finally {
   server.close();

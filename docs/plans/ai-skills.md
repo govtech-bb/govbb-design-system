@@ -533,24 +533,19 @@ skill's most important discipline is separating *machine-verified* findings from
 computing it is exactly the failure mode that makes accessibility reviews
 worthless.
 
-1. **Automated pass.** Run axe-core (`scripts/axe-scan.mjs`) over the pages.
-   Report violations with rule ID and node. This repo already runs axe via
-   `pnpm storybook:test`, so the harness is proven.
-2. **Structural pass** (checkable from source): heading order, landmark
-   regions, label/control association, `lang`, focus order, error-summary
-   linkage, `fieldset`/`legend` for grouped inputs, skip link presence.
-3. **Contrast pass** — compute ratios from the actual token values in
-   `tokens.css`. Compute, don't estimate.
-4. **Component-contract pass.** `references/component-contracts.md`
-   records what each GovBB component guarantees *and what the consumer must
-   still do* (e.g. Header/FileUpload/NumberInput need
-   `data-govbb-module` + `initAll()` or they degrade; a checkbox group needs a
-   `fieldset`/`legend`). Most real failures are consumers using a component
-   correctly-looking but incorrectly-wired.
-5. **Keyboard-and-AT pass.** Tab order, focus visibility against
-   `focus.css`, no keyboard traps. Flag anything needing a real screen-reader
-   test as *needs manual verification* — do not claim to have tested it.
-6. **Report** ordered by user impact, each finding tagged
+The passes themselves live in the skill's `SKILL.md`, which is the authority;
+in outline:
+
+1. **Build the checklist.** `scripts/wcag-checklist.mjs` quotes every criterion
+   at the target level and below from the W3C specification the accessibility
+   page names. The skill names no criteria itself, so nothing in it drifts when
+   the standard changes.
+2. **Automated, contracts, contrast, keyboard.** axe, GovBB's component
+   contracts (`references/component-contracts.md`), computed contrast and the
+   focus walk, each finding judged against the checklist's text.
+3. **Checklist coverage.** Every criterion in the checklist marked checked, not
+   applicable or needing a manual test.
+4. **Report** ordered by user impact, each finding tagged
    `automated` / `structural` / `computed` / `judgement` / `needs-manual-test`.
 
 **Explicit non-goal.** No "score". A percentage invites treating AA as
@@ -930,9 +925,9 @@ for the design system rather than the skill.
     It overflows by 64px at 320px and clears only at 414px. The second measures
     562px against a 1280px viewport, drifting 359px from the header.
 
-    Claim 1 fails **WCAG 2.2 SC 1.4.10 Reflow** — no horizontal scrolling at
-    320px — for any page using a grid row, so it is an accessibility defect in a
-    layout primitive rather than a cosmetic one. It has no fix that preserves
+    Claim 1 fails **WCAG 2.2 SC 1.4.10 Reflow** at 320px for any page using a
+    grid row, so it is an accessibility defect in a layout primitive rather
+    than a cosmetic one. It has no fix that preserves
     the current design: `repeat(12, minmax(0, 1fr))` lets every track collapse
     to zero while `column-gap` stays fixed, so 11 × 32px is the narrowest the
     row can be. Choosing between a smaller gap, a relative gap, or fewer tracks
