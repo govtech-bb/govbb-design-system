@@ -10,22 +10,6 @@ each one requires, are in the W3C specification. Check your work against
 [How to Meet WCAG 2.2](https://www.w3.org/WAI/WCAG22/quickref/), the W3C's
 quick reference, with its filter set to levels A and AA.
 
-## What this page is, and is not
-
-This is **the conformance target for services built with this design system.**
-It is a commitment GovTech makes about the work it produces and supports.
-
-It is **not** national policy. There is no wider Government of Barbados
-accessibility policy at the time of writing, which is why this page exists — but
-that absence does not make a design system's documentation into government
-policy. If a government-wide standard is written later it should supersede or
-absorb this page, and this page is deliberately written so it can be absorbed
-without contradiction.
-
-Two things are out of scope here, because they are policy instruments rather
-than technical requirements: **accessibility statements** and **procurement
-obligations.** Both need authority this page does not claim.
-
 ## Why AA, and why 2.2
 
 **AA is the level nearly every government digital standard settles on.** A is
@@ -39,6 +23,23 @@ placement, re-entering information, and focus hidden behind sticky page
 furniture, all of which matter in transactional government services. A team
 working from a 2.1 checklist will miss them. See
 [What's new in WCAG 2.2](https://www.w3.org/WAI/standards-guidelines/wcag/new-in-22/).
+
+**This page follows the latest version of WCAG.** When W3C publishes a new
+version as a Recommendation, this page will be updated to name it, with a date
+from which services must meet it, so teams have time to move. Until that date,
+the version named above applies. If the new version measures conformance
+differently, as the WCAG 3 drafts do, this page will also say which level to
+meet.
+
+## Version history
+
+Each version applies from its date until the next one starts. Contracts and
+assessments that refer to this page are held to the version that applied on
+their date.
+
+| From           | Services must meet |
+| -------------- | ------------------ |
+| 8 October 2026 | WCAG 2.2 level AA  |
 
 ## What the design system gives you, and what it does not
 
