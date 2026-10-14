@@ -111,14 +111,13 @@ label: Purple primitives
 
 ## Accessibility
 
-Every combination must meet
+Every text and background combination, and every interface graphic, must meet
 [SC 1.4.3 Contrast (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html)
 for text and
 [SC 1.4.11 Non-text Contrast](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html)
 for interface graphics: 4.5:1 for body text, 3:1 for large text and interface
-graphics. The "on
-white" column above shows each shade's computed ratio against a white
-background. As a rule the dark `00` shades pass as text on white (except
-`--govbb-yellow-80`); the pale `10` and `40` tints and the vivid `100` shades
-do not, so treat those as backgrounds and accents. Check any combination the
-ratios above do not already cover before you ship it.
+graphics. The "on white" column above shows each shade's computed ratio against
+a white background. As a rule the dark `00` shades pass as text on white
+(except `--govbb-yellow-80`); the pale `10` and `40` tints and the vivid `100`
+shades do not, so treat those as backgrounds and accents. Check any combination
+the ratios above do not already cover before you ship it.

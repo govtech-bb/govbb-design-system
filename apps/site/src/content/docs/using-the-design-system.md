@@ -87,8 +87,8 @@ Every official Government of Barbados service should:
 
 - use components where they meet the user need and test them in the complete
   service journey
-- meet the accessibility standard on
-  [Accessibility](/documentation/accessibility/) and check against it
+- meet the [accessibility standard](/documentation/accessibility/) and check
+  your service against it
 - use the GovBB design tokens for colour, typography and spacing
 
 ## Guidelines
