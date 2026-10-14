@@ -376,9 +376,12 @@ govbb-design-system/
     accessibility-review/
       SKILL.md
       references/
-        component-a11y-contracts.md
+        component-contracts.md
+        govbb-contrast.md
       scripts/
         axe-scan.mjs
+        contrast.mjs
+        focus-order.mjs
     design-critique/
       SKILL.md
       personas/

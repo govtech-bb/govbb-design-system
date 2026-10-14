@@ -66,21 +66,24 @@ use guidance in a local GovBB checkout (`apps/site/src/content/`, where
 `docs/accessibility.md` is the accessibility page) and the consumer's installed
 sources. With packages alone, mark missing usage guidance; with neither, review
 generic semantics without inventing GovBB guarantees. With no copy of the
-accessibility page, do not assume a target: review against the current WCAG
-Recommendation and mark conformance findings as unconfirmed against the target.
+accessibility page, do not assume a target: review against levels A and AA of
+the current WCAG Recommendation and mark conformance findings as unconfirmed
+against the target.
 
 ## Use the criteria themselves
 
 The success criteria at the target's version and level are the requirements.
-Find them in the W3C specification for that version;
-[`https://www.w3.org/TR/WCAG/`](https://www.w3.org/TR/WCAG/) is always the
-latest Recommendation, and its quick reference
-([2.2's](https://www.w3.org/WAI/WCAG22/quickref/)) filters by level.
+Find them in the W3C specification for that version; W3C's
+[WCAG overview](https://www.w3.org/WAI/standards-guidelines/wcag/) links each
+version and its quick reference, which filters by level.
 Read a criterion's own text, including its exceptions, before reporting a
 failure against it. Understanding documents and techniques explain the
 criteria but are not requirements. Cite the criterion's number and name; do not
-restate it from memory. If the specification is unreachable, say so in the
-report and mark conformance findings as unconfirmed against the criterion.
+restate it from memory. Check that the criterion exists in that version: SC
+4.1.1 Parsing was removed in 2.2, so report duplicate IDs under 4.1.2 where they
+break an accessible name, or as a plain defect. If the specification is
+unreachable, say so in the report and mark conformance findings as unconfirmed
+against the criterion.
 
 ## Review passes
 
@@ -114,7 +117,8 @@ the GovBB conventions to report separately from criterion failures.
    screen reader announcements, voice control, zoom to 200% and text spacing
    (fixed-height text containers are the usual cause), reflow at 320px, time
    limits, whether tab order matches reading order, whether error messages help
-   someone recover, consistency across the journey, captions and transcripts,
+   someone recover, consistency across the journey, information asked for again
+   after it was given (SC 3.3.7), captions and transcripts,
    and any states not reached. Do not claim that a browser script verifies
    assistive-technology announcement quality.
 

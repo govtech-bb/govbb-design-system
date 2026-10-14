@@ -54,8 +54,9 @@ report a convention mismatch as a criterion failure without the actual barrier.
   `aria-label="Submit application"` on a button reading "Continue" is the usual
   failure: a voice control user says what they see and nothing happens.
 - A `name` attribute, or the value never reaches a normal submission.
-- `autocomplete` on fields that collect the user's own details, for SC 1.3.5.
-  Cheap, and routinely missed.
+- `autocomplete` on fields about the user that match a purpose in SC 1.3.5's
+  list of input purposes. Cheap, and routinely missed. A field with no matching
+  purpose, such as a national ID number, is outside the criterion.
 - A `type` matching the data, so touch keyboards are useful.
 - Enough hit area for SC 2.5.8, measured at the rendered size. Check the
   criterion's spacing option and exceptions before reporting a small target.
@@ -68,8 +69,9 @@ report a convention mismatch as a criterion failure without the actual barrier.
   is the most common real defect in government forms: individually labelled
   radios with no legend leave someone with a list of options and no idea what
   the question was.
-- Choosing an option does not move the user on by itself. An auto-advancing
-  radio group is the usual SC 3.2.2 problem in a form service.
+- Choosing an option does not move the user on unannounced. An auto-advancing
+  radio group is the usual SC 3.2.2 problem in a form service; read the
+  criterion's exception before reporting one.
 - Radio buttons in one choice group share a `name`; group labels come from
   semantics such as a `fieldset` and `legend`, not the name attribute alone.
 - Check the relevant pattern before preselecting an answer. This is a service
@@ -79,9 +81,8 @@ report a convention mismatch as a criterion failure without the actual barrier.
 
 - An error message that meets SC 3.3.1, connected **programmatically** to its
   control for SC 1.3.1. A message linked to its field only by position is the
-  usual 1.3.1 gap. GovBB's wiring is `aria-describedby` on the control pointing
-  at the message's `id`, plus `aria-invalid` on the control; another technique
-  that exposes the relationship is a convention mismatch, not a failure.
+  usual 1.3.1 gap. GovBB's wiring for the connection is a convention; see
+  below.
 - An error that appears after the initial render reaches screen reader users,
   through a live region (check SC 4.1.3) or by moving focus to it. A
   `role="alert"` on every page load trains people to ignore it.
@@ -121,8 +122,7 @@ often broken. Read the current requirements in
 
 - Name, role and value that meet SC 4.1.2, with state such as `aria-expanded`
   and `aria-current` kept in sync. Native elements give this for free; custom
-  widgets are where it breaks. `aria-invalid` on a field in error is a GovBB
-  convention; see below.
+  widgets are where it breaks.
 - Operable by keyboard, with visible focus (SC 2.1.1, 2.4.7). A `<div>` with a
   click handler is the single most common serious defect there is.
 - Focus order that meets SC 2.4.3. Positive `tabindex` is the usual cause of a
@@ -154,7 +154,7 @@ often broken. Read the current requirements in
 - Navigation and help repeated across pages that meet SC 3.2.3 and 3.2.6.
   Compare pages across the journey; one page cannot show either.
 
-### High-stakes steps — payment and final submission
+### High-stakes steps — payment, submission, changing or deleting saved data
 
 - Submissions that meet SC 3.3.4 where it applies: read its scope before
   reporting. A check-answers page is the usual way a form service meets it, and
@@ -181,14 +181,13 @@ it currently says.
 - Connect hints and error messages to their field with `aria-describedby`, and
   set `aria-invalid` on a field in error —
   [Form implementation](https://design-system.service.alpha.gov.bb/documentation/form-implementation.md).
-  Only the technique is a convention: a field and its error with no programmatic
-  connection at all is a 1.3.1 question, as above.
+  Another technique that exposes the same relationship is a convention
+  mismatch, not a failure.
 - On a question page, make the question the `h1`. Other heading conventions are
   guidance too, not 2.4.6 failures —
   [Service heading](https://design-system.service.alpha.gov.bb/components/service-heading.md).
 - Do not use placeholder text —
   [Why we don't use placeholder text](https://design-system.service.alpha.gov.bb/design-log/placeholder-text.md).
-  A placeholder used as the only label is a 3.3.2 question, as above.
 
 Keeping part-completed answers when a session times out is not a WCAG AA
 requirement, and no GovBB page states it. Recommend it, but report it as neither
