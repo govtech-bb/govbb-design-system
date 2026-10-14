@@ -319,7 +319,7 @@ if (spec.headings === 0)
 if (
   opts.version &&
   opts.version !== 'latest' &&
-  !new RegExp(`\\b${opts.version.replace('.', '\\.')}\\b`).test(spec.title)
+  !(spec.title.match(/\d+(?:\.\d+)+/g) ?? []).includes(opts.version)
 )
   noSpec(`Asked for WCAG ${opts.version}, but ${source} is "${spec.title}".`);
 if (!/^W3C Recommendation\b/.test(spec.status))
