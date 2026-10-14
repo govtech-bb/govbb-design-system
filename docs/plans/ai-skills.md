@@ -87,8 +87,8 @@ competing format. Two things make it a good fit here:
    reviews work** section already draws the distinction the review skill
    depends on (component-level evidence, not a WCAG certificate for a whole
    service; every team remains responsible for its own journey). What is
-   missing is that commitment expanded into citable, checkable criteria on a
-   page of its own. So [Decision C](#decision-c--the-accessibility-standard)
+   missing is that commitment on a page of its own that names the version and
+   level. So [Decision C](#decision-c--the-accessibility-standard)
    is a *ratify and elaborate* job, not a write-from-scratch one — lower risk
    than it first appears, but still ahead of the skill.
 2. **No component maturity/status field.** The site README promises components
@@ -285,8 +285,10 @@ install routes.
 AA under **Standards**. That was the target when this was settled; the
 accessibility page now names the target, and this plan's later mentions of 2.2
 AA record that decision rather than restate it. Phase 2 expands it into a
-dedicated `documentation/accessibility.md` the skill can cite criterion by
-criterion, and the review skill cites that page rather than inventing a target.
+dedicated `documentation/accessibility.md` that names the version and level.
+The review skill reads its target from that page rather than inventing one, and
+builds its checklist of criteria from the W3C specification at run time
+(`wcag-checklist.mjs`).
 
 **The consequence of there being no existing policy: this page becomes the de
 facto standard for Government of Barbados services.** Not by accident now —
@@ -384,6 +386,7 @@ govbb-design-system/
         axe-scan.mjs
         contrast.mjs
         focus-order.mjs
+        wcag-checklist.mjs
     design-critique/
       SKILL.md
       personas/
@@ -1060,7 +1063,7 @@ every later skill is content-only work.
 |---|---|---|
 | **0 — Decide & spike** | Decisions A–D are settled; this phase now *proves* them. Scaffold `skills/` with one trivial skill; prove **both** install routes on two machines — `git-subdir` plugin entry via `team-skills`, and `npx skills add` against this repo. Confirm the `"skills": "."` layout question in Decision A. Confirm the Claude plan tier (Decision B). Add Playwright MCP and **run two concurrent isolated sessions** to prove parallel personas are viable (Decision D). | Blocks everything. Small — days, not weeks. The two-route install and the concurrency check are the things to prove, not the skill. |
 | **1 — Compliance + pipeline** | `design-system-compliance`. `build-references.mjs` + CI drift check. Add `status` to the components collection. Site: `skills` collection, `/ai-skills/` rewrite, `[slug].astro`, `[slug].md.ts`. Design log entry. | Highest demand; proves the pipeline end to end. |
-| **2 — Accessibility** | Expand the existing WCAG 2.2 AA commitment into `documentation/accessibility.md` (Decision C) **first** — and get it signed off, since with no wider GoB policy it becomes the de facto standard. Then `accessibility-review` + `axe-scan.mjs` + component a11y contracts. Publish. | Criteria must be citable before the skill can cite them. The sign-off is the long pole, not the drafting — start it early. |
+| **2 — Accessibility** | Expand the existing WCAG 2.2 AA commitment into `documentation/accessibility.md` (Decision C) **first** — and get it signed off, since with no wider GoB policy it becomes the de facto standard. Then `accessibility-review` + `axe-scan.mjs` + component a11y contracts. Publish. | The target must be stated before the skill can review against it. The sign-off is the long pole, not the drafting — start it early. |
 | **3 — New component** *(parallel with 2)* | Create the private `govtech-bb/design-team-skills` repo + marketplace; grant the design-team group. Then `new-component` with templates and publication checklist. Design team owns and validates it. | Independent owner; can run alongside Phase 2. Decision B settled — but confirm the plan tier in Phase 0, since Organization-settings distribution would change the setup. |
 | **4 — Critique** | Personas, orchestration, report template, synthesis. Publish with Playwright MCP named as a prerequisite and the not-user-research caveat prominent. | Last: highest technical risk, and benefits from the a11y contracts from Phase 2. Decision D is settled but its concurrency assumption must have been proven in Phase 0. |
 | **5 — Harden** | Move skills from `experimental` to `supported` on evidence of use. Cross-link `team-skills`. Review the caveats after real use. | Ongoing. |

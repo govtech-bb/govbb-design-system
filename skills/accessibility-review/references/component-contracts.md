@@ -39,9 +39,12 @@ not automatically a task blocker; severity follows the observed barrier.
 
 ## Deriving the consumer's half
 
-Use these checks by control type. Where a particular technique or GovBB
-convention is named, distinguish it from WCAG's outcome requirement; do not
-report a convention mismatch as a criterion failure without the actual barrier.
+Use these checks by control type. Each one names something to look at and what
+usually goes wrong; only the WCAG checklist decides whether it fails a
+criterion. Where the checklist has no criterion for it, report it as a defect,
+a usability observation or a GovBB convention. A different technique from
+GovBB's is a convention mismatch, not a failure, unless the checklist says
+otherwise.
 
 ### Any control that collects a value
 
@@ -49,22 +52,20 @@ report a convention mismatch as a criterion failure without the actual barrier.
   `<label for>` or a `<legend>`. An `aria-label` gives a name but nothing
   visible, and a placeholder used as the only label disappears on entry and is
   often low-contrast; check either against the WCAG checklist.
-- Where the visible label and the accessible name differ, a voice control user
-  says what they see and nothing happens. `aria-label="Submit application"` on a
-  button reading "Continue" is the usual case.
+- Compare the visible label with the accessible name. `aria-label="Submit
+application"` on a button reading "Continue" is the usual problem: a voice
+  control user says what they see and nothing happens.
 - A `name` attribute, or the value never reaches a normal submission.
 - `autocomplete` on fields that ask for the user's own details. Cheap, and
-  routinely missed. Check which purposes WCAG lists before reporting one
-  missing.
+  routinely missed. Check the checklist before reporting one missing.
 - A `type` matching the data, so touch keyboards are useful.
-- Enough hit area, measured at the rendered size. Check the criterion's options
-  and exceptions before reporting a small target.
+- Enough hit area, measured at the rendered size. Check the checklist,
+  including any exceptions, before reporting a small target.
 
 ### A group of related controls
 
 - The group and its question exposed to assistive technology. GovBB's technique
-  is a `<fieldset>` with a `<legend>`; another technique that exposes the same
-  relationship is a convention mismatch, not a failure. A missing group question
+  is a `<fieldset>` with a `<legend>`. A missing group question
   is the most common real defect in government forms: individually labelled
   radios with no legend leave someone with a list of options and no idea what
   the question was.
@@ -87,7 +88,7 @@ report a convention mismatch as a criterion failure without the actual barrier.
 - A message that helps the user fix the problem; check the WCAG checklist,
   including its exceptions, before reporting one that does not. "Enter an email address in the correct format, like name@example.com"
   over "Invalid email".
-- An error state shown by more than colour.
+- An error state that does not rely on colour alone.
 
 ### A failed form submission
 
@@ -147,18 +148,19 @@ often broken. Read the current requirements in
   context before reporting a link that is unclear on its own. Follow GovBB's
   summary-list guidance for distinct "Change" links, including visually hidden
   context where the example supplies it.
-- Navigation and help repeated across pages in a consistent order and place.
-  Compare pages across the journey; one page cannot show either.
+- Navigation and help repeated across pages. Compare pages across the journey;
+  one page cannot show whether they are consistent.
 
 ### High-stakes steps
 
-- Check which steps the WCAG checklist treats as needing a way to review,
-  correct or confirm, by its scope rather than this heading. A check-answers
-  page is the usual way a form service provides one.
+- Check payments, final submissions and changes to saved data against the
+  WCAG checklist, using its scope rather than this heading to decide which steps
+  it covers. A check-answers page is the usual way a form service lets people
+  review their answers.
 - Check time limits against the WCAG checklist. What a service tells people
   about their answers when a session expires is a GovBB convention; see below.
 - Check sign-in against the WCAG checklist. Blocking paste in password and code
-  fields is a common way it fails.
+  fields is a common barrier.
 
 ## GovBB conventions, not criterion failures
 
@@ -178,8 +180,6 @@ it currently says.
 - Connect hints and error messages to their field with `aria-describedby`, and
   set `aria-invalid` on a field in error —
   [Form implementation](https://design-system.service.alpha.gov.bb/documentation/form-implementation.md).
-  Another technique that exposes the same relationship is a convention
-  mismatch, not a failure.
 - On a question page, make the question the `h1` —
   [Service heading](https://design-system.service.alpha.gov.bb/components/service-heading.md).
 - Do not use placeholder text —

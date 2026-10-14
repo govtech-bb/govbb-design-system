@@ -24,16 +24,17 @@ Use computed colours for the actual element and backdrop when checking a page.
 
 `contrast.mjs` holds the contrast ratios and large-text sizes and prints the
 threshold it applied. It is the only copy of these numbers in this skill. Check
-them against the contrast criteria in the WCAG checklist: if they differ, the
+them against the contrast criteria in the WCAG checklist and the glossary
+definitions they use, such as what counts as large text: if they differ, the
 script is out of date, so report the result as unconfirmed rather than trust
 it.
 
 Pass the actual `--size` and `--weight`, or `--non-text`. Measure the rendered
 size and weight; a token name or heading level proves neither. With no size, the
-helper applies the stricter normal-text threshold. Read the checklist's
-non-text contrast criterion, including where it applies and its exceptions,
-before reporting a particular visual boundary as required. Inspect what it reports;
-do not round a failing contrast ratio up to a pass.
+helper applies the stricter normal-text threshold. Inspect what it reports; do
+not round a failing contrast ratio up to a pass. Before reporting a particular
+visual boundary as required, check where the checklist's criteria apply to
+boundaries and graphics, and their exceptions.
 
 ## Check the real pairing
 
@@ -41,10 +42,9 @@ Check text on its actual background, including error tints and local overrides.
 The same colour may pass on one surface and fail on another. For focus rings,
 inspect the complete indicator, control and surrounding page; a single token
 pair is not enough to decide whether a multi-colour indicator meets the
-requirement. W3C's Understanding document for that criterion, in the target's
-version, explains adjacent colours and component states. Only criteria in the
-checklist are failures; an enhanced requirement above the target's level is
-not.
+requirement. W3C's Understanding documents for the target's version explain
+adjacent colours and component states. Only criteria in the checklist are
+failures.
 
 Read which tokens a control's border and focus styles actually use. A palette
 pairing is evidence only for that pair; it does not prove every control passes.

@@ -66,30 +66,40 @@ use guidance in a local GovBB checkout (`apps/site/src/content/`, where
 `docs/accessibility.md` is the accessibility page) and the consumer's installed
 sources. With packages alone, mark missing usage guidance; with neither, review
 generic semantics without inventing GovBB guarantees. With no copy of the
-accessibility page, do not assume a target: build the checklist below from the
-latest WCAG Recommendation at the level services are usually held to, name the
-version and level in the report, and mark conformance findings as unconfirmed
-against the target.
+accessibility page there is no target: ask the user for the WCAG version and
+level. If they cannot say, build the checklist from the latest Recommendation,
+state in the report that the target was assumed, and mark conformance findings
+as unconfirmed against the target.
 
 ## Build the WCAG checklist from the standard
 
 This skill names no WCAG criteria, so it cannot drift from the standard. At the
-start of every review, fetch the W3C specification for the version the
-accessibility page names (W3C's
-[WCAG overview](https://www.w3.org/WAI/standards-guidelines/wcag/) links each
-version) and build the review's checklist from it: every success criterion at
-the target's level, with the number, name, level and full text the
-specification gives, exceptions included.
+start of every review, build the checklist from the W3C specification for the
+version and level the accessibility page names, writing it outside the
+consumer's repository (see [Run the installed helpers](#run-the-installed-helpers)
+for `govbb_skill_dir`):
 
-Judge every conformance finding against a criterion's text in that checklist,
-and cite it as the specification does. Understanding documents and techniques
-explain the criteria but are not requirements. Never add a criterion from
-memory: if a problem matches nothing in the checklist, report it as a plain
-defect or a GovBB convention.
+```sh
+node "$govbb_skill_dir/scripts/wcag-checklist.mjs" --version <version> --level <level> --out <scratch>/wcag-checklist.md
+```
 
-If the specification cannot be fetched, there is no checklist. Say so in the
-report, review GovBB contracts and conventions only, and mark every conformance
-finding as unconfirmed against WCAG.
+The helper quotes every success criterion at that level and the levels below
+it, word for word with its exceptions and notes, leaves out criteria the
+specification marks obsolete or removed, and adds the glossary definitions the
+criteria use. It prints a count per level and refuses to write a checklist it
+could not parse completely. Read the file it writes; do not summarise it.
+
+Judge every conformance finding against a criterion's text and glossary terms
+in that checklist, and cite it as the checklist does. Understanding documents
+and techniques explain the criteria but are not requirements. Never add a
+criterion from memory: if a problem matches nothing in the checklist, report it
+as a plain defect or a GovBB convention.
+
+If the helper cannot fetch the specification, pass `--file` with a saved copy
+when the user has one. With no copy there is no checklist: say so in the
+report, review GovBB contracts and conventions, and describe any likely WCAG
+problem as unconfirmed without citing a criterion. If the helper reports the
+checklist incomplete, treat it the same way.
 
 ## Review passes
 
@@ -116,22 +126,17 @@ what to check, not what WCAG requires; the checklist decides that.
 4. **Keyboard and focus:** inspect focus order, reachability, visible focus,
    overlay dismissal and task completion. The focus helper reports heuristics,
    including centre-point occlusion; confirm the actual barrier before calling
-   it a WCAG failure, and check the checklist's text on obscured focus before
-   reporting overlap as one.
+   it a WCAG failure, and find the checklist criterion that covers it, if
+   any.
 5. **Content and recovery:** check useful error instructions, information
-   conveyed without colour alone, timeouts, preserved answers and accessible
-   authentication. Tag usability judgements separately from conformance findings.
-6. **Manual coverage:** record checks still needed, whatever axe reported:
-   screen reader announcements, voice control, zoom and text spacing
-   (fixed-height text containers are the usual cause), reflow, time
-   limits, whether tab order matches reading order, whether error messages help
-   someone recover, consistency across the journey, information asked for again
-   after it was given, captions and transcripts,
-   and any states not reached. Do not claim that a browser script verifies
-   assistive-technology announcement quality.
-7. **Checklist coverage:** go through every criterion in the checklist. Mark
-   each one checked, not applicable to the surface reviewed, or still needing a
-   manual test, and carry the untested ones into the manual-test tasks.
+   conveyed without colour alone, timeouts, preserved answers and sign-in. Tag usability judgements separately from conformance findings.
+6. **Checklist coverage:** go through every criterion in the checklist,
+   whatever axe reported. Mark each one checked, not applicable to the surface
+   reviewed, or still needing a manual test, and carry the untested ones into
+   the manual-test tasks.
+7. **Assistive technology:** record what still needs a person using a screen
+   reader or voice control, and any states not reached. Do not claim that a
+   browser script verifies assistive-technology announcement quality.
 
 For repeated defects, find a shared layout, component or published example
 before producing several copies of the same finding. Report one root cause
@@ -152,7 +157,8 @@ node "$govbb_skill_dir/scripts/contrast.mjs" govbb-color-interactive govbb-color
 node "$govbb_skill_dir/scripts/contrast.mjs" "#595959" "#ffffff" --size 16 --weight normal
 ```
 
-All scripts need Node.js. Browser passes need Playwright plus its Chromium
+All scripts need Node.js; the checklist helper also needs network access or
+`--file`. Browser passes need Playwright plus its Chromium
 browser; axe additionally needs `axe-core`. Helpers resolve these from the
 consumer project/workspace. Token lookup uses the installed frontend package's
 exported `tokens.css`; `--tokens-file` supplies an explicit file. Hex-only

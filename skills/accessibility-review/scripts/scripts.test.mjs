@@ -219,6 +219,87 @@ try {
   console.log(
     'PASS focus walk distinguishes nodes and transparent rings; tooling failures are actionable',
   );
+
+  const sc = (id, number, name, level, body) =>
+    `<section id="${id}" class="guideline"><div class="header-wrapper"><h4 id="x-${id}"><bdi class="secno">Success Criterion ${number} </bdi>${name}</h4></div>` +
+    `<div class="doclinks"><a href="#">Understanding</a></div>` +
+    (level ? `<p class="conformance-level">(Level ${level})</p>` : '') +
+    `${body}</section>`;
+  const spec = (criteria) =>
+    `<html><head><title>WCAG 9.9</title></head><body><p id="w3c-state">W3C Recommendation <time>1 January 2030</time></p>` +
+    `<section id="perceivable" class="guideline"><h3>Guideline 1.1</h3>${criteria}</section>` +
+    `<section id="glossary"><dl>` +
+    `<dt><dfn id="dfn-large">large</dfn></dt><dd><p>at least 18 <a href="#dfn-point">point</a></p></dd>` +
+    `<dt class="new"><dfn id="dfn-point">point</dfn></dt><dd><p>a unit &amp; a size</p></dd>` +
+    `<dt><dfn id="dfn-unused">unused</dfn></dt><dd><p>never referenced</p></dd>` +
+    `</dl></section></body></html>`;
+  const complete = join(root, 'spec.html');
+  writeFileSync(
+    complete,
+    spec(
+      sc(
+        'one',
+        '1.1.1',
+        'First',
+        'A',
+        '<p>Text is <a href="#dfn-large">large</a>.</p>',
+      ) +
+        sc(
+          'two',
+          '1.1.2',
+          'Second',
+          'AA',
+          '<p>Second text.</p><dl><dt>Exception</dt><dd><p>Unless essential.</p></dd></dl>',
+        ) +
+        sc('three', '1.1.3', 'Third', 'AAA', '<p>Third text.</p>') +
+        sc('old', '1.1.4', 'Old (Obsolete and removed)', '', '<p>Removed.</p>'),
+    ),
+  );
+  const checklist = await run('wcag-checklist.mjs', [
+    '--file',
+    complete,
+    '--level',
+    'AA',
+  ]);
+  assert.equal(checklist.status, 0, checklist.stderr);
+  assert.match(
+    checklist.stdout,
+    /2 success criteria: 1 at Level A, 1 at Level AA/,
+  );
+  assert.match(
+    checklist.stdout,
+    /Left out as obsolete or removed: 1\.1\.4 Old/,
+  );
+  assert.match(checklist.stdout, /## 1\.1\.1 First \(Level A\)/);
+  assert.match(checklist.stdout, /\*\*Exception\*\*\n\nUnless essential\./);
+  assert.match(checklist.stdout, /### point\n\na unit & a size/);
+  assert.doesNotMatch(checklist.stdout, /1\.1\.3|Understanding|unused/);
+  writeFileSync(
+    complete,
+    spec(sc('one', '1.1.1', 'First', '', '<p>No level.</p>')),
+  );
+  const incomplete = await run('wcag-checklist.mjs', [
+    '--file',
+    complete,
+    '--level',
+    'AA',
+  ]);
+  assert.equal(incomplete.status, 1);
+  assert.match(
+    incomplete.stderr,
+    /incomplete[\s\S]*1\.1\.1 First has no level/,
+  );
+  const unreadable = await run('wcag-checklist.mjs', [
+    '--file',
+    join(root, 'none.html'),
+    '--level',
+    'AA',
+  ]);
+  assert.equal(unreadable.status, 2);
+  assert.match(unreadable.stderr, /There is no checklist/);
+  console.log(
+    'PASS wcag checklist includes lower levels, skips obsolete criteria, follows glossary terms and fails when incomplete',
+  );
 } finally {
   server.close();
   rmSync(root, { recursive: true, force: true });
