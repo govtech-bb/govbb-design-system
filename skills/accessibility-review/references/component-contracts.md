@@ -45,24 +45,31 @@ report a convention mismatch as a criterion failure without the actual barrier.
 
 ### Any control that collects a value
 
-- A visible label or instructions (SC 3.3.2) and an accessible name (SC 4.1.2),
-  usually both from a real `<label for>` or a `<legend>`. An `aria-label` gives
-  a name but nothing visible, so it meets 4.1.2 only. Do not count placeholder
-  text as the label: it disappears on entry, is often low-contrast, and is not
-  reliably announced. GovBB avoids it altogether, which is a convention.
+- A label that meets SC 3.3.2 and an accessible name that meets SC 4.1.2.
+  GovBB gets both from a real `<label for>` or a `<legend>`. An `aria-label`
+  gives a name but nothing visible, so check it against 3.3.2 separately. A
+  placeholder used as the only label disappears on entry and is often
+  low-contrast; check it against 3.3.2 and 1.4.3.
+- Where the visible label and the accessible name differ, check SC 2.5.3.
+  `aria-label="Submit application"` on a button reading "Continue" is the usual
+  failure: a voice control user says what they see and nothing happens.
 - A `name` attribute, or the value never reaches a normal submission.
-- `autocomplete` on fields for the user's own details — name, email, tel,
-  address, postal code, birthday (SC 1.3.5). Cheap, and routinely missed.
+- `autocomplete` on fields that collect the user's own details, for SC 1.3.5.
+  Cheap, and routinely missed.
 - A `type` matching the data, so touch keyboards are useful.
 - Enough hit area for SC 2.5.8, measured at the rendered size. Check the
   criterion's spacing option and exceptions before reporting a small target.
 
 ### A group of related controls
 
-- A `<fieldset>` with a `<legend>` around the group (SC 1.3.1, 3.3.2). This is
-  the most common real defect in government forms: individually labelled radios
-  with no legend leave someone with a list of options and no idea what the
-  question was.
+- The group and its question exposed for SC 1.3.1 and 3.3.2. GovBB's technique
+  is a `<fieldset>` with a `<legend>`; another technique that exposes the same
+  relationship is a convention mismatch, not a failure. A missing group question
+  is the most common real defect in government forms: individually labelled
+  radios with no legend leave someone with a list of options and no idea what
+  the question was.
+- Choosing an option does not move the user on by itself. An auto-advancing
+  radio group is the usual SC 3.2.2 problem in a form service.
 - Radio buttons in one choice group share a `name`; group labels come from
   semantics such as a `fieldset` and `legend`, not the name attribute alone.
 - Check the relevant pattern before preselecting an answer. This is a service
@@ -70,16 +77,18 @@ report a convention mismatch as a criterion failure without the actual barrier.
 
 ### An error on a control
 
-- Identified and described in text (SC 3.3.1), and connected
-  **programmatically** to its control, not just visually (SC 1.3.1). Red text
-  alone is neither. GovBB's wiring is `aria-describedby` on the control pointing
+- An error message that meets SC 3.3.1, connected **programmatically** to its
+  control for SC 1.3.1. A message linked to its field only by position is the
+  usual 1.3.1 gap. GovBB's wiring is `aria-describedby` on the control pointing
   at the message's `id`, plus `aria-invalid` on the control; another technique
   that exposes the relationship is a convention mismatch, not a failure.
-- Announced if it appears after the initial render — a live region, or focus
-  moved somewhere that conveys it (SC 4.1.3).
-- Where a fix is known, says how to fix it (SC 3.3.3). "Enter an email address
-  in the correct format, like name@example.com" over "Invalid email".
-- Not signalled by colour alone (SC 1.4.1).
+- An error that appears after the initial render reaches screen reader users,
+  through a live region (check SC 4.1.3) or by moving focus to it. A
+  `role="alert"` on every page load trains people to ignore it.
+- A message that meets SC 3.3.3; read its exceptions before reporting one.
+  "Enter an email address in the correct format, like name@example.com" over
+  "Invalid email".
+- An error state shown by more than colour, for SC 1.4.1.
 
 ### A failed form submission
 
@@ -110,18 +119,20 @@ often broken. Read the current requirements in
 
 ### Anything hand-built rather than native
 
-- Name, role and value exposed, and state kept in sync — `aria-expanded`,
-  `aria-current`, `aria-invalid` (SC 4.1.2). Native elements give this for free;
-  custom widgets are where it breaks.
-- Operable by keyboard alone, with a visible focus indicator (SC 2.1.1, 2.4.7).
-  A `<div>` with a click handler is the single most common serious defect there
-  is.
+- Name, role and value that meet SC 4.1.2, with state such as `aria-expanded`
+  and `aria-current` kept in sync. Native elements give this for free; custom
+  widgets are where it breaks. `aria-invalid` on a field in error is a GovBB
+  convention; see below.
+- Operable by keyboard, with visible focus (SC 2.1.1, 2.4.7). A `<div>` with a
+  click handler is the single most common serious defect there is.
+- Focus order that meets SC 2.4.3. Positive `tabindex` is the usual cause of a
+  wrong order.
 - Closed/inactive content must leave the focus order and accessibility tree.
   Use the component's documented hiding behaviour. Intentionally visually
   hidden labels are different: they should remain available to assistive
   technology.
-- No keyboard trap: focus can always leave, and anything that opens can be
-  dismissed (SC 2.1.2).
+- No keyboard trap (SC 2.1.2). Check too that anything that opens can be closed
+  from the keyboard.
 
 ### Navigation and page structure
 
@@ -140,14 +151,45 @@ often broken. Read the current requirements in
   links, including visually hidden context where the example supplies it.
   [W3C's explanation](https://www.w3.org/WAI/WCAG22/Understanding/link-purpose-in-context.html)
   distinguishes this from requiring every link to stand alone.
-- Navigation in the same order on every page, and help in the same relative
-  place wherever it appears (SC 3.2.3, 3.2.6).
+- Navigation and help repeated across pages that meet SC 3.2.3 and 3.2.6.
+  Compare pages across the journey; one page cannot show either.
 
-### High-stakes steps — payment, final submission, anything irreversible
+### High-stakes steps — payment and final submission
 
-- For legal commitments, financial transactions, changes to the user's stored
-  data or test answers, meets SC 3.3.4.
+- Submissions that meet SC 3.3.4 where it applies: read its scope before
+  reporting. A check-answers page is the usual way a form service meets it, and
+  re-displaying answers there is not redundant entry under SC 3.3.7.
 - Time limits that meet SC 2.2.1. Keeping answers when a session expires is a
-  recommendation, not part of 2.2.1.
+  recommendation; see below.
 - Authentication that meets SC 3.3.8. Check that paste works in password and
   code fields; blocking paste is a common way it fails.
+
+## GovBB conventions, not criterion failures
+
+Recommend these, but report them as GovBB guidance rather than WCAG failures
+unless the actual barrier also fails a criterion. Check the linked page for what
+it currently says.
+
+- Prefix the page title with "Error:" when a page shows validation errors —
+  [Error summary](https://design-system.service.alpha.gov.bb/components/error-summary.md).
+- Underline links in body content —
+  [Link](https://design-system.service.alpha.gov.bb/components/link.md). A link
+  told apart from text by colour alone may also fail SC 1.4.1; check both.
+- Use a skip link on every page that repeats navigation or other content before
+  the main task —
+  [Skip link](https://design-system.service.alpha.gov.bb/components/skip-link.md).
+- Connect hints and error messages to their field with `aria-describedby`, and
+  set `aria-invalid` on a field in error —
+  [Form implementation](https://design-system.service.alpha.gov.bb/documentation/form-implementation.md).
+  Only the technique is a convention: a field and its error with no programmatic
+  connection at all is a 1.3.1 question, as above.
+- On a question page, make the question the `h1`. Other heading conventions are
+  guidance too, not 2.4.6 failures —
+  [Service heading](https://design-system.service.alpha.gov.bb/components/service-heading.md).
+- Do not use placeholder text —
+  [Why we don't use placeholder text](https://design-system.service.alpha.gov.bb/design-log/placeholder-text.md).
+  A placeholder used as the only label is a 3.3.2 question, as above.
+
+Keeping part-completed answers when a session times out is not a WCAG AA
+requirement, and no GovBB page states it. Recommend it, but report it as neither
+a WCAG failure nor a GovBB convention.

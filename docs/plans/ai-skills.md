@@ -376,7 +376,6 @@ govbb-design-system/
     accessibility-review/
       SKILL.md
       references/
-        wcag-22-aa.md
         component-a11y-contracts.md
       scripts/
         axe-scan.mjs

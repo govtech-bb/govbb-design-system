@@ -66,15 +66,28 @@ use guidance in a local GovBB checkout (`apps/site/src/content/`, where
 `docs/accessibility.md` is the accessibility page) and the consumer's installed
 sources. With packages alone, mark missing usage guidance; with neither, review
 generic semantics without inventing GovBB guarantees. With no copy of the
-accessibility page, do not assume a target: review against the checklist's
-criteria and mark conformance findings as unconfirmed against the target.
+accessibility page, do not assume a target: review against the current WCAG
+Recommendation and mark conformance findings as unconfirmed against the target.
+
+## Use the criteria themselves
+
+The success criteria at the target's version and level are the requirements.
+Find them in the W3C specification for that version;
+[`https://www.w3.org/TR/WCAG/`](https://www.w3.org/TR/WCAG/) is always the
+latest Recommendation, and its quick reference
+([2.2's](https://www.w3.org/WAI/WCAG22/quickref/)) filters by level.
+Read a criterion's own text, including its exceptions, before reporting a
+failure against it. Understanding documents and techniques explain the
+criteria but are not requirements. Cite the criterion's number and name; do not
+restate it from memory. If the specification is unreachable, say so in the
+report and mark conformance findings as unconfirmed against the criterion.
 
 ## Review passes
 
 Run only passes relevant to the requested review, and state any unavailable
 checks. Read [component contracts](references/component-contracts.md) before
-reviewing GovBB wiring, and [WCAG coverage](references/wcag-22-aa.md) for the
-applicable criteria and manual checks.
+reviewing GovBB wiring: it covers the consumer's duties by kind of control, and
+the GovBB conventions to report separately from criterion failures.
 
 1. **Automated:** run axe on the pages and states in scope. Include violations
    and unresolved `incomplete` results. Record failed scans as not tested.
@@ -92,14 +105,18 @@ applicable criteria and manual checks.
 4. **Keyboard and focus:** inspect focus order, reachability, visible focus,
    overlay dismissal and task completion. The focus helper reports heuristics,
    including centre-point occlusion; confirm the actual barrier before calling
-   it a WCAG failure. AA SC 2.4.11 concerns a component being entirely obscured,
-   so partial overlap alone does not establish that failure.
+   it a WCAG failure. Read SC 2.4.11 before reporting overlap as a failure of
+   it.
 5. **Content and recovery:** check useful error instructions, information
    conveyed without colour alone, timeouts, preserved answers and accessible
    authentication. Tag usability judgements separately from conformance findings.
-6. **Manual coverage:** record checks still needed for screen readers, voice
-   control, zoom/text spacing, reflow and any states not reached. Do not claim
-   that a browser script verifies assistive-technology announcement quality.
+6. **Manual coverage:** record checks still needed, whatever axe reported:
+   screen reader announcements, voice control, zoom to 200% and text spacing
+   (fixed-height text containers are the usual cause), reflow at 320px, time
+   limits, whether tab order matches reading order, whether error messages help
+   someone recover, consistency across the journey, captions and transcripts,
+   and any states not reached. Do not claim that a browser script verifies
+   assistive-technology announcement quality.
 
 For repeated defects, find a shared layout, component or published example
 before producing several copies of the same finding. Report one root cause
