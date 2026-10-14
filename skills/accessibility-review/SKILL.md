@@ -67,8 +67,10 @@ use guidance in a local GovBB checkout (`apps/site/src/content/`, where
 sources. With packages alone, mark missing usage guidance; with neither, review
 generic semantics without inventing GovBB guarantees. With no copy of the
 accessibility page, do not assume a target: review against levels A and AA of
-the latest WCAG 2 Recommendation you can confirm, name that version in the
-report, and mark conformance findings as unconfirmed against the target.
+the latest WCAG 2 Recommendation you can confirm (A and AA are WCAG 2 levels),
+name that version in the report, and mark conformance findings as unconfirmed
+against the target. If no version can be confirmed, name the version assumed
+and say it was not confirmed.
 
 ## Use the criteria themselves
 
@@ -105,13 +107,14 @@ the GovBB conventions to report separately from criterion failures.
    Test fallback behaviour before assigning severity to missing enhancement.
 3. **Contrast:** compute from rendered colours, size and weight. The token
    helper resolves installed values, not service overrides or the full cascade.
-   Read [contrast guidance](references/govbb-contrast.md) for thresholds,
-   backgrounds and reproducible evidence.
+   The contrast helper holds and prints the thresholds. Read
+   [contrast guidance](references/govbb-contrast.md) for backgrounds,
+   exceptions and reproducible evidence.
 4. **Keyboard and focus:** inspect focus order, reachability, visible focus,
    overlay dismissal and task completion. The focus helper reports heuristics,
    including centre-point occlusion; confirm the actual barrier before calling
-   it a WCAG failure. Read SC 2.4.11 before reporting overlap as a failure of
-   it.
+   it a WCAG failure. Read SC 2.4.11 Focus Not Obscured (Minimum) before
+   reporting overlap as a failure of it.
 5. **Content and recovery:** check useful error instructions, information
    conveyed without colour alone, timeouts, preserved answers and accessible
    authentication. Tag usability judgements separately from conformance findings.
@@ -120,9 +123,13 @@ the GovBB conventions to report separately from criterion failures.
    (fixed-height text containers are the usual cause), reflow, time
    limits, whether tab order matches reading order, whether error messages help
    someone recover, consistency across the journey, information asked for again
-   after it was given (SC 3.3.7), captions and transcripts,
+   after it was given (SC 3.3.7 Redundant Entry), captions and transcripts,
    and any states not reached. Do not claim that a browser script verifies
    assistive-technology announcement quality.
+7. **Criteria coverage:** go through every criterion at the target's version
+   and level in its quick reference, not only those named in this skill. Mark
+   each one checked, not applicable to the surface reviewed, or still needing a
+   manual test, and carry the untested ones into the manual-test tasks.
 
 For repeated defects, find a shared layout, component or published example
 before producing several copies of the same finding. Report one root cause
@@ -173,7 +180,8 @@ Each numbered finding includes:
 Keep numbers stable during a re-review and mark `new`, `still present` or
 `fixed`. Group repeated manifestations under their shared cause. Mention correct
 behaviour only when it prevents a likely false finding. Finish with concrete
-manual-test tasks; include a criterion-coverage table only when requested.
+manual-test tasks; include the full criterion-coverage list only when
+requested.
 
 Usability observations can appear separately when relevant, without depending
 on another skill. Fix service files only when fixes are part of the user's task.

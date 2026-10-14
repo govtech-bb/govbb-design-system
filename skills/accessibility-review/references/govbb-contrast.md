@@ -55,9 +55,9 @@ and composite it before computing. The helper rejects alpha-channel colours
 because the backdrop is unknown. If it cannot be established, mark the case
 `needs-manual-test`; an axe `incomplete` result is not a pass.
 
-Inactive controls, purely decorative graphics and logo text have relevant
-contrast exemptions. Separate a usability concern from a claimed contrast
-failure when an exemption applies.
+Read the exceptions in SC 1.4.3 Contrast (Minimum) and SC 1.4.11 Non-text
+Contrast at the target's version before reporting a failure. Separate a
+usability concern from a claimed contrast failure when an exception applies.
 
 ## Reproducible findings
 

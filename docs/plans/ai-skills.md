@@ -282,7 +282,9 @@ install routes.
 > accessibility policy** to defer to.
 
 `using-the-design-system.md` already commits every official service to WCAG 2.2
-AA under **Standards**. That stays as the target. Phase 2 expands it into a
+AA under **Standards**. That was the target when this was settled; the
+accessibility page now names the target, and this plan's later mentions of 2.2
+AA record that decision rather than restate it. Phase 2 expands it into a
 dedicated `documentation/accessibility.md` the skill can cite criterion by
 criterion, and the review skill cites that page rather than inventing a target.
 
@@ -545,7 +547,7 @@ worthless.
 5. **Keyboard-and-AT pass.** Tab order, focus visibility against
    `focus.css`, no keyboard traps. Flag anything needing a real screen-reader
    test as *needs manual verification* — do not claim to have tested it.
-6. **Report** grouped by WCAG criterion, each finding tagged
+6. **Report** ordered by user impact, each finding tagged
    `automated` / `structural` / `computed` / `judgement` / `needs-manual-test`.
 
 **Explicit non-goal.** No "score". A percentage invites treating AA as
@@ -740,8 +742,9 @@ they do not move when the design system does:
 
 - HTML and ARIA semantics, and native element behaviour. External standards
   such as WCAG are not on this list: they change between versions, so link to
-  the version the accessibility page names. Write a number from one down only
-  where a script needs it, and keep it in that script.
+  the version the accessibility page names. Cite a criterion by its number and
+  name, and check it exists in that version. Keep threshold values, such as
+  contrast ratios, only in the script that needs them.
 - Method, ordering and reporting discipline — how to establish what is testable,
   how to tag evidence, what not to claim, the report structure.
 - Judgement about what matters and why.
@@ -775,11 +778,11 @@ local override — which decides which WCAG contrast threshold applies. Reading 
 token is not enough; the running page is the authority. Where that is true, say
 so, and name the mechanism (`getComputedStyle`).
 
-**A cache is allowed if it is labelled as one.** Precomputed contrast ratios are
-genuinely useful and expensive to regenerate by hand, so `accessibility-review`
-keeps a table — but the file states that the script is the authority and the table
-is a snapshot, and requires re-derivation before *clearing* any concern. A cache
-that names its authority is safe; one that reads as a clearance is not.
+**A cache is allowed if it is labelled as one.** A precomputed table, such as
+contrast ratios, must state that the script is the authority and the table is a
+snapshot, and require re-derivation before *clearing* any concern. A cache that
+names its authority is safe; one that reads as a clearance is not.
+`accessibility-review` no longer keeps one: `contrast.mjs` computes each pair.
 
 **Tools should announce their assumptions.** `contrast.mjs` defaults to the
 stricter threshold when no text size is given and says in its output that it
