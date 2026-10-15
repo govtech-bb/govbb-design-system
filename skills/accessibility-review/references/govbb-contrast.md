@@ -22,16 +22,19 @@ Use computed colours for the actual element and backdrop when checking a page.
 
 ## Choose the threshold from rendered text
 
-- Normal text needs 4.5:1; large text needs 3:1.
-- Large means at least 24 CSS px regular or 14pt bold (approximately 18.67 CSS
-  px). Measure actual size/weight; a token name or heading level proves neither.
-- Relevant control boundaries, meaningful graphics and authored focus
-  indicators need 3:1 under SC 1.4.11. Read its applicability and exceptions
-  before reporting a particular visual boundary as required.
+`contrast.mjs` holds the contrast ratios and large-text sizes and prints the
+threshold it applied. It is the only copy of these numbers in this skill. Check
+them against the contrast criteria in the WCAG checklist and the glossary
+definitions they use, such as what counts as large text: if they differ, the
+script is out of date, so report the result as unconfirmed rather than trust
+it.
 
-Pass the actual `--size` and `--weight`, or `--non-text`. With no size, the
-helper applies the stricter normal-text threshold. Inspect what it reports;
-do not round a failing contrast ratio up to a pass.
+Pass the actual `--size` and `--weight`, or `--non-text`. Measure the rendered
+size and weight; a token name or heading level proves neither. With no size, the
+helper applies the stricter normal-text threshold. Inspect what it reports; do
+not round a failing contrast ratio up to a pass. Before reporting a particular
+visual boundary as required, check where the checklist's criteria apply to
+boundaries and graphics, and their exceptions.
 
 ## Check the real pairing
 
@@ -39,9 +42,9 @@ Check text on its actual background, including error tints and local overrides.
 The same colour may pass on one surface and fail on another. For focus rings,
 inspect the complete indicator, control and surrounding page; a single token
 pair is not enough to decide whether a multi-colour indicator meets the
-requirement. Use [W3C's non-text contrast guidance](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html)
-for adjacent colours and the relevant component state. Do not silently apply
-AAA Focus Appearance requirements as AA failures.
+requirement. W3C's Understanding documents for the target's version explain
+adjacent colours and component states. Only criteria in the checklist are
+failures.
 
 Read which tokens a control's border and focus styles actually use. A palette
 pairing is evidence only for that pair; it does not prove every control passes.
@@ -53,9 +56,9 @@ and composite it before computing. The helper rejects alpha-channel colours
 because the backdrop is unknown. If it cannot be established, mark the case
 `needs-manual-test`; an axe `incomplete` result is not a pass.
 
-Inactive controls, purely decorative graphics and logo text have relevant
-contrast exemptions. Separate a usability concern from a claimed contrast
-failure when an exemption applies.
+Read the exceptions in the checklist's contrast criteria before reporting a
+failure. Separate a
+usability concern from a claimed contrast failure when an exception applies.
 
 ## Reproducible findings
 

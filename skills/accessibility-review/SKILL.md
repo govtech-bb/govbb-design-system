@@ -66,15 +66,50 @@ use guidance in a local GovBB checkout (`apps/site/src/content/`, where
 `docs/accessibility.md` is the accessibility page) and the consumer's installed
 sources. With packages alone, mark missing usage guidance; with neither, review
 generic semantics without inventing GovBB guarantees. With no copy of the
-accessibility page, do not assume a target: review against the checklist's
-criteria and mark conformance findings as unconfirmed against the target.
+accessibility page there is no target: ask the user for the WCAG version and
+level. If they cannot say, build the checklist with `--version latest --level
+AA`, state in the report that both the version and the level were assumed, and
+mark conformance findings as unconfirmed against the target.
+
+## Build the WCAG checklist from the standard
+
+This skill names no WCAG criteria, so it cannot drift from the standard. At the
+start of every review, build the checklist from the W3C specification for the
+version and level the accessibility page names, writing it outside the
+consumer's repository (see [Run the installed helpers](#run-the-installed-helpers)
+for `govbb_skill_dir`):
+
+```sh
+node "$govbb_skill_dir/scripts/wcag-checklist.mjs" --version <version> --level <level> --out <scratch>/wcag-checklist.md
+```
+
+The helper quotes every success criterion at that level and the levels below
+it, word for word with its exceptions and notes, leaves out criteria the
+specification marks obsolete or removed, and adds the glossary definitions the
+criteria use. It prints a count per level, and refuses drafts, a saved copy of
+a different version than asked for, and anything it could not parse completely.
+Read the file it writes; do not summarise it.
+
+Judge every conformance finding against a criterion's text and glossary terms
+in that checklist, and cite it as the checklist does. Understanding documents
+and techniques explain the criteria but are not requirements. Never add a
+criterion from memory: if a problem matches nothing in the checklist, report it
+as a plain defect or a GovBB convention.
+
+If the helper cannot fetch the specification, pass `--file` with a saved copy
+when the user has one, keeping `--version` so the copy is checked. Exit status
+3 is a usage or write error: fix the command and run it again. Exit status 1
+or 2 means there is no checklist: say so in the report with the helper's
+message, review GovBB contracts and conventions, and describe any likely WCAG
+problem as unconfirmed without citing a criterion.
 
 ## Review passes
 
 Run only passes relevant to the requested review, and state any unavailable
 checks. Read [component contracts](references/component-contracts.md) before
-reviewing GovBB wiring, and [WCAG coverage](references/wcag-22-aa.md) for the
-applicable criteria and manual checks.
+reviewing GovBB wiring: it covers the consumer's duties by kind of control, and
+the GovBB conventions to report separately from criterion failures. It names
+what to check, not what WCAG requires; the checklist decides that.
 
 1. **Automated:** run axe on the pages and states in scope. Include violations
    and unresolved `incomplete` results. Record failed scans as not tested.
@@ -87,19 +122,24 @@ applicable criteria and manual checks.
    Test fallback behaviour before assigning severity to missing enhancement.
 3. **Contrast:** compute from rendered colours, size and weight. The token
    helper resolves installed values, not service overrides or the full cascade.
-   Read [contrast guidance](references/govbb-contrast.md) for thresholds,
-   backgrounds and reproducible evidence.
+   The contrast helper holds and prints the thresholds. Read
+   [contrast guidance](references/govbb-contrast.md) for backgrounds,
+   exceptions and reproducible evidence.
 4. **Keyboard and focus:** inspect focus order, reachability, visible focus,
    overlay dismissal and task completion. The focus helper reports heuristics,
    including centre-point occlusion; confirm the actual barrier before calling
-   it a WCAG failure. AA SC 2.4.11 concerns a component being entirely obscured,
-   so partial overlap alone does not establish that failure.
-5. **Content and recovery:** check useful error instructions, information
-   conveyed without colour alone, timeouts, preserved answers and accessible
-   authentication. Tag usability judgements separately from conformance findings.
-6. **Manual coverage:** record checks still needed for screen readers, voice
-   control, zoom/text spacing, reflow and any states not reached. Do not claim
-   that a browser script verifies assistive-technology announcement quality.
+   it a WCAG failure, and find the checklist criterion that covers it, if
+   any.
+5. **Content and recovery:** check error messages, time limits, preserved
+   answers and sign-in against the checklist and the contracts. Tag usability
+   judgements separately from conformance findings.
+6. **Checklist coverage:** go through every criterion in the checklist,
+   whatever axe reported. Mark each one checked, not applicable to the surface
+   reviewed, or still needing a manual test, and carry the untested ones into
+   the manual-test tasks.
+7. **Assistive technology:** record what still needs a person using a screen
+   reader or voice control, and any states not reached. Do not claim that a
+   browser script verifies assistive-technology announcement quality.
 
 For repeated defects, find a shared layout, component or published example
 before producing several copies of the same finding. Report one root cause
@@ -120,7 +160,8 @@ node "$govbb_skill_dir/scripts/contrast.mjs" govbb-color-interactive govbb-color
 node "$govbb_skill_dir/scripts/contrast.mjs" "#595959" "#ffffff" --size 16 --weight normal
 ```
 
-All scripts need Node.js. Browser passes need Playwright plus its Chromium
+All scripts need Node.js; the checklist helper also needs network access or
+`--file`. Browser passes need Playwright plus its Chromium
 browser; axe additionally needs `axe-core`. Helpers resolve these from the
 consumer project/workspace. Token lookup uses the installed frontend package's
 exported `tokens.css`; `--tokens-file` supplies an explicit file. Hex-only
@@ -135,7 +176,7 @@ or a running page must produce a clear **not tested** limitation, never a pass.
 
 Start with scope/states, the conformance target quoted from the accessibility
 page and whether the live or a local copy was read (or that neither was
-available), evidence actually obtained, installed versions when relevant, and
+available), the specification the checklist was built from, evidence actually obtained, installed versions when relevant, and
 what was not covered. Order findings by user impact: blocks a task, degrades the
 experience, then minor. Preserve every confirmed finding; compress wording
 rather than omitting evidence.
@@ -150,7 +191,8 @@ Each numbered finding includes:
 Keep numbers stable during a re-review and mark `new`, `still present` or
 `fixed`. Group repeated manifestations under their shared cause. Mention correct
 behaviour only when it prevents a likely false finding. Finish with concrete
-manual-test tasks; include a criterion-coverage table only when requested.
+manual-test tasks; include the full criterion-coverage list only when
+requested.
 
 Usability observations can appear separately when relevant, without depending
 on another skill. Fix service files only when fixes are part of the user's task.

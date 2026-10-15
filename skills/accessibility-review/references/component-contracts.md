@@ -39,30 +39,39 @@ not automatically a task blocker; severity follows the observed barrier.
 
 ## Deriving the consumer's half
 
-Use these checks by control type. Where a particular technique or GovBB
-convention is named, distinguish it from WCAG's outcome requirement; do not
-report a convention mismatch as a criterion failure without the actual barrier.
+Use these checks by control type. Each one names something to look at and what
+usually goes wrong; only the WCAG checklist decides whether it fails a
+criterion. Where the checklist has no criterion for it, report it as a defect,
+a usability observation or a GovBB convention. A different technique from
+GovBB's is a convention mismatch, not a failure, unless the checklist says
+otherwise.
 
 ### Any control that collects a value
 
-- An accessible name, from a real `<label for>`, a `<legend>`, or `aria-label`
-  where no visible label exists (SC 3.3.2, 4.1.2). **Placeholder text is not a
-  label** — it disappears on entry, is often low-contrast, and is not reliably
-  announced.
+- A visible label and an accessible name. GovBB gets both from a real
+  `<label for>` or a `<legend>`. An `aria-label` gives a name but nothing
+  visible, and a placeholder used as the only label disappears on entry and is
+  often low-contrast; check either against the WCAG checklist.
+- Compare the visible label with the accessible name. `aria-label="Submit
+application"` on a button reading "Continue" is the usual problem: a voice
+  control user says what they see and nothing happens.
 - A `name` attribute, or the value never reaches a normal submission.
-- `autocomplete` where a token exists for the data — name, email, tel, address,
-  postal code, birthday (SC 1.3.5). Cheap, and routinely missed.
+- `autocomplete` on fields that ask for the user's own details. Cheap, and
+  routinely missed. Check the checklist before reporting one missing.
 - A `type` matching the data, so touch keyboards are useful.
-- Enough hit area: 24×24px minimum, or spacing that keeps a 24px circle on each
-  target from overlapping its neighbour (SC 2.5.8). Inline links in prose are
-  exempt.
+- Enough hit area, measured at the rendered size. Check the checklist,
+  including any exceptions, before reporting a small target.
 
 ### A group of related controls
 
-- A `<fieldset>` with a `<legend>` around the group (SC 1.3.1, 3.3.2). This is
-  the most common real defect in government forms: individually labelled radios
-  with no legend leave someone with a list of options and no idea what the
-  question was.
+- The group and its question exposed to assistive technology. GovBB's technique
+  is a `<fieldset>` with a `<legend>`. A missing group question
+  is the most common real defect in government forms: individually labelled
+  radios with no legend leave someone with a list of options and no idea what
+  the question was.
+- Choosing an option does not move the user on unannounced. An auto-advancing
+  radio group is the usual case in a form service; check the criterion's
+  exceptions before reporting one.
 - Radio buttons in one choice group share a `name`; group labels come from
   semantics such as a `fieldset` and `legend`, not the name attribute alone.
 - Check the relevant pattern before preselecting an answer. This is a service
@@ -70,15 +79,17 @@ report a convention mismatch as a criterion failure without the actual barrier.
 
 ### An error on a control
 
-- Connected **programmatically**, not just visually: `aria-describedby` on the
-  control pointing at the message's `id`, and `aria-invalid` on the control
-  (SC 1.3.1, 3.3.1). Red text alone is not a connection.
-- Announced if it appears after the initial render — a live region, or focus
-  moved somewhere that conveys it (SC 4.1.3).
-- Worded so someone can recover: what to do, not what went wrong (SC 3.3.3).
-  "Enter an email address in the correct format, like name@example.com" over
-  "Invalid email".
-- Not signalled by colour alone (SC 1.4.1).
+- An error message in text, connected **programmatically** to its control. A
+  message linked to its field only by position is the usual gap. GovBB's wiring
+  for the connection is a convention; see below.
+- An error that appears after the initial render reaches screen reader users,
+  through a live region or by moving focus to it. A `role="alert"` on every page
+  load trains people to ignore it.
+- A message that helps the user fix the problem; check the WCAG checklist,
+  including its exceptions, before reporting one that does not. "Enter an email address in the correct format, like name@example.com"
+  over "Invalid email".
+- How an error state is shown. Check it against the checklist if colour is
+  the only signal.
 
 ### A failed form submission
 
@@ -86,10 +97,10 @@ The highest-yield check in a review of any form-based service, and the one most
 often broken. Read the current requirements in
 `/documentation/form-implementation.md`, then verify against the running service:
 
-- Identify each detected error in text (SC 3.3.1). GovBB's failed-submission
-  pattern uses an error summary and moves focus to it; verify that technique
-  when the service uses it. [SC 3.3.1](https://www.w3.org/WAI/WCAG22/Understanding/error-identification.html)
-  does not universally require moving focus.
+- Each error identified to the user. GovBB's failed-submission pattern uses an
+  error summary and moves focus to it; verify that technique when the service
+  uses it, but check the WCAG checklist before reporting a missing focus move
+  as a criterion failure.
 - When an error summary is used, each link reaches the control that caused it.
 - Entered values are preserved. Losing part-completed answers is a serious harm
   in a government service, not an inconvenience.
@@ -109,44 +120,72 @@ often broken. Read the current requirements in
 
 ### Anything hand-built rather than native
 
-- Name, role and value exposed, and state kept in sync — `aria-expanded`,
-  `aria-current`, `aria-invalid` (SC 4.1.2). Native elements give this for free;
-  custom widgets are where it breaks.
-- Operable by keyboard alone, with a visible focus indicator (SC 2.1.1, 2.4.7).
-  A `<div>` with a click handler is the single most common serious defect there
-  is.
+- What assistive technology is told about the widget, with state such as
+  `aria-expanded` and `aria-current` kept in sync. Native elements give this
+  for free; custom widgets are where it breaks.
+- Operable by keyboard, with visible focus. A `<div>` with a click handler is
+  the single most common serious defect there is.
+- A focus order that follows the meaning of the page. Positive `tabindex` is
+  the usual cause of a wrong order.
 - Closed/inactive content must leave the focus order and accessibility tree.
   Use the component's documented hiding behaviour. Intentionally visually
   hidden labels are different: they should remain available to assistive
   technology.
-- No keyboard trap: focus can always leave, and anything that opens can be
-  dismissed (SC 2.1.2).
+- Whether focus can always leave the widget. Check too that anything that
+  opens can be closed from the keyboard.
 
 ### Navigation and page structure
 
-- Provide a way to [bypass repeated blocks (SC 2.4.1)](https://www.w3.org/WAI/WCAG22/Understanding/bypass-blocks.html). GovBB page templates use
-  a skip link as the first focusable element; check its target exists and can
-  receive focus. A page without repeated blocks is not automatically a WCAG
-  failure because it has no skip link.
+- How a keyboard user gets past content repeated on every page. GovBB page
+  templates use a skip link as the first focusable element; check its target
+  exists and can receive focus. A missing skip link is a GovBB convention; see
+  below.
 - Use meaningful landmarks for the structure that exists: `<main>` for main
   content, and `header`, `nav`, `footer` where those regions are present. Name
   multiple navigation landmarks so they are distinguishable. Do not demand
   extra regions solely to satisfy a checklist.
 - The current page marked in any navigation that includes it
   (`aria-current="page"`).
-- Link purpose must be clear from its text or programmatically determined
-  context (SC 2.4.4). Follow GovBB's summary-list guidance for distinct "Change"
-  links, including visually hidden context where the example supplies it.
-  [W3C's explanation](https://www.w3.org/WAI/WCAG22/Understanding/link-purpose-in-context.html)
-  distinguishes this from requiring every link to stand alone.
-- Navigation in the same order on every page, and help in the same relative
-  place wherever it appears (SC 3.2.3, 3.2.6).
+- Link purpose that is clear. Check how the WCAG checklist treats a link's
+  context before reporting a link that is unclear on its own. Follow GovBB's
+  summary-list guidance for distinct "Change" links, including visually hidden
+  context where the example supplies it.
+- Navigation and help repeated across pages. Compare pages across the journey;
+  one page cannot show whether they are consistent.
 
-### High-stakes steps — payment, final submission, anything irreversible
+### High-stakes steps
 
-- Reversible, checked, or confirmed before it commits (SC 3.3.4).
-- Errors recoverable without re-entering everything (SC 3.3.7).
-- Timeouts warned and extendable (SC 2.2.1), and session expiry that does not
-  silently destroy entered answers.
-- No cognitive test in authentication without an alternative, and paste must work
-  in password and code fields (SC 3.3.8).
+- Check payments, final submissions and changes to saved data against the
+  WCAG checklist, using its scope rather than this heading to decide which steps
+  it covers. A check-answers page is the usual way a form service lets people
+  review their answers.
+- Check time limits against the WCAG checklist. What a service tells people
+  about their answers when a session expires is a GovBB convention; see below.
+- Check sign-in against the WCAG checklist. Blocking paste in password and code
+  fields is a common barrier.
+
+## GovBB conventions, not criterion failures
+
+Recommend these, but report them as GovBB guidance rather than WCAG failures
+unless the actual barrier also fails a criterion. Check the linked page for what
+it currently says.
+
+- Prefix the page title with "Error:" when a page shows validation errors —
+  [Error summary](https://design-system.service.alpha.gov.bb/components/error-summary.md).
+- Underline links in body content —
+  [Link](https://design-system.service.alpha.gov.bb/components/link.md). A link
+  told apart from text by colour alone may also fail a WCAG criterion; check
+  both.
+- Use a skip link on every page that repeats navigation or other content before
+  the main task —
+  [Skip link](https://design-system.service.alpha.gov.bb/components/skip-link.md).
+- Connect hints and error messages to their field with `aria-describedby`, and
+  set `aria-invalid` on a field in error —
+  [Form implementation](https://design-system.service.alpha.gov.bb/documentation/form-implementation.md).
+- On a question page, make the question the `h1` —
+  [Service heading](https://design-system.service.alpha.gov.bb/components/service-heading.md).
+- Do not use placeholder text —
+  [Why we don't use placeholder text](https://design-system.service.alpha.gov.bb/design-log/placeholder-text.md).
+- When a session expires, follow the session-expiry template, including what it
+  says about answers that were or were not kept —
+  [Session expiry](https://design-system.service.alpha.gov.bb/templates/session-expiry.md).
