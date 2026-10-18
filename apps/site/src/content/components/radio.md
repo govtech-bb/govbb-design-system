@@ -105,6 +105,17 @@ Do not preselect an option for a question. Order choices logically, add “None
 of the above” when it is a real answer, and use per-option hints only where they
 help users distinguish similar choices.
 
+## Group errors
+
+Pass `error` to the group and it does two things: announces the message through
+the fieldset, and marks every control inside it as invalid so the controls take
+the error styling with the message. Without that the message turns red on its
+own while the radios stay black, which reads as a problem somewhere else on
+the page.
+
+An `aria-invalid` set on an individual radio still wins, for the rare case
+where only one of them is at fault.
+
 ## Per-option hints
 
 Add a hint to a single option to clarify its meaning. Use `aria-describedby` so

@@ -103,6 +103,38 @@ describe('RadioGroup', () => {
     expect(ref.current?.id).toBe('choose-one');
   });
 
+  it('marks its radios invalid when the group is in error', () => {
+    render(
+      <RadioGroup legend="Choose one" name="c" error="Select yes or no">
+        <Radio label="Yes" value="yes" />
+        <Radio label="No" value="no" />
+      </RadioGroup>,
+    );
+    for (const radio of screen.getAllByRole('radio')) {
+      expect(radio.getAttribute('aria-invalid')).toBe('true');
+    }
+  });
+
+  it('leaves its radios valid when there is no error', () => {
+    render(
+      <RadioGroup legend="Choose one" name="c">
+        <Radio label="Yes" value="yes" />
+      </RadioGroup>,
+    );
+    expect(screen.getByRole('radio').getAttribute('aria-invalid')).toBeNull();
+  });
+
+  it('lets a radio override the group error marking', () => {
+    render(
+      <RadioGroup legend="Choose one" name="c" error="Select yes or no">
+        <Radio label="Yes" value="yes" aria-invalid={false} />
+      </RadioGroup>,
+    );
+    expect(screen.getByRole('radio').getAttribute('aria-invalid')).toBe(
+      'false',
+    );
+  });
+
   it('keeps the group description when an error is shown and announces both', () => {
     render(
       <RadioGroup

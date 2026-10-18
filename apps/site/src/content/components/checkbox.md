@@ -128,6 +128,17 @@ Make the number of selectable options clear. Do not assume users will infer from
 the visual difference between checkboxes and radio buttons that they can select
 more than one. Add a hint such as _"Select all that apply"_ where it helps.
 
+## Group errors
+
+Pass `error` to the group and it does two things: announces the message through
+the fieldset, and marks every control inside it as invalid so the controls take
+the error styling with the message. Without that the message turns red on its
+own while the checkboxes stay black, which reads as a problem somewhere else on
+the page.
+
+An `aria-invalid` set on an individual checkbox still wins, for the rare case
+where only one of them is at fault.
+
 ## Per-option hints
 
 Add a hint to an individual option when its label needs clarification. Link the
