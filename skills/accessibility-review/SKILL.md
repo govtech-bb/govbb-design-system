@@ -113,8 +113,9 @@ what to check, not what WCAG requires; the checklist decides that.
 
 1. **Automated:** run axe on the pages and states in scope, passing the level
    the checklist was built for and the version number in its heading. Include
-   violations and unresolved `incomplete` results. Record failed scans as not tested, and carry any
-   criteria the installed axe has no rules for into the manual checks.
+   violations and unresolved `incomplete` results. Record failed scans as not
+   tested, and carry any criteria the installed axe has no rules for into the
+   manual checks.
 2. **Contracts and semantics:** distinguish installed component guarantees
    from consumer duties. Check labels, grouped controls, accessible names,
    landmarks, page title/language, image alternatives and link purpose. Use
