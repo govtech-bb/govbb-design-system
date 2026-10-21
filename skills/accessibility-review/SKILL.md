@@ -111,8 +111,10 @@ reviewing GovBB wiring: it covers the consumer's duties by kind of control, and
 the GovBB conventions to report separately from criterion failures. It names
 what to check, not what WCAG requires; the checklist decides that.
 
-1. **Automated:** run axe on the pages and states in scope. Include violations
-   and unresolved `incomplete` results. Record failed scans as not tested.
+1. **Automated:** run axe on the pages and states in scope, for the version
+   and level the checklist was built for. Include violations and unresolved
+   `incomplete` results. Record failed scans as not tested, and carry any
+   criteria the installed axe has no rules for into the manual checks.
 2. **Contracts and semantics:** distinguish installed component guarantees
    from consumer duties. Check labels, grouped controls, accessible names,
    landmarks, page title/language, image alternatives and link purpose. Use
@@ -154,7 +156,7 @@ and call its scripts there; do not change into the skill directory:
 ```sh
 # Set this to the actual installed skill directory.
 govbb_skill_dir=/absolute/path/to/accessibility-review
-node "$govbb_skill_dir/scripts/axe-scan.mjs" http://localhost:4321/
+node "$govbb_skill_dir/scripts/axe-scan.mjs" http://localhost:4321/ --version <version> --level <level>
 node "$govbb_skill_dir/scripts/focus-order.mjs" http://localhost:4321/ --max-tabs 40
 node "$govbb_skill_dir/scripts/contrast.mjs" govbb-color-interactive govbb-color-surface
 node "$govbb_skill_dir/scripts/contrast.mjs" "#595959" "#ffffff" --size 16 --weight normal

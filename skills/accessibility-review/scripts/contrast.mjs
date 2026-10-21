@@ -25,10 +25,10 @@ Colours may be hex (#rgb, #rrggbb, #rrggbbaa) or a token name
 
 Options:
   --size <px>          Rendered text size in CSS px. Omit and the stricter
-                       normal-text threshold (4.5:1) is assumed — read the real
+                       normal-text threshold is assumed — read the real
                        value with getComputedStyle(el).fontSize and pass it.
   --weight <w>         normal | bold (default normal)
-  --non-text           Judge against the 3:1 non-text threshold (SC 1.4.11)
+  --non-text           Judge against the non-text threshold
   --tokens             Audit semantic tokens against surface and ink
   --tokens-file <p>    Path to tokens.css (default: installed frontend package
                        resolved from the consumer's working directory)
@@ -123,39 +123,59 @@ function toRgb(input, tokens) {
 
 // ------------------------------------------------------------------- verdicts
 
-/** WCAG "large text": >=24px regular, or >=18.66px bold. */
+// WCAG 2.x values. Every verdict prints the ones it used, so a review can
+// compare them with the checklist built for its target.
+const THRESHOLDS = {
+  normal: { minimum: 4.5, enhanced: 7 },
+  large: { minimum: 3, enhanced: 4.5 },
+  nonText: 3,
+};
+// Large text is at least 18pt, or 14pt bold, at 4/3 CSS px per point.
+const LARGE_TEXT_PX = { normal: 24, bold: (14 * 4) / 3 };
+
+const px = (n) => `${Number(n.toFixed(2))}px`;
+const ASSUMPTION =
+  "These thresholds are this script's WCAG 2.x values. Compare them with the\n" +
+  "checklist's contrast criteria before relying on the result.";
+
 function isLargeText(sizePx, weight) {
-  return weight === 'bold' ? sizePx >= 18.66 : sizePx >= 24;
+  return sizePx >= LARGE_TEXT_PX[weight];
 }
 
 function verdict(ratio, { sizePx, weight, nonText, sizeAssumed }) {
   const r = Math.floor(ratio * 100) / 100; // don't round 4.499 up to a pass
+  const result = (threshold) => (r >= threshold ? 'PASS' : 'FAIL');
   if (nonText) {
     return [
-      `SC 1.4.11 Non-text Contrast (AA, needs 3:1): ${r >= 3 ? 'PASS' : 'FAIL'}`,
+      `${THRESHOLDS.nonText}:1 (non-text): ${result(THRESHOLDS.nonText)}`,
+      '',
+      ASSUMPTION,
     ];
   }
   const large = isLargeText(sizePx, weight);
-  const aa = large ? 3 : 4.5;
-  const aaa = large ? 4.5 : 7;
+  const size = large ? 'large text' : 'normal-size text';
+  const { minimum, enhanced } = THRESHOLDS[large ? 'large' : 'normal'];
   const lines = [];
   // Which threshold applies is the most common source of a wrong verdict, so be
   // explicit about whether it was measured or assumed. An assumed threshold is
   // not evidence — the skill's `computed` tag needs a real rendered size.
   if (sizeAssumed)
     lines.push(
-      'Text size not given — assuming normal-size text, the stricter 4.5:1.',
+      `Text size not given — assuming normal-size text, the stricter ${minimum}:1.`,
       'For a defensible verdict, read the rendered size off the element',
       '(getComputedStyle(el).fontSize / .fontWeight) and pass --size/--weight.',
       '',
     );
   else
     lines.push(
-      `Text at ${sizePx}px ${weight} counts as ${large ? 'LARGE' : 'normal'} text.`,
+      `Text at ${sizePx}px ${weight} counts as ${size} (large means at least ` +
+        `${px(LARGE_TEXT_PX.normal)}, or ${px(LARGE_TEXT_PX.bold)} bold).`,
     );
   lines.push(
-    `SC 1.4.3 Contrast Minimum (AA, needs ${aa}:1): ${r >= aa ? 'PASS' : 'FAIL'}`,
-    `SC 1.4.6 Contrast Enhanced (AAA, needs ${aaa}:1): ${r >= aaa ? 'PASS' : 'fail'}`,
+    `${minimum}:1 (${size}, minimum): ${result(minimum)}`,
+    `${enhanced}:1 (${size}, enhanced): ${result(enhanced)}`,
+    '',
+    ASSUMPTION,
   );
   return lines;
 }
