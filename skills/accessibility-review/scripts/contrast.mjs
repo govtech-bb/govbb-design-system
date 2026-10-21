@@ -137,8 +137,11 @@ const ASSUMPTION =
   "These thresholds are this script's WCAG 2.x values. Compare them with the\n" +
   "checklist's contrast criteria before relying on the result.";
 
+// Compared at the two decimal places the output shows, so a size copied as
+// 18.666px still counts as 14pt.
 function isLargeText(sizePx, weight) {
-  return sizePx >= ptToPx(LARGE_TEXT_PT[weight]);
+  const hundredths = (n) => Math.round(n * 100);
+  return hundredths(sizePx) >= hundredths(ptToPx(LARGE_TEXT_PT[weight]));
 }
 
 function verdict(ratio, { sizePx, weight, nonText, sizeAssumed }) {

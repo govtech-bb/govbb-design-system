@@ -108,6 +108,13 @@ if (opts.help || opts.urls.length === 0) {
   console.log(HELP);
   process.exit(opts.help ? 0 : 1);
 }
+if (opts.tags && (opts.version || opts.level)) {
+  console.error(
+    'Pass either --tags or --version and --level, not both: the tags would\n' +
+      'replace the target.',
+  );
+  process.exit(1);
+}
 if (!opts.tags) {
   if (!/^\d+\.\d+$/.test(opts.version ?? '') || !LEVELS.includes(opts.level)) {
     console.error(
@@ -139,12 +146,12 @@ if (!axe) {
 
 const axeSource = readFileSync(axe.file, 'utf8');
 console.log(`axe-core from ${axe.how}`);
-console.log(`Rule tags run: ${runOnly.join(', ')}\n`);
+console.log(`Rule tags requested: ${runOnly.join(', ')}\n`);
 
 const browser = await launchBrowser();
 const results = [];
 let totalViolations = 0;
-let ruleTags;
+const ranTags = new Set();
 
 try {
   for (const url of opts.urls) {
@@ -159,11 +166,6 @@ try {
         throw new Error(`HTTP ${response.status()}`);
       if (opts.wait) await page.waitForTimeout(opts.wait);
       await page.evaluate(axeSource);
-      ruleTags ??= new Set(
-        await page.evaluate(() =>
-          window.axe.getRules().flatMap((rule) => rule.tags),
-        ),
-      );
       result = await page.evaluate(
         async (tags) =>
           await window.axe.run(document, {
@@ -186,6 +188,9 @@ try {
       incomplete: result.incomplete,
     });
     totalViolations += result.violations.length;
+    for (const type of ['violations', 'incomplete', 'passes', 'inapplicable'])
+      for (const rule of result[type])
+        for (const tag of rule.tags) ranTags.add(tag);
 
     console.log(`## ${url}\n`);
     if (result.violations.length === 0) {
@@ -226,12 +231,14 @@ if (opts.out) {
 }
 
 const failedPages = results.filter((result) => result.error).length;
-// axe ignores a tag it has no rules for, so a target newer than the installed
-// axe would otherwise run only the older versions' rules without saying so.
-const unchecked = ruleTags ? opts.tags.filter((tag) => !ruleTags.has(tag)) : [];
+// axe ignores a tag it has no rules for, and skips experimental rules, so a
+// level could otherwise go unchecked without the scan saying so.
+const unchecked = ranTags.size
+  ? opts.tags.filter((tag) => !ranTags.has(tag))
+  : [];
 if (unchecked.length)
   console.log(
-    `\n**This axe-core has no rules tagged ${unchecked.join(', ')}.** ` +
+    `\n**No axe rule tagged ${unchecked.join(', ')} ran.** ` +
       'Check the criteria at those versions and levels by hand.',
   );
 console.log(

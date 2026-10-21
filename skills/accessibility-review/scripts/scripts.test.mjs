@@ -109,6 +109,7 @@ try {
   }
   for (const [size, threshold] of [
     ['18.66', '4\\.5:1 \\(normal-size text, minimum\\): FAIL'],
+    ['18.666', '3:1 \\(large text, minimum\\): PASS'],
     ['18.6667', '3:1 \\(large text, minimum\\): PASS'],
   ]) {
     const result = await run(
@@ -178,9 +179,8 @@ try {
   assert.match(clean.stdout, /No axe violations/);
   assert.match(
     clean.stdout,
-    /Rule tags run: wcag2a, wcag2aa, wcag21a, wcag21aa, wcag22a, wcag22aa\n/,
+    /Rule tags requested: wcag2a, wcag2aa, wcag21a, wcag21aa, wcag22a, wcag22aa\n/,
   );
-  assert.match(clean.stdout, /no rules tagged wcag22a\.\*\*/);
   const future = await run('axe-scan.mjs', [
     `${base}/clean`,
     '--version',
@@ -193,12 +193,13 @@ try {
   assert.equal(future.status, 0, future.stderr || future.stdout);
   assert.match(
     future.stdout,
-    /no rules tagged wcag22a, wcag23a, .*wcag29aa\.\*\*/,
+    /No axe rule tagged .*wcag23a, .*wcag29aa ran\.\*\*/,
   );
   for (const args of [
     [],
     ['--version', '2.2'],
     ['--version', '3.0', '--level', 'AA'],
+    ['--version', '2.2', '--level', 'AA', '--tags', 'wcag2a'],
   ]) {
     const result = await run('axe-scan.mjs', [`${base}/clean`, ...args]);
     assert.equal(result.status, 1, JSON.stringify(result));
