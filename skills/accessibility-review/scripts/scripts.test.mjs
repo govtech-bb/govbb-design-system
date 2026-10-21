@@ -180,7 +180,7 @@ try {
     clean.stdout,
     /Rule tags run: wcag2a, wcag2aa, wcag21a, wcag21aa, wcag22a, wcag22aa\n/,
   );
-  assert.doesNotMatch(clean.stdout, /no rules for criteria new/);
+  assert.match(clean.stdout, /no rules tagged wcag22a\.\*\*/);
   const future = await run('axe-scan.mjs', [
     `${base}/clean`,
     '--version',
@@ -191,7 +191,10 @@ try {
     '0',
   ]);
   assert.equal(future.status, 0, future.stderr || future.stdout);
-  assert.match(future.stdout, /no rules for criteria new in WCAG 2\.9/);
+  assert.match(
+    future.stdout,
+    /no rules tagged wcag22a, wcag23a, .*wcag29aa\.\*\*/,
+  );
   for (const args of [
     [],
     ['--version', '2.2'],

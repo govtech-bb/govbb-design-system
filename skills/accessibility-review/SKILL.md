@@ -111,9 +111,9 @@ reviewing GovBB wiring: it covers the consumer's duties by kind of control, and
 the GovBB conventions to report separately from criterion failures. It names
 what to check, not what WCAG requires; the checklist decides that.
 
-1. **Automated:** run axe on the pages and states in scope, for the version
-   and level the checklist was built for. Include violations and unresolved
-   `incomplete` results. Record failed scans as not tested, and carry any
+1. **Automated:** run axe on the pages and states in scope, passing the level
+   the checklist was built for and the version number in its heading. Include
+   violations and unresolved `incomplete` results. Record failed scans as not tested, and carry any
    criteria the installed axe has no rules for into the manual checks.
 2. **Contracts and semantics:** distinguish installed component guarantees
    from consumer duties. Check labels, grouped controls, accessible names,

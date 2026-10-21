@@ -130,16 +130,15 @@ const THRESHOLDS = {
   large: { minimum: 3, enhanced: 4.5 },
   nonText: 3,
 };
-// Large text is at least 18pt, or 14pt bold, at 4/3 CSS px per point.
-const LARGE_TEXT_PX = { normal: 24, bold: (14 * 4) / 3 };
-
-const px = (n) => `${Number(n.toFixed(2))}px`;
+const LARGE_TEXT_PT = { normal: 18, bold: 14 };
+const ptToPx = (pt) => (pt * 4) / 3;
+const describePt = (pt) => `${pt}pt (${Number(ptToPx(pt).toFixed(2))}px)`;
 const ASSUMPTION =
   "These thresholds are this script's WCAG 2.x values. Compare them with the\n" +
   "checklist's contrast criteria before relying on the result.";
 
 function isLargeText(sizePx, weight) {
-  return sizePx >= LARGE_TEXT_PX[weight];
+  return sizePx >= ptToPx(LARGE_TEXT_PT[weight]);
 }
 
 function verdict(ratio, { sizePx, weight, nonText, sizeAssumed }) {
@@ -169,7 +168,7 @@ function verdict(ratio, { sizePx, weight, nonText, sizeAssumed }) {
   else
     lines.push(
       `Text at ${sizePx}px ${weight} counts as ${size} (large means at least ` +
-        `${px(LARGE_TEXT_PX.normal)}, or ${px(LARGE_TEXT_PX.bold)} bold).`,
+        `${describePt(LARGE_TEXT_PT.normal)}, or ${describePt(LARGE_TEXT_PT.bold)} bold).`,
     );
   lines.push(
     `${minimum}:1 (${size}, minimum): ${result(minimum)}`,
@@ -184,7 +183,8 @@ function verdict(ratio, { sizePx, weight, nonText, sizeAssumed }) {
 
 function parseArgs(argv) {
   // Default to a size below the large-text cutoff, so an omitted --size errs
-  // toward the stricter 4.5:1 rather than quietly clearing something at 3:1.
+  // toward the stricter normal-text threshold rather than quietly clearing
+  // something at the large-text one.
   // sizeAssumed records that nobody measured, which the verdict reports.
   const opts = {
     sizePx: 16,
@@ -278,7 +278,7 @@ try {
     }
     console.log(
       '\nRatios only. Whether each passes depends on what the colour is used for —\n' +
-        'text size and weight, or the 3:1 non-text threshold. Check the use, not the number.',
+        `text size and weight, or the ${THRESHOLDS.nonText}:1 non-text threshold. Check the use, not the number.`,
     );
     process.exit(0);
   }

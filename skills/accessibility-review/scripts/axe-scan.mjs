@@ -124,11 +124,6 @@ if (!opts.tags) {
     process.exit(1);
   }
   opts.tags = targetTags(opts.version, opts.level);
-  const minor = Number(opts.version.split('.')[1]);
-  if (minor > 0) {
-    const earlier = targetTags(`2.${minor - 1}`, opts.level);
-    opts.newTags = opts.tags.filter((tag) => !earlier.includes(tag));
-  }
 }
 const runOnly = opts.bestPractice ? [...opts.tags, 'best-practice'] : opts.tags;
 
@@ -233,10 +228,11 @@ if (opts.out) {
 const failedPages = results.filter((result) => result.error).length;
 // axe ignores a tag it has no rules for, so a target newer than the installed
 // axe would otherwise run only the older versions' rules without saying so.
-if (ruleTags && opts.newTags && !opts.newTags.some((t) => ruleTags.has(t)))
+const unchecked = ruleTags ? opts.tags.filter((tag) => !ruleTags.has(tag)) : [];
+if (unchecked.length)
   console.log(
-    `\n**This axe-core has no rules for criteria new in WCAG ${opts.version}.** ` +
-      "The scan checked only the earlier versions' criteria; check the new ones by hand.",
+    `\n**This axe-core has no rules tagged ${unchecked.join(', ')}.** ` +
+      'Check the criteria at those versions and levels by hand.',
   );
 console.log(
   `\n---\n${totalViolations} violation type(s) across ${results.length - failedPages} scanned page(s); ${failedPages} page(s) could not be scanned.\n` +
