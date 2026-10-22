@@ -6,9 +6,14 @@
 
 .govbb-freshness {
   margin: 0;
-  padding-bottom: var(--govbb-space-s);
+
+  /* Figma draws the rule as an inside stroke, so it eats into the padding
+     instead of adding to it. A border rather than an inset shadow, because
+     forced colors drops shadows. */
+  padding-bottom: calc(var(--govbb-space-s) - 4px);
   border-bottom: 4px solid var(--govbb-color-highlight);
   font-size: var(--govbb-font-size-body-sm);
+  font-weight: 500;
   line-height: var(--govbb-line-height-base);
   color: var(--govbb-color-muted);
 }
