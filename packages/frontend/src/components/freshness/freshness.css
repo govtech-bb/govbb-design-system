@@ -7,7 +7,7 @@
 .govbb-freshness {
   margin: 0;
   padding-bottom: var(--govbb-space-s);
-  border-bottom: var(--govbb-space-xxs) solid var(--govbb-color-highlight);
+  border-bottom: 4px solid var(--govbb-color-highlight);
   font-size: var(--govbb-font-size-body-sm);
   line-height: var(--govbb-line-height-base);
   color: var(--govbb-color-muted);
