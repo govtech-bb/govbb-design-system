@@ -9,8 +9,9 @@ current installation or implementation contract.
 - Two independent public skills: `design-system-compliance` and
   `accessibility-review`, both experimental. Additional critique and contributor
   skills are deferred.
-- Only `npx skills add govtech-bb/govbb-design-system` is documented for
-  installation, from the consumer project directory. GovTech staff can instead
+- `npx skills add govtech-bb/govbb-design-system` is the documented
+  installation, from the consumer project directory, and the only one the
+  public site gives a command for. GovTech staff can instead
   install the `govbb` plugin from the `team-skills` marketplace, which points at
   `skills/` through `skills/.claude-plugin/plugin.json` (restored 2026-10-22).
 - The live origin is `https://design-system.service.alpha.gov.bb`, configured in
@@ -26,7 +27,8 @@ current installation or implementation contract.
   CLI installation checks and representative task walkthroughs, without the
   comparative grading harness rejected in ADR 0004.
 
-See [ADR 0003's amendment](../decisions/0003-design-system-skills-live-here-installed-via-team-skills.md#amendment-public-skills-use-npx-skills)
+See ADR 0003's amendments on [the skills CLI](../decisions/0003-design-system-skills-live-here-installed-via-team-skills.md#amendment-public-skills-use-npx-skills)
+and [the team marketplace](../decisions/0003-design-system-skills-live-here-installed-via-team-skills.md#amendment-team-skills-lists-govbb-again),
 and [CONTRIBUTING.md](../../CONTRIBUTING.md#ai-documentation-and-skills) for the
 maintained distribution and verification workflow.
 
