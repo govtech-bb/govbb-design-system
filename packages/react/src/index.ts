@@ -40,6 +40,10 @@ export { Feedback } from './feedback/feedback';
 export type { FeedbackProps } from './feedback/feedback';
 export { FileUpload } from './file-upload/file-upload';
 export type { FileUploadProps } from './file-upload/file-upload';
+export { Filter } from './filter/filter';
+export type { FilterProps } from './filter/filter';
+export { FilterGroup } from './filter-group/filter-group';
+export type { FilterGroupProps } from './filter-group/filter-group';
 export { Footer, FooterLink } from './footer/footer';
 export type {
   FooterLinkItem,
