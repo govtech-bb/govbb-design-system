@@ -1,0 +1,77 @@
+/* Filter group — one collapsed set of checkboxes inside a filter, built on
+   native <details>/<summary>. Label the options with the summary, so screen
+   readers announce the group's name with each checkbox:
+
+   <details class="govbb-filter-group">
+     <summary class="govbb-filter-group__summary" id="service-type">
+       Service type
+     </summary>
+     <div class="govbb-filter-group__options" role="group"
+          aria-labelledby="service-type">
+       <div class="govbb-checkbox-item">…</div>
+     </div>
+   </details> */
+
+.govbb-filter-group {
+  padding-block-end: var(--govbb-space-s);
+  border-block-end: 1px solid var(--govbb-color-muted);
+}
+
+.govbb-filter-group__summary {
+  display: flex;
+  gap: var(--govbb-space-s);
+  align-items: center;
+  justify-content: space-between;
+  min-block-size: var(--govbb-space-m);
+  font-size: var(--govbb-font-size-h4);
+  font-weight: 600;
+  cursor: pointer;
+  list-style: none;
+
+  &::-webkit-details-marker {
+    display: none;
+  }
+
+  &::marker {
+    content: '';
+  }
+
+  &:focus-visible {
+    outline: 4px solid var(--govbb-color-focus);
+    outline-offset: 2px;
+  }
+}
+
+/* Chevron: points down when closed, up when open, drawn as two borders of a
+   turned square and nudged so the V centres on the text. */
+.govbb-filter-group__summary::after {
+  content: '';
+  flex: none;
+  width: 0.5em;
+  height: 0.5em;
+  border-top: 2px solid var(--govbb-color-tertiary);
+  border-right: 2px solid var(--govbb-color-tertiary);
+  rotate: 135deg;
+  translate: 0 -35%;
+  transition:
+    rotate 0.2s ease,
+    translate 0.2s ease;
+}
+
+.govbb-filter-group[open] > .govbb-filter-group__summary::after {
+  rotate: -45deg;
+  translate: 0 35%;
+}
+
+.govbb-filter-group__options {
+  display: flex;
+  flex-direction: column;
+  gap: var(--govbb-space-s);
+  padding-block-start: var(--govbb-space-xs);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .govbb-filter-group__summary::after {
+    transition: none;
+  }
+}
