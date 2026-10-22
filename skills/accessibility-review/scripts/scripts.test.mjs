@@ -189,6 +189,7 @@ try {
   ]);
   assert.equal(focus.status, 0, focus.stderr);
   assert.doesNotMatch(focus.stdout, /\*\*Focus trap:\*\*/);
+  assert.match(focus.stdout, /cycled back to element 1 after 3 stops/);
   const missingPlaywright = await run('focus-order.mjs', [`${base}/clean`], {
     cwd: empty,
   });
