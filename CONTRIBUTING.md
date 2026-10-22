@@ -38,6 +38,11 @@ and helpers inside its own directory so it can be installed independently.
 Run helpers from the consumer project, resolving dependencies and GovBB exports
 there rather than from the installed skill directory.
 
+GovTech's `team-skills` marketplace also lists `skills/` as the `govbb` plugin,
+through `skills/.claude-plugin/plugin.json`. Don't move or rename `skills/`, and
+don't add a `version` to the manifest: without one, every merge to `main`
+reaches plugin users at their next startup (ADR 0003).
+
 The site generates `/llms.txt` from its content collections and published skills.
 Update the guidance source rather than maintaining a second inventory. Markdown
 token tables use the same token source as the HTML tables. Skill Markdown URLs

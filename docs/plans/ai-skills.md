@@ -10,8 +10,9 @@ current installation or implementation contract.
   `accessibility-review`, both experimental. Additional critique and contributor
   skills are deferred.
 - Only `npx skills add govtech-bb/govbb-design-system` is documented for
-  installation, from the consumer project directory. The default team marketplace
-  was verified to have no `govbb` entry before removing the local plugin manifest.
+  installation, from the consumer project directory. GovTech staff can instead
+  install the `govbb` plugin from the `team-skills` marketplace, which points at
+  `skills/` through `skills/.claude-plugin/plugin.json` (restored 2026-10-22).
 - The live origin is `https://design-system.service.alpha.gov.bb`, configured in
   Astro. `/llms.txt` is generated from the site collections and published skills.
   It points to individual Markdown pages, including token values and dated
