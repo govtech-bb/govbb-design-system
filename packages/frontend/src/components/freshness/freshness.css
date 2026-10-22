@@ -1,0 +1,14 @@
+/* Freshness — the "last updated" line under a content page's heading, ruled
+   off from the content below it:
+   <p class="govbb-freshness">
+     Last updated on <time datetime="2026-03-12">12 March 2026</time>
+   </p> */
+
+.govbb-freshness {
+  margin: 0;
+  padding-bottom: var(--govbb-space-s);
+  border-bottom: var(--govbb-space-xxs) solid var(--govbb-color-highlight);
+  font-size: var(--govbb-font-size-body-sm);
+  line-height: var(--govbb-line-height-base);
+  color: var(--govbb-color-muted);
+}
