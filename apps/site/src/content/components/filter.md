@@ -142,6 +142,14 @@ group needs many options, the list probably needs search instead.
 When the page reloads with a filter applied, check the options the user chose
 and open the groups they are in, so users can see why the list is shorter.
 
+### Keep the rest of the page's state
+
+Applying replaces the page address's query with the filter's own fields, so a
+search term or sort order already in the address is lost. Carry it over with
+hidden inputs inside the panel, before the button, such as
+`<input type="hidden" name="q" value="passport">`. In React, pass them as
+children of `Filter`.
+
 ## Filter groups
 
 A filter group labels its options with its summary. Give the summary an `id`

@@ -5,6 +5,7 @@ import {
   type FormHTMLAttributes,
   type ReactNode,
 } from 'react';
+import { Button } from '../button/button';
 import { has } from '../form/form';
 
 export interface FilterProps extends DetailsHTMLAttributes<HTMLDetailsElement> {
@@ -35,9 +36,9 @@ export const Filter = forwardRef<HTMLDetailsElement, FilterProps>(
           className={cx('govbb-filter__panel', formProps?.className)}
         >
           {children}
-          <button className="govbb-button" type="submit">
+          <Button type="submit">
             {has(applyLabel) ? applyLabel : 'Apply'}
-          </button>
+          </Button>
         </form>
       </details>
     );
