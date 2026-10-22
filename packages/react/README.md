@@ -53,7 +53,7 @@ component's own classes.
 AddAnother / AddAnotherItem · Autocomplete · BackButton · Breadcrumbs · Button / LinkButton · ButtonGroup · Checkbox ·
 Combobox · DateInput ·
 ErrorMessage · ErrorSummary · Feedback · Fieldset · FileUpload ·
-Footer / FooterLink · FormGroup · Header · Heading / Text · Hint ·
+Footer / FooterLink · FormGroup · Freshness · Header · Heading / Text · Hint ·
 Input / TextArea · Label · Link · List · NumberInput · OfficialBanner ·
 Payment · Radio · Search · Select · ServiceList · ShowHide · SkipLink ·
 StatusBanner · SummaryList · Table
