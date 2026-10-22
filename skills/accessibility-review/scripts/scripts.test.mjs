@@ -69,6 +69,10 @@ const pages = {
   '/bad': '<main><h1>Apply</h1><input><button></button></main>',
   '/no-ring':
     '<style>a:focus { outline: none; box-shadow: 0 0 0 3px rgba(0,0,0,0); }</style><main><h1>Apply</h1><a href="/clean">Next</a><a href="/clean">Help</a></main>',
+  '/transparent-outline':
+    '<style>a:focus { outline: 4px solid transparent; }</style><main><h1>Apply</h1><a href="/clean">Next</a><a href="/clean">Help</a></main>',
+  '/zero-outline':
+    '<style>a:focus { outline: 0 solid #000; }</style><main><h1>Apply</h1><a href="/clean">Next</a><a href="/clean">Help</a></main>',
 };
 const server = createServer((req, res) => {
   const body = pages[req.url];
@@ -203,6 +207,21 @@ try {
   ]);
   assert.equal(ring.status, 0, ring.stderr);
   assert.match(ring.stdout, /showed neither an outline nor a box-shadow/);
+  for (const page of ['/transparent-outline', '/zero-outline']) {
+    const outline = await run('focus-order.mjs', [
+      `${base}${page}`,
+      '--wait',
+      '0',
+      '--max-tabs',
+      '8',
+    ]);
+    assert.equal(outline.status, 0, outline.stderr);
+    assert.match(
+      outline.stdout,
+      /showed neither an outline nor a box-shadow/,
+      page,
+    );
+  }
   const missingPlaywright = await run('focus-order.mjs', [`${base}/clean`], {
     cwd: empty,
   });

@@ -154,8 +154,16 @@ const DESCRIBE = () => {
       // flag a control that does have an indicator we could not read.
       const opaque =
         present && (colours.length === 0 || !colours.every(isTransparent));
+      // The same reset happens to outlines: a transparent or zero-width one
+      // keeps its style but paints nothing.
+      const outlineVisible =
+        style.outlineStyle !== 'none' &&
+        parseFloat(style.outlineWidth) > 0 &&
+        !isTransparent(style.outlineColor);
       return {
-        outline: `${style.outlineStyle} ${style.outlineWidth} ${style.outlineColor}`,
+        outline: outlineVisible
+          ? `${style.outlineStyle} ${style.outlineWidth} ${style.outlineColor}`
+          : null,
         boxShadow: opaque ? shadow.slice(0, 80) : null,
         boxShadowTransparent: present && !opaque,
       };
@@ -252,7 +260,7 @@ try {
     if (d.tabindex && Number(d.tabindex) > 0)
       notes.push(`positive tabindex=${d.tabindex}`);
     if (d.isFrame) notes.push('iframe — walk cannot see inside');
-    else if (!d.ring.boxShadow && d.ring.outline.startsWith('none'))
+    else if (!d.ring.boxShadow && !d.ring.outline)
       notes.push('no outline or box-shadow while focused');
     console.log(
       `| ${i + 1} | \`${d.selector}\` | ${d.name || '*(none)*'} | ${notes.join('; ') || ''} |`,
@@ -317,7 +325,7 @@ try {
   // Frames are excluded: the ring belongs to the content inside them, not the
   // frame element, so a frame with no computed ring is not a finding.
   const noRing = real.filter(
-    (d) => !d.isFrame && !d.ring.boxShadow && d.ring.outline.startsWith('none'),
+    (d) => !d.isFrame && !d.ring.boxShadow && !d.ring.outline,
   );
   if (noRing.length)
     problems.push(
