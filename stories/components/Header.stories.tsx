@@ -41,7 +41,11 @@ export const Default: Story = {
       borderBottomColor: 'rgb(153, 168, 204)',
     });
     await expect(nav).toHaveStyle({ backgroundColor: 'rgba(0, 0, 0, 0)' });
-    await expect(navInner).toHaveStyle({ flexDirection: 'row' });
+    await expect(navInner).toHaveStyle({
+      flexDirection: 'row',
+      columnGap: '32px',
+      rowGap: '16px',
+    });
     await expect(services).toHaveStyle({
       color: 'rgb(0, 0, 0)',
       textDecorationLine: 'none',
