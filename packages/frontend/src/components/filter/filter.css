@@ -1,0 +1,74 @@
+/* Filter — a collapsed panel of filter groups and an Apply button, built on
+   native <details>/<summary> so it opens with no JavaScript. The panel is a
+   form: Apply submits the checked options, and the page renders the results.
+
+   <details class="govbb-filter">
+     <summary class="govbb-button govbb-button--ghost govbb-filter__summary">
+       Filter
+     </summary>
+     <form class="govbb-filter__panel" method="get">
+       <details class="govbb-filter-group">…</details>
+       <button class="govbb-button" type="submit">Apply</button>
+     </form>
+   </details> */
+
+/* The rule under the toggle; open, it sits under the grey panel and
+   disappears into it. */
+.govbb-filter {
+  font-size: var(--govbb-font-size-body);
+  line-height: var(--govbb-line-height-base);
+  color: var(--govbb-color-ink);
+  border-block-end: 1px solid var(--govbb-color-neutral);
+}
+
+/* A ghost button (see button.css) with the toggle's own padding and gap. */
+.govbb-filter__summary {
+  gap: var(--govbb-space-m);
+  padding: calc(var(--govbb-space-xm) + 0.25rem) var(--govbb-space-xm);
+  list-style: none;
+
+  &::-webkit-details-marker {
+    display: none;
+  }
+
+  &::marker {
+    content: '';
+  }
+}
+
+/* Chevron (18 by 10px): points down when closed, up when open, drawn as two
+   borders of a turned square and nudged so the V centres on the text. */
+.govbb-filter__summary::after {
+  content: '';
+  flex: none;
+  width: 0.65em;
+  height: 0.65em;
+  border-top: 2px solid;
+  border-right: 2px solid;
+  rotate: 135deg;
+  translate: 0 -35%;
+  transition:
+    rotate 0.2s ease,
+    translate 0.2s ease;
+}
+
+.govbb-filter[open] > .govbb-filter__summary::after {
+  rotate: -45deg;
+  translate: 0 35%;
+}
+
+/* The button is a flex item, so it stretches to the panel's width. */
+.govbb-filter__panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--govbb-space-xm);
+  padding: var(--govbb-space-xm);
+  background: var(--govbb-color-neutral);
+  border-block-start: 1px solid var(--govbb-color-muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .govbb-filter__summary::after {
+    transition: none;
+  }
+}
