@@ -13,8 +13,9 @@ export interface FilterProps extends DetailsHTMLAttributes<HTMLDetailsElement> {
   summary?: ReactNode;
   /** Submit button text. Empty falls back to "Apply". */
   applyLabel?: ReactNode;
-  /** Reaches the panel's <form> (action, method, onSubmit, …). */
-  formProps?: FormHTMLAttributes<HTMLFormElement>;
+  /** Reaches the panel's <form> (action, method, onSubmit, …). Its content is
+      the Filter's children. */
+  formProps?: Omit<FormHTMLAttributes<HTMLFormElement>, 'children'>;
   /** The filter groups. */
   children?: ReactNode;
 }
@@ -39,7 +40,6 @@ export const Filter = forwardRef<HTMLDetailsElement, FilterProps>(
           {has(summary) ? summary : 'Filter'}
         </summary>
         <form
-          method="get"
           {...formProps}
           className={cx('govbb-filter__panel', formProps?.className)}
         >

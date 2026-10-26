@@ -34,13 +34,14 @@ describe('Filter', () => {
     expect(details.open).toBe(true);
   });
 
-  it('puts the groups in a GET form that the Apply button submits', () => {
+  it('puts the groups in a form that the Apply button submits', () => {
     const onSubmit = vi.fn();
     render(<ServiceFilter onSubmit={onSubmit} />);
     const apply = screen.getByRole('button', { name: 'Apply', hidden: true });
     const form = apply.closest('form')!;
     expect(form.className).toBe('govbb-filter__panel');
-    expect(form.getAttribute('method')).toBe('get');
+    // no method: GET is the default, and a set one breaks React 19 actions
+    expect(form.hasAttribute('method')).toBe(false);
     expect(form.getAttribute('action')).toBe('/services');
     fireEvent.click(apply);
     expect(onSubmit).toHaveBeenCalledOnce();
