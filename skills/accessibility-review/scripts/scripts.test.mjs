@@ -105,18 +105,25 @@ try {
     );
     assert.doesNotMatch(result.stdout, /\bSC \d|\bAA/);
   }
-  for (const [size, threshold] of [
-    ['18.66', '4\\.5:1 \\(normal-size text, minimum\\): FAIL'],
-    ['18.666', '3:1 \\(large text, minimum\\): PASS'],
-    ['18.6667', '3:1 \\(large text, minimum\\): PASS'],
+  // Just below, at, and above each large-text cutoff. 18.6667 is what browsers
+  // report for 14pt.
+  const normal = '4\\.5:1 \\(normal-size text, minimum\\): FAIL';
+  const large = '3:1 \\(large text, minimum\\): PASS';
+  for (const [size, weight, threshold] of [
+    ['23.999', 'normal', normal],
+    ['24', 'normal', large],
+    ['24.001', 'normal', large],
+    ['18.666', 'bold', normal],
+    [String((14 * 4) / 3), 'bold', large],
+    ['18.6667', 'bold', large],
   ]) {
     const result = await run(
       'contrast.mjs',
-      ['#888888', '#fff', '--size', size, '--weight', 'bold'],
+      ['#888888', '#fff', '--size', size, '--weight', weight],
       { cwd: empty },
     );
     assert.equal(result.status, 0, result.stderr);
-    assert.match(result.stdout, new RegExp(threshold));
+    assert.match(result.stdout, new RegExp(threshold), `${size}px ${weight}`);
   }
   const tokens = await run('contrast.mjs', ['color-ink', 'color-surface']);
   assert.equal(tokens.status, 0, tokens.stderr);
@@ -193,6 +200,15 @@ try {
     future.stdout,
     /No axe rule tagged .*wcag23a, .*wcag29aa ran\.\*\*/,
   );
+  const noRules = await run('axe-scan.mjs', [
+    `${base}/clean`,
+    '--tags',
+    'wcag22a',
+    '--wait',
+    '0',
+  ]);
+  assert.equal(noRules.status, 0, noRules.stderr || noRules.stdout);
+  assert.match(noRules.stdout, /\*\*No axe rule tagged wcag22a ran\.\*\*/);
   for (const args of [
     [],
     ['--version', '2.2'],
@@ -220,6 +236,7 @@ try {
   ]);
   assert.equal(unavailable.status, 2);
   assert.match(unavailable.stdout, /HTTP 404/);
+  assert.doesNotMatch(unavailable.stdout, /No axe rule tagged/);
   const missingAxe = await run('axe-scan.mjs', [`${base}/clean`, ...target], {
     cwd: empty,
   });

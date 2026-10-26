@@ -231,9 +231,11 @@ if (opts.out) {
 }
 
 const failedPages = results.filter((result) => result.error).length;
+const scannedPages = results.length - failedPages;
 // axe ignores a tag it has no rules for, and skips experimental rules, so a
-// level could otherwise go unchecked without the scan saying so.
-const unchecked = ranTags.size
+// level could otherwise go unchecked without the scan saying so. Only a scan
+// that ran can say what it skipped: a page that failed to load checked nothing.
+const unchecked = scannedPages
   ? opts.tags.filter((tag) => !ranTags.has(tag))
   : [];
 if (unchecked.length)
@@ -242,7 +244,7 @@ if (unchecked.length)
       'Check the criteria at those versions and levels by hand.',
   );
 console.log(
-  `\n---\n${totalViolations} violation type(s) across ${results.length - failedPages} scanned page(s); ${failedPages} page(s) could not be scanned.\n` +
+  `\n---\n${totalViolations} violation type(s) across ${scannedPages} scanned page(s); ${failedPages} page(s) could not be scanned.\n` +
     'axe finds roughly a third of real barriers. A clean run is a starting point,\n' +
     'not a pass — say so in the review.',
 );
