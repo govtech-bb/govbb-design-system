@@ -1,13 +1,15 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { expect } from 'storybook/test';
+import { expect, fn } from 'storybook/test';
 import { Checkbox } from '../../packages/react/src/checkbox/checkbox';
 import { Filter } from '../../packages/react/src/filter/filter';
 import { FilterGroup } from '../../packages/react/src/filter-group/filter-group';
 
+const submit = fn((event: React.FormEvent) => event.preventDefault());
 const meta = {
   title: 'Components/Filter',
   component: Filter,
   tags: ['autodocs'],
+  args: { formProps: { onSubmit: submit } },
   render: (args) => (
     <Filter {...args}>
       <FilterGroup label="Service type">
@@ -32,6 +34,8 @@ export const Default: Story = {
     await expect(filter.open).toBe(true);
     await userEvent.click(canvas.getByText('Service type'));
     await expect(serviceType.open).toBe(true);
+    await userEvent.click(canvas.getByRole('button', { name: 'Apply' }));
+    await expect(submit).toHaveBeenCalled();
   },
 };
 
