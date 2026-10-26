@@ -26,7 +26,9 @@
   color: var(--govbb-color-muted);
 }
 
-/* A line with no date would otherwise still draw the rule. */
+/* A line rendered with no content at all (e.g. React children that evaluate
+   to false) would otherwise still draw the rule. Whitespace defeats :empty,
+   so leave the element out instead where you can. */
 .govbb-freshness:empty {
   display: none;
 }
