@@ -46,6 +46,22 @@ describe('Filter', () => {
     expect(onSubmit).toHaveBeenCalledOnce();
   });
 
+  it('reports its own toggle but not its groups', () => {
+    const onToggle = vi.fn();
+    const { container } = render(
+      <Filter open onToggle={onToggle}>
+        <FilterGroup label="Service type" open>
+          <Checkbox name="type" value="digital" label="Digital service" />
+        </FilterGroup>
+      </Filter>,
+    );
+    const [filter, group] = container.querySelectorAll('details');
+    fireEvent(group, new Event('toggle'));
+    expect(onToggle).not.toHaveBeenCalled();
+    fireEvent(filter, new Event('toggle'));
+    expect(onToggle).toHaveBeenCalledOnce();
+  });
+
   it('falls back to "Filter" and "Apply" for empty labels', () => {
     render(<Filter summary="" applyLabel="" open />);
     expect(screen.getByText('Filter')).toBeDefined();

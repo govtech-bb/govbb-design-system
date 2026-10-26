@@ -22,11 +22,19 @@ export interface FilterProps extends DetailsHTMLAttributes<HTMLDetailsElement> {
 /** Ref goes to the <details>. */
 export const Filter = forwardRef<HTMLDetailsElement, FilterProps>(
   function Filter(
-    { summary, applyLabel, formProps, className, children, ...props },
+    { summary, applyLabel, formProps, onToggle, className, children, ...props },
     ref,
   ) {
     return (
-      <details ref={ref} className={cx('govbb-filter', className)} {...props}>
+      <details
+        ref={ref}
+        className={cx('govbb-filter', className)}
+        // React bubbles toggle from the nested groups; report only our own.
+        onToggle={(e) => {
+          if (e.target === e.currentTarget) onToggle?.(e);
+        }}
+        {...props}
+      >
         <summary className="govbb-filter__summary">
           {has(summary) ? summary : 'Filter'}
         </summary>
