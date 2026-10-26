@@ -10,14 +10,12 @@
  *   - focused elements scrolled or positioned out of view
  *   - focused elements obscured by an overlapping element — WCAG 2.2 SC 2.4.11
  *     (Focus Not Obscured), a new AA criterion most reviews miss
- *   - positive tabindex, and controls with no visible ring at all
+ *   - positive tabindex
  *
- * It reports what the ring computes to, but does NOT judge ring visibility:
- * that needs a contrast ratio against the specific backdrop. Use contrast.mjs.
- *
- * Deliberately does not automate Shift+Tab comparison or look inside iframes —
- * both produce false alarms from out here, and a check that cries wolf is worse
- * than an honest `needs-manual-test`.
+ * Deliberately does not judge whether focus is visible, automate Shift+Tab
+ * comparison or look inside iframes — all three produce false alarms from out
+ * here, and a check that cries wolf is worse than an honest
+ * `needs-manual-test`.
  *
  *   node focus-order.mjs http://localhost:4321/ --max-tabs 40
  */
@@ -50,7 +48,7 @@ function parseArgs(argv) {
   return o;
 }
 
-/** Runs in the page. Describes the active element and how visible it is.
+/** Runs in the page. Describes the active element and where it sits.
  *
  *  Identity matters more than it looks: two different nav links can both
  *  serialise to `a` with no id or class, so comparing descriptions would report
@@ -67,7 +65,6 @@ const DESCRIBE = () => {
   if (seenAt === -1) window.__focusWalk.push(el);
 
   const rect = el.getBoundingClientRect();
-  const style = getComputedStyle(el);
 
   const name = (
     el.getAttribute('aria-label') ||
@@ -129,37 +126,6 @@ const DESCRIBE = () => {
     disabled: el.disabled === true,
     inViewport,
     obscuredBy,
-    // A box-shadow can be *present* but entirely transparent — utility
-    // frameworks commonly reset it to a stack of rgba(…,0) layers. Treating
-    // that as a ring hides missing focus indicators on exactly the elements
-    // most likely to have them stripped, so count only visible shadows.
-    //
-    // Each colour is extracted and inspected separately rather than matching
-    // the whole shadow against one pattern: a single pattern over a repeating
-    // structure needs nested quantifiers, which backtrack exponentially on
-    // adversarial input. This stays linear.
-    ring: (() => {
-      const shadow = style.boxShadow;
-      const present = !!shadow && shadow !== 'none';
-      const colours = present ? shadow.match(/rgba?\([^)]*\)/g) || [] : [];
-      const isTransparent = (fn) => {
-        const parts = fn
-          .slice(fn.indexOf('(') + 1, -1)
-          .split(',')
-          .map((s) => s.trim());
-        // rgb() has no alpha, so it is always opaque; rgba() alpha of 0 is not.
-        return parts.length > 3 && Number(parts[3]) === 0;
-      };
-      // Unparseable values count as a real ring: better to stay quiet than to
-      // flag a control that does have an indicator we could not read.
-      const opaque =
-        present && (colours.length === 0 || !colours.every(isTransparent));
-      return {
-        outline: `${style.outlineStyle} ${style.outlineWidth} ${style.outlineColor}`,
-        boxShadow: opaque ? shadow.slice(0, 80) : null,
-        boxShadowTransparent: present && !opaque,
-      };
-    })(),
   };
 };
 
@@ -252,8 +218,6 @@ try {
     if (d.tabindex && Number(d.tabindex) > 0)
       notes.push(`positive tabindex=${d.tabindex}`);
     if (d.isFrame) notes.push('iframe — walk cannot see inside');
-    else if (!d.ring.boxShadow && d.ring.outline.startsWith('none'))
-      notes.push('no outline or box-shadow while focused');
     console.log(
       `| ${i + 1} | \`${d.selector}\` | ${d.name || '*(none)*'} | ${notes.join('; ') || ''} |`,
     );
@@ -314,15 +278,6 @@ try {
     problems.push(
       `${positive.length} element(s) use a positive tabindex, which overrides DOM order and reliably desynchronises tab order from reading order.`,
     );
-  // Frames are excluded: the ring belongs to the content inside them, not the
-  // frame element, so a frame with no computed ring is not a finding.
-  const noRing = real.filter(
-    (d) => !d.isFrame && !d.ring.boxShadow && d.ring.outline.startsWith('none'),
-  );
-  if (noRing.length)
-    problems.push(
-      `${noRing.length} element(s) showed neither an outline nor a box-shadow while focused — check against SC 2.4.7 Focus Visible.`,
-    );
 
   console.log('\n## Flags\n');
   if (problems.length === 0)
@@ -334,7 +289,8 @@ try {
     '\n---\nWhat this walk cannot tell you, and must stay `judgement` or\n' +
       '`needs-manual-test` in the review:\n' +
       '  - whether tab order matches *reading* order\n' +
-      '  - whether the ring is visible enough against its own backdrop (contrast.mjs)\n' +
+      '  - whether focus is visible at each stop, and whether the indicator\n' +
+      '    contrasts with its own backdrop (contrast.mjs)\n' +
       '  - anything inside an iframe, or how any of it is announced\n' +
       '  - backwards (Shift+Tab) traversal — deliberately not automated here,\n' +
       '    because a start-position difference makes the comparison unreliable\n' +

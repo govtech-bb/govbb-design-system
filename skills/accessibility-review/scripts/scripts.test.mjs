@@ -67,8 +67,6 @@ const pages = {
   '/clean':
     '<main><h1>Apply</h1><label for="name">Name</label><input id="name"><a href="/clean">Next</a><a href="/clean">Help</a></main>',
   '/bad': '<main><h1>Apply</h1><input><button></button></main>',
-  '/no-ring':
-    '<style>a:focus { outline: none; box-shadow: 0 0 0 3px rgba(0,0,0,0); }</style><main><h1>Apply</h1><a href="/clean">Next</a><a href="/clean">Help</a></main>',
 };
 const server = createServer((req, res) => {
   const body = pages[req.url];
@@ -190,19 +188,8 @@ try {
     '8',
   ]);
   assert.equal(focus.status, 0, focus.stderr);
-  assert.doesNotMatch(
-    focus.stdout,
-    /\*\*Focus trap:\*\*|showed neither an outline/,
-  );
-  const ring = await run('focus-order.mjs', [
-    `${base}/no-ring`,
-    '--wait',
-    '0',
-    '--max-tabs',
-    '8',
-  ]);
-  assert.equal(ring.status, 0, ring.stderr);
-  assert.match(ring.stdout, /showed neither an outline nor a box-shadow/);
+  assert.doesNotMatch(focus.stdout, /\*\*Focus trap:\*\*/);
+  assert.match(focus.stdout, /cycled back to element 1 after 3 stops/);
   const missingPlaywright = await run('focus-order.mjs', [`${base}/clean`], {
     cwd: empty,
   });
@@ -217,7 +204,7 @@ try {
   assert.equal(noBrowser.status, 2);
   assert.match(noBrowser.stderr, /npx playwright install chromium/);
   console.log(
-    'PASS focus walk distinguishes nodes and transparent rings; tooling failures are actionable',
+    'PASS focus walk distinguishes nodes; tooling failures are actionable',
   );
 
   // Mirrors the W3C markup: criteria write id before class, guidelines and

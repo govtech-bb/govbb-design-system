@@ -79,7 +79,8 @@ npx skills add govtech-bb/govbb-design-system
 Choose your assistant and skills in the installer. The two public skills cover
 GovBB UI building/conversion/review and accessibility review. See the
 [AI skills guide](https://design-system.service.alpha.gov.bb/ai-skills/) for
-prerequisites and migration from the former plugin installation.
+prerequisites. GovTech staff with the `team-skills` marketplace can install the
+same skills as its `govbb` plugin instead; use one route, not both.
 
 ## Using the compiled CSS
 
