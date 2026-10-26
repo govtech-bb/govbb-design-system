@@ -3,7 +3,35 @@
 **Date:** 2026-08-06
 **Status:** Accepted — amended 2026-08-06 to move the component-authoring skill
 to a private repository; public distribution superseded 2026-09-22 by
-[the skills CLI amendment](#amendment-public-skills-use-npx-skills).
+[the skills CLI amendment](#amendment-public-skills-use-npx-skills); the
+`govbb` plugin restored for GovTech staff 2026-10-22 by
+[the team marketplace amendment](#amendment-team-skills-lists-govbb-again).
+
+## Amendment: team-skills lists govbb again
+
+**Date:** 2026-10-22
+
+`npx skills add govtech-bb/govbb-design-system` stays the documented route,
+and the only one the public site and `/llms.txt` give an install command for.
+Alongside it, `skills/.claude-plugin/plugin.json` is restored, unchanged from
+the version the 2026-09-22 amendment removed, so the `govtech-bb/team-skills`
+marketplace can list `govbb` again.
+
+The 2026-09-22 amendment removed the manifest because nothing pointed at it.
+That is still true of the default branch, but most of GovTech already has
+`team-skills` added, and for them `/plugin install govbb@team-skills` is one
+command, after which each merge to `main` is a new plugin version. Keeping all
+the team's skills in one marketplace was the reason for the original decision,
+and it still holds. The CLI route is kept as the default because
+`/plugin install` has been less reliable for some of the team.
+
+The two routes install the same files, so a person should use one. Installing
+both loads every instruction twice, once as `/govbb:<name>` and once as
+`/<name>`. This replaces the 2026-09-22 advice to uninstall the plugin: staff
+who have it can keep it.
+
+`skills/` is a published path again: the `team-skills` entry is a
+`git-subdir` pointer at it, so moving or renaming it breaks that installation.
 
 ## Amendment: public skills use npx skills
 
