@@ -155,4 +155,4 @@ children of `Filter`.
 A filter group labels its options with its summary. Give the summary an `id`
 and point the options' `aria-labelledby` at it, so screen readers announce the
 group's name with each checkbox. The React `FilterGroup` wires this up for
-you.
+you, and puts an `id` you pass on the summary.

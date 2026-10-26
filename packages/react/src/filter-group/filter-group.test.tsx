@@ -29,6 +29,25 @@ describe('FilterGroup', () => {
     const group = screen.getByRole('group', { name: 'Service type' });
     expect(group.querySelectorAll('input[type="checkbox"]').length).toBe(2);
   });
+
+  it('puts a given id on the summary that names the group', () => {
+    const { container } = render(
+      <FilterGroup label="Service type" id="filter-type" open>
+        <Checkbox name="type" value="digital" label="Digital service" />
+      </FilterGroup>,
+    );
+    const summary = screen.getByText('Service type');
+    expect(summary.id).toBe('filter-type');
+    const options = container.querySelector('.govbb-filter-group__options')!;
+    expect(options.getAttribute('aria-labelledby')).toBe('filter-type');
+  });
+
+  it('rejects a missing label or a name at compile time', () => {
+    // @ts-expect-error no label leaves the summary and group unnamed
+    render(<FilterGroup label={null} />);
+    // @ts-expect-error name would make the groups exclusive, not name options
+    render(<FilterGroup label="Category" name="category" />);
+  });
 });
 
 it('has no axe violations', async () => {
