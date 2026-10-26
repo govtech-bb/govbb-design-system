@@ -49,17 +49,15 @@ service spacing from the consumer's installed CSS.
 
 For a conversion, inventory distinct behaviours on the affected surface and map
 those to a component, pattern/template, or genuine gap. Match behaviour rather
-than names, and read a candidate's usage guidance before choosing it.
-
-Before changing any markup, show the user the inventory and the screens or
-pages you plan to convert, then wait for their answer. Scope is their decision,
-and redirecting costs little now but a lot after conversion. Skip the wait only
-when the user has already named the exact surfaces, or when nobody can answer;
-then convert only what was explicitly asked for and report everything else as
-not converted.
-
-For a new page, begin with its template. Read the
+than names, and read a candidate's usage guidance before choosing it. For a new
+page, begin with its template. Read the
 [conversion checklist](references/conversion-checklist.md) for either workflow.
+
+Before converting, show the user the full inventory, with every screen or page
+you found and the ones you plan to convert marked, then wait for their answer.
+Redirecting costs little now but a lot after the markup has changed. Skip the
+wait only when the user has already named the exact surfaces or the run is
+non-interactive; then convert only what was asked for.
 
 Work from page scaffold and landmarks to form controls, content, then bespoke
 parts. Copy the documented HTML or React example and verify it against the
@@ -135,8 +133,9 @@ Each helper supports `--help`.
 ## Report
 
 State the target, installed versions and sources used. Summarise changes or
-review findings, checks actually run and what was not tested. List real gaps
-and deliberate deviations with the affected element, reason and suggested owner
+review findings, checks actually run and what was not tested. For a conversion,
+list every inventoried screen or page left unconverted. List real gaps and
+deliberate deviations with the affected element, reason and suggested owner
 (service or design system). Report version mismatches separately from unsupported
 components; an older consumer is not proof that a published component is invented.
 Do not invent gaps to fill a report or create external issues without authorization.
