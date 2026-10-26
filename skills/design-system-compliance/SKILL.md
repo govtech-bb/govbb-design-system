@@ -49,8 +49,16 @@ service spacing from the consumer's installed CSS.
 
 For a conversion, inventory distinct behaviours on the affected surface and map
 those to a component, pattern/template, or genuine gap. Match behaviour rather
-than names, and read a candidate's usage guidance before choosing it. For a new
-page, begin with its template. Read the
+than names, and read a candidate's usage guidance before choosing it.
+
+Before changing any markup, show the user the inventory and the screens or
+pages you plan to convert, then wait for their answer. Scope is their decision,
+and redirecting costs little now but a lot after conversion. Skip the wait only
+when the user has already named the exact surfaces, or when nobody can answer;
+then convert only what was explicitly asked for and report everything else as
+not converted.
+
+For a new page, begin with its template. Read the
 [conversion checklist](references/conversion-checklist.md) for either workflow.
 
 Work from page scaffold and landmarks to form controls, content, then bespoke
