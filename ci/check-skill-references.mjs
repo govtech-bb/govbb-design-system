@@ -68,11 +68,20 @@ const attributes = new Set([
 const packageExports = Object.fromEntries(
   ['frontend', 'react'].map((name) => [
     name,
-    Object.keys(
-      JSON.parse(readFileSync(`packages/${name}/package.json`, 'utf8')).exports,
-    ),
+    JSON.parse(readFileSync(`packages/${name}/package.json`, 'utf8')).exports,
   ]),
 );
+// A wildcard export (./assets/*) matches any subpath, so the file it maps to
+// is what has to exist.
+const isExported = (name, subpath) =>
+  Object.entries(packageExports[name]).some(([key, target]) => {
+    if (key === subpath) return true;
+    const [before, after] = key.split('*');
+    if (after === undefined || typeof target !== 'string') return false;
+    if (!subpath.startsWith(before) || !subpath.endsWith(after)) return false;
+    const matched = subpath.slice(before.length, subpath.length - after.length);
+    return existsSync(join('packages', name, target.replace('*', matched)));
+  });
 
 // Guards against passing by comparing against nothing.
 for (const [what, set] of Object.entries({ classes, tokens, attributes })) {
@@ -84,8 +93,10 @@ for (const [what, set] of Object.entries({ classes, tokens, attributes })) {
   }
 }
 
+// Names are captured whole, so a misspelt suffix (govbb-button__labelX) cannot
+// pass as the valid name in front of it.
 const NAME =
-  /(?<![\w-])(--govbb-[a-z0-9-]+|data-govbb-[a-z0-9-]+|govbb-[a-z0-9]+(?:[-_]{1,2}[a-z0-9]+)*|dataset\.govbb\w+)(\.(?:md|mjs|js|css|json|txt)\b)?/g;
+  /(?<![\w-])(--govbb-[\w-]*\w|data-govbb-[\w-]*\w|govbb-[\w-]*\w|dataset\.govbb\w+)(\.(?:md|mjs|js|css|json|txt|svg|png|ico|woff2)\b)?/g;
 const PACKAGE = /@govtech-bb\/(frontend|react)(\/[\w./*-]*[\w*])?/g;
 // A bare path counts only in backticks, so output files in shell examples
 // (`--out <scratch>/report.md`) are not taken for docs pages.
@@ -104,7 +115,7 @@ const problem = (name) => {
 };
 
 const sources = walk(
-  'skills',
+  process.argv[2] ?? 'skills',
   (p) => p.endsWith('.md') || (p.endsWith('.mjs') && !p.endsWith('.test.mjs')),
 );
 const failures = [];
@@ -123,7 +134,7 @@ for (const file of sources) {
       }
       for (const [match, name, subpath] of line.matchAll(PACKAGE)) {
         checked++;
-        if (!packageExports[name].includes(subpath ? `.${subpath}` : '.'))
+        if (!isExported(name, subpath ? `.${subpath}` : '.'))
           fail(match, 'not in the package exports');
       }
       for (const [, path] of line.matchAll(PAGE)) {
