@@ -25,7 +25,11 @@ const check = (markdown) => {
 
 const expect = (name, markdown, shouldPass) => {
   const { status, stdout, stderr } = check(markdown);
-  const passed = shouldPass ? status === 0 : status === 1;
+  // A crash also exits 1, so a failure only counts if the misspelt name was
+  // the one thing reported.
+  const passed = shouldPass
+    ? status === 0
+    : status === 1 && stderr.includes('Skills name 1 thing(s)');
   console.log(`  ${passed ? 'PASS' : 'FAIL'}  ${name}`);
   if (!passed) {
     console.log(`        exit ${status}\n${stdout}${stderr}`);
@@ -49,6 +53,11 @@ const cases = [
     'wildcard package export',
     '`@govtech-bb/frontend/assets/fonts/figtree-latin.woff2`',
     '`@govtech-bb/frontend/assets/fonts/figtree-latn.woff2`',
+  ],
+  [
+    'wildcard package export of a directory',
+    '`@govtech-bb/frontend/assets/fonts/figtree-latin.woff2`',
+    '`@govtech-bb/frontend/assets/fonts`',
   ],
   [
     'shipped image beside a class',

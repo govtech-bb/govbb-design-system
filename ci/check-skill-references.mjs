@@ -8,7 +8,7 @@
  * the runtime source, the package exports and the built site are the allowlist.
  * Run after `pnpm build`.
  */
-import { existsSync, readFileSync, readdirSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 
 const frontend = 'packages/frontend';
@@ -72,7 +72,7 @@ const packageExports = Object.fromEntries(
   ]),
 );
 // A wildcard export (./assets/*) matches any subpath, so the file it maps to
-// is what has to exist.
+// is what has to exist. Node cannot import a directory.
 const isExported = (name, subpath) =>
   Object.entries(packageExports[name]).some(([key, target]) => {
     if (key === subpath) return true;
@@ -80,7 +80,8 @@ const isExported = (name, subpath) =>
     if (after === undefined || typeof target !== 'string') return false;
     if (!subpath.startsWith(before) || !subpath.endsWith(after)) return false;
     const matched = subpath.slice(before.length, subpath.length - after.length);
-    return existsSync(join('packages', name, target.replace('*', matched)));
+    const file = join('packages', name, target.replaceAll('*', matched));
+    return existsSync(file) && statSync(file).isFile();
   });
 
 // Guards against passing by comparing against nothing.
