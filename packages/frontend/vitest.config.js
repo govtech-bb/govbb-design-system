@@ -7,9 +7,10 @@ export default defineConfig({
     // keep the playwright visual specs (visual/*.spec.ts) out of vitest
     include: ['src/**/*.test.js'],
     coverage: {
+      include: ['index.js', 'src/**/*.js'],
       // a point or two under measured coverage, so one new uncovered line
       // doesn't fail the run but a real drop does
-      thresholds: { statements: 93, branches: 86, functions: 92, lines: 95 },
+      thresholds: { statements: 92, branches: 85, functions: 91, lines: 95 },
     },
   },
 });

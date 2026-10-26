@@ -5,6 +5,7 @@ export default defineConfig({
     environment: 'jsdom',
     globals: true,
     coverage: {
+      include: ['src/**/*.{ts,tsx}'],
       exclude: ['src/testing/**'],
       // a point or two under measured coverage, so one new uncovered line
       // doesn't fail the run but a real drop does
