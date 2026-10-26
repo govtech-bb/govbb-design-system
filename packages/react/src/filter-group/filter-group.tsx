@@ -25,7 +25,7 @@ export interface FilterGroupProps extends Omit<
 export const FilterGroup = forwardRef<HTMLDetailsElement, FilterGroupProps>(
   function FilterGroup({ label, id, className, children, ...props }, ref) {
     const generatedId = useId();
-    const labelId = id ?? generatedId;
+    const labelId = id || generatedId;
     return (
       <details
         ref={ref}

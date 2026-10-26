@@ -42,6 +42,16 @@ describe('FilterGroup', () => {
     expect(options.getAttribute('aria-labelledby')).toBe('filter-type');
   });
 
+  it('generates an id when given an empty one, so the group keeps its name', () => {
+    render(
+      <FilterGroup label="Service type" id="" open>
+        <Checkbox name="type" value="digital" label="Digital service" />
+      </FilterGroup>,
+    );
+    expect(screen.getByText('Service type').id).not.toBe('');
+    screen.getByRole('group', { name: 'Service type' });
+  });
+
   it('rejects a missing label or a name at compile time', () => {
     // @ts-expect-error no label leaves the summary and group unnamed
     render(<FilterGroup label={null} />);
