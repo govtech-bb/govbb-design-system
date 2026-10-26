@@ -99,7 +99,31 @@ try {
     const result = await run('contrast.mjs', colours, { cwd: empty });
     assert.equal(result.status, 0, result.stderr);
     assert.match(result.stdout, new RegExp(`Contrast ratio: ${ratio}:1`));
-    assert.match(result.stdout, new RegExp(`AA, needs 4.5:1\\): ${verdict}`));
+    assert.match(
+      result.stdout,
+      new RegExp(`4\\.5:1 \\(normal-size text, minimum\\): ${verdict}`),
+    );
+    assert.doesNotMatch(result.stdout, /\bSC \d|\bAA/);
+  }
+  // Just below, at, and above each large-text cutoff. 18.6667 is what browsers
+  // report for 14pt.
+  const normal = '4\\.5:1 \\(normal-size text, minimum\\): FAIL';
+  const large = '3:1 \\(large text, minimum\\): PASS';
+  for (const [size, weight, threshold] of [
+    ['23.999', 'normal', normal],
+    ['24', 'normal', large],
+    ['24.001', 'normal', large],
+    ['18.666', 'bold', normal],
+    [String((14 * 4) / 3), 'bold', large],
+    ['18.6667', 'bold', large],
+  ]) {
+    const result = await run(
+      'contrast.mjs',
+      ['#888888', '#fff', '--size', size, '--weight', weight],
+      { cwd: empty },
+    );
+    assert.equal(result.status, 0, result.stderr);
+    assert.match(result.stdout, new RegExp(threshold), `${size}px ${weight}`);
   }
   const tokens = await run('contrast.mjs', ['color-ink', 'color-surface']);
   assert.equal(tokens.status, 0, tokens.stderr);
@@ -148,16 +172,56 @@ try {
     'PASS contrast ratios, exported consumer tokens, overrides and errors',
   );
 
+  const target = ['--version', '2.2', '--level', 'AA'];
   const clean = await run('axe-scan.mjs', [
     `${base}/clean`,
+    ...target,
     '--wait',
     '0',
     '--fail-on-violations',
   ]);
   assert.equal(clean.status, 0, clean.stderr || clean.stdout);
   assert.match(clean.stdout, /No axe violations/);
+  assert.match(
+    clean.stdout,
+    /Rule tags requested: wcag2a, wcag2aa, wcag21a, wcag21aa, wcag22a, wcag22aa\n/,
+  );
+  const future = await run('axe-scan.mjs', [
+    `${base}/clean`,
+    '--version',
+    '2.9',
+    '--level',
+    'AA',
+    '--wait',
+    '0',
+  ]);
+  assert.equal(future.status, 0, future.stderr || future.stdout);
+  assert.match(
+    future.stdout,
+    /No axe rule tagged .*wcag23a, .*wcag29aa ran\.\*\*/,
+  );
+  const noRules = await run('axe-scan.mjs', [
+    `${base}/clean`,
+    '--tags',
+    'wcag22a',
+    '--wait',
+    '0',
+  ]);
+  assert.equal(noRules.status, 0, noRules.stderr || noRules.stdout);
+  assert.match(noRules.stdout, /\*\*No axe rule tagged wcag22a ran\.\*\*/);
+  for (const args of [
+    [],
+    ['--version', '2.2'],
+    ['--version', '3.0', '--level', 'AA'],
+    ['--version', '2.2', '--level', 'AA', '--tags', 'wcag2a'],
+  ]) {
+    const result = await run('axe-scan.mjs', [`${base}/clean`, ...args]);
+    assert.equal(result.status, 1, JSON.stringify(result));
+    assert.match(result.stderr, /--tags/);
+  }
   const bad = await run('axe-scan.mjs', [
     `${base}/bad`,
+    ...target,
     '--wait',
     '0',
     '--fail-on-violations',
@@ -166,18 +230,20 @@ try {
   assert.match(bad.stdout, /label|button-name/);
   const unavailable = await run('axe-scan.mjs', [
     `${base}/missing`,
+    ...target,
     '--wait',
     '0',
   ]);
   assert.equal(unavailable.status, 2);
   assert.match(unavailable.stdout, /HTTP 404/);
-  const missingAxe = await run('axe-scan.mjs', [`${base}/clean`], {
+  assert.doesNotMatch(unavailable.stdout, /No axe rule tagged/);
+  const missingAxe = await run('axe-scan.mjs', [`${base}/clean`, ...target], {
     cwd: empty,
   });
   assert.notEqual(missingAxe.status, 0);
   assert.match(missingAxe.stderr, /npm install -D axe-core/);
   console.log(
-    'PASS axe uses consumer pnpm store, detects violations and fails incomplete scans',
+    "PASS axe runs the target's tags from the consumer pnpm store, detects violations and fails incomplete scans",
   );
 
   const focus = await run('focus-order.mjs', [
@@ -190,6 +256,7 @@ try {
   assert.equal(focus.status, 0, focus.stderr);
   assert.doesNotMatch(focus.stdout, /\*\*Focus trap:\*\*/);
   assert.match(focus.stdout, /cycled back to element 1 after 3 stops/);
+  assert.doesNotMatch(focus.stdout, /\bSC \d|WCAG/);
   const missingPlaywright = await run('focus-order.mjs', [`${base}/clean`], {
     cwd: empty,
   });

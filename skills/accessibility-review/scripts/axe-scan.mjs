@@ -6,8 +6,8 @@
  * axe-core usually arrives as a transitive dependency of @storybook/addon-a11y
  * and is not resolvable from the workspace root.
  *
- *   node axe-scan.mjs http://localhost:4321/
- *   node axe-scan.mjs http://localhost:4321/ http://localhost:4321/apply/ --out axe.json
+ *   node axe-scan.mjs http://localhost:4321/ --version 2.2 --level AA
+ *   node axe-scan.mjs http://localhost:4321/ http://localhost:4321/apply/ --version 2.2 --level AA --out axe.json
  */
 
 import { readFileSync, existsSync, readdirSync, writeFileSync } from 'node:fs';
@@ -15,27 +15,29 @@ import { dirname, join, resolve } from 'node:path';
 import { launchBrowser, projectRequire } from './project.mjs';
 
 const HELP = `Usage:
-  node axe-scan.mjs <url> [url...] [options]
+  node axe-scan.mjs <url> [url...] --version <x.y> --level <A|AA|AAA> [options]
+  node axe-scan.mjs <url> [url...] --tags <a,b,c> [options]
 
 Options:
+  --version <x.y>         WCAG version named by the accessibility page
+  --level <level>         Target conformance level; lower levels are included
+  --tags <a,b,c>          Run these axe rule tags instead of the target's
   --out <file>            Write the full axe results as JSON
-  --tags <a,b,c>          Override rule tags
-                          (default: wcag2a,wcag2aa,wcag21a,wcag21aa,wcag22aa)
   --include-best-practice Also run axe's best-practice rules (not WCAG failures)
   --wait <ms>             Extra settle time after load (default 500)
   --fail-on-violations    Exit 1 if any violation is found (for CI)
   -h, --help
 `;
 
+const LEVELS = ['A', 'AA', 'AAA'];
+
 function parseArgs(argv) {
-  const o = {
-    urls: [],
-    tags: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'],
-    wait: 500,
-  };
+  const o = { urls: [], wait: 500 };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (a === '-h' || a === '--help') o.help = true;
+    else if (a === '--version') o.version = argv[++i];
+    else if (a === '--level') o.level = argv[++i];
     else if (a === '--out') o.out = argv[++i];
     else if (a === '--tags') o.tags = argv[++i].split(',').map((s) => s.trim());
     else if (a === '--include-best-practice') o.bestPractice = true;
@@ -44,6 +46,17 @@ function parseArgs(argv) {
     else o.urls.push(a);
   }
   return o;
+}
+
+/** axe tags each rule with the version and level of the criterion it checks:
+ *  wcag2a for WCAG 2.0 level A, wcag21aa for 2.1 AA, and so on. */
+function targetTags(version, level) {
+  const minor = Number(version.split('.')[1]);
+  const levels = LEVELS.slice(0, LEVELS.indexOf(level) + 1);
+  const tags = [];
+  for (let m = 0; m <= minor; m++)
+    for (const l of levels) tags.push(`wcag2${m || ''}${l.toLowerCase()}`);
+  return tags;
 }
 
 /** Find axe.min.js: normal resolution first, then the pnpm store. */
@@ -95,6 +108,31 @@ if (opts.help || opts.urls.length === 0) {
   console.log(HELP);
   process.exit(opts.help ? 0 : 1);
 }
+if (opts.tags && (opts.version || opts.level)) {
+  console.error(
+    'Pass either --tags or --version and --level, not both: the tags would\n' +
+      'replace the target.',
+  );
+  process.exit(1);
+}
+if (!opts.tags) {
+  if (!/^\d+\.\d+$/.test(opts.version ?? '') || !LEVELS.includes(opts.level)) {
+    console.error(
+      'Give the target from the accessibility page as --version <x.y> and\n' +
+        '--level <A|AA|AAA>, or pass --tags.',
+    );
+    process.exit(1);
+  }
+  if (!opts.version.startsWith('2.')) {
+    console.error(
+      `axe tags its rules by WCAG 2.x criteria only, so it has none for WCAG ${opts.version}.\n` +
+        'Pass --tags to run a chosen set, and report automated coverage of the target as unconfirmed.',
+    );
+    process.exit(1);
+  }
+  opts.tags = targetTags(opts.version, opts.level);
+}
+const runOnly = opts.bestPractice ? [...opts.tags, 'best-practice'] : opts.tags;
 
 const axe = findAxeSource();
 if (!axe) {
@@ -107,11 +145,13 @@ if (!axe) {
 }
 
 const axeSource = readFileSync(axe.file, 'utf8');
-console.log(`axe-core from ${axe.how}\n`);
+console.log(`axe-core from ${axe.how}`);
+console.log(`Rule tags requested: ${runOnly.join(', ')}\n`);
 
 const browser = await launchBrowser();
 const results = [];
 let totalViolations = 0;
+const ranTags = new Set();
 
 try {
   for (const url of opts.urls) {
@@ -126,9 +166,6 @@ try {
         throw new Error(`HTTP ${response.status()}`);
       if (opts.wait) await page.waitForTimeout(opts.wait);
       await page.evaluate(axeSource);
-      const runOnly = opts.bestPractice
-        ? [...opts.tags, 'best-practice']
-        : opts.tags;
       result = await page.evaluate(
         async (tags) =>
           await window.axe.run(document, {
@@ -151,6 +188,9 @@ try {
       incomplete: result.incomplete,
     });
     totalViolations += result.violations.length;
+    for (const type of ['violations', 'incomplete', 'passes', 'inapplicable'])
+      for (const rule of result[type])
+        for (const tag of rule.tags) ranTags.add(tag);
 
     console.log(`## ${url}\n`);
     if (result.violations.length === 0) {
@@ -160,7 +200,7 @@ try {
         console.log(`### ${v.id} — ${v.help}`);
         console.log(`- **Impact:** ${v.impact ?? 'unknown'}`);
         console.log(
-          `- **Criteria:** ${v.tags.filter((t) => t.startsWith('wcag')).join(', ') || 'n/a'}`,
+          `- **axe WCAG tags:** ${v.tags.filter((t) => t.startsWith('wcag')).join(', ') || 'n/a'}`,
         );
         console.log(`- **Nodes:** ${v.nodes.length}`);
         for (const n of v.nodes.slice(0, 5)) {
@@ -191,8 +231,20 @@ if (opts.out) {
 }
 
 const failedPages = results.filter((result) => result.error).length;
+const scannedPages = results.length - failedPages;
+// axe ignores a tag it has no rules for, and skips experimental rules, so a
+// level could otherwise go unchecked without the scan saying so. Only a scan
+// that ran can say what it skipped: a page that failed to load checked nothing.
+const unchecked = scannedPages
+  ? opts.tags.filter((tag) => !ranTags.has(tag))
+  : [];
+if (unchecked.length)
+  console.log(
+    `\n**No axe rule tagged ${unchecked.join(', ')} ran.** ` +
+      'Check the criteria those versions added at those levels by hand.',
+  );
 console.log(
-  `\n---\n${totalViolations} violation type(s) across ${results.length - failedPages} scanned page(s); ${failedPages} page(s) could not be scanned.\n` +
+  `\n---\n${totalViolations} violation type(s) across ${scannedPages} scanned page(s); ${failedPages} page(s) could not be scanned.\n` +
     'axe finds roughly a third of real barriers. A clean run is a starting point,\n' +
     'not a pass — say so in the review.',
 );

@@ -8,8 +8,8 @@
  *   - focus traps (the same element twice running, by node identity)
  *   - focus dropped mid-walk back to the document body
  *   - focused elements scrolled or positioned out of view
- *   - focused elements obscured by an overlapping element — WCAG 2.2 SC 2.4.11
- *     (Focus Not Obscured), a new AA criterion most reviews miss
+ *   - focused elements covered at their centre by another element, such as a
+ *     sticky header — easy to miss by hand
  *   - positive tabindex
  *
  * Deliberately does not judge whether focus is visible, automate Shift+Tab
@@ -95,7 +95,7 @@ const DESCRIBE = () => {
     rect.top < innerHeight &&
     rect.left < innerWidth;
 
-  // SC 2.4.11: is the focused element actually covered at its own centre?
+  // Is the focused element covered at its own centre by something else?
   let obscuredBy = null;
   if (inViewport) {
     const x = Math.min(Math.max(rect.left + rect.width / 2, 1), innerWidth - 1);
@@ -212,8 +212,7 @@ try {
     }
     const notes = [];
     if (!d.inViewport) notes.push('**out of view**');
-    if (d.obscuredBy)
-      notes.push(`**obscured by \`${d.obscuredBy}\`** (SC 2.4.11)`);
+    if (d.obscuredBy) notes.push(`**obscured by \`${d.obscuredBy}\`**`);
     if (d.disabled) notes.push('disabled but focusable');
     if (d.tabindex && Number(d.tabindex) > 0)
       notes.push(`positive tabindex=${d.tabindex}`);
@@ -231,7 +230,7 @@ try {
   if (walkResult.trapped) {
     const last = real.at(-1);
     problems.push(
-      `**Focus trap:** focus stayed on \`${last?.selector}\` across two consecutive Tab presses. A keyboard user cannot get past it (SC 2.1.2 No Keyboard Trap).`,
+      `**Focus trap:** focus stayed on \`${last?.selector}\` across two consecutive Tab presses. A keyboard user cannot get past it.`,
     );
   } else if (walkResult.wrappedTo !== null) {
     notes.push(
@@ -266,7 +265,7 @@ try {
   const obscured = real.filter((d) => d.obscuredBy);
   if (obscured.length)
     problems.push(
-      `${obscured.length} focused element(s) obscured by another element — a WCAG 2.2 SC 2.4.11 (AA) failure if the covering element is persistent, such as a sticky header or cookie banner.`,
+      `${obscured.length} focused element(s) covered at their centre by another element. Check whether the covering element stays on screen, such as a sticky header or cookie banner, and how much of the focused element it hides.`,
     );
   const offscreen = real.filter((d) => !d.inViewport);
   if (offscreen.length)
