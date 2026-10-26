@@ -1,0 +1,35 @@
+/* Freshness — the "last updated" line under a content page's heading, ruled
+   off from the content below it:
+   <p class="govbb-freshness">
+     Last updated on <time datetime="2026-03-12">12 March 2026</time>
+   </p> */
+
+.govbb-freshness {
+  --govbb-freshness-rule-width: 4px;
+
+  /* Span the column wherever the line sits. As a direct child of the main
+     wrapper it would otherwise take the 42em measure, which at this smaller
+     size stops the rule short of the body text. */
+  max-inline-size: none;
+
+  /* Figma draws the rule as an inside stroke, so it eats into the padding
+     instead of adding to it. A border rather than an inset shadow, because
+     forced colors drops shadows. */
+  padding-bottom: calc(
+    var(--govbb-space-s) - var(--govbb-freshness-rule-width)
+  );
+  border-bottom: var(--govbb-freshness-rule-width) solid
+    var(--govbb-color-highlight);
+  font-size: var(--govbb-font-size-body-sm);
+  font-weight: 500;
+  line-height: var(--govbb-line-height-base);
+  color: var(--govbb-color-muted);
+}
+
+/* A line rendered with no content at all (e.g. React children that evaluate
+   to false) would otherwise still draw the rule. Whitespace defeats :empty,
+   and a hidden line still takes the `h1 + *` slot in govbb-prose, so the
+   paragraph after it loses the heading gap: leave the element out instead. */
+.govbb-freshness:empty {
+  display: none;
+}

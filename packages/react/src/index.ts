@@ -60,6 +60,8 @@ export type {
   HintProps,
   LabelProps,
 } from './form/form';
+export { Freshness } from './freshness/freshness';
+export type { FreshnessProps } from './freshness/freshness';
 export { Header } from './header/header';
 export type { HeaderProps } from './header/header';
 export { Input, TextArea } from './input/input';
