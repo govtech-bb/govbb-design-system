@@ -1,5 +1,6 @@
 import { expectNoAxeViolations } from '../testing/axe';
 import { render } from '@testing-library/react';
+import { createRef } from 'react';
 import { describe, expect, it } from 'vitest';
 import { Freshness } from './freshness';
 
@@ -26,6 +27,17 @@ describe('Freshness', () => {
     expect(container.firstElementChild!.className).toBe(
       'govbb-freshness extra',
     );
+  });
+
+  it('forwards the ref and other attributes', () => {
+    const ref = createRef<HTMLParagraphElement>();
+    render(
+      <Freshness ref={ref} id="last-updated">
+        Last updated on 12 March 2026
+      </Freshness>,
+    );
+    expect(ref.current?.tagName).toBe('P');
+    expect(ref.current?.id).toBe('last-updated');
   });
 });
 

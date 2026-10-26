@@ -2,7 +2,10 @@ import { cx } from 'class-variance-authority';
 import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
 
 export interface FreshnessProps extends HTMLAttributes<HTMLParagraphElement> {
-  /** The full line, e.g. "Last updated on" and a <time> element. */
+  /**
+   * The full line as inline content, e.g. "Last updated on" and a <time>
+   * element. Not a block element such as <Text as="p">: the root is a <p>.
+   */
   children: ReactNode;
 }
 
@@ -11,11 +14,9 @@ export interface FreshnessProps extends HTMLAttributes<HTMLParagraphElement> {
  * date format stay with the consumer, so pass the whole line as children.
  */
 export const Freshness = forwardRef<HTMLParagraphElement, FreshnessProps>(
-  function Freshness({ className, children, ...props }, ref) {
+  function Freshness({ className, ...props }, ref) {
     return (
-      <p ref={ref} className={cx('govbb-freshness', className)} {...props}>
-        {children}
-      </p>
+      <p ref={ref} className={cx('govbb-freshness', className)} {...props} />
     );
   },
 );

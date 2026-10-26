@@ -5,15 +5,28 @@
    </p> */
 
 .govbb-freshness {
-  margin: 0;
+  --govbb-freshness-rule-width: 4px;
+
+  /* Span the column wherever the line sits. As a direct child of the main
+     wrapper it would otherwise take the 42em measure, which at this smaller
+     size stops the rule short of the body text. */
+  max-inline-size: none;
 
   /* Figma draws the rule as an inside stroke, so it eats into the padding
      instead of adding to it. A border rather than an inset shadow, because
      forced colors drops shadows. */
-  padding-bottom: calc(var(--govbb-space-s) - 4px);
-  border-bottom: 4px solid var(--govbb-color-highlight);
+  padding-bottom: calc(
+    var(--govbb-space-s) - var(--govbb-freshness-rule-width)
+  );
+  border-bottom: var(--govbb-freshness-rule-width) solid
+    var(--govbb-color-highlight);
   font-size: var(--govbb-font-size-body-sm);
   font-weight: 500;
   line-height: var(--govbb-line-height-base);
   color: var(--govbb-color-muted);
+}
+
+/* A line with no date would otherwise still draw the rule. */
+.govbb-freshness:empty {
+  display: none;
 }
