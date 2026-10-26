@@ -121,7 +121,7 @@
   .govbb-header__nav-inner {
     flex-flow: row wrap;
     align-items: center;
-    gap: var(--govbb-space-s) var(--govbb-space-l);
+    gap: var(--govbb-space-s) var(--govbb-space-m);
     padding-block: 0;
   }
 
