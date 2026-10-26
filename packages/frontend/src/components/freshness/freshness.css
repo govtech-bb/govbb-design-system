@@ -28,7 +28,8 @@
 
 /* A line rendered with no content at all (e.g. React children that evaluate
    to false) would otherwise still draw the rule. Whitespace defeats :empty,
-   so leave the element out instead where you can. */
+   and a hidden line still takes the `h1 + *` slot in govbb-prose, so the
+   paragraph after it loses the heading gap: leave the element out instead. */
 .govbb-freshness:empty {
   display: none;
 }

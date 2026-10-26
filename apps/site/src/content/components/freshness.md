@@ -32,6 +32,11 @@ wording and the date format. Pass inline content only, such as text and a
 `time` element. The line is already a paragraph, so wrapping it in
 `<Text as="p">` nests one paragraph inside another.
 
+If a page has no date, leave the line out rather than rendering it empty, for
+example `{updated && <Freshness>…</Freshness>}`. An empty line is hidden, but
+inside `govbb-prose` it still sits straight after the heading, so the paragraph
+below it loses the heading's larger gap.
+
 ## Usage
 
 <div class="govbb-usage-guidance">
