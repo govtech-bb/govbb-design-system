@@ -24,8 +24,10 @@ import {
   cpSync,
   symlinkSync,
   realpathSync,
+  statSync,
+  readFileSync,
 } from 'node:fs';
-import { join, dirname, resolve } from 'node:path';
+import { join, dirname, resolve, sep } from 'node:path';
 import { createRequire } from 'node:module';
 import { tmpdir } from 'node:os';
 import { fileURLToPath } from 'node:url';
@@ -59,6 +61,9 @@ mkdirSync(empty);
 const page = (body, head = '') =>
   `<!doctype html><html lang="en"><head><meta charset="utf-8">${head}</head><body>${body}</body></html>`;
 
+const frontendDir = resolve(HERE, '../../../packages/frontend');
+const initAllScript = `<script type="module">import { initAll } from '/frontend/index.js'; initAll();</script>`;
+
 const pages = {
   // Server-rendered: content present without script, real form, no inline handlers.
   '/good.html': page(`<main><h1>Apply</h1><p>${'Body copy. '.repeat(20)}</p>
@@ -78,18 +83,17 @@ const pages = {
        '<h1>Apply</h1><p>' + 'Body copy. '.repeat(20) + '</p>' +
        '<form><button type="button" onclick="submit()">Continue</button></form>';</script>`,
   ),
-  // Behavioural component, correctly initialised (stands in for initAll()).
+  // Behavioural component, initialised by this repo's real initAll(), so a
+  // change to how the runtime marks elements fails here rather than in services.
   '/wired.html': page(
-    `<header data-govbb-module="header">Menu</header>
-     <script>for (const el of document.querySelectorAll('[data-govbb-module]')) el.dataset.govbbInit = '';</script>`,
+    `<header data-govbb-module="header">Menu</header>${initAllScript}`,
   ),
   // Declared but never initialised — initAll() missing.
   '/unwired.html': page(`<header data-govbb-module="header">Menu</header>`),
   // One recognised, one not — the typo case, which fails silently in a browser.
   '/typo.html': page(
     `<header data-govbb-module="header">Menu</header>
-     <div data-govbb-module="headr">?</div>
-     <script>document.querySelector('[data-govbb-module="header"]').dataset.govbbInit = '';</script>`,
+     <div data-govbb-module="headr">?</div>${initAllScript}`,
   ),
   // No behavioural components at all — must pass, not error.
   '/plain.html': page(`<main><h1>Nothing behavioural here</h1></main>`),
@@ -107,7 +111,22 @@ const pages = {
 };
 
 const server = createServer((req, res) => {
-  const body = pages[req.url.split('?')[0]];
+  const path = req.url.split('?')[0];
+  if (path.startsWith('/frontend/')) {
+    const file = join(frontendDir, path.slice('/frontend/'.length));
+    if (
+      !file.startsWith(frontendDir + sep) ||
+      !statSync(file, { throwIfNoEntry: false })?.isFile()
+    ) {
+      res.writeHead(404);
+      res.end('not found');
+      return;
+    }
+    res.writeHead(200, { 'content-type': 'text/javascript; charset=utf-8' });
+    res.end(readFileSync(file));
+    return;
+  }
+  const body = pages[path];
   if (!body) {
     res.writeHead(404);
     res.end('not found');
