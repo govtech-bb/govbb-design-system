@@ -36,7 +36,7 @@ export const Filter = forwardRef<HTMLDetailsElement, FilterProps>(
         }}
         {...props}
       >
-        <summary className="govbb-filter__summary">
+        <summary className="govbb-button govbb-button--ghost govbb-filter__summary">
           {has(summary) ? summary : 'Filter'}
         </summary>
         <form

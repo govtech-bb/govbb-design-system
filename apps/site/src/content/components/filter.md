@@ -9,7 +9,9 @@ group: Navigation
 
 ```html title="Filter"
 <details class="govbb-filter" open>
-  <summary class="govbb-filter__summary">Filter</summary>
+  <summary class="govbb-button govbb-button--ghost govbb-filter__summary">
+    Filter
+  </summary>
   <form class="govbb-filter__panel" method="get" action="/services">
     <details class="govbb-filter-group" open>
       <summary class="govbb-filter-group__summary" id="filter-type">

@@ -3,7 +3,9 @@
    form: Apply submits the checked options, and the page renders the results.
 
    <details class="govbb-filter">
-     <summary class="govbb-filter__summary">Filter</summary>
+     <summary class="govbb-button govbb-button--ghost govbb-filter__summary">
+       Filter
+     </summary>
      <form class="govbb-filter__panel" method="get">
        <details class="govbb-filter-group">…</details>
        <button class="govbb-button" type="submit">Apply</button>
@@ -16,18 +18,11 @@
   color: var(--govbb-color-ink);
 }
 
+/* A ghost button (see button.css) with the toggle's own padding and gap. */
 .govbb-filter__summary {
-  display: flex;
   gap: var(--govbb-space-m);
-  align-items: center;
-  inline-size: fit-content;
   padding: var(--govbb-space-xm);
-  color: var(--govbb-color-tertiary);
-  cursor: pointer;
   list-style: none;
-  text-decoration: underline;
-  text-underline-offset: 0.1em;
-  text-decoration-thickness: max(1px, 0.0625em);
 
   &::-webkit-details-marker {
     display: none;
@@ -35,11 +30,6 @@
 
   &::marker {
     content: '';
-  }
-
-  &:focus-visible {
-    outline: 4px solid var(--govbb-color-focus);
-    outline-offset: 2px;
   }
 }
 

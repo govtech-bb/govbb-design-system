@@ -35,14 +35,9 @@
   &::marker {
     content: '';
   }
-
-  &:focus-visible {
-    outline: 4px solid var(--govbb-color-focus);
-    outline-offset: 2px;
-  }
 }
 
-/* Chevron: points down when closed, up when open, drawn as two borders of a
+/* Chevron (18 by 10px): points down when closed, up when open, drawn as two borders of a
    turned square and nudged so the V centres on the text. */
 .govbb-filter-group__summary::after {
   content: '';
