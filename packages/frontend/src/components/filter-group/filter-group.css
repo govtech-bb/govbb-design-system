@@ -42,8 +42,8 @@
 .govbb-filter-group__summary::after {
   content: '';
   flex: none;
-  width: 0.5em;
-  height: 0.5em;
+  width: 0.65em;
+  height: 0.65em;
   border-top: 2px solid var(--govbb-color-tertiary);
   border-right: 2px solid var(--govbb-color-tertiary);
   rotate: 135deg;
