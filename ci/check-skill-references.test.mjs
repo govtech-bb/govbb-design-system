@@ -47,6 +47,8 @@ const cases = [
     '`.govbb-link.govbb-error-summary__linx`',
   ],
   ['token', '`--govbb-color-ink`', '`--govbb-color-inkX`'],
+  ['token family', '`--govbb-space-*`', '`--govbb-spcae-*`'],
+  ['class family', '`govbb-text-*`', '`govbb-txet-*`'],
   ['attribute', '`data-govbb-module`', '`data-govbb-moduleX`'],
   ['package export', '`@govtech-bb/frontend/css`', '`@govtech-bb/frontend/cs`'],
   [

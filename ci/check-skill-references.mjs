@@ -95,22 +95,34 @@ for (const [what, set] of Object.entries({ classes, tokens, attributes })) {
 }
 
 // Names are captured whole, so a misspelt suffix (govbb-button__labelX) cannot
-// pass as the valid name in front of it.
+// pass as the valid name in front of it. A trailing * names a family, as the
+// docs write it (--govbb-space-*, govbb-text-*).
 const NAME =
-  /(?<![\w-])(--govbb-[\w-]*\w|data-govbb-[\w-]*\w|govbb-[\w-]*\w|dataset\.govbb\w+)(\.(?:md|mjs|js|css|json|txt|svg|png|ico|woff2)\b)?/g;
+  /(?<![\w-])(--govbb-[\w-]*\w|data-govbb-[\w-]*\w|govbb-[\w-]*\w|dataset\.govbb\w+)([\w-]*\*)?(\.(?:md|mjs|js|css|json|txt|svg|png|ico|woff2)\b)?/g;
 const PACKAGE = /@govtech-bb\/(frontend|react)(\/[\w./*-]*[\w*])?/g;
 // A bare path counts only in backticks, so output files in shell examples
 // (`--out <scratch>/report.md`) are not taken for docs pages.
 const PAGE =
   /(?:https:\/\/design-system\.service\.alpha\.gov\.bb|`)(\/[a-z0-9-]+(?:\/[a-z0-9-]+)*(?:\.(?:md|txt)\b|\/(?![\w-])))/g;
 
-const problem = (name) => {
+// A family passes if any real name starts with what comes before the *.
+const has = (set, name, family) =>
+  family
+    ? [...set].some((real) => real.startsWith(name + family.slice(0, -1)))
+    : set.has(name);
+
+const problem = (name, family) => {
   if (name.startsWith('dataset.')) name = `data-${kebab(name.slice(8))}`;
-  if (name.startsWith('--')) return tokens.has(name) ? null : 'no such token';
+  if (name.startsWith('--'))
+    return has(tokens, name, family) ? null : 'no such token';
   if (name.startsWith('data-'))
-    return attributes.has(name) ? null : 'not used by the runtime';
+    return has(attributes, name, family) ? null : 'not used by the runtime';
   // Token names are passed bare to contrast.mjs.
-  if (classes.has(name) || tokens.has(`--${name}`) || name === REPO_SLUG)
+  if (
+    has(classes, name, family) ||
+    has(tokens, `--${name}`, family) ||
+    name === REPO_SLUG
+  )
     return null;
   return 'no such class or token';
 };
@@ -127,11 +139,11 @@ for (const file of sources) {
     .forEach((line, index) => {
       const fail = (name, reason) =>
         failures.push(`${file}:${index + 1}  ${name}  (${reason})`);
-      for (const [, name, extension] of line.matchAll(NAME)) {
+      for (const [, name, family, extension] of line.matchAll(NAME)) {
         if (extension) continue; // a file name, like govbb-contrast.md
         checked++;
-        const reason = problem(name);
-        if (reason) fail(name, reason);
+        const reason = problem(name, family);
+        if (reason) fail(name + (family ?? ''), reason);
       }
       for (const [match, name, subpath] of line.matchAll(PACKAGE)) {
         checked++;
