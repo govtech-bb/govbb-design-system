@@ -241,7 +241,7 @@ const unchecked = scannedPages
 if (unchecked.length)
   console.log(
     `\n**No axe rule tagged ${unchecked.join(', ')} ran.** ` +
-      'Check the criteria at those versions and levels by hand.',
+      'Check the criteria those versions added at those levels by hand.',
   );
 console.log(
   `\n---\n${totalViolations} violation type(s) across ${scannedPages} scanned page(s); ${failedPages} page(s) could not be scanned.\n` +
