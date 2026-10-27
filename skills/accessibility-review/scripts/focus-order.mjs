@@ -158,10 +158,13 @@ async function walk(page, key, maxTabs) {
     }
     if (d.revisitOf !== null) {
       // On a page with one focusable element the ring is element, out of the
-      // document, the same element: a wrap, not a trap.
-      const prev = seq.at(-1);
+      // document, the same element: a wrap, not a trap. A real wrap always
+      // lands on the first stop, so a return anywhere else is still suspect.
+      const prev = seq.filter((s) => !s.leftDocument).at(-1);
+      const wrappedThroughDocument =
+        seq.at(-1)?.leftDocument && d.revisitOf === 0;
       const sameAsPrevious =
-        prev && !prev.leftDocument && prev.index === d.revisitOf;
+        prev && prev.index === d.revisitOf && !wrappedThroughDocument;
       if (sameAsPrevious && d.isFrame) {
         // Focus went inside the frame. Not a trap — just past what we can see.
         enteredFrame = d.selector;
@@ -236,7 +239,7 @@ try {
     }
     const notes = [];
     if (!d.inViewport) notes.push('**out of view**');
-    if (d.obscuredBy) notes.push(`**obscured by \`${d.obscuredBy}\`**`);
+    if (d.obscuredBy) notes.push(`**obscured by \`${cell(d.obscuredBy)}\`**`);
     if (d.disabled) notes.push('disabled but focusable');
     if (d.tabindex > 0) notes.push(`positive tabindex=${d.tabindex}`);
     if (d.isFrame) notes.push('iframe — walk cannot see inside');
