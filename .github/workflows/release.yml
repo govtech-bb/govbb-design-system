@@ -22,7 +22,6 @@ jobs:
       needed: ${{ steps.release.outputs.needed }}
       version: ${{ steps.release.outputs.version }}
       npm_tag: ${{ steps.release.outputs.npm_tag }}
-      sha: ${{ steps.release.outputs.sha }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -33,7 +32,7 @@ jobs:
           node-version: 24
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - name: Reconcile release state
+      - name: Check release state and changelog
         id: release
         env:
           GH_TOKEN: ${{ github.token }}
@@ -52,7 +51,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ needs.check.outputs.sha }}
           fetch-depth: 0
           persist-credentials: false
       - uses: ./.github/actions/release-checks
@@ -67,8 +65,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ needs.check.outputs.sha }}
-          fetch-depth: 0
           persist-credentials: false
       - run: corepack enable
       - uses: actions/setup-node@v4
@@ -77,8 +73,10 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm --filter './packages/*' build
-      - name: Verify notes and pack both packages
-        run: node ci/release.mjs pack "$RUNNER_TEMP/packages"
+      - name: Pack both packages
+        run: |
+          mkdir -p "$RUNNER_TEMP/packages"
+          pnpm --filter './packages/*' pack --pack-destination "$RUNNER_TEMP/packages"
       - uses: actions/upload-artifact@v4
         id: artifact
         with:
@@ -96,7 +94,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ needs.check.outputs.sha }}
           fetch-depth: 0
       - run: corepack enable
       - uses: actions/setup-node@v4
@@ -115,7 +112,7 @@ jobs:
       - name: Reserve the release source
         env:
           RELEASE_VERSION: ${{ needs.check.outputs.version }}
-          RELEASE_SHA: ${{ needs.check.outputs.sha }}
+          RELEASE_SHA: ${{ github.sha }}
         run: |
           set -euo pipefail
           tag="v$RELEASE_VERSION"
@@ -130,10 +127,7 @@ jobs:
       - name: Publish or reconcile exact tarballs
         env:
           NPM_CONFIG_PROVENANCE: 'true'
-          RELEASE_SHA: ${{ needs.check.outputs.sha }}
-        # npm reads this environment value for its source digest. A later manual
-        # dispatch must attest the checked-out release, not the dispatch commit.
-        run: GITHUB_SHA="$RELEASE_SHA" node ci/release.mjs publish "$RUNNER_TEMP/packages"
+        run: node ci/release.mjs publish "$RUNNER_TEMP/packages"
       - name: Create GitHub release
         env:
           GH_TOKEN: ${{ github.token }}

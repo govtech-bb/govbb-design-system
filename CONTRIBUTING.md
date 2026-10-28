@@ -114,81 +114,69 @@ Releases run entirely in GitHub. There is no local release command.
 
 1. Open **Actions → Prepare release → Run workflow**, select **main**, and
    enter the next version, for example `1.0.0-alpha.30`. Leave
-   **Replace an unreleased version** unchecked for a normal release.
-2. The workflow opens or refreshes the single `release/next` PR. It updates
-   both package versions and generates `CHANGELOG.md` with git-cliff.
-3. Review the versions and changelog, wait for the required checks, then merge.
-   If main gains release-note entries while the PR is open, run **Prepare
-   release** again with the same version. Do not edit the automated branch
-   or its changelog by hand.
-4. **Release** runs automatically after the merge. It checks the exact commit
-   being released, packs both packages, reserves the Git tag, publishes to npm
-   with provenance, and creates the GitHub release.
+   **replace-unreleased** unchecked.
+2. The workflow opens or refreshes `release/next`, updating both package
+   versions and generating `CHANGELOG.md` with git-cliff.
+3. Review the PR and wait for the required checks. If main gains changelog
+   entries before you merge, run **Prepare release** again with the same
+   version and review the updated notes. Do not hand-edit the automated branch.
+4. Merge the PR. **Release** checks the merge commit, packs both packages,
+   creates its Git tag, publishes to npm with provenance, and creates the
+   GitHub release.
 
 Versions must be canonical 1.x SemVer: no leading `v`, leading-zero numeric
 parts, or build metadata. Prereleases use npm's `alpha` channel; stable versions
 use `latest`. Frontend and React always share a version. React's
-`workspace:^` dependency becomes `^<release version>` in its npm tarball.
+`workspace:^` dependency becomes `^<release version>` in the packed package.
 
 ### One-time repository setup
 
-A repository administrator must configure these before using **Prepare release**:
+A repository administrator must:
 
 - Install a GitHub App on **this repository only**, with **Contents: read and
-  write** and **Pull requests: read and write**. It does not need a branch
-  protection bypass.
-- Set the Actions variable `RELEASE_APP_CLIENT_ID` to the App's client ID and
-  the Actions secret `RELEASE_APP_PRIVATE_KEY` to its private key. The workflow
-  requests a short-lived repository-scoped token.
+  write** and **Pull requests: read and write**. No branch-protection bypass.
+- Set the Actions variable `RELEASE_APP_CLIENT_ID` and secret
+  `RELEASE_APP_PRIVATE_KEY` for that App.
 - Keep both npm packages' trusted publishers pointed at this repository's
   `release.yml` workflow. Publishing uses GitHub OIDC, not an npm token.
 
-The App token lets an automated PR trigger the usual required checks.
-`GITHUB_TOKEN` alone does not trigger those PR workflows. Branch protection
-and required reviews remain unchanged.
+The short-lived App token lets the release PR trigger the usual required
+checks; `GITHUB_TOKEN` alone would not. Reviews and branch protection stay in place.
 
 ### Failed or interrupted releases
 
-Use the Actions UI for recovery; do not publish packages or move tags manually.
+Use the Actions UI for recovery. Do not move release tags or publish from a laptop.
 
-| Failure                                                                                                  | What to do                                                                                                                                                                                    |
-| -------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Preparation fails before opening the PR                                                                  | Fix the reported problem, then run **Prepare release** again with the same version. The failed runner leaves no local branch to clean up.                                                     |
-| PR changelog is stale                                                                                    | Run **Prepare release** again with the same version, review the refreshed PR, then merge.                                                                                                     |
-| A transient CI, network or registry failure                                                              | Use **Re-run failed jobs** on the original **Release** run. After packing succeeds, this reuses that run's saved tarballs.                                                                    |
-| A source defect or stale changelog fails the gate after merge, before a tag or either npm package exists | Merge the fix, then run **Prepare release** with a **newer version** and **Replace an unreleased version** checked. Review and merge that PR. Retrying the old commit cannot include the fix. |
-| One package publishes, a response is lost, or GitHub release creation fails                              | Re-run the original release. It checks npm integrity, skips identical published packages, and finishes the missing work. Do not replace this version.                                         |
-| An integrity, tag-source or distribution-tag mismatch                                                    | Stop and have a maintainer reconcile the original run, artifact and registry state. The workflow refuses to guess or overwrite history.                                                       |
+| Failure                                                                                         | Recovery                                                                                                                           |
+| ----------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| Preparation fails, or the open PR's changelog is stale                                          | Run **Prepare release** again with the same version.                                                                               |
+| A transient CI or registry failure                                                              | Choose **Re-run failed jobs** on the original **Release** run.                                                                     |
+| A source defect or stale changelog fails after merge, before a tag or either npm package exists | Merge the fix. Run **Prepare release** with a **newer version** and **replace-unreleased** checked, then review and merge that PR. |
+| One package publishes, a response is lost, or GitHub release creation fails                     | Re-run the original release. It verifies npm integrity and skips identical published packages. Do not replace this version.        |
+| An integrity, tag-source or distribution-tag mismatch                                           | Stop for maintainer reconciliation. The workflow will not overwrite published history.                                             |
 
-You can also dispatch **Release** on **main** to retry its current version.
-This selects the commit that set **both** versions, not later source fixes.
-Prefer **Re-run failed jobs** when publication has begun: its packed artifact
-is retained for 30 days. A full re-run or fresh dispatch packs again and must
-match any bytes already published. If the original artifact has expired and
-cannot be reproduced, stop for maintainer recovery rather than change the tag.
+All jobs use the workflow's original commit. Once main has advanced, use
+**Re-run failed jobs**, not a fresh dispatch: testing later source cannot repair
+the original release. A manual **Release** dispatch can retry while main is
+still at the version-setting commit, and completed releases are no-ops.
 
-Preparation and publication share a queued concurrency group. Runs do not
-replace one another in the pending slot; GitHub permits up to 100 pending runs.
-The release decision runs inside that group. Preparation also refuses a second
-release until both current packages and the GitHub release are complete.
-Only an explicitly replaced, untagged and wholly unpublished version may be
-skipped.
+Packed artifacts are retained for 30 days. Re-running failed publication jobs
+reuses the original artifact. A full re-run rebuilds and must match any bytes
+already published; if that is impossible, stop for maintainer recovery.
 
-The Git tag records the immutable source before npm publication. npm's unique
-package/version identity and SHA-512 tarball integrity make retries safe after
-a lost response. The GitHub release records completion only after both npm
-packages and their distribution tags have been verified. An API error is never
-treated as evidence that a release is absent.
+Preparation and publication share a queue (up to GitHub's limit of 100 pending
+runs). Preparation blocks a new release until the current one is complete,
+unless it is explicitly replaced before tagging or publication. The immutable
+Git tag reserves the source; npm's unique package/version and SHA-512 integrity
+allow safe recovery after a lost response. API errors never mean “not published.”
 
 ### Checking release automation
 
-`pnpm test:release` checks version rules and exercises the CI helpers with real
-Git, git-cliff, pnpm, npm and gh commands against temporary repositories and a
-localhost registry/API. It never publishes to npm. Workflow assertions cover
-the shared queue, checked source, permissions and artifact handoff.
-
-These checks do not prove the App installation or npm OIDC configuration.
-A maintainer still needs to verify those in GitHub on the first release.
+`pnpm test:release` runs the focused release tests with real Git, git-cliff,
+pnpm, npm and gh commands against temporary repositories and localhost services.
+It never publishes to npm. GitHub validates workflow wiring and runs the
+required suites. The App installation and npm OIDC configuration still need
+verification on the first hosted release.
 
 ## Tooling at a glance
 
