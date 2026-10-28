@@ -132,11 +132,17 @@ When it merges, the **Release** workflow:
 4. creates a GitHub release with the changelog section as notes.
 
 A run releases whatever version is on `main` and has no GitHub release yet, so
-a release that fails or is cancelled is finished by the next run. To retry
-straight away, fix the cause on `main` and run the **Release** workflow from
-the Actions tab. It tags the commit that set the version and skips whatever
-already happened. The version must be newer than every existing tag, and
-`release:prepare` checks this before it branches. Don't publish from a laptop — both packages
+a release that fails or is cancelled is finished by the next run, and you can
+retry straight away by running the **Release** workflow from the Actions tab.
+It tags the commit that set the version and skips whatever already happened.
+
+The gate runs on that commit, because that's what gets published. A re-run
+gets past a flaky failure. A real one can't be fixed in place: merge the fix,
+then prepare the next version, and the failed one is never published.
+
+The version must be newer than every existing tag, and `release:prepare`
+checks this before it branches. It also refuses while the version on `main`
+isn't on npm yet, so only one release is in flight at a time. Don't publish from a laptop — both packages
 have `prepublishOnly` builds as a backstop, but the workflow is the source of
 truth.
 

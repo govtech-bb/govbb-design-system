@@ -13,12 +13,13 @@ import { execFileSync } from 'node:child_process';
 import { gitTags, releaseVersionProblem } from './release-version.mjs';
 
 // pnpm and npm are .cmd shims on Windows, which only run through a shell.
-// git doesn't need one, and its commit message would be split at the spaces.
+// Node deprecates passing args with a shell (DEP0190), so they're joined into
+// one command; they're fixed strings or the already checked version, so none
+// needs quoting. git doesn't need a shell, and its commit message has spaces.
 const exec = (cmd, args, options) =>
-  execFileSync(cmd, args, {
-    ...options,
-    shell: process.platform === 'win32' && cmd !== 'git',
-  });
+  process.platform === 'win32' && cmd !== 'git'
+    ? execFileSync([cmd, ...args].join(' '), { ...options, shell: true })
+    : execFileSync(cmd, args, options);
 const run = (cmd, args) => exec(cmd, args, { stdio: 'inherit' });
 const read = (cmd, args) => exec(cmd, args, { encoding: 'utf8' });
 const succeeds = (cmd, args) => {
@@ -50,8 +51,21 @@ if (problem) {
 if (tags.includes(`v${version}`)) {
   fail(`v${version} is already released.`);
 }
-if (succeeds('npm', ['view', `@govtech-bb/frontend@${version}`, 'version'])) {
+const published = (v) =>
+  succeeds('npm', ['view', `@govtech-bb/frontend@${v}`, 'version']);
+if (published(version)) {
   fail(`@govtech-bb/frontend@${version} is already on npm.`);
+}
+// one release in flight at a time: if two release PRs merged close together,
+// the Release workflow would only see the later version on main and skip the
+// earlier one
+const mainVersion = JSON.parse(
+  read('git', ['show', 'origin/main:packages/frontend/package.json']),
+).version;
+if (!published(mainVersion)) {
+  fail(
+    `${mainVersion}, the version on main, isn't on npm yet. Let its release finish first.`,
+  );
 }
 if (
   succeeds('git', [
@@ -70,6 +84,9 @@ const start = startBranch
   ? [startBranch]
   : ['--detach', read('git', ['rev-parse', 'HEAD']).trim()];
 run('git', ['switch', '--no-track', '-c', branch, 'origin/main']);
+// Ctrl-C would otherwise kill this script before the catch below cleans up;
+// with a listener, the step being run gets the signal and fails instead
+process.on('SIGINT', () => {});
 try {
   run('pnpm', [
     '--filter',

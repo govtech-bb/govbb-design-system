@@ -20,6 +20,11 @@ on:
 permissions:
   contents: read
 
+# one run at a time. A run decides what to release only once it starts, from
+# main as it is then, so a queued run that GitHub replaces with a newer one
+# loses nothing: the newer run sees the same main.
+concurrency: release
+
 jobs:
   # the GitHub release is the last step, so if it exists the version is out
   check:
@@ -39,25 +44,25 @@ jobs:
         run: |
           set -euo pipefail
           version=$(jq -r .version packages/frontend/package.json)
-          if gh release view "v$version" > /dev/null 2>&1; then
-            echo "v$version is already released"
-            echo "needed=false" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-
           react_version=$(jq -r .version packages/react/package.json)
           if [[ "$version" != "$react_version" ]]; then
             echo "frontend ($version) and react ($react_version) must share a version" >&2
             exit 1
           fi
 
+          if gh release view "v$version" > /dev/null 2>&1; then
+            echo "v$version is already released"
+            echo "needed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
           git fetch --quiet --unshallow --tags origin
           npm_tag=$(node ci/release-version.mjs "$version")
 
-          # the main commit that last changed the version, not whatever is on
-          # main by the time this runs
+          # the main commit that last changed either version, not whatever is
+          # on main by the time this runs
           sha=$(git log --first-parent --diff-merges=first-parent -1 -s --format=%H \
-            -G'"version":' -- packages/frontend/package.json)
+            -G'"version":' -- packages/frontend/package.json packages/react/package.json)
 
           echo "needed=true" >> "$GITHUB_OUTPUT"
           echo "version=$version" >> "$GITHUB_OUTPUT"
@@ -68,9 +73,6 @@ jobs:
     needs: check
     if: needs.check.outputs.needed == 'true'
     runs-on: ubuntu-latest
-    # one release at a time; a queued run that gets replaced loses nothing,
-    # because the run replacing it releases the same version
-    concurrency: release
     permissions:
       contents: write
       id-token: write # npm provenance
@@ -87,7 +89,8 @@ jobs:
           registry-url: https://registry.npmjs.org
       - run: pnpm install --frozen-lockfile
 
-      # same gate as ci.yml — never release a red tree
+      # same gate as ci.yml, on the commit that gets published — never
+      # release a red tree
       - run: pnpm lint
       - run: pnpm format:check
       - run: pnpm -r typecheck
