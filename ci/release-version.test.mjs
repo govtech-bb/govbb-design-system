@@ -37,6 +37,17 @@ expect(
 expect('refuses 2.x', accepts('2.0.0'), false);
 expect('refuses a leading v', accepts('v1.0.0-alpha.30'), false);
 expect('refuses a missing version', accepts(undefined), false);
+expect('refuses a leading zero in a number', accepts('1.01.0'), false);
+expect(
+  'refuses a leading zero in a numeric prerelease identifier',
+  accepts('1.0.0-alpha.030'),
+  false,
+);
+expect(
+  'accepts a zero and alphanumerics starting with a digit',
+  accepts('1.0.0-alpha.0.0a', []),
+  true,
+);
 expect(
   'refuses an already tagged version as a downgrade',
   accepts('1.0.0-alpha.28'),
@@ -77,6 +88,11 @@ expect(
 expect(
   'a longer prerelease is newer',
   compareVersions('1.0.0-alpha.1.1', '1.0.0-alpha.1') > 0,
+  true,
+);
+expect(
+  'equal numbers fall through to the prerelease',
+  compareVersions('1.1.0-alpha.1', '1.1.0-alpha.9') < 0,
   true,
 );
 expect('build metadata is ignored', compareVersions('1.0.0+a', '1.0.0+b'), 0);

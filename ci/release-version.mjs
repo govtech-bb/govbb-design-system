@@ -12,10 +12,18 @@
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 
-const RELEASE_VERSION =
-  /^1\.(\d+)\.(\d+)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+[0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*)?$/;
-const SEMVER =
-  /^(\d+)\.(\d+)\.(\d+)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+[0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*)?$/;
+// numbers, including numeric prerelease identifiers, can't have leading
+// zeros; npm refuses them
+const NUMBER = String.raw`(?:0|[1-9]\d*)`;
+const IDENTIFIER = String.raw`(?:${NUMBER}|\d*[A-Za-z-][0-9A-Za-z-]*)`;
+const PRERELEASE = String.raw`(?:-(${IDENTIFIER}(?:\.${IDENTIFIER})*))?`;
+const BUILD = String.raw`(?:\+[0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*)?`;
+const SEMVER = new RegExp(
+  `^(${NUMBER})\\.(${NUMBER})\\.(${NUMBER})${PRERELEASE}${BUILD}$`,
+);
+const RELEASE_VERSION = new RegExp(
+  `^(1)\\.(${NUMBER})\\.(${NUMBER})${PRERELEASE}${BUILD}$`,
+);
 
 export const isReleaseVersion = (version) => RELEASE_VERSION.test(version);
 
@@ -36,7 +44,8 @@ export const compareVersions = (a, b) => {
   const [, ...x] = a.match(SEMVER);
   const [, ...y] = b.match(SEMVER);
   for (let i = 0; i < 3; i++) {
-    if (x[i] !== y[i]) return Number(x[i]) - Number(y[i]);
+    const order = Number(x[i]) - Number(y[i]);
+    if (order) return order;
   }
   if (!x[3] || !y[3]) return (x[3] ? -1 : 0) + (y[3] ? 1 : 0);
   const xs = x[3].split('.');
