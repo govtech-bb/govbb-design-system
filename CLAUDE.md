@@ -44,6 +44,7 @@ Use [Conventional Commits](https://www.conventionalcommits.org/): `type(scope): 
 - A `commit-msg` hook runs **commitlint** and rejects non-conforming messages. Do **not** use `--no-verify` to get around it.
 - **scope = the component name** (lowercase: `button`, `checkbox`, …). The changelog is grouped into per-component sections by scope, so the scope is meaningful, not decorative.
 - Omit the scope only for genuinely repo-wide changes (deps, ci, tooling, docs) — those go under a `### General` section.
+- The one exception is `chore(release): vX.Y.Z`, the commit `pnpm release:prepare` makes. git-cliff skips it, so it never reaches the changelog.
 - `subject`: imperative, lowercase, no trailing period.
 
 ```
