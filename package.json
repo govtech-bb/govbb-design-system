@@ -25,6 +25,7 @@
     "format:check": "prettier --check .",
     "changelog": "git-cliff --output CHANGELOG.md",
     "changelog:unreleased": "git-cliff --unreleased --tag unreleased --output CHANGELOG.md",
+    "release:prepare": "node ci/prepare-release.mjs",
     "test:visual": "playwright test -c ci/visual-regression/playwright.config.ts",
     "storybook": "pnpm --filter @govtech-bb/frontend build && storybook dev -p 6006 --disable-telemetry",
     "storybook:build": "pnpm --filter @govtech-bb/frontend build && storybook build --disable-telemetry",

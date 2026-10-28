@@ -110,22 +110,31 @@ Do **not** manually edit `CHANGELOG.md` — fix the commit message instead and r
 
 ## Releasing
 
-Releases are one button: the **Release** workflow in GitHub Actions
-(`workflow_dispatch`). Give it a version (e.g. `0.1.0`, no leading `v`) and it:
+A release is an ordinary pull request. From a clean checkout, run:
 
-1. re-runs the full CI gate (lint, typecheck, test, build);
-2. bumps `@govtech-bb/frontend` and `@govtech-bb/react` to that version
-   (lockstep — the two always share a version);
-3. regenerates `CHANGELOG.md` with git-cliff, commits
-   `chore: release vX.Y.Z` and tags `vX.Y.Z` on `main`;
-4. publishes both packages to npm with provenance (the `workspace:^` dep in
-   react is rewritten to `^X.Y.Z` at publish time);
-5. creates a GitHub release with the changelog section as notes.
+```bash
+pnpm release:prepare 1.0.0-alpha.30   # no leading v
+```
 
-Requires the `NPM_TOKEN` repo secret (npm automation token with publish
-rights on the `@govtech-bb` scope). Don't publish from a laptop — both
-packages have `prepublishOnly` builds as a backstop, but the workflow is the
-source of truth.
+It branches `release/vX.Y.Z` from `origin/main`, bumps `@govtech-bb/frontend`
+and `@govtech-bb/react` to that version (lockstep — the two always share a
+version), regenerates `CHANGELOG.md` with git-cliff and commits
+`chore(release): vX.Y.Z`. Push the branch and open a PR as usual; it needs the
+same passing checks as any other PR.
+
+When it merges, the **Release** workflow:
+
+1. re-runs the full CI gate (lint, typecheck, test, build, Storybook);
+2. tags `vX.Y.Z` on the merge commit;
+3. publishes both packages to npm with provenance through npm trusted
+   publishing (the `workspace:^` dep in react is rewritten to `^X.Y.Z` at
+   publish time);
+4. creates a GitHub release with the changelog section as notes.
+
+If a step fails, re-run the workflow (or run it from the Actions tab). It
+skips whatever already happened. Don't publish from a laptop — both packages
+have `prepublishOnly` builds as a backstop, but the workflow is the source of
+truth.
 
 ## Tooling at a glance
 
