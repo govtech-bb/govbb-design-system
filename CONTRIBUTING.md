@@ -110,46 +110,85 @@ Do **not** manually edit `CHANGELOG.md` — fix the commit message instead and r
 
 ## Releasing
 
-A release is an ordinary pull request. From a clean checkout, run:
+Releases run entirely in GitHub. There is no local release command.
 
-```bash
-pnpm release:prepare 1.0.0-alpha.30   # no leading v
-```
+1. Open **Actions → Prepare release → Run workflow**, select **main**, and
+   enter the next version, for example `1.0.0-alpha.30`. Leave
+   **Replace an unreleased version** unchecked for a normal release.
+2. The workflow opens or refreshes the single `release/next` PR. It updates
+   both package versions and generates `CHANGELOG.md` with git-cliff.
+3. Review the versions and changelog, wait for the required checks, then merge.
+   If main gains release-note entries while the PR is open, run **Prepare
+   release** again with the same version. Do not edit the automated branch
+   or its changelog by hand.
+4. **Release** runs automatically after the merge. It checks the exact commit
+   being released, packs both packages, reserves the Git tag, publishes to npm
+   with provenance, and creates the GitHub release.
 
-It branches `release/vX.Y.Z` from `origin/main`, bumps `@govtech-bb/frontend`
-and `@govtech-bb/react` to that version (lockstep — the two always share a
-version), regenerates `CHANGELOG.md` with git-cliff and commits
-`chore(release): vX.Y.Z`. Push the branch and open a PR as usual; it needs the
-same passing checks as any other PR.
+Versions must be canonical 1.x SemVer: no leading `v`, leading-zero numeric
+parts, or build metadata. Prereleases use npm's `alpha` channel; stable versions
+use `latest`. Frontend and React always share a version. React's
+`workspace:^` dependency becomes `^<release version>` in its npm tarball.
 
-When it merges, the **Release** workflow:
+### One-time repository setup
 
-1. re-runs the full CI gate (lint, typecheck, test, build, Storybook);
-2. tags `vX.Y.Z` on the merge commit;
-3. publishes both packages to npm with provenance through npm trusted
-   publishing (the `workspace:^` dep in react is rewritten to `^X.Y.Z` at
-   publish time);
-4. creates a GitHub release with the changelog section as notes.
+A repository administrator must configure these before using **Prepare release**:
 
-A run releases whatever version is on `main` and has no GitHub release yet, so
-a release that fails or is cancelled is finished by the next run, and you can
-retry straight away by running the **Release** workflow from the Actions tab.
-It tags the commit that set the version and skips whatever already happened.
+- Install a GitHub App on **this repository only**, with **Contents: read and
+  write** and **Pull requests: read and write**. It does not need a branch
+  protection bypass.
+- Set the Actions variable `RELEASE_APP_CLIENT_ID` to the App's client ID and
+  the Actions secret `RELEASE_APP_PRIVATE_KEY` to its private key. The workflow
+  requests a short-lived repository-scoped token.
+- Keep both npm packages' trusted publishers pointed at this repository's
+  `release.yml` workflow. Publishing uses GitHub OIDC, not an npm token.
 
-The gate runs on that commit, because that's what gets published. A re-run
-gets past a flaky failure. A real one can't be fixed in place: merge the fix,
-then prepare the next version with `--replace-unreleased`, and the failed one
-is never published:
+The App token lets an automated PR trigger the usual required checks.
+`GITHUB_TOKEN` alone does not trigger those PR workflows. Branch protection
+and required reviews remain unchanged.
 
-```bash
-pnpm release:prepare 1.0.0-alpha.31 --replace-unreleased
-```
+### Failed or interrupted releases
 
-The version must be newer than every existing tag, and `release:prepare`
-checks this before it branches. It also refuses while the version on `main`
-isn't on npm yet, so only one release is in flight at a time. Don't publish from a laptop — both packages
-have `prepublishOnly` builds as a backstop, but the workflow is the source of
-truth.
+Use the Actions UI for recovery; do not publish packages or move tags manually.
+
+| Failure                                                                                                  | What to do                                                                                                                                                                                    |
+| -------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Preparation fails before opening the PR                                                                  | Fix the reported problem, then run **Prepare release** again with the same version. The failed runner leaves no local branch to clean up.                                                     |
+| PR changelog is stale                                                                                    | Run **Prepare release** again with the same version, review the refreshed PR, then merge.                                                                                                     |
+| A transient CI, network or registry failure                                                              | Use **Re-run failed jobs** on the original **Release** run. After packing succeeds, this reuses that run's saved tarballs.                                                                    |
+| A source defect or stale changelog fails the gate after merge, before a tag or either npm package exists | Merge the fix, then run **Prepare release** with a **newer version** and **Replace an unreleased version** checked. Review and merge that PR. Retrying the old commit cannot include the fix. |
+| One package publishes, a response is lost, or GitHub release creation fails                              | Re-run the original release. It checks npm integrity, skips identical published packages, and finishes the missing work. Do not replace this version.                                         |
+| An integrity, tag-source or distribution-tag mismatch                                                    | Stop and have a maintainer reconcile the original run, artifact and registry state. The workflow refuses to guess or overwrite history.                                                       |
+
+You can also dispatch **Release** on **main** to retry its current version.
+This selects the commit that set **both** versions, not later source fixes.
+Prefer **Re-run failed jobs** when publication has begun: its packed artifact
+is retained for 30 days. A full re-run or fresh dispatch packs again and must
+match any bytes already published. If the original artifact has expired and
+cannot be reproduced, stop for maintainer recovery rather than change the tag.
+
+Preparation and publication share a queued concurrency group. Runs do not
+replace one another in the pending slot; GitHub permits up to 100 pending runs.
+The release decision runs inside that group. Preparation also refuses a second
+release until both current packages and the GitHub release are complete.
+Only an explicitly replaced, untagged and wholly unpublished version may be
+skipped.
+
+The Git tag records the immutable source before npm publication. npm's unique
+package/version identity and SHA-512 tarball integrity make retries safe after
+a lost response. The GitHub release records completion only after both npm
+packages and their distribution tags have been verified. An API error is never
+treated as evidence that a release is absent.
+
+### Checking release automation
+
+`pnpm test:release` checks version rules and exercises the CI helpers with real
+Git, git-cliff, pnpm, npm and gh commands against temporary repositories and a
+localhost registry/API. It never publishes to npm. Workflow assertions cover
+the shared queue, checked source, permissions and artifact handoff.
+
+These checks do not prove the App installation or npm OIDC configuration.
+A maintainer still needs to verify those in GitHub on the first release.
 
 ## Tooling at a glance
 

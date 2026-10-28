@@ -1,0 +1,78 @@
+name: Prepare release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Canonical 1.x version, without a leading v
+        required: true
+        type: string
+      replace-unreleased:
+        description: Replace a failed version only if it is untagged and neither package is published
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+# Preparation cannot race publication, and pending releases must not disappear.
+concurrency:
+  group: release
+  queue: max
+
+jobs:
+  prepare:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+          persist-credentials: false
+      - run: corepack enable
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Prepare version and changelog
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_VERSION: ${{ inputs.version }}
+          REPLACE_UNRELEASED: ${{ inputs.replace-unreleased }}
+        run: node ci/prepare-release.mjs
+      - name: Create repository-scoped App token
+        id: app
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3
+        with:
+          client-id: ${{ vars.RELEASE_APP_CLIENT_ID }}
+          private-key: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}
+          permission-contents: write
+          permission-pull-requests: write
+      - name: Create or refresh release PR
+        id: pr
+        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8
+        with:
+          token: ${{ steps.app.outputs.token }}
+          branch: release/next
+          base: main
+          add-paths: |
+            packages/frontend/package.json
+            packages/react/package.json
+            CHANGELOG.md
+          commit-message: 'chore(release): v${{ inputs.version }}'
+          title: 'chore(release): v${{ inputs.version }}'
+          body: |
+            Prepared from main by the Prepare release workflow.
+
+            - Review both package versions and the generated changelog.
+            - If main advances, run Prepare release again with this version before merging.
+            - Passing checks and merging this PR authorize npm publication.
+
+            This branch is maintained by automation. Make source fixes in separate PRs.
+      - name: Show release PR
+        env:
+          RELEASE_PR_URL: ${{ steps.pr.outputs.pull-request-url }}
+        run: |
+          printf 'Release PR: %s\n' "$RELEASE_PR_URL" >> "$GITHUB_STEP_SUMMARY"

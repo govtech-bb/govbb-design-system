@@ -1,137 +1,99 @@
-/*
- * Prepares a release as an ordinary pull request: branches from origin/main,
- * bumps both packages to the same version, regenerates CHANGELOG.md and
- * commits. Merging that PR is what publishes (see .github/workflows/release.yml).
- *
- * The workflow can't make this commit itself: the ruleset on main rejects
- * pushes whose checks haven't passed, and a PR opened with GITHUB_TOKEN never
- * runs the required checks.
- *
- * Usage: pnpm release:prepare 1.0.0-alpha.30
- *
- * --replace-unreleased skips the one-release-in-flight check, for when the
- * version on main failed its release for good and the next one replaces it.
- */
 import { execFileSync } from 'node:child_process';
-import { gitTags, releaseVersionProblem } from './release-version.mjs';
+import { readFileSync, writeFileSync } from 'node:fs';
+import { parseReleaseVersion } from './release-version.mjs';
+import { RELEASE_PACKAGES, readRegistryVersion } from './release-registry.mjs';
+import { readGithubRelease } from './release-github.mjs';
 
-// pnpm and npm are .cmd shims on Windows, which only run through a shell.
-// Node deprecates passing args with a shell (DEP0190), so they're joined into
-// one command; they're fixed strings or the already checked version, so none
-// needs quoting. git doesn't need a shell, and its commit message has spaces.
-const exec = (cmd, args, options) =>
-  process.platform === 'win32' && cmd !== 'git'
-    ? execFileSync([cmd, ...args].join(' '), { ...options, shell: true })
-    : execFileSync(cmd, args, options);
-const run = (cmd, args) => exec(cmd, args, { stdio: 'inherit' });
-const read = (cmd, args) => exec(cmd, args, { encoding: 'utf8' });
-const succeeds = (cmd, args) => {
-  try {
-    exec(cmd, args, { stdio: 'ignore' });
-    return true;
-  } catch {
-    return false;
+const files = ['packages/frontend/package.json', 'packages/react/package.json'];
+const git = (...args) =>
+  execFileSync('git', args, { encoding: 'utf8', stdio: 'pipe' }).trim();
+
+async function prepareRelease() {
+  const version = process.env.RELEASE_VERSION;
+  const replacement = process.env.REPLACE_UNRELEASED;
+  if (
+    process.env.GITHUB_ACTIONS !== 'true' ||
+    !['true', 'false'].includes(replacement)
+  ) {
+    return 'Release preparation must run through the Prepare release workflow.';
   }
-};
-const fail = (message) => {
-  console.error(message);
-  process.exit(1);
-};
+  if (
+    git('status', '--porcelain') ||
+    git('rev-parse', 'HEAD') !== git('rev-parse', 'origin/main')
+  ) {
+    return 'Release preparation requires a clean checkout of origin/main.';
+  }
+  const tags = git('tag', '--list', 'v*').split('\n');
+  const parsed = parseReleaseVersion(version, tags);
+  if (!parsed.ok) return parsed.error.message;
+  const release = parsed.value;
+  if (tags.includes(release.tag))
+    return 'Release preparation refuses an already tagged version.';
 
-const args = process.argv.slice(2);
-const version = args.find((arg) => !arg.startsWith('--'));
-const replaceUnreleased = args.includes('--replace-unreleased');
-const branch = `release/v${version}`;
+  const manifests = files.map((file) => JSON.parse(readFileSync(file, 'utf8')));
+  const current = parseReleaseVersion(manifests[0].version, []);
+  if (!current.ok || manifests[1].version !== current.value.version) {
+    return 'Release preparation requires matching valid package versions on main.';
+  }
+  const advance = parseReleaseVersion(release.version, [current.value.tag]);
+  if (!advance.ok || release.version === current.value.version) {
+    return 'Release preparation requires a version newer than the version on main.';
+  }
+  for (const name of RELEASE_PACKAGES) {
+    const next = await readRegistryVersion(name, release.version);
+    if (!next.ok) return next.error.message;
+    if (next.value)
+      return `Release preparation refuses ${name}@${release.version}: it is already published.`;
+    const previous = await readRegistryVersion(name, current.value.version);
+    if (!previous.ok) return previous.error.message;
+    if (replacement === 'true') {
+      // A tag reserves the source before publication. Do not discard that
+      // recovery identity after an interrupted or partially completed publish.
+      if (previous.value || tags.includes(current.value.tag)) {
+        return 'Release replacement refused: the previous version is tagged or partially published. Finish it first.';
+      }
+    } else if (!previous.value) {
+      return 'Release preparation is blocked until both current packages are published. Replace an unreleased version only after an untagged, wholly unpublished failure.';
+    }
+  }
 
-if (read('git', ['status', '--porcelain'])) {
-  fail('Commit or set aside your changes first.');
-}
+  const github = readGithubRelease(current.value.tag, {
+    repository: process.env.GITHUB_REPOSITORY,
+    apiUrl: process.env.GITHUB_API_URL || 'https://api.github.com',
+  });
+  if (!github.ok) return github.error.message;
+  if (replacement === 'false' && github.value !== 'published')
+    return 'Finish the current GitHub release before preparing another version.';
+  if (replacement === 'true' && github.value !== 'missing')
+    return 'Release replacement refused: GitHub already has release metadata for this version.';
 
-run('git', ['fetch', '--tags', 'origin', 'main']);
-const tags = gitTags();
-const problem = releaseVersionProblem(version, tags);
-if (problem) {
-  fail(`Usage: pnpm release:prepare <version>\n${problem}`);
-}
-if (tags.includes(`v${version}`)) {
-  fail(`v${version} is already released.`);
-}
-const published = (v) =>
-  succeeds('npm', ['view', `@govtech-bb/frontend@${v}`, 'version']);
-if (published(version)) {
-  fail(`@govtech-bb/frontend@${version} is already on npm.`);
-}
-// one release in flight at a time: if two release PRs merged close together,
-// the Release workflow would only see the later version on main and skip the
-// earlier one
-const mainVersion = JSON.parse(
-  read('git', ['show', 'origin/main:packages/frontend/package.json']),
-).version;
-if (!replaceUnreleased && !published(mainVersion)) {
-  fail(
-    `${mainVersion}, the version on main, isn't on npm yet. Let its release finish first.\n` +
-      `If its release failed for good, add --replace-unreleased and ${mainVersion} is never published.`,
+  for (const [index, file] of files.entries()) {
+    manifests[index].version = release.version;
+    writeFileSync(file, `${JSON.stringify(manifests[index], null, 2)}\n`);
+  }
+  // Only the following create-pull-request step commits. A failed preparation
+  // leaves disposable runner files, never a half-created maintainer branch.
+  execFileSync(
+    'pnpm',
+    ['exec', 'git-cliff', '--tag', release.tag, '--output', 'CHANGELOG.md'],
+    { stdio: 'inherit' },
+  );
+  execFileSync(
+    'pnpm',
+    ['exec', 'prettier', '--write', ...files, 'CHANGELOG.md'],
+    { stdio: 'inherit' },
   );
 }
-if (
-  succeeds('git', [
-    'rev-parse',
-    '--verify',
-    '--quiet',
-    `refs/heads/${branch}`,
-  ]) ||
-  succeeds('git', ['ls-remote', '--exit-code', '--heads', 'origin', branch])
-) {
-  fail(`${branch} already exists. Delete it or pick another version.`);
-}
 
-const startBranch = read('git', ['branch', '--show-current']).trim();
-const start = startBranch
-  ? [startBranch]
-  : ['--detach', read('git', ['rev-parse', 'HEAD']).trim()];
-run('git', ['switch', '--no-track', '-c', branch, 'origin/main']);
-// Ctrl-C would otherwise kill this script before the catch below cleans up;
-// with a listener, the step being run gets the signal and fails instead
-process.on('SIGINT', () => {});
 try {
-  run('pnpm', [
-    '--filter',
-    './packages/*',
-    'exec',
-    'npm',
-    'pkg',
-    'set',
-    `version=${version}`,
-  ]);
-  run('pnpm', [
-    'exec',
-    'git-cliff',
-    '--tag',
-    `v${version}`,
-    '--output',
-    'CHANGELOG.md',
-  ]);
-  run('git', [
-    'add',
-    'packages/frontend/package.json',
-    'packages/react/package.json',
-    'CHANGELOG.md',
-  ]);
-  // cliff.toml skips chore(release) commits, so this one stays out of the changelog
-  run('git', ['commit', '-m', `chore(release): v${version}`]);
+  const problem = await prepareRelease();
+  if (problem) {
+    console.error(problem);
+    process.exitCode = 1;
+  }
 } catch {
-  // the tree was clean before the switch, so -f only drops this script's edits
-  console.error(`\nCouldn't prepare v${version}. Removing ${branch}.`);
-  run('git', ['switch', '-f', ...start]);
-  run('git', ['branch', '-D', branch]);
-  process.exit(1);
+  console.error(
+    'Release preparation failed. No release PR or package was published; inspect the failed step and retry Prepare release.',
+  );
+  process.exitCode = 1;
 }
-
-console.log(`
-Next, push the branch and open a pull request:
-
-  git push -u origin ${branch}
-  gh pr create --fill
-
-Merging it tags v${version}, publishes both packages to npm and creates the
-GitHub release.`);

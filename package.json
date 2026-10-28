@@ -25,8 +25,7 @@
     "format:check": "prettier --check .",
     "changelog": "git-cliff --output CHANGELOG.md",
     "changelog:unreleased": "git-cliff --unreleased --tag unreleased --output CHANGELOG.md",
-    "release:prepare": "node ci/prepare-release.mjs",
-    "test:release-version": "node ci/release-version.test.mjs",
+    "test:release": "tsc -p ci/tsconfig.release.json && node --test ci/release*.test.mjs",
     "test:visual": "playwright test -c ci/visual-regression/playwright.config.ts",
     "storybook": "pnpm --filter @govtech-bb/frontend build && storybook dev -p 6006 --disable-telemetry",
     "storybook:build": "pnpm --filter @govtech-bb/frontend build && storybook build --disable-telemetry",
@@ -45,10 +44,13 @@
     "@storybook/addon-docs": "^10.5.2",
     "@storybook/addon-vitest": "^10.5.2",
     "@storybook/react-vite": "^10.5.2",
+    "@types/node": "^24.19.2",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
+    "@types/semver": "^7.8.0",
     "@vitest/browser-playwright": "4.1.11",
     "@vitest/coverage-v8": "4.1.11",
+    "fast-check": "^4.10.2",
     "git-cliff": "^2.13.1",
     "lefthook": "^2.1.9",
     "oxlint": "^1.71.0",
@@ -56,10 +58,12 @@
     "prettier": "^3.9.3",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
+    "semver": "^7.8.5",
     "storybook": "^10.5.2",
     "stylelint": "^17.14.0",
     "stylelint-config-standard": "^40.0.0",
     "typescript": "^5.7.0",
-    "vitest": "4.1.11"
+    "vitest": "4.1.11",
+    "yaml": "^2.9.0"
   }
 }
