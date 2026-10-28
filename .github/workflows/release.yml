@@ -21,8 +21,8 @@ permissions:
   contents: read
 
 # one run at a time. A run decides what to release only once it starts, from
-# main as it is then, so a queued run that GitHub replaces with a newer one
-# loses nothing: the newer run sees the same main.
+# the commit that triggered it, so a queued run that GitHub replaces with a
+# newer one loses nothing: the newer run's commit is later on main.
 concurrency: release
 
 jobs:

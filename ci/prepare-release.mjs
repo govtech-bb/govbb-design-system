@@ -8,6 +8,9 @@
  * runs the required checks.
  *
  * Usage: pnpm release:prepare 1.0.0-alpha.30
+ *
+ * --replace-unreleased skips the one-release-in-flight check, for when the
+ * version on main failed its release for good and the next one replaces it.
  */
 import { execFileSync } from 'node:child_process';
 import { gitTags, releaseVersionProblem } from './release-version.mjs';
@@ -35,7 +38,9 @@ const fail = (message) => {
   process.exit(1);
 };
 
-const version = process.argv[2];
+const args = process.argv.slice(2);
+const version = args.find((arg) => !arg.startsWith('--'));
+const replaceUnreleased = args.includes('--replace-unreleased');
 const branch = `release/v${version}`;
 
 if (read('git', ['status', '--porcelain'])) {
@@ -62,9 +67,10 @@ if (published(version)) {
 const mainVersion = JSON.parse(
   read('git', ['show', 'origin/main:packages/frontend/package.json']),
 ).version;
-if (!published(mainVersion)) {
+if (!replaceUnreleased && !published(mainVersion)) {
   fail(
-    `${mainVersion}, the version on main, isn't on npm yet. Let its release finish first.`,
+    `${mainVersion}, the version on main, isn't on npm yet. Let its release finish first.\n` +
+      `If its release failed for good, add --replace-unreleased and ${mainVersion} is never published.`,
   );
 }
 if (

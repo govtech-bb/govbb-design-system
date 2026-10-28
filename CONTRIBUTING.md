@@ -138,7 +138,12 @@ It tags the commit that set the version and skips whatever already happened.
 
 The gate runs on that commit, because that's what gets published. A re-run
 gets past a flaky failure. A real one can't be fixed in place: merge the fix,
-then prepare the next version, and the failed one is never published.
+then prepare the next version with `--replace-unreleased`, and the failed one
+is never published:
+
+```bash
+pnpm release:prepare 1.0.0-alpha.31 --replace-unreleased
+```
 
 The version must be newer than every existing tag, and `release:prepare`
 checks this before it branches. It also refuses while the version on `main`
