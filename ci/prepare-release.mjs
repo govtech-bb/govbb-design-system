@@ -10,58 +10,99 @@
  * Usage: pnpm release:prepare 1.0.0-alpha.30
  */
 import { execFileSync } from 'node:child_process';
+import { gitTags, releaseVersionProblem } from './release-version.mjs';
+
+// pnpm and npm are .cmd shims on Windows, which only run through a shell.
+// git doesn't need one, and its commit message would be split at the spaces.
+const exec = (cmd, args, options) =>
+  execFileSync(cmd, args, {
+    ...options,
+    shell: process.platform === 'win32' && cmd !== 'git',
+  });
+const run = (cmd, args) => exec(cmd, args, { stdio: 'inherit' });
+const read = (cmd, args) => exec(cmd, args, { encoding: 'utf8' });
+const succeeds = (cmd, args) => {
+  try {
+    exec(cmd, args, { stdio: 'ignore' });
+    return true;
+  } catch {
+    return false;
+  }
+};
+const fail = (message) => {
+  console.error(message);
+  process.exit(1);
+};
 
 const version = process.argv[2];
-if (
-  !/^1\.\d+\.\d+(-[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*)?(\+[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*)?$/.test(
-    version ?? '',
-  )
-) {
-  console.error('Usage: pnpm release:prepare <version>');
-  console.error('The version must be a valid 1.x semver without a leading v.');
-  process.exit(1);
-}
-
-const run = (cmd, args) => execFileSync(cmd, args, { stdio: 'inherit' });
-const read = (cmd, args) => execFileSync(cmd, args, { encoding: 'utf8' });
+const branch = `release/v${version}`;
 
 if (read('git', ['status', '--porcelain'])) {
-  console.error('Commit or set aside your changes first.');
-  process.exit(1);
+  fail('Commit or set aside your changes first.');
 }
 
-const branch = `release/v${version}`;
 run('git', ['fetch', '--tags', 'origin', 'main']);
-if (read('git', ['tag', '--list', `v${version}`])) {
-  console.error(`v${version} is already released.`);
+const tags = gitTags();
+const problem = releaseVersionProblem(version, tags);
+if (problem) {
+  fail(`Usage: pnpm release:prepare <version>\n${problem}`);
+}
+if (tags.includes(`v${version}`)) {
+  fail(`v${version} is already released.`);
+}
+if (succeeds('npm', ['view', `@govtech-bb/frontend@${version}`, 'version'])) {
+  fail(`@govtech-bb/frontend@${version} is already on npm.`);
+}
+if (
+  succeeds('git', [
+    'rev-parse',
+    '--verify',
+    '--quiet',
+    `refs/heads/${branch}`,
+  ]) ||
+  succeeds('git', ['ls-remote', '--exit-code', '--heads', 'origin', branch])
+) {
+  fail(`${branch} already exists. Delete it or pick another version.`);
+}
+
+const startBranch = read('git', ['branch', '--show-current']).trim();
+const start = startBranch
+  ? [startBranch]
+  : ['--detach', read('git', ['rev-parse', 'HEAD']).trim()];
+run('git', ['switch', '--no-track', '-c', branch, 'origin/main']);
+try {
+  run('pnpm', [
+    '--filter',
+    './packages/*',
+    'exec',
+    'npm',
+    'pkg',
+    'set',
+    `version=${version}`,
+  ]);
+  run('pnpm', [
+    'exec',
+    'git-cliff',
+    '--tag',
+    `v${version}`,
+    '--output',
+    'CHANGELOG.md',
+  ]);
+  run('git', [
+    'add',
+    'packages/frontend/package.json',
+    'packages/react/package.json',
+    'CHANGELOG.md',
+  ]);
+  // cliff.toml skips chore(release) commits, so this one stays out of the changelog
+  run('git', ['commit', '-m', `chore(release): v${version}`]);
+} catch {
+  // the tree was clean before the switch, so -f only drops this script's edits
+  console.error(`\nCouldn't prepare v${version}. Removing ${branch}.`);
+  run('git', ['switch', '-f', ...start]);
+  run('git', ['branch', '-D', branch]);
   process.exit(1);
 }
-run('git', ['switch', '--no-track', '-c', branch, 'origin/main']);
-run('pnpm', [
-  '--filter',
-  './packages/*',
-  'exec',
-  'npm',
-  'pkg',
-  'set',
-  `version=${version}`,
-]);
-run('pnpm', [
-  'exec',
-  'git-cliff',
-  '--tag',
-  `v${version}`,
-  '--output',
-  'CHANGELOG.md',
-]);
-run('git', [
-  'add',
-  'packages/frontend/package.json',
-  'packages/react/package.json',
-  'CHANGELOG.md',
-]);
-// cliff.toml skips chore(release) commits, so this one stays out of the changelog
-run('git', ['commit', '-m', `chore(release): v${version}`]);
 
 console.log(`
 Next, push the branch and open a pull request:
