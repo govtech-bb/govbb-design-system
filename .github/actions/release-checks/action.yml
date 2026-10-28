@@ -1,0 +1,50 @@
+name: Required checks
+description: Run the same required suite for a pull request and its release commit.
+inputs:
+  suite:
+    description: ci, storybook, or react-18
+    required: true
+runs:
+  using: composite
+  steps:
+    - run: corepack enable
+      shell: bash
+    - uses: actions/setup-node@v4
+      with:
+        node-version: 24
+        cache: pnpm
+    - run: pnpm install --frozen-lockfile
+      shell: bash
+    - name: Run suite
+      shell: bash
+      env:
+        SUITE: ${{ inputs.suite }}
+        RELEASE_PR: ${{ github.event_name == 'pull_request' && startsWith(github.head_ref, 'release/') }}
+      run: |
+        set -euo pipefail
+        case "$SUITE" in
+          ci)
+            pnpm lint
+            pnpm format:check
+            pnpm -r typecheck
+            pnpm test
+            pnpm build
+            pnpm test:ai-docs
+            pnpm test:skill-references
+            pnpm test:release
+            if [[ "$RELEASE_PR" == true ]]; then node ci/release.mjs notes; fi
+            ;;
+          storybook)
+            pnpm exec playwright install chromium --with-deps
+            pnpm test:skills
+            pnpm storybook:typecheck
+            pnpm storybook:test
+            pnpm storybook:build
+            ;;
+          react-18)
+            pnpm --filter @govtech-bb/react add -D react@^18 react-dom@^18 @types/react@^18 @types/react-dom@^18
+            pnpm --filter @govtech-bb/react typecheck
+            pnpm --filter @govtech-bb/react test
+            ;;
+          *) echo 'Unknown required check suite' >&2; exit 1 ;;
+        esac

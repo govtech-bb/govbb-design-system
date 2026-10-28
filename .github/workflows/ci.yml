@@ -13,35 +13,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: corepack enable
-      - uses: actions/setup-node@v4
         with:
-          node-version: 24
-          cache: pnpm
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm lint
-      - run: pnpm format:check
-      - run: pnpm -r typecheck
-      - run: pnpm test
-      - run: pnpm build
-      - run: pnpm test:ai-docs
-      - run: pnpm test:skill-references
+          fetch-depth: 0
+      - uses: ./.github/actions/release-checks
+        with:
+          suite: ci
 
   storybook:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: corepack enable
-      - uses: actions/setup-node@v4
+      - uses: ./.github/actions/release-checks
         with:
-          node-version: 24
-          cache: pnpm
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm exec playwright install chromium --with-deps
-      - run: pnpm test:skills
-      - run: pnpm storybook:typecheck
-      - run: pnpm storybook:test
-      - run: pnpm storybook:build
+          suite: storybook
 
   # compares playground screenshots against committed -linux baselines.
   # skips until those exist — seed/refresh them with the
@@ -90,12 +74,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: corepack enable
-      - uses: actions/setup-node@v4
+      - uses: ./.github/actions/release-checks
         with:
-          node-version: 24
-          cache: pnpm
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm --filter @govtech-bb/react add -D react@^18 react-dom@^18 @types/react@^18 @types/react-dom@^18
-      - run: pnpm --filter @govtech-bb/react typecheck
-      - run: pnpm --filter @govtech-bb/react test
+          suite: react-18
