@@ -26,6 +26,7 @@ jobs:
       - run: pnpm build
       - run: pnpm test:ai-docs
       - run: pnpm test:skill-references
+      - run: pnpm test:release-version
 
   storybook:
     runs-on: ubuntu-latest

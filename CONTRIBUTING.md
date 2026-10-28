@@ -131,8 +131,12 @@ When it merges, the **Release** workflow:
    publish time);
 4. creates a GitHub release with the changelog section as notes.
 
-If a step fails, re-run that workflow run from its page in the Actions tab. It
-skips whatever already happened. Don't publish from a laptop — both packages
+A run releases whatever version is on `main` and has no GitHub release yet, so
+a release that fails or is cancelled is finished by the next run. To retry
+straight away, fix the cause on `main` and run the **Release** workflow from
+the Actions tab. It tags the commit that set the version and skips whatever
+already happened. The version must be newer than every existing tag, and
+`release:prepare` checks this before it branches. Don't publish from a laptop — both packages
 have `prepublishOnly` builds as a backstop, but the workflow is the source of
 truth.
 

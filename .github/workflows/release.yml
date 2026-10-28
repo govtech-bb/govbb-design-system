@@ -1,80 +1,83 @@
 name: Release
 
 # Publishes the version on main once a release PR (`pnpm release:prepare`)
-# merges: gate on the full CI suite, tag, publish @govtech-bb/frontend and
-# @govtech-bb/react to npm with provenance, and cut a GitHub release whose
-# notes are the changelog section. Every step skips work already done, so a
-# failed run can be re-run from its own page (re-running keeps the release
-# commit; a fresh run would not).
+# merges: gate on the full CI suite, tag the commit that set the version,
+# publish @govtech-bb/frontend and @govtech-bb/react to npm with provenance,
+# and cut a GitHub release whose notes are the changelog section.
+#
+# A run releases whatever version is on main and doesn't have a GitHub release
+# yet, so a release that failed or was cancelled is finished by the next run.
+# Every step skips work already done. To retry without waiting for a push, run
+# this workflow from the Actions tab.
 
 on:
   push:
     branches: [main]
     paths:
       - packages/*/package.json
+  workflow_dispatch:
 
 permissions:
   contents: read
 
-concurrency: release
-
 jobs:
-  # dependency bumps touch package.json too, so only release when this push
-  # changed the version
+  # the GitHub release is the last step, so if it exists the version is out
   check:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     outputs:
       needed: ${{ steps.release.outputs.needed }}
       version: ${{ steps.release.outputs.version }}
       npm_tag: ${{ steps.release.outputs.npm_tag }}
+      sha: ${{ steps.release.outputs.sha }}
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Read release version
+      - name: Find an unreleased version
         id: release
         env:
-          BEFORE: ${{ github.event.before }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           version=$(jq -r .version packages/frontend/package.json)
+          if gh release view "v$version" > /dev/null 2>&1; then
+            echo "v$version is already released"
+            echo "needed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
           react_version=$(jq -r .version packages/react/package.json)
           if [[ "$version" != "$react_version" ]]; then
             echo "frontend ($version) and react ($react_version) must share a version" >&2
             exit 1
           fi
 
-          previous=$(git show "$BEFORE:packages/frontend/package.json" | jq -r .version)
-          if [[ "$version" == "$previous" ]]; then
-            echo "Version is still $version, nothing to release"
-            echo "needed=false" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
+          git fetch --quiet --unshallow --tags origin
+          npm_tag=$(node ci/release-version.mjs "$version")
 
-          if [[ ! "$version" =~ ^1\.[0-9]+\.[0-9]+(-[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*)?(\+[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*)?$ ]]; then
-            echo "Version must be a valid 1.x semver, got $version" >&2
-            exit 1
-          fi
-
-          npm_tag=latest
-          if [[ "${version%%+*}" == *-* ]]; then
-            npm_tag=alpha
-          fi
+          # the main commit that last changed the version, not whatever is on
+          # main by the time this runs
+          sha=$(git log --first-parent --diff-merges=first-parent -1 -s --format=%H \
+            -G'"version":' -- packages/frontend/package.json)
 
           echo "needed=true" >> "$GITHUB_OUTPUT"
           echo "version=$version" >> "$GITHUB_OUTPUT"
           echo "npm_tag=$npm_tag" >> "$GITHUB_OUTPUT"
+          echo "sha=$sha" >> "$GITHUB_OUTPUT"
 
   release:
     needs: check
     if: needs.check.outputs.needed == 'true'
     runs-on: ubuntu-latest
+    # one release at a time; a queued run that gets replaced loses nothing,
+    # because the run replacing it releases the same version
+    concurrency: release
     permissions:
       contents: write
       id-token: write # npm provenance
     steps:
       - uses: actions/checkout@v4
         with:
+          ref: ${{ needs.check.outputs.sha }}
           fetch-depth: 0 # git-cliff walks the full history
       - run: corepack enable
       - uses: actions/setup-node@v4
@@ -98,11 +101,12 @@ jobs:
       - name: Tag
         env:
           RELEASE_VERSION: ${{ needs.check.outputs.version }}
+          RELEASE_SHA: ${{ needs.check.outputs.sha }}
         run: |
           set -euo pipefail
           tag="v$RELEASE_VERSION"
           if git rev-parse -q --verify "refs/tags/$tag" > /dev/null; then
-            if [[ "$(git rev-parse "$tag^{commit}")" != "$GITHUB_SHA" ]]; then
+            if [[ "$(git rev-parse "$tag^{commit}")" != "$RELEASE_SHA" ]]; then
               echo "$tag already exists on another commit" >&2
               exit 1
             fi
@@ -111,7 +115,7 @@ jobs:
           fi
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git tag -a "$tag" -m "$tag"
+          git tag -a "$tag" -m "$tag" "$RELEASE_SHA"
           git push origin "$tag"
 
       - name: Publish to npm (OIDC)
@@ -138,6 +142,11 @@ jobs:
           RELEASE_VERSION: ${{ needs.check.outputs.version }}
           NPM_TAG: ${{ needs.check.outputs.npm_tag }}
         run: |
+          set -euo pipefail
+          if gh release view "v$RELEASE_VERSION" > /dev/null 2>&1; then
+            echo "v$RELEASE_VERSION is already released"
+            exit 0
+          fi
           pnpm exec git-cliff --latest --strip header > release-notes.md
           args=(--verify-tag --title "v$RELEASE_VERSION" --notes-file release-notes.md)
           if [[ "$NPM_TAG" == alpha ]]; then args+=(--prerelease); fi
