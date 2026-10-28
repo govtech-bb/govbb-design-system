@@ -32,7 +32,11 @@ if (read('git', ['status', '--porcelain'])) {
 
 const branch = `release/v${version}`;
 run('git', ['fetch', '--tags', 'origin', 'main']);
-run('git', ['switch', '-c', branch, 'origin/main']);
+if (read('git', ['tag', '--list', `v${version}`])) {
+  console.error(`v${version} is already released.`);
+  process.exit(1);
+}
+run('git', ['switch', '--no-track', '-c', branch, 'origin/main']);
 run('pnpm', [
   '--filter',
   './packages/*',

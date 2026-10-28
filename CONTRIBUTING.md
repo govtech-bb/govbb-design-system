@@ -131,7 +131,7 @@ When it merges, the **Release** workflow:
    publish time);
 4. creates a GitHub release with the changelog section as notes.
 
-If a step fails, re-run the workflow (or run it from the Actions tab). It
+If a step fails, re-run that workflow run from its page in the Actions tab. It
 skips whatever already happened. Don't publish from a laptop — both packages
 have `prepublishOnly` builds as a backstop, but the workflow is the source of
 truth.

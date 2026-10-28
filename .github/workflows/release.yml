@@ -4,14 +4,14 @@ name: Release
 # merges: gate on the full CI suite, tag, publish @govtech-bb/frontend and
 # @govtech-bb/react to npm with provenance, and cut a GitHub release whose
 # notes are the changelog section. Every step skips work already done, so a
-# failed run can simply be re-run.
+# failed run can be re-run from its own page (re-running keeps the release
+# commit; a fresh run would not).
 
 on:
   push:
     branches: [main]
     paths:
       - packages/*/package.json
-  workflow_dispatch:
 
 permissions:
   contents: read
@@ -19,9 +19,9 @@ permissions:
 concurrency: release
 
 jobs:
-  # dependency bumps touch package.json too, so only release a new version
+  # dependency bumps touch package.json too, so only release when this push
+  # changed the version
   check:
-    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     outputs:
       needed: ${{ steps.release.outputs.needed }}
@@ -29,10 +29,12 @@ jobs:
       npm_tag: ${{ steps.release.outputs.npm_tag }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Read release version
         id: release
         env:
-          GH_TOKEN: ${{ github.token }}
+          BEFORE: ${{ github.event.before }}
         run: |
           set -euo pipefail
           version=$(jq -r .version packages/frontend/package.json)
@@ -42,10 +44,16 @@ jobs:
             exit 1
           fi
 
-          if gh release view "v$version" > /dev/null 2>&1; then
-            echo "v$version is already released"
+          previous=$(git show "$BEFORE:packages/frontend/package.json" | jq -r .version)
+          if [[ "$version" == "$previous" ]]; then
+            echo "Version is still $version, nothing to release"
             echo "needed=false" >> "$GITHUB_OUTPUT"
             exit 0
+          fi
+
+          if [[ ! "$version" =~ ^1\.[0-9]+\.[0-9]+(-[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*)?(\+[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*)?$ ]]; then
+            echo "Version must be a valid 1.x semver, got $version" >&2
+            exit 1
           fi
 
           npm_tag=latest
