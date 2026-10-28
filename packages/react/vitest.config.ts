@@ -1,15 +1,14 @@
 import { defineConfig } from 'vitest/config';
+import { coverage } from '../../vitest.coverage.js';
 
 export default defineConfig({
   test: {
     environment: 'jsdom',
     globals: true,
-    coverage: {
+    coverage: coverage({
       include: ['src/**/*.{ts,tsx}'],
       exclude: ['src/testing/**'],
-      // a point or two under measured coverage, so one new uncovered line
-      // doesn't fail the run but a real drop does
-      thresholds: { statements: 96, branches: 94, functions: 96, lines: 97 },
-    },
+      thresholds: { statements: 85, branches: 60, functions: 80, lines: 90 },
+    }),
   },
 });

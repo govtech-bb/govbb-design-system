@@ -41,10 +41,12 @@
     "audit:prose": "node scripts/prose-audit.mjs",
     "dev": "vite",
     "build": "lightningcss --bundle --minify --custom-media --browserslist src/index.css -o dist/govbb.css && node scripts/build-tailwind-theme.mjs",
-    "test": "vitest run --coverage",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
     "prepublishOnly": "pnpm build"
   },
   "devDependencies": {
+    "@vitest/coverage-v8": "^4.1.11",
     "jsdom": "^29.1.1",
     "lightningcss": "^1.32.0",
     "lightningcss-cli": "^1.30.2",

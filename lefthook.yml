@@ -15,4 +15,4 @@ pre-push:
     typecheck:
       run: pnpm -r typecheck
     test:
-      run: pnpm -r test
+      run: pnpm test
