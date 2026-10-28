@@ -18,8 +18,14 @@ test('reflow: a flush filter group fits a 320px viewport', async ({ page }) => {
 </details></body></html>`,
     { waitUntil: 'networkidle' },
   );
-  const scrollWidth = await page.evaluate(
-    () => document.documentElement.scrollWidth,
-  );
+  const { chevronRotate, scrollWidth } = await page.evaluate(() => ({
+    // Proves the chevron rendered, so a missing stylesheet can't pass.
+    chevronRotate: getComputedStyle(
+      document.querySelector('summary')!,
+      '::after',
+    ).rotate,
+    scrollWidth: document.documentElement.scrollWidth,
+  }));
+  expect(chevronRotate).toBe('135deg');
   expect(scrollWidth).toBe(320);
 });
