@@ -5,7 +5,7 @@
   "version": "0.0.0",
   "packageManager": "pnpm@11.9.0",
   "engines": {
-    "node": ">=24"
+    "node": "^24.11.0 || >=26.0.0"
   },
   "browserslist": [
     "defaults"
@@ -35,7 +35,7 @@
     "build-storybook": "pnpm storybook:build"
   },
   "devDependencies": {
-    "@chromatic-com/storybook": "^5.2.1",
+    "@chromatic-com/storybook": "^5.5.1",
     "@commitlint/cli": "^21.1.0",
     "@commitlint/config-conventional": "^21.1.0",
     "@govtech-bb/frontend": "workspace:*",
