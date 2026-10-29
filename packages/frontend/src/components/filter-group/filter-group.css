@@ -38,12 +38,15 @@
 }
 
 /* Chevron (18 by 10px): points down when closed, up when open, drawn as two borders of a
-   turned square and nudged so the V centres on the text. */
+   turned square and nudged so the V centres on the text. Turned, the square is
+   wider than its box, so the end margin centres it in Figma's 24px icon frame
+   (1.2em of the 20px summary) and keeps it off the page edge. */
 .govbb-filter-group__summary::after {
   content: '';
   flex: none;
   width: 0.65em;
   height: 0.65em;
+  margin-inline-end: calc((1.2em - 0.65em) / 2);
   border-top: 2px solid var(--govbb-color-tertiary);
   border-right: 2px solid var(--govbb-color-tertiary);
   rotate: 135deg;
