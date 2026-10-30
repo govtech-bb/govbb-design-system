@@ -113,6 +113,17 @@ it('has no axe violations', async () => {
   await expectNoAxeViolations(container);
 });
 
+it('has no axe violations with an error', async () => {
+  const { container } = render(
+    <DateInput
+      legend="Date of birth"
+      description="For example, 27 3 1990"
+      error="Enter a valid date"
+    />,
+  );
+  await expectNoAxeViolations(container);
+});
+
 it('renders a prefixed error message wired into the group description', () => {
   render(<DateInput legend="Date of birth" error="Enter a valid date" />);
   const group = screen.getByRole('group', { name: 'Date of birth' });
