@@ -367,32 +367,19 @@ Components with no alpha.17 equivalent, available immediately: `BackButton`,
 `SkipLink`, `SummaryList`, `Table` (with `TableHeader`/`TableCell`), and the
 form primitives (`FormGroup`, `Label`, `Hint`, `ErrorMessage`, `Fieldset`).
 
-## Versioning recommendation
+## Release channels
 
-Do not publish this as `0.0.0`, and do not restart at `1.0.0`. Both collide
-with the old line: npm sorts `1.0.0-alpha.17 < 1.0.0`, but plenty of tooling,
-changelogs and humans will read any `0.x` or `1.x` as a sibling of the alphas,
-and a `^1.0.0-alpha` range in an existing consumer would resolve to the rewrite
-silently.
+Both packages release together at the same `1.x` version. Prereleases publish
+under `alpha`. Before the first stable release, the release workflow keeps
+`latest` at the shared current alpha so untagged installs get this design system.
+Stable releases publish to `latest`; after either package has a stable release,
+prereleases update only `alpha`.
 
-Concretely:
+The old and rewritten React packages share the `1.0.0-alpha.*` version line.
+A broad prerelease range can therefore select the rewrite when dependencies are
+resolved again. Keep the migration checks above even if your package manager
+accepts the version update. Moving a dist-tag does not change a consumer's
+existing lockfile or dependency range.
 
-1. Publish the rewrite of `@govtech-bb/react` as `2.0.0` (via `2.0.0-beta.n`
-   prereleases under a `next` dist-tag while it stabilises). A clean major
-   above the old line makes the break visible in every lockfile diff and keeps
-   semver ranges from crossing the rewrite boundary in either direction.
-2. Publish `@govtech-bb/frontend` at the same `2.0.0`, even though the name is
-   new and `1.0.0` would be legal. Keeping the two packages in lockstep makes
-   compatibility trivial to state ("use matching majors") and avoids a
-   permanent "react is at N, frontend is at N minus 1" tax.
-3. Deprecate the old packages on npm so installs surface the move:
-   `npm deprecate @govtech-bb/styles "Replaced by @govtech-bb/frontend"` and
-   the same for `@govtech-bb/design`; deprecate the `1.0.0-alpha.*` versions of
-   `@govtech-bb/react` with a pointer to this guide.
-4. Only move the `latest` dist-tag to `2.0.0` when the guide above is
-   published; until then `latest` should keep pointing at whatever consumers
-   can actually run.
-
-Keeping the `@govtech-bb/react` name is right (it is the same product with the
-same owner); the major bump plus deprecation notices carry the "this is a
-rewrite" signal without a rename.
+See [Releasing in the contributing guide](../../CONTRIBUTING.md#releasing) for
+the OIDC permissions, initial tag correction, and recovery procedure.

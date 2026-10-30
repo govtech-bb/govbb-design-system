@@ -8,7 +8,7 @@ behaviour React consumers expect (refs, controlled inputs, callbacks).
 ## Install
 
 ```bash
-pnpm add @govtech-bb/react@alpha @govtech-bb/frontend@alpha
+pnpm add @govtech-bb/react @govtech-bb/frontend
 ```
 
 `react >= 18` is a peer dependency. This package ships no CSS of its own —
@@ -21,8 +21,9 @@ import '@govtech-bb/frontend/css';
 The package ships compiled ESM + type declarations (`dist/`), so it works in
 any bundler without extra config. Source stays in the tarball for source maps.
 
-Existing `1.0.0-alpha.*` consumers must follow the breaking-change guide in
-[MIGRATION.md](./MIGRATION.md); the rewrite is intended for a new major version.
+Consumers of the retired Radix/Tailwind implementation must follow the
+breaking-change guide in [MIGRATION.md](./MIGRATION.md). The CSS-first rewrite
+changes component APIs; changing npm tags does not migrate existing services.
 
 ## Usage
 

@@ -6,7 +6,7 @@ JavaScript for the GovBB Design System.
 ## Install
 
 ```sh
-pnpm add @govtech-bb/frontend@alpha
+pnpm add @govtech-bb/frontend
 ```
 
 Import the complete stylesheet once in your application entry:
