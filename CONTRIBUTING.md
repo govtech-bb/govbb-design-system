@@ -110,22 +110,73 @@ Do **not** manually edit `CHANGELOG.md` — fix the commit message instead and r
 
 ## Releasing
 
-Releases are one button: the **Release** workflow in GitHub Actions
-(`workflow_dispatch`). Give it a version (e.g. `0.1.0`, no leading `v`) and it:
+Releases run entirely in GitHub. There is no local release command.
 
-1. re-runs the full CI gate (lint, typecheck, test, build);
-2. bumps `@govtech-bb/frontend` and `@govtech-bb/react` to that version
-   (lockstep — the two always share a version);
-3. regenerates `CHANGELOG.md` with git-cliff, commits
-   `chore: release vX.Y.Z` and tags `vX.Y.Z` on `main`;
-4. publishes both packages to npm with provenance (the `workspace:^` dep in
-   react is rewritten to `^X.Y.Z` at publish time);
-5. creates a GitHub release with the changelog section as notes.
+1. Open **Actions → Prepare release → Run workflow**, select **main**, and
+   enter the next version, for example `1.0.0-alpha.30`. Leave
+   **replace-unreleased** unchecked.
+2. The workflow opens or refreshes `release/next`, updating both package
+   versions and generating `CHANGELOG.md` with git-cliff.
+3. Review the PR and wait for the required checks. If main gains changelog
+   entries before you merge, run **Prepare release** again with the same
+   version and review the updated notes. Do not hand-edit the automated branch.
+4. Merge the PR. **Release** checks the merge commit, packs both packages,
+   creates its Git tag, publishes to npm with provenance, and creates the
+   GitHub release.
 
-Requires the `NPM_TOKEN` repo secret (npm automation token with publish
-rights on the `@govtech-bb` scope). Don't publish from a laptop — both
-packages have `prepublishOnly` builds as a backstop, but the workflow is the
-source of truth.
+Versions must be canonical 1.x SemVer: no leading `v`, leading-zero numeric
+parts, or build metadata. Prereleases use npm's `alpha` channel; stable versions
+use `latest`. Frontend and React always share a version. React's
+`workspace:^` dependency becomes `^<release version>` in the packed package.
+
+### One-time repository setup
+
+A repository administrator must:
+
+- Install a GitHub App on **this repository only**, with **Contents: read and
+  write** and **Pull requests: read and write**. No branch-protection bypass.
+- Set the Actions variable `RELEASE_APP_CLIENT_ID` and secret
+  `RELEASE_APP_PRIVATE_KEY` for that App.
+- Keep both npm packages' trusted publishers pointed at this repository's
+  `release.yml` workflow. Publishing uses GitHub OIDC, not an npm token.
+
+The short-lived App token lets the release PR trigger the usual required
+checks; `GITHUB_TOKEN` alone would not. Reviews and branch protection stay in place.
+
+### Failed or interrupted releases
+
+Use the Actions UI for recovery. Do not move release tags or publish from a laptop.
+
+| Failure                                                                                         | Recovery                                                                                                                           |
+| ----------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| Preparation fails, or the open PR's changelog is stale                                          | Run **Prepare release** again with the same version.                                                                               |
+| A transient CI or registry failure                                                              | Choose **Re-run failed jobs** on the original **Release** run.                                                                     |
+| A source defect or stale changelog fails after merge, before a tag or either npm package exists | Merge the fix. Run **Prepare release** with a **newer version** and **replace-unreleased** checked, then review and merge that PR. |
+| One package publishes, a response is lost, or GitHub release creation fails                     | Re-run the original release. It verifies npm integrity and skips identical published packages. Do not replace this version.        |
+| An integrity, tag-source or distribution-tag mismatch                                           | Stop for maintainer reconciliation. The workflow will not overwrite published history.                                             |
+
+All jobs use the workflow's original commit. Once main has advanced, use
+**Re-run failed jobs**, not a fresh dispatch: testing later source cannot repair
+the original release. A manual **Release** dispatch can retry while main is
+still at the version-setting commit, and completed releases are no-ops.
+
+Packed artifacts are retained for 30 days. Re-running failed publication jobs
+reuses the original artifact. A full re-run rebuilds and must match any bytes
+already published; if that is impossible, stop for maintainer recovery.
+
+Preparation and publication share a queue (up to GitHub's limit of 100 pending
+runs). Preparation blocks a new release until the current one is complete,
+unless it is explicitly replaced before tagging or publication. The immutable
+Git tag reserves the source; npm's unique package/version and SHA-512 integrity
+allow safe recovery after a lost response. API errors never mean “not published.”
+
+### Checking release automation
+
+`pnpm test:release` runs the focused release tests with real Git, git-cliff,
+pnpm, npm and gh commands against temporary repositories and localhost services.
+It never publishes to npm. GitHub validates workflow wiring and runs the
+required suites. The App installation and npm OIDC configuration still need
+verification on the first hosted release.
 
 ## Tooling at a glance
 

@@ -1,31 +1,100 @@
 name: Release
 
-# One-button lockstep release of @govtech-bb/frontend and @govtech-bb/react:
-# gate on the full CI suite, bump both versions, regenerate the changelog
-# (git-cliff), commit + tag on main, publish to npm with provenance, and cut
-# a GitHub release whose notes are the changelog section.
-
 on:
+  push:
+    branches: [main]
+    paths:
+      - packages/*/package.json
   workflow_dispatch:
-    inputs:
-      version:
-        description: 'Version to release, no leading v (e.g. 0.1.0)'
-        required: true
 
 permissions:
-  contents: write
-  id-token: write # npm provenance
+  contents: read
 
-concurrency: release
+concurrency:
+  group: release
+  queue: max
 
 jobs:
-  release:
+  check:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
+    outputs:
+      needed: ${{ steps.release.outputs.needed }}
+      version: ${{ steps.release.outputs.version }}
+      npm_tag: ${{ steps.release.outputs.npm_tag }}
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: main
-          fetch-depth: 0 # git-cliff walks the full history
+          persist-credentials: false
+      - run: corepack enable
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Check release state and changelog
+        id: release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          node ci/release.mjs check > "$RUNNER_TEMP/release.json"
+          jq -r 'to_entries[] | "\(.key)=\(.value)"' "$RUNNER_TEMP/release.json" >> "$GITHUB_OUTPUT"
+
+  checks:
+    needs: check
+    if: needs.check.outputs.needed == 'true'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        suite: [ci, storybook, react-18]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: ./.github/actions/release-checks
+        with:
+          suite: ${{ matrix.suite }}
+
+  pack:
+    needs: [check, checks]
+    runs-on: ubuntu-latest
+    outputs:
+      artifact_id: ${{ steps.artifact.outputs.artifact-id }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - run: corepack enable
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter './packages/*' build
+      - name: Pack both packages
+        run: |
+          mkdir -p "$RUNNER_TEMP/packages"
+          pnpm --filter './packages/*' pack --pack-destination "$RUNNER_TEMP/packages"
+      - uses: actions/upload-artifact@v4
+        id: artifact
+        with:
+          name: release-${{ needs.check.outputs.version }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/packages/*.tgz
+          if-no-files-found: error
+          retention-days: 30
+
+  publish:
+    needs: [check, pack]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - run: corepack enable
       - uses: actions/setup-node@v4
         with:
@@ -33,84 +102,42 @@ jobs:
           cache: pnpm
           registry-url: https://registry.npmjs.org
       - run: pnpm install --frozen-lockfile
-
-      # same gate as ci.yml — never release a red tree
-      - run: pnpm lint
-      - run: pnpm format:check
-      - run: pnpm -r typecheck
-      - run: pnpm test
-      - run: pnpm build
-      - run: pnpm exec playwright install chromium --with-deps
-      - run: pnpm storybook:typecheck
-      - run: pnpm storybook:test
-      - run: pnpm storybook:build
-
-      - name: Validate release version and npm tag
-        id: release
+      - uses: actions/download-artifact@v4
+        with:
+          artifact-ids: ${{ needs.pack.outputs.artifact_id }}
+          merge-multiple: true
+          path: ${{ runner.temp }}/packages
+      - name: Validate both packages before reserving the version
+        run: node ci/release.mjs verify "$RUNNER_TEMP/packages"
+      - name: Reserve the release source
         env:
-          RELEASE_VERSION: ${{ inputs.version }}
-        run: |
-          if [[ ! "$RELEASE_VERSION" =~ ^1\.[0-9]+\.[0-9]+(-[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*)?(\+[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*)?$ ]]; then
-            echo "Version must be a valid 1.x semver without a leading v" >&2
-            exit 1
-          fi
-
-          npm_tag=latest
-          version_without_build="${RELEASE_VERSION%%+*}"
-          if [[ "$version_without_build" == *-* ]]; then
-            npm_tag=alpha
-          fi
-
-          echo "version=$RELEASE_VERSION" >> "$GITHUB_OUTPUT"
-          echo "npm_tag=$npm_tag" >> "$GITHUB_OUTPUT"
-
-      - name: Bump package versions
-        env:
-          RELEASE_VERSION: ${{ steps.release.outputs.version }}
-        run: pnpm --filter "./packages/*" exec npm pkg set "version=$RELEASE_VERSION"
-
-      - name: Regenerate changelog
-        env:
-          RELEASE_VERSION: ${{ steps.release.outputs.version }}
-        run: pnpm exec git-cliff --tag "v$RELEASE_VERSION" --output CHANGELOG.md
-
-      - name: Commit and tag
-        env:
-          LEFTHOOK: '0' # checks already ran above
-          RELEASE_VERSION: ${{ steps.release.outputs.version }}
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add packages/frontend/package.json packages/react/package.json CHANGELOG.md
-          git commit -m "chore: release v$RELEASE_VERSION"
-          git tag -a "v$RELEASE_VERSION" -m "v$RELEASE_VERSION"
-          git push origin main --follow-tags
-
-      - name: Publish to npm (OIDC)
-        env:
-          RELEASE_VERSION: ${{ steps.release.outputs.version }}
-          NPM_TAG: ${{ steps.release.outputs.npm_tag }}
+          RELEASE_VERSION: ${{ needs.check.outputs.version }}
+          RELEASE_SHA: ${{ github.sha }}
         run: |
           set -euo pipefail
-          npm install -g npm@latest
-          mkdir -p /tmp/pkgs
-          for pkg in frontend react; do
-            name="@govtech-bb/$pkg"
-            if npm view "$name@$RELEASE_VERSION" version > /dev/null 2>&1; then
-              echo "$name@$RELEASE_VERSION already published — skipping"
-              continue
-            fi
-            pnpm --filter "$name" pack --pack-destination /tmp/pkgs
-            npm publish "/tmp/pkgs/govtech-bb-$pkg-$RELEASE_VERSION.tgz" --provenance --access public --tag "$NPM_TAG"
-          done
-
+          tag="v$RELEASE_VERSION"
+          if git rev-parse -q --verify "refs/tags/$tag" > /dev/null; then
+            test "$(git rev-parse "$tag^{commit}")" = "$RELEASE_SHA"
+          else
+            git config user.name 'github-actions[bot]'
+            git config user.email 'github-actions[bot]@users.noreply.github.com'
+            git tag -a "$tag" -m "$tag" "$RELEASE_SHA"
+            git push origin "$tag"
+          fi
+      - name: Publish or reconcile exact tarballs
+        env:
+          NPM_CONFIG_PROVENANCE: 'true'
+        run: node ci/release.mjs publish "$RUNNER_TEMP/packages"
       - name: Create GitHub release
         env:
           GH_TOKEN: ${{ github.token }}
-          RELEASE_VERSION: ${{ steps.release.outputs.version }}
-          NPM_TAG: ${{ steps.release.outputs.npm_tag }}
+          RELEASE_VERSION: ${{ needs.check.outputs.version }}
+          NPM_TAG: ${{ needs.check.outputs.npm_tag }}
         run: |
-          pnpm exec git-cliff --latest --strip header > release-notes.md
-          args=(--title "v$RELEASE_VERSION" --notes-file release-notes.md)
+          set -euo pipefail
+          node ci/release.mjs check > "$RUNNER_TEMP/release.json"
+          if [[ "$(jq -r .needed "$RUNNER_TEMP/release.json")" == false ]]; then exit 0; fi
+          pnpm exec git-cliff --latest --strip header > "$RUNNER_TEMP/release-notes.md"
+          args=(--verify-tag --title "v$RELEASE_VERSION" --notes-file "$RUNNER_TEMP/release-notes.md")
           if [[ "$NPM_TAG" == alpha ]]; then args+=(--prerelease); fi
           gh release create "v$RELEASE_VERSION" "${args[@]}"
