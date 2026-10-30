@@ -17,7 +17,7 @@
     "site:dev": "pnpm --filter @govbb/site dev",
     "site:build": "pnpm --filter @govbb/site build",
     "lint": "oxlint && stylelint \"packages/*/src/**/*.css\"",
-    "test": "pnpm -r test",
+    "test": "pnpm -r test:coverage",
     "test:release": "node --test ci/release.test.mjs",
     "test:ai-docs": "node apps/site/scripts/check-ai-docs.mjs",
     "test:skill-references": "node ci/check-skill-references.test.mjs && node ci/check-skill-references.mjs",
