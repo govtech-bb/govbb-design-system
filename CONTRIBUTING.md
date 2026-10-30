@@ -129,6 +129,11 @@ parts, or build metadata. Prereleases use npm's `alpha` channel; stable versions
 use `latest`. Frontend and React always share a version. React's
 `workspace:^` dependency becomes `^<release version>` in the packed package.
 
+Until either package has a published stable version, the workflow also points
+both `latest` tags at their shared `alpha` version after both publishes succeed.
+Once a stable version exists, later prereleases cannot replace it. Adding an
+npm `latest` tag does not change a GitHub release's prerelease status.
+
 ### One-time repository setup
 
 A repository administrator must:
@@ -138,14 +143,21 @@ A repository administrator must:
 - Set the Actions variable `RELEASE_APP_CLIENT_ID` and secret
   `RELEASE_APP_PRIVATE_KEY` for that App.
 - Keep both npm packages' trusted publishers pointed at this repository's
-  `release.yml` workflow. Publishing uses GitHub OIDC, not an npm token.
+  `release.yml` workflow, with direct publishing and **Allow npm dist-tag**
+  enabled. Tag permission is separate and disabled by default. Publishing and
+  tag management use [npm trusted publishing (OIDC)](https://docs.npmjs.com/trusted-publishers/),
+  not an npm token.
+
+OIDC tag management requires npm 11.21.0+ on the 11.x line or npm 12.2.0+.
+The workflow pins npm to `12.2.1` before synchronizing tags.
 
 The short-lived App token lets the release PR trigger the usual required
 checks; `GITHUB_TOKEN` alone would not. Reviews and branch protection stay in place.
 
 ### Failed or interrupted releases
 
-Use the Actions UI for recovery. Do not move release tags or publish from a laptop.
+Use the Actions UI for release recovery. Do not move Git release tags or publish
+package versions from a laptop.
 
 | Failure                                                                                         | Recovery                                                                                                                           |
 | ----------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
@@ -170,13 +182,47 @@ unless it is explicitly replaced before tagging or publication. The immutable
 Git tag reserves the source; npm's unique package/version and SHA-512 integrity
 allow safe recovery after a lost response. API errors never mean “not published.”
 
+### Correcting or retrying prerelease tags
+
+Repairing npm tags does not need a new package version. An authorised package
+maintainer can run the helper locally with an authenticated npm CLI. This changes
+public registry tags; obtain approval and make sure no release is running first.
+
+```sh
+npm login --registry=https://registry.npmjs.org
+node ci/sync-npm-latest.mjs
+npm view @govtech-bb/frontend dist-tags --json --registry=https://registry.npmjs.org
+npm view @govtech-bb/react dist-tags --json --registry=https://registry.npmjs.org
+```
+
+The helper reads both packages' version histories and tags before writing.
+It refuses mismatched or unpublished alpha targets and leaves `latest` alone
+if either package has a stable release. It uses the current shared `alpha`,
+not a version copied from an old issue or release run.
+
+Tag writes are not atomic across packages. If one succeeds and the other fails,
+fix the reported authentication or registry error and rerun the helper with no
+release in progress. It skips tags already at the target. For a tag failure
+within a release, use **Re-run failed jobs** on the original **Release** run as
+described above; do not prepare a new version just to repair tags.
+
+After a manual tag repair, verify the dist-tags follow the channel policy above.
+Before a stable release exists, both `latest` tags should match the current shared
+`alpha`. Test a fresh untagged install in a disposable consumer project with
+install scripts disabled. Check the expected React exports and
+`@govtech-bb/frontend/css`. Changing dist-tags does not edit existing lockfiles or
+migrate consumers of the retired React implementation.
+
 ### Checking release automation
 
-`pnpm test:release` runs the focused release tests with real Git, git-cliff,
-pnpm, npm and gh commands against temporary repositories and localhost services.
-It never publishes to npm. GitHub validates workflow wiring and runs the
-required suites. The App installation and npm OIDC configuration still need
-verification on the first hosted release.
+`pnpm test:release` runs both the release-workflow and tag-policy regression
+suites. The workflow tests run real Git, git-cliff, pnpm, npm and gh commands
+against temporary repositories and localhost services. The tag-policy tests use
+stub npm responses. Neither suite writes to the public npm registry.
+
+GitHub validates workflow wiring and runs the required suites. The App
+installation and npm OIDC configuration still need verification on the first
+hosted release.
 
 ## Tooling at a glance
 
