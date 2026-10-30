@@ -134,6 +134,7 @@ it('keeps the description with an error and marks every date part invalid', () =
   const group = screen.getByRole('group', { name: 'Date of birth' });
   const description = screen.getByText('For example, 27 3 1990');
   const error = screen.getByRole('alert');
+  expect(error.textContent).toBe('Error: Enter a valid date');
   expect(group.getAttribute('aria-describedby')).toBe(
     `${description.id} ${error.id}`,
   );
