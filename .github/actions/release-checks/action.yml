@@ -32,7 +32,6 @@ runs:
             pnpm test:ai-docs
             pnpm test:skill-references
             pnpm test:release
-            node --test ci/sync-npm-latest.test.mjs
             if [[ "$RELEASE_PR" == true ]]; then node ci/release.mjs notes; fi
             ;;
           storybook)

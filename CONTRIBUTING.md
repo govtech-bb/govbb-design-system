@@ -149,7 +149,7 @@ A repository administrator must:
   not an npm token.
 
 OIDC tag management requires npm 11.21.0+ on the 11.x line or npm 12.2.0+.
-The workflow installs the current npm before synchronizing tags.
+The workflow pins npm to `12.2.1` before synchronizing tags.
 
 The short-lived App token lets the release PR trigger the usual required
 checks; `GITHUB_TOKEN` alone would not. Reviews and branch protection stay in place.
@@ -184,10 +184,9 @@ allow safe recovery after a lost response. API errors never mean “not publishe
 
 ### Correcting or retrying prerelease tags
 
-The initial correction for #218, or a standalone repair of npm tags, does not
-need a new package version. An authorised package maintainer can run the same
-helper locally with an authenticated npm CLI. This changes public registry tags;
-obtain approval and make sure no release is running first.
+Repairing npm tags does not need a new package version. An authorised package
+maintainer can run the helper locally with an authenticated npm CLI. This changes
+public registry tags; obtain approval and make sure no release is running first.
 
 ```sh
 npm login --registry=https://registry.npmjs.org
@@ -207,26 +206,23 @@ release in progress. It skips tags already at the target. For a tag failure
 within a release, use **Re-run failed jobs** on the original **Release** run as
 described above; do not prepare a new version just to repair tags.
 
-Before closing #218 or switching the install examples back to untagged commands,
-verify both `latest` tags match the current shared `alpha` and test a fresh
-untagged install in a disposable consumer project with install scripts disabled.
-Check the React exports listed in the issue and `@govtech-bb/frontend/css`.
-Changing dist-tags does not edit existing lockfiles or migrate consumers of the
-retired React implementation.
-
-The tag policy has a focused, offline regression suite:
-
-```sh
-node --test ci/sync-npm-latest.test.mjs
-```
+After a manual tag repair, verify the dist-tags follow the channel policy above.
+Before a stable release exists, both `latest` tags should match the current shared
+`alpha`. Test a fresh untagged install in a disposable consumer project with
+install scripts disabled. Check the expected React exports and
+`@govtech-bb/frontend/css`. Changing dist-tags does not edit existing lockfiles or
+migrate consumers of the retired React implementation.
 
 ### Checking release automation
 
-`pnpm test:release` runs the focused release tests with real Git, git-cliff,
-pnpm, npm and gh commands against temporary repositories and localhost services.
-It never publishes to npm. GitHub validates workflow wiring and runs the
-required suites. The App installation and npm OIDC configuration still need
-verification on the first hosted release.
+`pnpm test:release` runs both the release-workflow and tag-policy regression
+suites. The workflow tests run real Git, git-cliff, pnpm, npm and gh commands
+against temporary repositories and localhost services. The tag-policy tests use
+stub npm responses. Neither suite writes to the public npm registry.
+
+GitHub validates workflow wiring and runs the required suites. The App
+installation and npm OIDC configuration still need verification on the first
+hosted release.
 
 ## Tooling at a glance
 

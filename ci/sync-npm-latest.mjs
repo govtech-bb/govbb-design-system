@@ -1,13 +1,8 @@
 import { execFileSync } from 'node:child_process';
+import semver from 'semver';
 
 const packageNames = ['@govtech-bb/frontend', '@govtech-bb/react'];
 const registry = '--registry=https://registry.npmjs.org';
-const versionPattern =
-  /^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*)?(\+[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*)?$/;
-
-function isPrereleaseVersion(version) {
-  return version.split('+')[0].includes('-');
-}
 
 const packages = packageNames.map((name) => {
   const metadata = JSON.parse(
@@ -23,7 +18,9 @@ const packages = packageNames.map((name) => {
     !Array.isArray(versions) ||
     versions.length === 0 ||
     !versions.every(
-      (version) => typeof version === 'string' && versionPattern.test(version),
+      (version) =>
+        typeof version === 'string' &&
+        semver.valid(version) === version.split('+')[0],
     ) ||
     !tags ||
     typeof tags !== 'object' ||
@@ -37,14 +34,19 @@ const packages = packageNames.map((name) => {
 
 // A retagged or missing latest must not hide an earlier stable release.
 if (
-  packages.some(({ versions }) => versions.some((v) => !isPrereleaseVersion(v)))
+  packages.some(({ versions }) =>
+    versions.some((version) => semver.prerelease(version) === null),
+  )
 ) {
   console.log('Stable release already published; leaving latest unchanged.');
   process.exit(0);
 }
 
 for (const { name, versions, tags } of packages) {
-  if (!versions.includes(tags.alpha) || !isPrereleaseVersion(tags.alpha)) {
+  if (
+    !versions.includes(tags.alpha) ||
+    semver.prerelease(tags.alpha) === null
+  ) {
     throw new Error(`Invalid alpha tag for ${name}: ${tags.alpha}`);
   }
 }

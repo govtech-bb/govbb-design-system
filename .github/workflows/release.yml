@@ -131,7 +131,7 @@ jobs:
       - name: Keep latest current before the first stable release
         if: needs.check.outputs.npm_tag == 'alpha'
         run: |
-          npm install -g npm@latest
+          npm install -g npm@12.2.1
           node ci/sync-npm-latest.mjs
       - name: Create GitHub release
         env:

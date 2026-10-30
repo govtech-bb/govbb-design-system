@@ -199,6 +199,18 @@ for (const [description, invalid] of [
   ['empty version history', { versions: [], 'dist-tags': { alpha } }],
   ['non-array version history', { versions: alpha, 'dist-tags': { alpha } }],
   ['invalid version', { versions: [alpha, 'broken'], 'dist-tags': { alpha } }],
+  [
+    'leading-zero major version',
+    { versions: [alpha, '01.0.0-alpha.1'], 'dist-tags': { alpha } },
+  ],
+  [
+    'leading-zero prerelease number',
+    { versions: [alpha, '1.0.0-alpha.01'], 'dist-tags': { alpha } },
+  ],
+  [
+    'v-prefixed version',
+    { versions: [alpha, 'v1.0.0-alpha.1'], 'dist-tags': { alpha } },
+  ],
   ['non-string version', { versions: [alpha, null], 'dist-tags': { alpha } }],
   ['missing dist-tags', { versions: [alpha] }],
   ['array dist-tags', { versions: [alpha], 'dist-tags': [] }],

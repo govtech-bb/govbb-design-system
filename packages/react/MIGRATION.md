@@ -382,4 +382,4 @@ accepts the version update. Moving a dist-tag does not change a consumer's
 existing lockfile or dependency range.
 
 See [Releasing in the contributing guide](../../CONTRIBUTING.md#releasing) for
-the OIDC permissions, initial tag correction, and recovery procedure.
+the OIDC permissions, tag policy, and recovery procedure.
