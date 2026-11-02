@@ -17,6 +17,8 @@ export type NumberInputProps = Omit<
   FieldExtras & {
     /** id of the field's <Label>, announced for the whole group. */
     labelId?: string;
+    /** @default 'numeric' */
+    inputMode?: InputHTMLAttributes<HTMLInputElement>['inputMode'];
   };
 
 type NumericValue = string | number | readonly string[] | undefined;
