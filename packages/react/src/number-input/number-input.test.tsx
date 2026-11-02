@@ -132,6 +132,13 @@ describe('NumberInput', () => {
     ).toBe('numeric');
   });
 
+  it('keeps the numeric keypad when a wrapper forwards an undefined inputMode', () => {
+    render(<NumberInput aria-label="Qty" inputMode={undefined} />);
+    expect(
+      screen.getByRole('spinbutton', { name: 'Qty' }).getAttribute('inputmode'),
+    ).toBe('numeric');
+  });
+
   it('keeps an explicit inputMode', () => {
     render(<NumberInput aria-label="Price" inputMode="decimal" />);
     expect(

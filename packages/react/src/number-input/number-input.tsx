@@ -44,6 +44,7 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
       max,
       disabled,
       readOnly,
+      inputMode = 'numeric',
       onInput,
       'aria-describedby': describedBy,
       'aria-invalid': ariaInvalid,
@@ -109,7 +110,7 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
           onInput={handleInput}
           aria-describedby={cx(ids.describedBy, describedBy) || undefined}
           aria-invalid={has(error) ? true : ariaInvalid}
-          inputMode="numeric"
+          inputMode={inputMode}
           {...props}
           type="number"
         />
