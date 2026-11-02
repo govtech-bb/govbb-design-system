@@ -66,7 +66,13 @@ const DESCRIBE = () => {
 
   const rect = el.getBoundingClientRect();
 
+  const labelledBy = (el.getAttribute('aria-labelledby') || '')
+    .split(/\s+/)
+    .map((id) => document.getElementById(id)?.textContent || '')
+    .join(' ')
+    .trim();
   const name = (
+    labelledBy ||
     el.getAttribute('aria-label') ||
     (el.labels && el.labels.length ? el.labels[0].textContent : '') ||
     el.getAttribute('title') ||
@@ -122,7 +128,8 @@ const DESCRIBE = () => {
     // the walk reports a boundary instead of inventing a focus trap.
     isFrame: el.tagName === 'IFRAME',
     role: el.getAttribute('role') || null,
-    tabindex: el.getAttribute('tabindex'),
+    // Parsed, not the raw attribute: browsers read tabindex="2x" as 2.
+    tabindex: el.tabIndex,
     disabled: el.disabled === true,
     inViewport,
     obscuredBy,
@@ -150,8 +157,14 @@ async function walk(page, key, maxTabs) {
       continue;
     }
     if (d.revisitOf !== null) {
+      // On a page with one focusable element the ring is element, out of the
+      // document, the same element: a wrap, not a trap. A real wrap always
+      // lands on the first stop, so a return anywhere else is still suspect.
       const prev = seq.filter((s) => !s.leftDocument).at(-1);
-      const sameAsPrevious = prev && prev.index === d.revisitOf;
+      const wrappedThroughDocument =
+        seq.at(-1)?.leftDocument && d.revisitOf === 0;
+      const sameAsPrevious =
+        prev && prev.index === d.revisitOf && !wrappedThroughDocument;
       if (sameAsPrevious && d.isFrame) {
         // Focus went inside the frame. Not a trap — just past what we can see.
         enteredFrame = d.selector;
@@ -179,6 +192,10 @@ if (opts.help || !opts.url) {
   console.log(HELP);
   process.exit(opts.help ? 0 : 1);
 }
+if (!Number.isInteger(opts.maxTabs) || opts.maxTabs <= 0) {
+  console.error('--max-tabs must be a positive whole number.');
+  process.exit(1);
+}
 
 const browser = await launchBrowser();
 try {
@@ -200,7 +217,17 @@ try {
 
   const walkResult = await walk(page, 'Tab', opts.maxTabs);
   const forward = walkResult.seq;
+  const real = forward.filter((d) => !d.leftDocument);
+  if (real.length === 0) {
+    console.error(
+      `No element took focus in ${opts.maxTabs} Tab presses, so focus order was not tested.\n` +
+        'Check that the page loaded what you expected and has focusable elements.',
+    );
+    await browser.close();
+    process.exit(2);
+  }
 
+  const cell = (text) => text.replaceAll('|', '\\|');
   console.log('| # | Element | Accessible name | Notes |');
   console.log('|---|---|---|---|');
   forward.forEach((d, i) => {
@@ -212,18 +239,16 @@ try {
     }
     const notes = [];
     if (!d.inViewport) notes.push('**out of view**');
-    if (d.obscuredBy) notes.push(`**obscured by \`${d.obscuredBy}\`**`);
+    if (d.obscuredBy) notes.push(`**obscured by \`${cell(d.obscuredBy)}\`**`);
     if (d.disabled) notes.push('disabled but focusable');
-    if (d.tabindex && Number(d.tabindex) > 0)
-      notes.push(`positive tabindex=${d.tabindex}`);
+    if (d.tabindex > 0) notes.push(`positive tabindex=${d.tabindex}`);
     if (d.isFrame) notes.push('iframe — walk cannot see inside');
     console.log(
-      `| ${i + 1} | \`${d.selector}\` | ${d.name || '*(none)*'} | ${notes.join('; ') || ''} |`,
+      `| ${i + 1} | \`${cell(d.selector)}\` | ${cell(d.name) || '*(none)*'} | ${notes.join('; ') || ''} |`,
     );
   });
 
   // Summary of the things worth acting on.
-  const real = forward.filter((d) => !d.leftDocument);
   const problems = [];
   const notes = [];
 
@@ -272,7 +297,7 @@ try {
     problems.push(
       `${offscreen.length} focused element(s) were outside the viewport. If the page does not scroll them into view, a sighted keyboard user cannot see where they are.`,
     );
-  const positive = real.filter((d) => d.tabindex && Number(d.tabindex) > 0);
+  const positive = real.filter((d) => d.tabindex > 0);
   if (positive.length)
     problems.push(
       `${positive.length} element(s) use a positive tabindex, which overrides DOM order and reliably desynchronises tab order from reading order.`,

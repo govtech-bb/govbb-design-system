@@ -67,6 +67,10 @@ const pages = {
   '/clean':
     '<main><h1>Apply</h1><label for="name">Name</label><input id="name"><a href="/clean">Next</a><a href="/clean">Help</a></main>',
   '/bad': '<main><h1>Apply</h1><input><button></button></main>',
+  '/one-link': '<main><h1>Apply</h1><a href="/one-link">Start</a></main>',
+  '/no-focus': '<main><h1>Apply</h1><p>Nothing to focus.</p></main>',
+  '/focus-quirks':
+    '<main><a href="/focus-quirks">Home | About</a><a href="/focus-quirks" tabindex="2x">Malformed</a><button aria-labelledby="search-label"><svg width="16" height="16"></svg></button><span id="search-label">Search</span></main>',
 };
 const server = createServer((req, res) => {
   const body = pages[req.url];
@@ -257,6 +261,26 @@ try {
   assert.doesNotMatch(focus.stdout, /\*\*Focus trap:\*\*/);
   assert.match(focus.stdout, /cycled back to element 1 after 3 stops/);
   assert.doesNotMatch(focus.stdout, /\bSC \d|WCAG/);
+  const walkOf = (page, ...args) =>
+    run('focus-order.mjs', [`${base}${page}`, '--wait', '0', ...args]);
+  for (const maxTabs of [['0'], ['abc'], []]) {
+    const invalid = await walkOf('/clean', '--max-tabs', ...maxTabs);
+    assert.equal(invalid.status, 1);
+    assert.match(invalid.stderr, /--max-tabs must be a positive whole number/);
+  }
+  const nothingFocused = await walkOf('/no-focus', '--max-tabs', '4');
+  assert.equal(nothingFocused.status, 2);
+  assert.match(nothingFocused.stderr, /not tested/);
+  assert.doesNotMatch(nothingFocused.stdout, /None of the automated checks/);
+  const oneLink = await walkOf('/one-link', '--max-tabs', '8');
+  assert.equal(oneLink.status, 0, oneLink.stderr);
+  assert.doesNotMatch(oneLink.stdout, /\*\*Focus trap:\*\*|and then resumed/);
+  assert.match(oneLink.stdout, /cycled back to element 1/);
+  const quirks = await walkOf('/focus-quirks', '--max-tabs', '8');
+  assert.equal(quirks.status, 0, quirks.stderr);
+  assert.match(quirks.stdout, /\| `a` \| Malformed \| positive tabindex=2 \|/);
+  assert.match(quirks.stdout, /\| `a` \| Home \\\| About \| +\|/);
+  assert.match(quirks.stdout, /\| `button` \| Search \| +\|/);
   const missingPlaywright = await run('focus-order.mjs', [`${base}/clean`], {
     cwd: empty,
   });
@@ -271,7 +295,7 @@ try {
   assert.equal(noBrowser.status, 2);
   assert.match(noBrowser.stderr, /npx playwright install chromium/);
   console.log(
-    'PASS focus walk distinguishes nodes; tooling failures are actionable',
+    'PASS focus walk distinguishes nodes, wraps and empty walks; tooling failures are actionable',
   );
 
   // Mirrors the W3C markup: criteria write id before class, guidelines and
