@@ -18,7 +18,7 @@
     "site:build": "pnpm --filter @govbb/site build",
     "lint": "oxlint && stylelint \"packages/*/src/**/*.css\"",
     "test": "pnpm -r test",
-    "test:release": "node --test ci/release.test.mjs",
+    "test:release": "node --test ci/release.test.mjs ci/sync-npm-latest.test.mjs",
     "test:ai-docs": "node apps/site/scripts/check-ai-docs.mjs",
     "test:skill-references": "node ci/check-skill-references.test.mjs && node ci/check-skill-references.mjs",
     "test:skills": "node skills/design-system-compliance/scripts/scripts.test.mjs && node skills/accessibility-review/scripts/scripts.test.mjs",
