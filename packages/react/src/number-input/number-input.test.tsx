@@ -124,6 +124,22 @@ describe('NumberInput', () => {
     render(<NumberInput aria-label="Qty" type="text" />);
     expect(screen.getByRole('spinbutton', { name: 'Qty' })).toBeDefined();
   });
+
+  it('requests the numeric keypad by default', () => {
+    render(<NumberInput aria-label="Qty" />);
+    expect(
+      screen.getByRole('spinbutton', { name: 'Qty' }).getAttribute('inputmode'),
+    ).toBe('numeric');
+  });
+
+  it('keeps an explicit inputMode', () => {
+    render(<NumberInput aria-label="Price" inputMode="decimal" />);
+    expect(
+      screen
+        .getByRole('spinbutton', { name: 'Price' })
+        .getAttribute('inputmode'),
+    ).toBe('decimal');
+  });
 });
 
 it('has no axe violations', async () => {

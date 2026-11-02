@@ -109,6 +109,7 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
           onInput={handleInput}
           aria-describedby={cx(ids.describedBy, describedBy) || undefined}
           aria-invalid={has(error) ? true : ariaInvalid}
+          inputMode="numeric"
           {...props}
           type="number"
         />
