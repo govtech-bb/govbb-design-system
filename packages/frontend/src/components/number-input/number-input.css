@@ -73,6 +73,7 @@
   grid-area: 1 / 2;
   align-self: stretch;
   overflow: hidden;
+  touch-action: manipulation; /* covers the divider between the buttons too */
   background: color-mix(
     in srgb,
     var(--govbb-color-neutral) 50%,

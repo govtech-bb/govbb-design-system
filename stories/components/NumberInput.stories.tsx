@@ -78,10 +78,13 @@ export const ReachesMaximum: Story = {
 
 export const RapidTapsDoNotZoom: Story = {
   play: async ({ canvas }) => {
-    for (const name of ['Increment', 'Decrement']) {
-      await expect(
-        getComputedStyle(canvas.getByRole('button', { name })).touchAction,
-      ).toBe('manipulation');
+    const increment = canvas.getByRole('button', { name: 'Increment' });
+    for (const el of [
+      increment,
+      canvas.getByRole('button', { name: 'Decrement' }),
+      increment.parentElement!,
+    ]) {
+      await expect(getComputedStyle(el).touchAction).toBe('manipulation');
     }
   },
 };
