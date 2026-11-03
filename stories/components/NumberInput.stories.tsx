@@ -76,6 +76,16 @@ export const ReachesMaximum: Story = {
   },
 };
 
+export const RapidTapsDoNotZoom: Story = {
+  play: async ({ canvas }) => {
+    for (const name of ['Increment', 'Decrement']) {
+      await expect(
+        getComputedStyle(canvas.getByRole('button', { name })).touchAction,
+      ).toBe('manipulation');
+    }
+  },
+};
+
 export const Disabled: Story = {
   args: {
     disabled: true,
