@@ -13,6 +13,7 @@
   background: var(--govbb-color-surface);
   border: var(--govbb-border-width-form) solid var(--govbb-color-ink);
   border-radius: var(--govbb-radius);
+  touch-action: manipulation; /* rapid taps on the border or divider, too */
   transition:
     box-shadow 0.2s,
     border-color 0.2s;
@@ -73,7 +74,6 @@
   grid-area: 1 / 2;
   align-self: stretch;
   overflow: hidden;
-  touch-action: manipulation; /* covers the divider between the buttons too */
   background: color-mix(
     in srgb,
     var(--govbb-color-neutral) 50%,

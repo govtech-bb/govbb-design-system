@@ -77,14 +77,14 @@ export const ReachesMaximum: Story = {
 };
 
 export const RapidTapsDoNotZoom: Story = {
-  play: async ({ canvas }) => {
-    const increment = canvas.getByRole('button', { name: 'Increment' });
-    for (const el of [
-      increment,
-      canvas.getByRole('button', { name: 'Decrement' }),
-      increment.parentElement!,
-    ]) {
-      await expect(getComputedStyle(el).touchAction).toBe('manipulation');
+  play: async ({ canvas, canvasElement }) => {
+    const targets = {
+      wrapper: canvasElement.querySelector('.govbb-number-input-wrapper')!,
+      increment: canvas.getByRole('button', { name: 'Increment' }),
+      decrement: canvas.getByRole('button', { name: 'Decrement' }),
+    };
+    for (const [name, el] of Object.entries(targets)) {
+      await expect(getComputedStyle(el).touchAction, name).toBe('manipulation');
     }
   },
 };
