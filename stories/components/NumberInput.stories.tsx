@@ -77,9 +77,9 @@ export const ReachesMaximum: Story = {
 };
 
 export const RapidTapsDoNotZoom: Story = {
-  play: async ({ canvas, canvasElement }) => {
+  play: async ({ canvas }) => {
     const targets = {
-      wrapper: canvasElement.querySelector('.govbb-number-input-wrapper')!,
+      wrapper: canvas.getByRole('group', { name: 'Quantity' }),
       increment: canvas.getByRole('button', { name: 'Increment' }),
       decrement: canvas.getByRole('button', { name: 'Decrement' }),
     };
