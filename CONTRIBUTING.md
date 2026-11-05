@@ -30,6 +30,21 @@ Every component ships CSS in `packages/frontend`, usually a thin wrapper in
 If a surface intentionally omits one of those pieces, document and test the
 exception.
 
+### Tests and coverage
+
+`pnpm test` runs the unit tests in `packages/frontend` and `packages/react` and
+checks their coverage. It's what the pre-push hook, the `ci` check and the
+release commit run, so a drop in coverage fails all three. Coverage is checked
+per file against the floors in each package's vitest config, so a new
+component or script needs its own tests: one with none fails the run even if
+the package total barely moves.
+
+To run only some tests, use the package's `test` script, which skips coverage:
+
+```sh
+pnpm --filter @govtech-bb/react test button
+```
+
 ## AI documentation and skills
 
 Public skills live in `skills/<name>/SKILL.md` and install through

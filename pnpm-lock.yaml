@@ -94,10 +94,10 @@ importers:
         version: link:../../packages/frontend
       astro:
         specifier: ^7.2.8
-        version: 7.3.5(@types/node@26.0.1)(jiti@2.6.1)(yaml@2.9.0)
+        version: 7.3.5(@emnapi/core@1.11.3)(@types/node@26.0.1)(jiti@2.6.1)(yaml@2.9.0)
       astro-pagefind:
         specifier: ^2.0.0
-        version: 2.0.0(astro@7.3.5(@types/node@26.0.1)(jiti@2.6.1)(yaml@2.9.0))
+        version: 2.0.0(astro@7.3.5(@emnapi/core@1.11.3)(@types/node@26.0.1)(jiti@2.6.1)(yaml@2.9.0))
       pagefind:
         specifier: ^1.5.2
         version: 1.5.2
@@ -117,6 +117,9 @@ importers:
 
   packages/frontend:
     devDependencies:
+      '@vitest/coverage-v8':
+        specifier: ^4.1.12
+        version: 4.1.12(@vitest/browser@4.1.12)(vitest@4.1.12)
       jsdom:
         specifier: ^29.1.1
         version: 29.1.1
@@ -151,6 +154,9 @@ importers:
       '@types/react-dom':
         specifier: ^19.2.3
         version: 19.2.3(@types/react@19.2.17)
+      '@vitest/coverage-v8':
+        specifier: ^4.1.12
+        version: 4.1.12(@vitest/browser@4.1.12)(vitest@4.1.12)
       axe-core:
         specifier: ^4.12.1
         version: 4.12.1
@@ -4755,11 +4761,12 @@ snapshots:
   '@astrojs/compiler-binding-linux-x64-musl@0.5.1':
     optional: true
 
-  '@astrojs/compiler-binding-wasm32-wasi@0.5.1':
+  '@astrojs/compiler-binding-wasm32-wasi@0.5.1(@emnapi/core@1.11.3)':
     dependencies:
-      '@emnapi/core': 1.11.3
       '@emnapi/runtime': 1.11.3
       '@napi-rs/wasm-runtime': 1.2.5(@emnapi/core@1.11.3)(@emnapi/runtime@1.11.3)
+    transitivePeerDependencies:
+      - '@emnapi/core'
     optional: true
 
   '@astrojs/compiler-binding-win32-arm64-msvc@0.5.1':
@@ -4768,7 +4775,7 @@ snapshots:
   '@astrojs/compiler-binding-win32-x64-msvc@0.5.1':
     optional: true
 
-  '@astrojs/compiler-binding@0.5.1':
+  '@astrojs/compiler-binding@0.5.1(@emnapi/core@1.11.3)':
     optionalDependencies:
       '@astrojs/compiler-binding-android-arm64': 0.5.1
       '@astrojs/compiler-binding-darwin-arm64': 0.5.1
@@ -4777,13 +4784,17 @@ snapshots:
       '@astrojs/compiler-binding-linux-arm64-musl': 0.5.1
       '@astrojs/compiler-binding-linux-x64-gnu': 0.5.1
       '@astrojs/compiler-binding-linux-x64-musl': 0.5.1
-      '@astrojs/compiler-binding-wasm32-wasi': 0.5.1
+      '@astrojs/compiler-binding-wasm32-wasi': 0.5.1(@emnapi/core@1.11.3)
       '@astrojs/compiler-binding-win32-arm64-msvc': 0.5.1
       '@astrojs/compiler-binding-win32-x64-msvc': 0.5.1
+    transitivePeerDependencies:
+      - '@emnapi/core'
 
-  '@astrojs/compiler-rs@0.5.1':
+  '@astrojs/compiler-rs@0.5.1(@emnapi/core@1.11.3)':
     dependencies:
-      '@astrojs/compiler-binding': 0.5.1
+      '@astrojs/compiler-binding': 0.5.1(@emnapi/core@1.11.3)
+    transitivePeerDependencies:
+      - '@emnapi/core'
 
   '@astrojs/internal-helpers@0.11.0':
     dependencies:
@@ -6470,16 +6481,16 @@ snapshots:
 
   astral-regex@2.0.0: {}
 
-  astro-pagefind@2.0.0(astro@7.3.5(@types/node@26.0.1)(jiti@2.6.1)(yaml@2.9.0)):
+  astro-pagefind@2.0.0(astro@7.3.5(@emnapi/core@1.11.3)(@types/node@26.0.1)(jiti@2.6.1)(yaml@2.9.0)):
     dependencies:
       '@pagefind/component-ui': 1.5.2
-      astro: 7.3.5(@types/node@26.0.1)(jiti@2.6.1)(yaml@2.9.0)
+      astro: 7.3.5(@emnapi/core@1.11.3)(@types/node@26.0.1)(jiti@2.6.1)(yaml@2.9.0)
       pagefind: 1.5.2
       sirv: 3.0.2
 
-  astro@7.3.5(@types/node@26.0.1)(jiti@2.6.1)(yaml@2.9.0):
+  astro@7.3.5(@emnapi/core@1.11.3)(@types/node@26.0.1)(jiti@2.6.1)(yaml@2.9.0):
     dependencies:
-      '@astrojs/compiler-rs': 0.5.1
+      '@astrojs/compiler-rs': 0.5.1(@emnapi/core@1.11.3)
       '@astrojs/internal-helpers': 0.11.0
       '@astrojs/markdown-satteri': 0.4.2
       '@astrojs/telemetry': 3.3.3
@@ -6543,6 +6554,7 @@ snapshots:
       - '@azure/storage-blob'
       - '@capacitor/preferences'
       - '@deno/kv'
+      - '@emnapi/core'
       - '@netlify/blobs'
       - '@planetscale/database'
       - '@types/node'
