@@ -113,11 +113,23 @@ it('has no axe violations', async () => {
   await expectNoAxeViolations(container);
 });
 
-it('renders an error message wired into the group description', () => {
+it('has no axe violations with an error', async () => {
+  const { container } = render(
+    <DateInput
+      legend="Date of birth"
+      description="For example, 27 3 1990"
+      error="Enter a valid date"
+    />,
+  );
+  await expectNoAxeViolations(container);
+});
+
+it('renders a prefixed error message wired into the group description', () => {
   render(<DateInput legend="Date of birth" error="Enter a valid date" />);
   const group = screen.getByRole('group', { name: 'Date of birth' });
-  const error = screen.getByText('Enter a valid date');
+  const error = screen.getByRole('alert');
   expect(error.className).toBe('govbb-error-message');
+  expect(error.textContent).toBe('Error: Enter a valid date');
   expect(group.getAttribute('aria-describedby')).toBe(error.id);
 });
 
@@ -132,7 +144,8 @@ it('keeps the description with an error and marks every date part invalid', () =
   );
   const group = screen.getByRole('group', { name: 'Date of birth' });
   const description = screen.getByText('For example, 27 3 1990');
-  const error = screen.getByText('Enter a valid date');
+  const error = screen.getByRole('alert');
+  expect(error.textContent).toBe('Error: Enter a valid date');
   expect(group.getAttribute('aria-describedby')).toBe(
     `${description.id} ${error.id}`,
   );

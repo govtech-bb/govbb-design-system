@@ -7,7 +7,7 @@ import {
   type FieldsetHTMLAttributes,
   type ReactNode,
 } from 'react';
-import { FormGroup, has } from '../form/form';
+import { ErrorMessage, FormGroup, has } from '../form/form';
 import type { FieldFeedback } from '../form/field';
 
 /*
@@ -111,9 +111,9 @@ export const DateInput = forwardRef<HTMLFieldSetElement, DateInputProps>(
             </span>
           )}
           {has(error) && (
-            <span className="govbb-error-message" id={errorId} role="alert">
+            <ErrorMessage id={errorId} role="alert">
               {error}
-            </span>
+            </ErrorMessage>
           )}
           <div className="govbb-date-input">
             {parts.map(({ label, part, partId, props, year }) => (

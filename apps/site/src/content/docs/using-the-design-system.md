@@ -13,12 +13,8 @@ twice. Use `@govtech-bb/frontend` for framework-agnostic HTML, or add the thin
 ## Install for HTML or server-rendered services
 
 ```sh
-pnpm add @govtech-bb/frontend@alpha
+pnpm add @govtech-bb/frontend
 ```
-
-Every 1.0 build so far is a prerelease, published under the `alpha` npm tag.
-Ask for that tag explicitly: a bare install resolves `latest`, which still
-points at an older build.
 
 Import the complete stylesheet once:
 
@@ -39,7 +35,7 @@ initAll();
 ## Install for React services
 
 ```sh
-pnpm add @govtech-bb/frontend@alpha @govtech-bb/react@alpha
+pnpm add @govtech-bb/frontend @govtech-bb/react
 ```
 
 Import the stylesheet once at the application root, then import components from
