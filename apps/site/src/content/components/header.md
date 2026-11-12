@@ -123,6 +123,9 @@ and goes back to being `govbb-logo.svg` when the anniversary ends. Point
 `logoSrc` at `govbb-logo.svg`, not `govbb-logo-standard.svg`, so either change
 reaches your service with a version bump.
 
+In a dark high-contrast theme the header shows the logo as a white silhouette,
+so any image passed to `logoSrc` needs a transparent background.
+
 ## Client-side routing
 
 An href-compatible router component can render the logo's home link. Render
