@@ -114,6 +114,15 @@ the content it controls.
 Keep the gov.bb identity visible and make the menu operable by keyboard and
 assistive technology. Do not use the logo as the page's `h1`.
 
+### Use the package's logo file
+
+`assets/images/govbb-logo.svg` is the header logo. For the 60th anniversary of
+Independence it carries the anniversary mark in place of the trident. The
+standard logo stays in the package as `assets/images/govbb-logo-standard.svg`,
+and goes back to being `govbb-logo.svg` when the anniversary ends. Point
+`logoSrc` at `govbb-logo.svg`, not `govbb-logo-standard.svg`, so either change
+reaches your service with a version bump.
+
 ## Client-side routing
 
 An href-compatible router component can render the logo's home link. Render
