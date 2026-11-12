@@ -34,6 +34,14 @@
   height: 1.5rem; /* 24px */
 }
 
+/* Forced colours repaint the header but leave images alone, so the black
+   wordmark vanishes into a dark theme's background. White keeps it visible. */
+@media (forced-colors: active) and (prefers-color-scheme: dark) {
+  .govbb-header__logo {
+    filter: brightness(0) invert(1);
+  }
+}
+
 .govbb-header__controls {
   display: flex;
   grid-column: 2;
