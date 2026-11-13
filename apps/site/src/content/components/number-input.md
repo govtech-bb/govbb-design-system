@@ -125,6 +125,10 @@ each button carries an `aria-label` ("Increment" or "Decrement") together with
 their own. The steppers use the input's native `stepUp()` and `stepDown()`, so
 they respect `min`, `max` and `step` without any extra code.
 
+The React component sets `inputMode="numeric"` for you. The numeric keypad has
+no decimal point or minus sign, so pass a different `inputMode`, such as
+`"decimal"`, if a field needs one.
+
 ## Errors
 
 When a number input fails validation, show an error message
