@@ -76,6 +76,12 @@
   background-color: var(--govbb-link-hover-bg);
 }
 
+/* Stop rapid taps (a number stepper, a checkbox label) reading as a
+   double-tap zoom on iOS. manipulation keeps panning and pinch-zoom. */
+:where(a, button, summary, label, input, select, textarea) {
+  touch-action: manipulation;
+}
+
 :where(::placeholder) {
   color: var(--govbb-color-muted);
   opacity: 1; /* Firefox dims placeholders by default */
